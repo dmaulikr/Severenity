@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_id": "sample-game-777",
+    "project_number": "967925944048",
+    "name": "Sample"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967925944048:android:ea0c034eef59f1aa",
+        "client_id": "android:com.nosad.sample",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.nosad.sample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "967925944048-ifcqc735ma2gskga98kovt4val6icc66.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nosad.sample",
+            "certificate_hash": "9137D0663A6FD3F03C5775BC9DD540972845DDD8"
+          }
+        },
+        {
+          "client_id": "967925944048-isdt8fjb37rn7g2qmrcnbudj9im49be0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

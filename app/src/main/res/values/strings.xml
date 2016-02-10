@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Sample</string>
+
+    <!-- Third party -->
+    <string name="facebook_app_id">912233188857453</string>
+
+    <!-- Project number from google developers console -->
+    <!--<string name="google_app_id">967925944048</string>-->
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+
+    <!-- Buttons -->
+    <string name="button_main_menu">Main Menu</string>
+    <string name="button_go">Go</string>
+    <string name="button_previous">Previous</string>
+    <string name="button_next">Next</string>
+    <string name="remember_my_choice">Remember my choice.</string>
+
+    <!-- Titles -->
+
+</resources>
