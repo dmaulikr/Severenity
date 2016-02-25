@@ -1,10 +1,8 @@
-package com.nosad.sample.fragments;
+package com.nosad.sample.view.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,16 +13,15 @@ import android.widget.TextView;
 import com.facebook.AccessToken;
 import com.facebook.Profile;
 import com.nosad.sample.R;
-import com.nosad.sample.activities.LoginActivity;
-import com.nosad.sample.activities.MainActivity;
-import com.nosad.sample.adapters.SamplesAdapter;
-import com.nosad.sample.view.NonSwipeableViewPager;
-import com.nosad.sample.view.ZoomOutPageTransformer;
+import com.nosad.sample.view.activities.MainActivity;
+import com.nosad.sample.engine.adapters.SamplesAdapter;
+import com.nosad.sample.view.custom.NonSwipeableViewPager;
+import com.nosad.sample.view.custom.ZoomOutPageTransformer;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link com.nosad.sample.fragments.MainFragment.OnResumeGameListener} interface
+ * {@link com.nosad.sample.view.fragments.MainFragment.OnResumeGameListener} interface
  * to handle interaction events.
  */
 public class MainFragment extends Fragment {

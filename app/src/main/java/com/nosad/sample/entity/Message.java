@@ -1,4 +1,4 @@
-package com.nosad.sample.model;
+package com.nosad.sample.entity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,4 +1,4 @@
-package com.nosad.sample.activities;
+package com.nosad.sample.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +9,10 @@ import android.widget.FrameLayout;
 
 import com.facebook.Profile;
 import com.nosad.sample.R;
-import com.nosad.sample.common.Constants;
-import com.nosad.sample.fragments.GameMapFragment;
-import com.nosad.sample.fragments.MainFragment;
-import com.nosad.sample.network.WebSocketManager;
+import com.nosad.sample.utils.common.Constants;
+import com.nosad.sample.view.fragments.GameMapFragment;
+import com.nosad.sample.view.fragments.MainFragment;
+import com.nosad.sample.engine.network.WebSocketManager;
 
 public class MainActivity extends AppCompatActivity implements GameMapFragment.OnPauseGameListener,
         MainFragment.OnResumeGameListener {

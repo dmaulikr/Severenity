@@ -1,8 +1,13 @@
-package com.nosad.sample.network;
+package com.nosad.sample.engine.network;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.LruCache;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -11,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.nosad.sample.R;
 
 import org.json.JSONObject;
 
@@ -24,7 +30,14 @@ public class RestManager {
     private static RestManager instance;
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
-    private static Context context;
+    private Context context;
+
+    // Whether there is a Wi-Fi connection.
+    private static boolean wifiConnected = false;
+    // Whether there is a mobile connection.
+    private static boolean mobileConnected = false;
+    // Whether the display should be refreshed.
+    public static boolean refreshDisplay = true;
 
     public static synchronized RestManager getInstance(Context context) {
         if (instance == null) {
@@ -108,5 +121,66 @@ public class RestManager {
 
     public ImageLoader getImageLoader() {
         return imageLoader;
+    }
+
+    public NetworkReceiver getNetworkReceiver() {
+        return new NetworkReceiver();
+    }
+
+    public class NetworkReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            ConnectivityManager conn = (ConnectivityManager)
+                    context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = conn.getActiveNetworkInfo();
+
+            updateConnectedFlags();
+
+            // Checks the user prefs and the network connection. Based on the result, decides whether
+            // to refresh the display or keep the current display.
+            // If the userpref is Wi-Fi only, checks to see if the device has a Wi-Fi connection.
+            if (networkInfo != null) {
+                refreshDisplay = true;
+                // If device has its Wi-Fi connection, sets refreshDisplay
+                // to true. This causes the display to be refreshed when the user
+                // returns to the app.
+                if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                    Toast.makeText(context, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
+                } else if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+                    // If the setting is ANY network and there is a network connection
+                    // (which by process of elimination would be mobile), sets refreshDisplay to true.
+                    Toast.makeText(context, R.string.mobile_connected, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, R.string.connection_established, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                refreshDisplay = false;
+                Toast.makeText(context, R.string.lost_connection, Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    // Checks the network connection and sets the wifiConnected and mobileConnected
+    // variables accordingly.
+    public void updateConnectedFlags() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeInfo = connMgr.getActiveNetworkInfo();
+        if (activeInfo != null && activeInfo.isConnected()) {
+            wifiConnected = activeInfo.getType() == ConnectivityManager.TYPE_WIFI;
+            mobileConnected = activeInfo.getType() == ConnectivityManager.TYPE_MOBILE;
+        } else {
+            wifiConnected = false;
+            mobileConnected = false;
+        }
+    }
+
+    /**
+     *
+     * @return true if connect to mobile or wifi network.
+     */
+    public boolean isConnected() {
+        return wifiConnected || mobileConnected;
     }
 }

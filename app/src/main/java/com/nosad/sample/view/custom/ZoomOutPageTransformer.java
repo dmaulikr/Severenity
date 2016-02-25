@@ -1,4 +1,4 @@
-package com.nosad.sample.view;
+package com.nosad.sample.view.custom;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;

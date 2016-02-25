@@ -1,4 +1,4 @@
-package com.nosad.sample.adapters;
+package com.nosad.sample.engine.adapters;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -8,19 +8,15 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nosad.sample.R;
-import com.nosad.sample.model.Sample;
+import com.nosad.sample.entity.Sample;
 import com.nosad.sample.utils.Utils;
-
-import org.w3c.dom.Text;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

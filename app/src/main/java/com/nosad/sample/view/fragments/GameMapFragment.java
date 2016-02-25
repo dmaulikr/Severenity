@@ -1,4 +1,4 @@
-package com.nosad.sample.fragments;
+package com.nosad.sample.view.fragments;
 
 
 import android.Manifest;
@@ -18,8 +18,7 @@ import android.widget.Button;
 
 import com.google.android.gms.maps.SupportMapFragment;
 import com.nosad.sample.R;
-import com.nosad.sample.common.Constants;
-import com.nosad.sample.network.WebSocketManager;
+import com.nosad.sample.utils.common.Constants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;

@@ -1,4 +1,4 @@
-package com.nosad.sample.model;
+package com.nosad.sample.entity;
 
 /**
  * Created by Novosad on 2/8/16.

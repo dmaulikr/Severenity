@@ -1,11 +1,11 @@
-package com.nosad.sample.network;
+package com.nosad.sample.engine.network;
 
 import android.location.Location;
 import android.os.Build;
 import android.util.Log;
 
-import com.nosad.sample.common.Constants;
-import com.nosad.sample.model.Message;
+import com.nosad.sample.utils.common.Constants;
+import com.nosad.sample.entity.Message;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_17;
