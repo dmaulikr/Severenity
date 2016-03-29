@@ -5,6 +5,8 @@ package com.nosad.sample.utils.common;
  */
 public class Constants {
     public final static String TAG = "SAMPLE";
+    public static final String INTENT_FILTER_GAC = "com.nosad.sample.googleapiclient";
+
     public final static int SPLASH_TIME_OUT = 3000;
 
     /**

@@ -1,30 +1,21 @@
 package com.nosad.sample.view.activities;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -36,24 +27,20 @@ import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.network.RestManager;
-import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
+
+    private boolean accessFineLocationGranted = false;
+
     // The BroadcastReceiver that tracks network connectivity changes.
-    private String authResponse = "Cannot authenticate.";
-    private JsonObjectRequest authRequest;
-
-    private RequestQueue queue;
-
     private RestManager.NetworkReceiver receiver;
 
     private RestManager restManager;
@@ -64,34 +51,29 @@ public class LoginActivity extends AppCompatActivity {
     private ProfileTracker profileTracker;
     private CallbackManager callbackManager;
 
-    // UI references.
-    private EditText mEmailView;
     private View mProgressView;
-    private View mLoginFormView;
 
     private Intent mainActivityIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        requestPermissions();
+
         FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_login);
 
         restManager = RestManager.getInstance(getApplicationContext());
-        queue = Volley.newRequestQueue(this);
-
         callbackManager = CallbackManager.Factory.create();
 
         mainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
-        updateWithToken(AccessToken.getCurrentAccessToken());
 
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                 profile = Profile.getCurrentProfile();
                 profileTracker.stopTracking();
-
-                mainActivityIntent.putExtra("profile", profile);
             }
         };
 
@@ -125,24 +107,40 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Set up the login form.
-        mEmailView = (EditText) findViewById(R.id.email);
-
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-        mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
         // Registers BroadcastReceiver to track network connection changes.
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         receiver = restManager.getNetworkReceiver();
         this.registerReceiver(receiver, filter);
+    }
+
+    private void requestPermissions() {
+        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            accessFineLocationGranted = true;
+        } else {
+            requestPermissions(
+                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
+                    LOCATION_PERMISSION_REQUEST_CODE
+            );
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    accessFineLocationGranted = true;
+                } else {
+                    Toast.makeText(getApplicationContext(), "Request for " + permissions[0] + " denied.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
+            default: break;
+        }
     }
 
     @Override
@@ -156,65 +154,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateWithToken(AccessToken currentAccessToken) {
+        mainActivityIntent.putExtra("profile", profile);
         if (currentAccessToken != null) {
             accessToken = currentAccessToken;
-            startActivity(mainActivityIntent);
         } else {
             Log.d(Constants.TAG, "Current access token is null.");
         }
-    }
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    private void attemptLogin() {
-        if (authRequest != null) {
-            return;
-        }
-
-        // Reset errors.
-        mEmailView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
+        if (accessFineLocationGranted) {
+            startActivity(mainActivityIntent);
         } else {
-            ConnectivityManager connectivityManager =
-                    (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if (networkInfo != null && networkInfo.isConnected()) {
-                // Show a progress spinner, and kick off a background task to
-                // perform the user login attempt.
-                authenticate(new User(email));
-            } else {
-                // Display connectivity errors
-            }
+            Toast.makeText(getApplicationContext(), "Please provide permissions to use your location data.", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
     }
 
     /**
@@ -228,15 +178,6 @@ public class LoginActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mProgressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
@@ -249,7 +190,6 @@ public class LoginActivity extends AppCompatActivity {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -280,46 +220,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-    }
-
-    // Given a URL, establishes an HttpUrlConnection and retrieves
-    // the web page content as a InputStream, which it returns as
-    // a string.
-    private void authenticate(User user) {
-        showProgress(true);
-
-        try {
-            final JSONObject jsonObject = new JSONObject();
-            jsonObject.put("email", user.getEmail());
-
-            authRequest = new JsonObjectRequest(Request.Method.POST, Constants.REST_API_USERS, jsonObject, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    authResponse = response.toString();
-                    Toast.makeText(getApplicationContext(), authResponse, Toast.LENGTH_SHORT).show();
-
-                    authRequest = null;
-                    showProgress(false);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    if (error != null) {
-                        authResponse = error.getLocalizedMessage();
-                    }
-
-                    Toast.makeText(getApplicationContext(), authResponse, Toast.LENGTH_SHORT).show();
-                    mEmailView.setError(getString(R.string.error_invalid_email));
-
-                    authRequest = null;
-                    showProgress(false);
-                }
-            });
-
-            queue.add(authRequest);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 }
 
