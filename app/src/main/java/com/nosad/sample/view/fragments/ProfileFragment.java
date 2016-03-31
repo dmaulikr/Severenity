@@ -11,8 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.location.LocationServices;
+import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.utils.common.Constants;
+import com.nosad.sample.view.activities.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +23,7 @@ import com.nosad.sample.utils.common.Constants;
 public class ProfileFragment extends Fragment {
     private int currentTotalStepsMade = 0;
 
-    private TextView tvTotalStepsMade;
+    private TextView tvTotalMetersPassed;
 
     public ProfileFragment() {
         // Required empty public constructor
