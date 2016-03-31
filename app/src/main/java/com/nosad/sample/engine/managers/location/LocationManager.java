@@ -10,18 +10,21 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.SphericalUtil;
 import com.nosad.sample.App;
+import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 
 /**
  * Created by Novosad on 3/29/16.
  */
 public class LocationManager implements LocationListener {
-    private Location lastKnownLocation;
+    private Location previousLocation;
+    private Location currentLocation;
     private Context context;
     private GoogleApiClient googleApiClient;
     private Marker currentUserMarker;
@@ -30,8 +33,13 @@ public class LocationManager implements LocationListener {
     private LocationRequest locationRequest;
     public boolean requestingLocationUpdates = false;
 
-    public Location getLastKnownLocation() {
-        return lastKnownLocation;
+    private int totalMetersPassed = 0;
+
+    public Location getCurrentLocation() {
+        return currentLocation;
+    }
+    public int getTotalMetersPassed() {
+        return totalMetersPassed;
     }
 
     public LocationManager(Context context) {
@@ -123,8 +131,9 @@ public class LocationManager implements LocationListener {
 
         // TODO: Replace title with user ID or name
         currentUserMarker = googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                .position(Utils.latLngFromLocation(location))
                 .title("Me"));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), 17.0f));
     }
 
     /**
@@ -139,18 +148,42 @@ public class LocationManager implements LocationListener {
             return;
         }
 
+        currentLocation = location;
         updateMarker(location);
+        updateTotalDistancePassed();
+
         // TODO: Reenable websocket connection when we'll get to server side
 //        WebSocketManager.instance.sendLocationToServer(location);
+    }
+
+    /**
+     * Adds distance passed between 2 last locations if it is bigger than 1 meter.
+     * Updates previous location to current to track next updates.
+     */
+    private void updateTotalDistancePassed() {
+        if (previousLocation == null || currentLocation == null) {
+            return;
+        }
+
+        double metersPassed = SphericalUtil.computeDistanceBetween(
+                Utils.latLngFromLocation(previousLocation),
+                Utils.latLngFromLocation(currentLocation)
+        );
+
+        if (metersPassed >= 10) {
+            previousLocation = currentLocation;
+            totalMetersPassed += metersPassed;
+        }
     }
 
     private BroadcastReceiver googleApiClientReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            boolean googleApiClientConnected = intent.getBooleanExtra("isConnected", false);
+            boolean googleApiClientConnected = intent.getBooleanExtra(Constants.EXTRA_GAC_CONNECTED, false);
             if (googleApiClientConnected) {
                 startLocationUpdates();
-                lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                previousLocation = currentLocation;
             } else {
                 stopLocationUpdates();
             }

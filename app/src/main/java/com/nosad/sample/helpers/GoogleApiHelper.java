@@ -71,7 +71,7 @@ public class GoogleApiHelper implements GoogleApiClient.ConnectionCallbacks, Goo
 
     private void broadcastConnectedState() {
         Intent intent = new Intent(Constants.INTENT_FILTER_GAC);
-        intent.putExtra("isConnected", isConnected());
+        intent.putExtra(Constants.EXTRA_GAC_CONNECTED, isConnected());
         App.getLocalBroadcastManager().sendBroadcast(intent);
     }
 

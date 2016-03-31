@@ -4,8 +4,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,5 +96,18 @@ public class Utils {
         char[] buffer = new char[len];
         reader.read(buffer);
         return new String(buffer);
+    }
+
+    /**
+     * Returns {@link LatLng} representation from the given {@link Location} object.
+     *
+     * @param location - location object
+     * @return latLng representation of the given location.
+     */
+    public static @Nullable LatLng latLngFromLocation(Location location) {
+        if (location == null) {
+            return null;
+        }
+        return new LatLng(location.getLatitude(), location.getLongitude());
     }
 }

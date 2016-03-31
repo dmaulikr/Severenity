@@ -91,5 +91,11 @@
     <string name="menu_battles">Battles</string>
 
     <!-- Titles -->
+    <string name="title_shop">Shop coming soon.</string>
+    <string name="title_map">Map</string>
+    <string name="title_teams">Teams coming soon.</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_battles">Battles coming soon.</string>
+    <string name="totalStepsMade">Total steps made: %d</string>
 
 </resources>
