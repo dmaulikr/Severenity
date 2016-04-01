@@ -32,6 +32,8 @@ import com.nosad.sample.R;
 import com.nosad.sample.engine.network.RestManager;
 import com.nosad.sample.utils.common.Constants;
 
+import java.util.Arrays;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -88,11 +90,15 @@ public class LoginActivity extends AppCompatActivity {
         profileTracker.startTracking();
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.btnLoginWithFacebook);
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                String userId = loginResult.getAccessToken().getUserId();
-                String profileImgUrl = "https://graph.facebook.com/" + userId + "/picture?type=large";
+                if (accessFineLocationGranted) {
+                    startActivity(mainActivityIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please provide permissions to use your location data.", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -154,16 +160,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateWithToken(AccessToken currentAccessToken) {
-        mainActivityIntent.putExtra("profile", profile);
         if (currentAccessToken != null) {
             accessToken = currentAccessToken;
         } else {
             Log.d(Constants.TAG, "Current access token is null.");
-        }
-        if (accessFineLocationGranted) {
-            startActivity(mainActivityIntent);
-        } else {
-            Toast.makeText(getApplicationContext(), "Please provide permissions to use your location data.", Toast.LENGTH_SHORT).show();
         }
     }
 

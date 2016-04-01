@@ -10,8 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
@@ -25,6 +32,8 @@ import com.nosad.sample.view.fragments.ProfileFragment;
 import com.nosad.sample.view.fragments.ShopFragment;
 import com.nosad.sample.view.fragments.TeamsFragment;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -37,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
     private SplitToolbar toolbarBottom;
     private Toolbar toolbarTop;
 
-    public Profile profile;
+    public AccessToken accessToken;
 
     private FragmentManager fragmentManager;
 
@@ -60,11 +69,6 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Intent loginActivityIntent = getIntent();
-        profile = loginActivityIntent.getParcelableExtra("profile");
-
-        Log.d(Constants.TAG, "Profile is " + (profile == null ? "null" : profile.toString()));
 
         container = (FrameLayout) findViewById(R.id.container);
         toolbarTop = (Toolbar) findViewById(R.id.toolbarTop);
@@ -268,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
             profileFragment.getStepsCountReceiver()
         );
         App.getLocalBroadcastManager().unregisterReceiver(
-            App.getLocationManager().getGoogleApiClientReceiver()
+                App.getLocationManager().getGoogleApiClientReceiver()
         );
     }
 
@@ -277,13 +281,17 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
         super.onResume();
 
         App.getLocalBroadcastManager().registerReceiver(
-            profileFragment.getStepsCountReceiver(),
-            new IntentFilter(Constants.INTENT_FILTER_STEPS)
+                profileFragment.getStepsCountReceiver(),
+                new IntentFilter(Constants.INTENT_FILTER_STEPS)
         );
         App.getLocalBroadcastManager().registerReceiver(
-            App.getLocationManager().getGoogleApiClientReceiver(),
-            new IntentFilter(Constants.INTENT_FILTER_GAC)
+                App.getLocationManager().getGoogleApiClientReceiver(),
+                new IntentFilter(Constants.INTENT_FILTER_GAC)
         );
         App.getGoogleApiHelper().connect();
+    }
+
+    public Toolbar getToolbarTop() {
+        return toolbarTop;
     }
 }

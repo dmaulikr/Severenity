@@ -5,17 +5,33 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.utils.common.Constants;
+import com.nosad.sample.view.activities.MainActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,8 +41,15 @@ import com.nosad.sample.utils.common.Constants;
  */
 public class GameMapFragment extends Fragment {
     private SupportMapFragment mapFragment;
-    private AppCompatActivity activity;
+    private MainActivity activity;
     private OnPauseGameListener onPauseGameListener;
+
+    private ProfilePictureView userProfilePicture;
+    private String[] spellsTitles;
+    private DrawerLayout drawerLayout;
+    private ListView drawerList;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private TextView tvHealthPoints, tvMentalPoints;
 
     public GameMapFragment() {
         // Required empty public constructor
@@ -60,13 +83,75 @@ public class GameMapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
-        Button btnMainMenu = (Button) view.findViewById(R.id.btnMainMenu);
-        btnMainMenu.setOnClickListener(new View.OnClickListener() {
+        GraphRequest.newMeRequest(
+            AccessToken.getCurrentAccessToken(),
+            new GraphRequest.GraphJSONObjectCallback() {
+                @Override
+                public void onCompleted(JSONObject object, GraphResponse response) {
+                    try {
+                        userProfilePicture.setProfileId(object.getString("id"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+        }).executeAsync();
+
+        userProfilePicture = (ProfilePictureView) view.findViewById(R.id.mapUserAvatar);
+
+        tvHealthPoints = (TextView) view.findViewById(R.id.tvHealthPoints);
+        tvHealthPoints.setText(String.format(getResources().getString(R.string.health_points), 100));
+
+        tvMentalPoints = (TextView) view.findViewById(R.id.tvMentalPoints);
+        tvMentalPoints.setText(String.format(getResources().getString(R.string.mental_points), 50));
+
+        spellsTitles = getResources().getStringArray(R.array.spellsTitles);
+        drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerMap);
+
+        actionBarDrawerToggle = new ActionBarDrawerToggle(
+                activity, drawerLayout, activity.getToolbarTop(),
+                R.string.drawerOpened,
+                R.string.drawerClosed) {
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                activity.getSupportActionBar().setTitle(activity.getTitle());
+                activity.invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                activity.getSupportActionBar().setTitle(activity.getTitle());
+                activity.invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+        actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+        actionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onPauseGameListener != null) {
-                    onPauseGameListener.onPauseGame();
+                if (drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                    drawerLayout.closeDrawer(Gravity.RIGHT);
+                } else {
+                    drawerLayout.openDrawer(Gravity.RIGHT);
                 }
+            }
+        });
+
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+
+        drawerList = (ListView) view.findViewById(R.id.lvSpells);
+
+        drawerList.setAdapter(new ArrayAdapter<>(
+            activity.getApplicationContext(),
+            android.R.layout.simple_list_item_1,
+            spellsTitles
+        ));
+
+        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(activity.getApplicationContext(), spellsTitles[position], Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -76,7 +161,7 @@ public class GameMapFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        activity = (AppCompatActivity) getActivity();
+        activity = (MainActivity) getActivity();
         try {
             onPauseGameListener = (OnPauseGameListener) activity;
         } catch (ClassCastException e) {

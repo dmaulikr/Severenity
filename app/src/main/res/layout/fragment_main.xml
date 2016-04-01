@@ -47,12 +47,4 @@
         android:id="@+id/btnGo"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_below="@id/btnGo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/tvFacebookUsername"
-        android:layout_centerHorizontal="true" />
 </RelativeLayout>

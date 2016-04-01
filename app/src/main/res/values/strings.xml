@@ -98,4 +98,14 @@
     <string name="title_battles">Battles coming soon.</string>
     <string name="totalStepsMade">Total steps made: %d</string>
 
+    <string-array name="spellsTitles">
+        <item>Ward</item>
+        <item>Power Wave</item>
+    </string-array>
+
+    <string name="drawerOpened">Spells</string>
+    <string name="drawerClosed">Sample</string>
+    <string name="health_points">Health points: %d</string>
+    <string name="mental_points">Mental points: %d</string>
+
 </resources>

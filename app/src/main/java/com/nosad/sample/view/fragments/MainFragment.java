@@ -8,12 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.facebook.AccessToken;
-import com.facebook.Profile;
 import com.nosad.sample.R;
-import com.nosad.sample.view.activities.MainActivity;
 import com.nosad.sample.engine.adapters.SamplesAdapter;
 import com.nosad.sample.view.custom.NonSwipeableViewPager;
 import com.nosad.sample.view.custom.ZoomOutPageTransformer;
@@ -26,12 +23,10 @@ import com.nosad.sample.view.custom.ZoomOutPageTransformer;
  */
 public class MainFragment extends Fragment {
     // TODO: Rename and change types of parameters
-    public Profile profile;
     public AccessToken accessToken;
 
     private AppCompatActivity activity;
 
-    private TextView tvFacebookUsername;
     private Button btnPrevious, btnNext;
 
     private NonSwipeableViewPager vpSamples;
@@ -53,11 +48,6 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         Button btnGo = (Button) view.findViewById(R.id.btnGo);
-        tvFacebookUsername = (TextView) view.findViewById(R.id.tvFacebookUsername);
-
-        if (((MainActivity) getActivity()).profile != null) {
-            tvFacebookUsername.setText("Welcome " + ((MainActivity) getActivity()).profile.getName());
-        }
 
         samplesAdapter = new SamplesAdapter(activity);
         vpSamples = (NonSwipeableViewPager) view.findViewById(R.id.vpCharacters);

@@ -61,7 +61,7 @@ public class LocationManager implements LocationListener {
         if (googleMap == null) {
             googleMap = map;
         }
-        googleMap.setMyLocationEnabled(true);
+        googleMap.getUiSettings().setAllGesturesEnabled(false);
     }
 
     public boolean isRequestingLocationUpdates() {
