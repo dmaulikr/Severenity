@@ -90,15 +90,11 @@ public class LoginActivity extends AppCompatActivity {
         profileTracker.startTracking();
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.btnLoginWithFacebook);
-        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends"));
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                if (accessFineLocationGranted) {
-                    startActivity(mainActivityIntent);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Please provide permissions to use your location data.", Toast.LENGTH_SHORT).show();
-                }
+                updateWithToken(loginResult.getAccessToken());
             }
 
             @Override
@@ -119,6 +115,8 @@ public class LoginActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         receiver = restManager.getNetworkReceiver();
         this.registerReceiver(receiver, filter);
+
+        updateWithToken(AccessToken.getCurrentAccessToken());
     }
 
     private void requestPermissions() {
@@ -164,6 +162,12 @@ public class LoginActivity extends AppCompatActivity {
             accessToken = currentAccessToken;
         } else {
             Log.d(Constants.TAG, "Current access token is null.");
+        }
+
+        if (accessFineLocationGranted) {
+            startActivity(mainActivityIntent);
+        } else {
+            Toast.makeText(getApplicationContext(), "Please provide permissions to use your location data.", Toast.LENGTH_SHORT).show();
         }
     }
 

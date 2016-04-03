@@ -13,9 +13,10 @@ public final class UserContract {
     /* Inner class that defines the table contents */
     public static abstract class DBUser implements BaseColumns {
         public static final String TABLE_USERS = "users";
-        public static final String COLUMN_ID = "userId";
+        public static final String COLUMN_ID = "id";
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_EMAIL = "email";
+        public static final String COLUMN_STEPS = "steps";
         public static final String COLUMN_NULLABLE = "NULL";
     }
 }

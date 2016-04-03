@@ -3,6 +3,7 @@ package com.nosad.sample.engine.managers.data;
 import android.content.Context;
 import android.util.Log;
 
+import com.nosad.sample.helpers.SQLiteDBHelper;
 import com.nosad.sample.utils.common.Constants;
 
 /**
@@ -11,8 +12,10 @@ import com.nosad.sample.utils.common.Constants;
  */
 public class DataManager {
     protected SQLiteDBHelper dbHelper;
+    protected Context context;
 
     public DataManager(Context context) {
+        this.context = context;
         dbHelper = new SQLiteDBHelper(context);
     }
 

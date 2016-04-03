@@ -4,7 +4,9 @@ import android.app.Application;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.nosad.sample.engine.managers.data.UserManager;
 import com.nosad.sample.engine.managers.location.LocationManager;
+import com.nosad.sample.entity.User;
 import com.nosad.sample.helpers.GoogleApiHelper;
 import com.nosad.sample.utils.common.Constants;
 
@@ -15,6 +17,8 @@ public class App extends Application {
     private GoogleApiHelper googleApiHelper;
     private LocationManager locationManager;
     private LocalBroadcastManager localBroadcastManager;
+    private UserManager userManager;
+
     private static App mInstance;
 
     @Override
@@ -25,6 +29,7 @@ public class App extends Application {
         googleApiHelper = new GoogleApiHelper(getApplicationContext());
         locationManager = new LocationManager(getApplicationContext());
         localBroadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
+        userManager = new UserManager(getApplicationContext());
     }
 
     public static synchronized App getInstance() {
@@ -53,5 +58,13 @@ public class App extends Application {
 
     public static LocalBroadcastManager getLocalBroadcastManager() {
         return getInstance().getLocalBroadcastManagerInstance();
+    }
+
+    public UserManager getUserManagerInstance() {
+        return this.userManager;
+    }
+
+    public static UserManager getUserManager() {
+        return getInstance().getUserManagerInstance();
     }
 }

@@ -15,23 +15,32 @@ import com.nosad.sample.utils.common.Constants;
  * Created by Novosad on 2/17/16.
  */
 public class UserManager extends DataManager {
+    private User currentUser;
+
     public UserManager(Context context) {
         super(context);
     }
 
-    public void addUser(User user) {
+    public User addUser(User user) {
+        User u = getUser(user);
+        if (u != null) {
+            return u;
+        }
+
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, user.getId());
         values.put(COLUMN_NAME, user.getName());
         values.put(COLUMN_EMAIL, user.getEmail());
 
-        db.insert(TABLE_USERS, COLUMN_NULLABLE, values);
+        long success = db.insert(TABLE_USERS, COLUMN_NULLABLE, values);
         db.close();
+
+        return success == -1 ? null : user;
     }
 
-    public User getUserById(int id) {
-        if (id < 0) {
+    public User getUserById(String id) {
+        if (id == null || id.isEmpty()) {
             Log.e(Constants.TAG, "UserManager: user id specified in query must be bigger then 0.");
             return null;
         }
@@ -40,27 +49,33 @@ public class UserManager extends DataManager {
 
         Cursor cursor = db.query(
                 TABLE_USERS,
-                new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_EMAIL},
-                " id = ?",
-                new String[]{String.valueOf(id)},
+                new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_EMAIL, COLUMN_STEPS},
+                "id = ?",
+                new String[]{id},
                 null, null, null, null
         );
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
+            User user = new User();
+            user.setId(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
+            user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+            user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
+            String steps = cursor.getString(cursor.getColumnIndex(COLUMN_STEPS));
+            if (steps != null) {
+                user.setSteps(Integer.valueOf(steps));
+            }
+
+            cursor.close();
+            db.close();
+
+            return user;
         } else {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
             return null;
         }
-
-        User user = new User();
-        user.setId(Integer.parseInt(cursor.getString(0)));
-        user.setName(cursor.getString(1));
-        user.setEmail(cursor.getString(2));
-
-        cursor.close();
-        db.close();
-
-        return user;
     }
 
     public User getUser(User user) {
@@ -75,14 +90,14 @@ public class UserManager extends DataManager {
         deleteUserById(user.getId());
     }
 
-    public void deleteUserById(int id) {
-        if (id < 0) {
+    public void deleteUserById(String id) {
+        if (id == null || id.isEmpty()) {
             Log.e(Constants.TAG, "UserManager: user id specified in query must be bigger then 0.");
             return;
         }
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(TABLE_USERS, "id = ?", new String[]{String.valueOf(id)});
+        db.delete(TABLE_USERS, "id = ?", new String[]{id});
         db.close();
     }
 
@@ -90,5 +105,22 @@ public class UserManager extends DataManager {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete(TABLE_USERS, null, null);
         db.close();
+    }
+
+    public void updateUserInfo() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_STEPS, getCurrentUser().getSteps());
+
+        db.update(TABLE_USERS, values, "id = ?", new String[]{getCurrentUser().getId()});
+        db.close();
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User user) {
+        currentUser = user;
     }
 }

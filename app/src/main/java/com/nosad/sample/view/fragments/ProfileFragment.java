@@ -21,8 +21,6 @@ import com.nosad.sample.view.activities.MainActivity;
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends Fragment {
-    private int currentTotalStepsMade = 0;
-
     private TextView tvTotalMetersPassed;
 
     public ProfileFragment() {
@@ -36,7 +34,8 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         tvTotalMetersPassed = (TextView) view.findViewById(R.id.tvTotalMetersPassed);
-        tvTotalMetersPassed.setText(String.format(getResources().getString(R.string.totalStepsMade), currentTotalStepsMade));
+        tvTotalMetersPassed.setText(String.format(getResources().getString(R.string.totalStepsMade),
+            App.getUserManager().getCurrentUser() == null ? 0 : App.getUserManager().getCurrentUser().getSteps()));
 
         return view;
     }
@@ -44,7 +43,9 @@ public class ProfileFragment extends Fragment {
     private BroadcastReceiver stepsCountReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            currentTotalStepsMade = intent.getIntExtra(Constants.EXTRA_STEPS, 0);
+            int currentTotalStepsMade = intent.getIntExtra(Constants.EXTRA_STEPS, 0);
+
+            App.getUserManager().getCurrentUser().setSteps(currentTotalStepsMade);
             tvTotalMetersPassed.setText(String.format(getResources().getString(R.string.totalStepsMade), currentTotalStepsMade));
         }
     };

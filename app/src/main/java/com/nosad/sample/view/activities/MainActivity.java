@@ -22,7 +22,9 @@ import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
+import com.nosad.sample.engine.managers.data.DataManager;
 import com.nosad.sample.engine.managers.location.StepManager;
+import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.custom.SplitToolbar;
 import com.nosad.sample.view.fragments.BattlesFragment;
@@ -32,6 +34,7 @@ import com.nosad.sample.view.fragments.ProfileFragment;
 import com.nosad.sample.view.fragments.ShopFragment;
 import com.nosad.sample.view.fragments.TeamsFragment;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -69,6 +72,29 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Bundle params = new Bundle();
+        params.putString("fields", "id,name,email");
+        new GraphRequest(
+            AccessToken.getCurrentAccessToken(),
+            "/me",
+            params,
+            HttpMethod.GET,
+            new GraphRequest.Callback() {
+                @Override
+                public void onCompleted(GraphResponse response) {
+                    try {
+                        User user = new User();
+                        user.setEmail(response.getJSONObject().getString("email"));
+                        user.setName(response.getJSONObject().getString("name"));
+                        user.setId(response.getJSONObject().getString("id"));
+
+                        App.getUserManager().setCurrentUser(App.getUserManager().addUser(user));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+        }).executeAsync();
 
         container = (FrameLayout) findViewById(R.id.container);
         toolbarTop = (Toolbar) findViewById(R.id.toolbarTop);
@@ -266,6 +292,7 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
     protected void onPause() {
         super.onPause();
 
+        App.getUserManager().updateUserInfo();
         App.getLocationManager().stopLocationUpdates();
         App.getGoogleApiHelper().disconnect();
         App.getLocalBroadcastManager().unregisterReceiver(

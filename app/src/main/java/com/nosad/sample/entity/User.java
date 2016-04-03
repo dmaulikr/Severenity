@@ -4,9 +4,10 @@ package com.nosad.sample.entity;
  * Created by Novosad on 2/17/16.
  */
 public class User {
-    private int id;
+    private String id;
     private String name;
     private String email;
+    private int steps;
 
     public User() {
 
@@ -16,17 +17,17 @@ public class User {
         this.email = email;
     }
 
-    public User(String email, String name, int id) {
+    public User(String email, String name, String id) {
         this.email = email;
         this.name = name;
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -44,5 +45,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getSteps() {
+        return steps;
+    }
+
+    public void setSteps(int steps) {
+        this.steps = steps;
     }
 }

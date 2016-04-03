@@ -8,9 +8,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -50,6 +53,8 @@ public class GameMapFragment extends Fragment {
     private ListView drawerList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private TextView tvHealthPoints, tvMentalPoints;
+
+    private ActionMode spellMode;
 
     public GameMapFragment() {
         // Required empty public constructor
@@ -151,6 +156,12 @@ public class GameMapFragment extends Fragment {
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (spellMode == null) {
+                    spellMode = activity.startSupportActionMode(new ActionBarCallback());
+                } else {
+                    spellMode.finish();
+                    spellMode = null;
+                }
                 Toast.makeText(activity.getApplicationContext(), spellsTitles[position], Toast.LENGTH_SHORT).show();
             }
         });
@@ -163,7 +174,7 @@ public class GameMapFragment extends Fragment {
         super.onAttach(context);
         activity = (MainActivity) getActivity();
         try {
-            onPauseGameListener = (OnPauseGameListener) activity;
+            onPauseGameListener = activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -196,4 +207,27 @@ public class GameMapFragment extends Fragment {
         void onPauseGame();
     }
 
+    private class ActionBarCallback implements ActionMode.Callback {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.spell_menu, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            mode.setTitle("Spell selected.");
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            return false;
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package com.nosad.sample.engine.managers.data;
+package com.nosad.sample.helpers;
 
 import android.content.Context;
 import android.database.DatabaseErrorHandler;
@@ -23,6 +23,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     UserContract.DBUser._ID + " INTEGER PRIMARY KEY," +
                     UserContract.DBUser.COLUMN_ID + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_EMAIL + TEXT_TYPE + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_STEPS + " INTEGER " +
                     " )";
 
     private static final String DB_SQL_DELETE_USERS = "DROP TABLE IF EXISTS " + UserContract.DBUser.TABLE_USERS;
