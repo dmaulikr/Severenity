@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,11 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -30,6 +26,8 @@ import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
+import com.nosad.sample.engine.adapters.SpellsAdapter;
+import com.nosad.sample.entity.Spell;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
 
@@ -48,13 +46,15 @@ public class GameMapFragment extends Fragment {
     private OnPauseGameListener onPauseGameListener;
 
     private ProfilePictureView userProfilePicture;
-    private String[] spellsTitles;
+
     private DrawerLayout drawerLayout;
     private ListView drawerList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private TextView tvHealthPoints, tvMentalPoints;
 
     private ActionMode spellMode;
+
+    private SpellsAdapter spellsAdapter;
 
     public GameMapFragment() {
         // Required empty public constructor
@@ -109,7 +109,6 @@ public class GameMapFragment extends Fragment {
         tvMentalPoints = (TextView) view.findViewById(R.id.tvMentalPoints);
         tvMentalPoints.setText(String.format(getResources().getString(R.string.mental_points), 50));
 
-        spellsTitles = getResources().getStringArray(R.array.spellsTitles);
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerMap);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(
@@ -143,26 +142,31 @@ public class GameMapFragment extends Fragment {
             }
         });
 
+        spellsAdapter = new SpellsAdapter(activity, R.layout.spell_item);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
         drawerList = (ListView) view.findViewById(R.id.lvSpells);
-
-        drawerList.setAdapter(new ArrayAdapter<>(
-            activity.getApplicationContext(),
-            android.R.layout.simple_list_item_1,
-            spellsTitles
-        ));
+        drawerList.setAdapter(spellsAdapter);
 
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (spellMode == null) {
-                    spellMode = activity.startSupportActionMode(new ActionBarCallback());
+                    App.getSpellManager().setIsSpellMode(true);
+                    App.getSpellManager().setCurrentSpell(spellsAdapter.getItem(position));
+                    spellMode = activity.startSupportActionMode(new ActionBarSpell());
+                    spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), spellsAdapter.getItem(position).getTitle()));
                 } else {
-                    spellMode.finish();
-                    spellMode = null;
+                    if (App.getSpellManager().getCurrentSpell() == spellsAdapter.getItem(position)) {
+                        App.getSpellManager().setIsSpellMode(false);
+                        spellMode.finish();
+                        spellMode = null;
+                    } else {
+                        App.getSpellManager().setCurrentSpell(spellsAdapter.getItem(position));
+                        spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), spellsAdapter.getItem(position).getTitle()));
+                    }
                 }
-                Toast.makeText(activity.getApplicationContext(), spellsTitles[position], Toast.LENGTH_SHORT).show();
+                drawerLayout.closeDrawer(Gravity.RIGHT);
             }
         });
 
@@ -207,7 +211,7 @@ public class GameMapFragment extends Fragment {
         void onPauseGame();
     }
 
-    private class ActionBarCallback implements ActionMode.Callback {
+    private class ActionBarSpell implements ActionMode.Callback {
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             mode.getMenuInflater().inflate(R.menu.spell_menu, menu);
@@ -216,7 +220,6 @@ public class GameMapFragment extends Fragment {
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            mode.setTitle("Spell selected.");
             return false;
         }
 
@@ -227,7 +230,8 @@ public class GameMapFragment extends Fragment {
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-
+            spellMode.finish();
+            spellMode = null;
         }
     }
 }

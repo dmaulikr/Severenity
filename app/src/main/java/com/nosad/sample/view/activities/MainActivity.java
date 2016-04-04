@@ -1,6 +1,5 @@
 package com.nosad.sample.view.activities;
 
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,19 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.facebook.Profile;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
-import com.nosad.sample.engine.managers.data.DataManager;
 import com.nosad.sample.engine.managers.location.StepManager;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
@@ -35,7 +29,6 @@ import com.nosad.sample.view.fragments.ShopFragment;
 import com.nosad.sample.view.fragments.TeamsFragment;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,8 +41,6 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
     private FrameLayout container;
     private SplitToolbar toolbarBottom;
     private Toolbar toolbarTop;
-
-    public AccessToken accessToken;
 
     private FragmentManager fragmentManager;
 
@@ -73,30 +64,62 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        retrieveCurrentUserFBData();
+        initToolbars();
+        initFragments();
+
+        stepManager = new StepManager(getApplicationContext());
+        toolbarBottom.findViewById(R.id.menu_map).performClick();
+    }
+
+    private void retrieveCurrentUserFBData() {
         Bundle params = new Bundle();
         params.putString("fields", "id,name,email");
         new GraphRequest(
-            AccessToken.getCurrentAccessToken(),
-            "/me",
-            params,
-            HttpMethod.GET,
-            new GraphRequest.Callback() {
-                @Override
-                public void onCompleted(GraphResponse response) {
-                    try {
-                        User user = new User();
-                        user.setEmail(response.getJSONObject().getString("email"));
-                        user.setName(response.getJSONObject().getString("name"));
-                        user.setId(response.getJSONObject().getString("id"));
+                AccessToken.getCurrentAccessToken(),
+                "/me",
+                params,
+                HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    @Override
+                    public void onCompleted(GraphResponse response) {
+                        try {
+                            User user = new User();
+                            user.setEmail(response.getJSONObject().getString("email"));
+                            user.setName(response.getJSONObject().getString("name"));
+                            user.setId(response.getJSONObject().getString("id"));
 
-                        App.getUserManager().setCurrentUser(App.getUserManager().addUser(user));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                            App.getUserManager().setCurrentUser(App.getUserManager().addUser(user));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-        }).executeAsync();
+                }).executeAsync();
+    }
 
+    private void initFragments() {
         container = (FrameLayout) findViewById(R.id.container);
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .add(R.id.container, mainFragment, mainFragmentTag)
+                .add(R.id.container, gameMapFragment, gameMapFragmentTag)
+                .add(R.id.container, shopFragment, shopFragmentTag)
+                .add(R.id.container, profileFragment, profileFragmentTag)
+                .add(R.id.container, teamsFragment, teamsFragmentTag)
+                .add(R.id.container, battlesFragment, battlesFragmentTag).commit();
+
+        allFragments.addAll(
+                Arrays.asList(
+                        mainFragment,
+                        shopFragment,
+                        teamsFragment,
+                        profileFragment,
+                        battlesFragment,
+                        gameMapFragment)
+        );
+    }
+
+    private void initToolbars() {
         toolbarTop = (Toolbar) findViewById(R.id.toolbarTop);
         toolbarTop.setNavigationIcon(R.mipmap.menu_arrow_left);
         toolbarTop.setTitleTextColor(getResources().getColor(R.color.colorAccent, getTheme()));
@@ -163,29 +186,6 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
                 return false;
             }
         });
-
-        fragmentManager = getSupportFragmentManager();
-
-        fragmentManager.beginTransaction()
-                .add(R.id.container, mainFragment, mainFragmentTag)
-                .add(R.id.container, gameMapFragment, gameMapFragmentTag)
-                .add(R.id.container, shopFragment, shopFragmentTag)
-                .add(R.id.container, profileFragment, profileFragmentTag)
-                .add(R.id.container, teamsFragment, teamsFragmentTag)
-                .add(R.id.container, battlesFragment, battlesFragmentTag).commit();
-
-        allFragments.addAll(
-                Arrays.asList(
-                        mainFragment,
-                        shopFragment,
-                        teamsFragment,
-                        profileFragment,
-                        battlesFragment,
-                        gameMapFragment)
-        );
-
-        stepManager = new StepManager(getApplicationContext());
-        toolbarBottom.findViewById(R.id.menu_map).performClick();
     }
 
     private void deselectMenu() {
@@ -307,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
     protected void onResume() {
         super.onResume();
 
+        profileFragment.updateUserInfo();
         App.getLocalBroadcastManager().registerReceiver(
                 profileFragment.getStepsCountReceiver(),
                 new IntentFilter(Constants.INTENT_FILTER_STEPS)

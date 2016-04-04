@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:actionModeCloseDrawable">@android:drawable/ic_menu_close_clear_cancel</item>
     </style>
 
 </resources>

@@ -27,4 +27,9 @@ public class Constants {
      * RESTful APIs constants
      */
     public static String REST_API_USERS = "http://"  + HOST + "/users";
+
+    /**
+     * Exception constants
+     */
+    public static String EXCEPTION_FB_ACCESS_TOKEN_MISSING = "Facebook access token missing.";
 }

@@ -8,6 +8,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
+import com.nosad.sample.engine.exceptions.NotAuthenticatedException;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
 
@@ -108,15 +111,29 @@ public class UserManager extends DataManager {
     }
 
     public void updateUserInfo() {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_STEPS, getCurrentUser().getSteps());
+        try {
+            User user = getCurrentUser();
 
-        db.update(TABLE_USERS, values, "id = ?", new String[]{getCurrentUser().getId()});
-        db.close();
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_STEPS, user.getSteps());
+
+            db.update(TABLE_USERS, values, "id = ?", new String[]{user.getId()});
+            db.close();
+        } catch (NotAuthenticatedException e) {
+            e.printStackTrace();
+            LoginManager.getInstance().logOut();
+        }
     }
 
-    public User getCurrentUser() {
+    public User getCurrentUser() throws NotAuthenticatedException {
+        if (currentUser == null) {
+            if (AccessToken.getCurrentAccessToken() == null) {
+                throw new NotAuthenticatedException(Constants.EXCEPTION_FB_ACCESS_TOKEN_MISSING);
+            } else {
+                currentUser = getUserById(AccessToken.getCurrentAccessToken().getUserId());
+            }
+        }
         return currentUser;
     }
 

@@ -1,10 +1,12 @@
 package com.nosad.sample;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.nosad.sample.engine.managers.data.UserManager;
+import com.nosad.sample.engine.managers.game.SpellManager;
 import com.nosad.sample.engine.managers.location.LocationManager;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.helpers.GoogleApiHelper;
@@ -18,18 +20,22 @@ public class App extends Application {
     private LocationManager locationManager;
     private LocalBroadcastManager localBroadcastManager;
     private UserManager userManager;
+    private SpellManager spellManager;
 
     private static App mInstance;
+    private static Context mContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         mInstance = this;
-        googleApiHelper = new GoogleApiHelper(getApplicationContext());
-        locationManager = new LocationManager(getApplicationContext());
-        localBroadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
-        userManager = new UserManager(getApplicationContext());
+        mContext = getApplicationContext();
+        googleApiHelper = new GoogleApiHelper(mContext);
+        locationManager = new LocationManager(mContext);
+        localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
+        userManager = new UserManager(mContext);
+        spellManager = new SpellManager(mContext);
     }
 
     public static synchronized App getInstance() {
@@ -66,5 +72,13 @@ public class App extends Application {
 
     public static UserManager getUserManager() {
         return getInstance().getUserManagerInstance();
+    }
+
+    public SpellManager getSpellManagerInstance() {
+        return this.spellManager;
+    }
+
+    public static SpellManager getSpellManager() {
+        return getInstance().getSpellManagerInstance();
     }
 }

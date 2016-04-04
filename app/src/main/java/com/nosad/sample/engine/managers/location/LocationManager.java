@@ -12,10 +12,15 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 import com.nosad.sample.App;
+import com.nosad.sample.R;
+import com.nosad.sample.engine.exceptions.NotAuthenticatedException;
+import com.nosad.sample.entity.Spell;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 
@@ -32,6 +37,7 @@ public class LocationManager implements LocationListener {
     private GoogleMap googleMap;
     private LocationRequest locationRequest;
     public boolean requestingLocationUpdates = false;
+    private boolean isSpellMode = false;
 
     private int totalMetersPassed = 0;
 
@@ -61,7 +67,27 @@ public class LocationManager implements LocationListener {
         if (googleMap == null) {
             googleMap = map;
         }
+        googleMap.setMyLocationEnabled(true);
+        googleMap.setPadding(0, 200, 0, 0);
         googleMap.getUiSettings().setAllGesturesEnabled(false);
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                if (App.getSpellManager().isSpellMode()
+                        && App.getSpellManager().getCurrentSpell().is(Spell.SpellType.Ward)) {
+                    placeWard(latLng);
+                }
+            }
+        });
+    }
+
+    private Marker placeWard(LatLng latLng) {
+        Marker wardMarker = googleMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_spell_ward))
+                .title(App.getSpellManager().getCurrentSpell().getTitle()));
+
+        return wardMarker;
     }
 
     public boolean isRequestingLocationUpdates() {
@@ -129,10 +155,17 @@ public class LocationManager implements LocationListener {
             currentUserMarker.remove();
         }
 
+        String title = "Me";
+        try {
+            title = App.getUserManager().getCurrentUser().getName();
+        } catch (NotAuthenticatedException e) {
+            e.printStackTrace();
+        }
+
         // TODO: Replace title with user ID or name
         currentUserMarker = googleMap.addMarker(new MarkerOptions()
                 .position(Utils.latLngFromLocation(location))
-                .title("Me"));
+                .title(title));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), 17.0f));
     }
 

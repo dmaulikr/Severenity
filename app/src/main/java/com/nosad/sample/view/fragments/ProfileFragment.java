@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.location.LocationServices;
+import com.facebook.login.LoginManager;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
+import com.nosad.sample.engine.exceptions.NotAuthenticatedException;
 import com.nosad.sample.utils.common.Constants;
-import com.nosad.sample.view.activities.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,9 +33,17 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        tvTotalMetersPassed = (TextView) view.findViewById(R.id.tvTotalMetersPassed);
-        tvTotalMetersPassed.setText(String.format(getResources().getString(R.string.totalStepsMade),
-            App.getUserManager().getCurrentUser() == null ? 0 : App.getUserManager().getCurrentUser().getSteps()));
+        try {
+            tvTotalMetersPassed = (TextView) view.findViewById(R.id.tvTotalMetersPassed);
+            tvTotalMetersPassed.setText(
+                String.format(getResources().getString(R.string.totalStepsMade),
+                App.getUserManager().getCurrentUser() == null
+                    ? 0
+                    : App.getUserManager().getCurrentUser().getSteps()));
+        } catch (NotAuthenticatedException e) {
+            e.printStackTrace();
+            LoginManager.getInstance().logOut();
+        }
 
         return view;
     }
@@ -45,10 +53,31 @@ public class ProfileFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             int currentTotalStepsMade = intent.getIntExtra(Constants.EXTRA_STEPS, 0);
 
-            App.getUserManager().getCurrentUser().setSteps(currentTotalStepsMade);
-            tvTotalMetersPassed.setText(String.format(getResources().getString(R.string.totalStepsMade), currentTotalStepsMade));
+            try {
+                App.getUserManager().getCurrentUser().setSteps(currentTotalStepsMade);
+                tvTotalMetersPassed.setText(
+                        String.format(getResources().getString(R.string.totalStepsMade),
+                                currentTotalStepsMade)
+                );
+            } catch (NotAuthenticatedException e) {
+                e.printStackTrace();
+                LoginManager.getInstance().logOut();
+            }
         }
     };
+
+    public void updateUserInfo() {
+        try {
+            int currentTotalStepsMade = App.getUserManager().getCurrentUser().getSteps();
+            tvTotalMetersPassed.setText(
+                    String.format(getResources().getString(R.string.totalStepsMade),
+                            currentTotalStepsMade)
+            );
+        } catch (NotAuthenticatedException e) {
+            e.printStackTrace();
+            LoginManager.getInstance().logOut();
+        }
+    }
 
     public BroadcastReceiver getStepsCountReceiver() {
         return stepsCountReceiver;
