@@ -7,16 +7,7 @@
     <!-- Project number from google developers console -->
     <!--<string name="google_app_id">967925944048</string>-->
 
-    <!-- Strings related to login -->
-    <string name="action_sign_in">Sign in for experiment</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-
     <!-- Buttons -->
-    <string name="button_main_menu">Main Menu</string>
-    <string name="button_go">Go</string>
     <string name="button_previous">Previous</string>
     <string name="button_next">Next</string>
     <string name="remember_my_choice">Remember my choice.</string>
@@ -83,7 +74,7 @@
     <string name="lost_connection">Connection lost</string>
     <string name="mobile_connected">Mobile Connected</string>
     <string name="connection_established">Connection established</string>
-    <string name="title">Sample</string>
+    <string name="title">Project \'Filter\'</string>
     <string name="menu_shop">Shop</string>
     <string name="menu_map">Map</string>
     <string name="menu_profile">Spells</string>
@@ -100,8 +91,10 @@
 
     <string name="drawerOpened">Spells</string>
     <string name="drawerClosed">Sample</string>
-    <string name="health_points">Health points: %d</string>
-    <string name="mental_points">Mental points: %d</string>
+    <string name="immunity_value">Immunity: %d</string>
+    <string name="mentality_value">Mentality: %d</string>
     <string name="spell_selected">Spell selected: %s</string>
+    <string name="experience_value">Experience: %d</string>
+    <string name="level_value">Level: %d</string>
 
 </resources>

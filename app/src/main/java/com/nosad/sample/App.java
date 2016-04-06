@@ -2,15 +2,16 @@ package com.nosad.sample;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.IntentFilter;
+import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 
+import com.facebook.login.LoginManager;
 import com.nosad.sample.engine.managers.data.UserManager;
 import com.nosad.sample.engine.managers.game.SpellManager;
 import com.nosad.sample.engine.managers.location.LocationManager;
-import com.nosad.sample.entity.User;
 import com.nosad.sample.helpers.GoogleApiHelper;
-import com.nosad.sample.utils.common.Constants;
+import com.nosad.sample.utils.FontsOverride;
+import com.nosad.sample.view.activities.LoginActivity;
 
 /**
  * Created by Novosad on 3/24/16.
@@ -29,6 +30,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
+        FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/zekton.ttf");
+
         mInstance = this;
         mContext = getApplicationContext();
         googleApiHelper = new GoogleApiHelper(mContext);
@@ -36,6 +39,12 @@ public class App extends Application {
         localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
         userManager = new UserManager(mContext);
         spellManager = new SpellManager(mContext);
+    }
+
+    public void logOut() {
+        LoginManager.getInstance().logOut();
+        Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(loginActivity);
     }
 
     public static synchronized App getInstance() {

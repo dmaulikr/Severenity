@@ -1,12 +1,15 @@
 package com.nosad.sample.view.activities;
 
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -17,13 +20,14 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
+import com.nosad.sample.engine.exceptions.NotAuthenticatedException;
 import com.nosad.sample.engine.managers.location.StepManager;
 import com.nosad.sample.entity.User;
+import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.custom.SplitToolbar;
 import com.nosad.sample.view.fragments.BattlesFragment;
 import com.nosad.sample.view.fragments.GameMapFragment;
-import com.nosad.sample.view.fragments.MainFragment;
 import com.nosad.sample.view.fragments.ProfileFragment;
 import com.nosad.sample.view.fragments.ShopFragment;
 import com.nosad.sample.view.fragments.TeamsFragment;
@@ -33,8 +37,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements GameMapFragment.OnPauseGameListener,
-        MainFragment.OnResumeGameListener {
+public class MainActivity extends AppCompatActivity {
 
     private StepManager stepManager;
 
@@ -49,15 +52,15 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
     private ProfileFragment profileFragment = new ProfileFragment();
     private BattlesFragment battlesFragment = new BattlesFragment();
     private GameMapFragment gameMapFragment = new GameMapFragment();
-    private MainFragment mainFragment = new MainFragment();
     private String shopFragmentTag = ShopFragment.class.getSimpleName();
     private String teamsFragmentTag = TeamsFragment.class.getSimpleName();
     private String profileFragmentTag = ProfileFragment.class.getSimpleName();
     private String battlesFragmentTag = BattlesFragment.class.getSimpleName();
     private String gameMapFragmentTag = GameMapFragment.class.getSimpleName();
-    private String mainFragmentTag = MainFragment.class.getSimpleName();
 
     private ArrayList<Fragment> allFragments = new ArrayList<>();
+
+    private User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +72,18 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
         initFragments();
 
         stepManager = new StepManager(getApplicationContext());
+        try {
+            currentUser = App.getUserManager().getCurrentUser();
+        } catch (NotAuthenticatedException e) {
+            e.printStackTrace();
+            App.getInstance().logOut();
+        }
+
         toolbarBottom.findViewById(R.id.menu_map).performClick();
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
     }
 
     private void retrieveCurrentUserFBData() {
@@ -84,6 +98,11 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
                     @Override
                     public void onCompleted(GraphResponse response) {
                         try {
+                            Log.i(Constants.TAG, String.valueOf(response.getJSONObject()));
+                            if (response.getJSONObject() == null) {
+                                return;
+                            }
+
                             User user = new User();
                             user.setEmail(response.getJSONObject().getString("email"));
                             user.setName(response.getJSONObject().getString("name"));
@@ -101,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
         container = (FrameLayout) findViewById(R.id.container);
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .add(R.id.container, mainFragment, mainFragmentTag)
                 .add(R.id.container, gameMapFragment, gameMapFragmentTag)
                 .add(R.id.container, shopFragment, shopFragmentTag)
                 .add(R.id.container, profileFragment, profileFragmentTag)
@@ -110,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
 
         allFragments.addAll(
                 Arrays.asList(
-                        mainFragment,
                         shopFragment,
                         teamsFragment,
                         profileFragment,
@@ -122,8 +139,11 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
     private void initToolbars() {
         toolbarTop = (Toolbar) findViewById(R.id.toolbarTop);
         toolbarTop.setNavigationIcon(R.mipmap.menu_arrow_left);
+        SpannableString s = new SpannableString(getResources().getString(R.string.title));
+        Typeface prometheus = Typeface.createFromAsset(getAssets(), "fonts/zekton.ttf");
+        s.setSpan(new CustomTypefaceSpan("", prometheus), 0, s.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         toolbarTop.setTitleTextColor(getResources().getColor(R.color.colorAccent, getTheme()));
-        toolbarTop.setTitle(R.string.title);
+        toolbarTop.setTitle(s);
 
         setSupportActionBar(toolbarTop);
 
@@ -231,37 +251,6 @@ public class MainActivity extends AppCompatActivity implements GameMapFragment.O
         ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
 
         ft.show(fragment).commit();
-    }
-
-    @Override
-    public void onPauseGame() {
-        Log.d(Constants.TAG, this + " onPauseGame");
-
-        // disconnect web socket client so server is not notified about location changes.
-//        WebSocketManager.instance.disconnectWebSocketClient();
-
-        // open main menu fragment
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, mainFragment, mainFragmentTag)
-                .commit();
-
-        // store game data
-    }
-
-    @Override
-    public void onResumeGame() {
-        Log.d(Constants.TAG, this + " onResumeGame");
-
-        // create and connect web socket client so server is notified about location changes.
-        // TODO: Uncomment this when server will be deployed.
-//        WebSocketManager.instance.createWebSocket(Constants.WS_ADDRESS, true);
-
-        // open game map fragment
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, gameMapFragment, gameMapFragmentTag)
-                .commit();
-
-        // resume game data
     }
 
     private void showMap() {

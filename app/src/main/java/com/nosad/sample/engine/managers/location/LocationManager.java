@@ -3,7 +3,10 @@ package com.nosad.sample.engine.managers.location;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Point;
 import android.location.Location;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -38,6 +41,7 @@ public class LocationManager implements LocationListener {
     private LocationRequest locationRequest;
     public boolean requestingLocationUpdates = false;
     private boolean isSpellMode = false;
+    private boolean isCameraFixed = false;
 
     private int totalMetersPassed = 0;
 
@@ -70,15 +74,41 @@ public class LocationManager implements LocationListener {
         googleMap.setMyLocationEnabled(true);
         googleMap.setPadding(0, 200, 0, 0);
         googleMap.getUiSettings().setAllGesturesEnabled(false);
+
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                if (App.getSpellManager().isSpellMode()
-                        && App.getSpellManager().getCurrentSpell().is(Spell.SpellType.Ward)) {
-                    placeWard(latLng);
+                if (App.getSpellManager().isSpellMode()) {
+                    if (App.getSpellManager().getCurrentSpell().is(Spell.SpellType.Ward)) {
+                        placeWard(latLng);
+                    }
+
+                    if (App.getSpellManager().getCurrentSpell().is(Spell.SpellType.PowerWave)) {
+                        showExplosionAt(googleMap.getProjection().toScreenLocation(latLng));
+                    }
                 }
             }
         });
+
+        googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                isCameraFixed = false;
+                App.getSpellManager().cancelSpellMode();
+                return true;
+            }
+        });
+    }
+
+    /**
+     * Points camera to the specified location in the meanwhile stopping camera updates
+     * to current user location.
+     *
+     * @param latLng
+     */
+    public void fixCameraAtLocation(LatLng latLng) {
+        isCameraFixed = true;
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
     }
 
     private Marker placeWard(LatLng latLng) {
@@ -87,7 +117,27 @@ public class LocationManager implements LocationListener {
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_spell_ward))
                 .title(App.getSpellManager().getCurrentSpell().getTitle()));
 
+        App.getSpellManager().addWard(wardMarker);
+
         return wardMarker;
+    }
+
+    private void showExplosionAt(Point p) {
+        Intent intent = new Intent("explosion");
+        intent.putExtra("point", p);
+        App.getLocalBroadcastManager().sendBroadcast(intent);
+    }
+
+    /**
+     * This method converts device specific pixels to density independent pixels.
+     *
+     * @param px A value in px (pixels) unit. Which we need to convert into db
+     * @return A float value to represent dp equivalent to px value
+     */
+    private int convertPixelsToDp(int px) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        return px / (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
     public boolean isRequestingLocationUpdates() {
@@ -166,7 +216,12 @@ public class LocationManager implements LocationListener {
         currentUserMarker = googleMap.addMarker(new MarkerOptions()
                 .position(Utils.latLngFromLocation(location))
                 .title(title));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), 17.0f));
+
+        if (!isCameraFixed) {
+            googleMap.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), 17.0f)
+            );
+        }
     }
 
     /**

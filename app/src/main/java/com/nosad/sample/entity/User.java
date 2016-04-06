@@ -8,6 +8,10 @@ public class User {
     private String name;
     private String email;
     private int steps;
+    private int immunity = 0;
+    private int mentality = 0;
+    private int experience = 0;
+    private int level = 0;
 
     public User() {
 
@@ -53,5 +57,37 @@ public class User {
 
     public void setSteps(int steps) {
         this.steps = steps;
+    }
+
+    public int getImmunity() {
+        return immunity;
+    }
+
+    public void setImmunity(int immunity) {
+        this.immunity = immunity;
+    }
+
+    public int getMentality() {
+        return mentality;
+    }
+
+    public void setMentality(int mentality) {
+        this.mentality = mentality;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

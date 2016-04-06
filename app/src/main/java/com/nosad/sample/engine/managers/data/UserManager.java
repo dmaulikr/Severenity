@@ -1,7 +1,5 @@
 package com.nosad.sample.engine.managers.data;
 
-import static com.nosad.sample.entity.contracts.UserContract.DBUser.*;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -13,6 +11,13 @@ import com.facebook.login.LoginManager;
 import com.nosad.sample.engine.exceptions.NotAuthenticatedException;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
+
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_EMAIL;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_ID;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_NAME;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_NULLABLE;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_STEPS;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.TABLE_USERS;
 
 /**
  * Created by Novosad on 2/17/16.
@@ -44,7 +49,7 @@ public class UserManager extends DataManager {
 
     public User getUserById(String id) {
         if (id == null || id.isEmpty()) {
-            Log.e(Constants.TAG, "UserManager: user id specified in query must be bigger then 0.");
+            Log.e(Constants.TAG, "UserManager: user id specified in query must not be empty.");
             return null;
         }
 
@@ -95,7 +100,7 @@ public class UserManager extends DataManager {
 
     public void deleteUserById(String id) {
         if (id == null || id.isEmpty()) {
-            Log.e(Constants.TAG, "UserManager: user id specified in query must be bigger then 0.");
+            Log.e(Constants.TAG, "UserManager: user id specified in query must not be empty.");
             return;
         }
 
@@ -113,6 +118,15 @@ public class UserManager extends DataManager {
     public void updateUserInfo() {
         try {
             User user = getCurrentUser();
+
+            if (user == null) {
+                Log.e(Constants.TAG,
+                    "User with access token: "
+                    + AccessToken.getCurrentAccessToken() +
+                    " is not created yet"
+                );
+                return;
+            }
 
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();

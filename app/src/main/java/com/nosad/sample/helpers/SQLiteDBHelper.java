@@ -6,14 +6,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.nosad.sample.entity.contracts.UserContract;
-import com.nosad.sample.utils.common.Constants;
 
 /**
  * Created by Novosad on 2/17/16.
  */
 public class SQLiteDBHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
-    private static final String DB_NAME = "Sample.db";
+    private static final String DB_NAME = "Filter.db";
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";

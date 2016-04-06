@@ -2,18 +2,13 @@ package com.nosad.sample.helpers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.games.Games;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.nosad.sample.App;
-import com.nosad.sample.engine.managers.location.LocationManager;
 import com.nosad.sample.utils.common.Constants;
 
 /**
@@ -48,11 +43,7 @@ public class GoogleApiHelper implements GoogleApiClient.ConnectionCallbacks, Goo
     }
 
     public boolean isConnected() {
-        if (mGoogleApiClient != null) {
-            return mGoogleApiClient.isConnected();
-        } else {
-            return false;
-        }
+        return mGoogleApiClient != null && mGoogleApiClient.isConnected();
     }
 
     private void buildGoogleApiClient() {

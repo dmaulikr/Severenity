@@ -13,18 +13,19 @@
         android:layout_alignParentTop="true"
         />
 
-    <FrameLayout
-        android:layout_below="@id/toolbarTop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/container"
-        />
-
     <include
         android:id="@+id/toolbarBottom"
         layout="@layout/toolbar_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        />
+
+    <FrameLayout
+        android:layout_below="@id/toolbarTop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/container"
+        android:layout_above="@id/toolbarBottom"
         />
 </RelativeLayout>

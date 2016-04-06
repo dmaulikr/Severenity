@@ -31,27 +31,61 @@
 
             <TextView
                 android:gravity="center"
-                android:id="@+id/tvHealthPoints"
+                android:id="@+id/tvImmunityValue"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/mapUserAvatar"
-                android:layout_margin="1dp"
+                android:layout_margin="5dp"
                 android:textSize="12sp"
-                android:text="@string/health_points" />
+                android:text="@string/immunity_value" />
 
             <TextView
                 android:gravity="center"
-                android:id="@+id/tvMentalPoints"
+                android:id="@+id/tvMentalityValue"
                 android:textColor="@color/colorPrimaryDark"
-                android:layout_below="@id/tvHealthPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/tvImmunityValue"
+                android:layout_margin="5dp"
+                android:layout_marginBottom="0dp"
+                android:textSize="12sp"
+                android:text="@string/mentality_value" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/tvExperienceValue"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@id/tvImmunityValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/mapUserAvatar"
-                android:layout_margin="1dp"
+                android:layout_margin="5dp"
                 android:layout_marginBottom="0dp"
                 android:textSize="12sp"
-                android:text="@string/mental_points" />
+                android:text="@string/experience_value" />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/tvLevelValue"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@id/tvImmunityValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/tvExperienceValue"
+                android:layout_margin="5dp"
+                android:layout_marginBottom="0dp"
+                android:textSize="12sp"
+                android:text="@string/level_value" />
+
+            <ImageView
+                android:id="@+id/ivWardsSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:src="@drawable/spell_ward"/>
         </RelativeLayout>
     </RelativeLayout>
 

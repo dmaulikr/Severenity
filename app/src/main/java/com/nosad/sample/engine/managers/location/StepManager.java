@@ -17,8 +17,6 @@ import com.nosad.sample.utils.common.Constants;
  * Created by Novosad on 3/30/16.
  */
 public class StepManager {
-    // Steps counted in current session
-    private int mSteps = 0;
     private Context context;
 
     public StepManager(Context context) {
@@ -59,14 +57,9 @@ public class StepManager {
         public void onSensorChanged(SensorEvent event) {
             // A step detector event is received for each step.
             // This means we need to count steps ourselves
-
-            mSteps += event.values.length;
-
-            Log.i(Constants.TAG,
-                    "New step detected by STEP_DETECTOR sensor. Total step count: " + mSteps);
+            Log.i(Constants.TAG, "New step detected by STEP_DETECTOR sensor.");
 
             Intent stepsCount = new Intent(Constants.INTENT_FILTER_STEPS);
-            stepsCount.putExtra(Constants.EXTRA_STEPS, mSteps);
             App.getLocalBroadcastManager().sendBroadcast(stepsCount);
         }
 

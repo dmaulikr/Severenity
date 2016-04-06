@@ -1,7 +1,5 @@
 package com.nosad.sample.entity;
 
-import android.graphics.drawable.Drawable;
-
 import com.nosad.sample.R;
 
 /**

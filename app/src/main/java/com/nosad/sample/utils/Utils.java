@@ -11,11 +11,6 @@ import android.telephony.TelephonyManager;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
@@ -87,15 +82,6 @@ public class Utils {
         }
 
         return inSampleSize;
-    }
-
-    // Reads an InputStream and converts it to a String.
-    public static String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
-        Reader reader = null;
-        reader = new InputStreamReader(stream, "UTF-8");
-        char[] buffer = new char[len];
-        reader.read(buffer);
-        return new String(buffer);
     }
 
     /**

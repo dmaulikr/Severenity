@@ -48,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
     private RestManager restManager;
 
     public Profile profile;
-    public AccessToken accessToken;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
     private CallbackManager callbackManager;
@@ -82,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                updateWithToken(currentAccessToken);
+                updateWithCurrentAccessToken();
             }
         };
 
@@ -94,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                updateWithToken(loginResult.getAccessToken());
+                updateWithCurrentAccessToken();
             }
 
             @Override
@@ -116,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
         receiver = restManager.getNetworkReceiver();
         this.registerReceiver(receiver, filter);
 
-        updateWithToken(AccessToken.getCurrentAccessToken());
+        updateWithCurrentAccessToken();
     }
 
     private void requestPermissions() {
@@ -157,15 +156,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void updateWithToken(AccessToken currentAccessToken) {
-        if (currentAccessToken != null) {
-            accessToken = currentAccessToken;
-        } else {
-            Log.d(Constants.TAG, "Current access token is null.");
-        }
-
+    private void updateWithCurrentAccessToken() {
         if (accessFineLocationGranted) {
-            startActivity(mainActivityIntent);
+            if (AccessToken.getCurrentAccessToken() != null) {
+                startActivity(mainActivityIntent);
+            }
         } else {
             Toast.makeText(getApplicationContext(), "Please provide permissions to use your location data.", Toast.LENGTH_SHORT).show();
         }
@@ -205,7 +200,7 @@ public class LoginActivity extends AppCompatActivity {
         restManager.updateConnectedFlags();
 
         if (AccessToken.getCurrentAccessToken() == null) {
-            // TODO: Think of logout user if no facebook token but user logged in with FB.
+            App.getInstance().logOut();
         }
 
         // Logs 'install' and 'app activate' App Events.
