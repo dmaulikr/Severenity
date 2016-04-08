@@ -13,7 +13,9 @@ import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
 
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_EMAIL;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_EXPERIENCE;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_ID;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_LEVEL;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_NAME;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_NULLABLE;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_STEPS;
@@ -40,6 +42,9 @@ public class UserManager extends DataManager {
         values.put(COLUMN_ID, user.getId());
         values.put(COLUMN_NAME, user.getName());
         values.put(COLUMN_EMAIL, user.getEmail());
+        values.put(COLUMN_STEPS, user.getSteps());
+        values.put(COLUMN_EXPERIENCE, user.getExperience());
+        values.put(COLUMN_LEVEL, user.getLevel());
 
         long success = db.insert(TABLE_USERS, COLUMN_NULLABLE, values);
         db.close();
@@ -131,6 +136,8 @@ public class UserManager extends DataManager {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(COLUMN_STEPS, user.getSteps());
+            values.put(COLUMN_EXPERIENCE, user.getExperience());
+            values.put(COLUMN_LEVEL, user.getLevel());
 
             db.update(TABLE_USERS, values, "id = ?", new String[]{user.getId()});
             db.close();

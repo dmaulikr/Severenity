@@ -23,7 +23,9 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     UserContract.DBUser.COLUMN_ID + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_EMAIL + TEXT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_STEPS + " INTEGER " +
+                    UserContract.DBUser.COLUMN_STEPS + " INTEGER " + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_EXPERIENCE + " INTEGER " + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_LEVEL + " INTEGER " +
                     " )";
 
     private static final String DB_SQL_DELETE_USERS = "DROP TABLE IF EXISTS " + UserContract.DBUser.TABLE_USERS;

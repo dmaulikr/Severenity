@@ -26,6 +26,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.nosad.sample.App;
@@ -201,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
         restManager.updateConnectedFlags();
 
         if (AccessToken.getCurrentAccessToken() == null) {
-            App.getInstance().logOut();
+            LoginManager.getInstance().logOut();
         }
 
         // Logs 'install' and 'app activate' App Events.

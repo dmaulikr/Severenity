@@ -16,6 +16,7 @@ import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.exceptions.NotAuthenticatedException;
 import com.nosad.sample.entity.User;
+import com.nosad.sample.utils.common.Constants;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +24,8 @@ import com.nosad.sample.entity.User;
 public class ProfileFragment extends Fragment {
     private TextView tvTotalMetersPassed;
     private User currentUser;
+    private int experienceMultiplier = 10;
+    private int levelMultiplier = 1000;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -41,10 +44,18 @@ public class ProfileFragment extends Fragment {
             App.getInstance().logOut();
         }
 
+        int meters = 0;
+
+        if (currentUser != null) {
+            if (currentUser.getSteps() / 2 <= App.getLocationManager().getTotalMetersPassed()) {
+                meters = currentUser.getSteps() / 2;
+            } else {
+                meters = App.getLocationManager().getTotalMetersPassed();
+            }
+        }
+
         tvTotalMetersPassed = (TextView) view.findViewById(R.id.tvTotalMetersPassed);
-        tvTotalMetersPassed.setText(
-                String.format(getResources().getString(R.string.totalStepsMade),
-                        currentUser == null ? 0 : currentUser.getSteps()));
+        tvTotalMetersPassed.setText(String.format(getResources().getString(R.string.totalDistancePassed), meters));
 
         ImageView fbLogout = (ImageView) view.findViewById(R.id.ivFBLogout);
         fbLogout.setOnClickListener(new View.OnClickListener() {
@@ -61,18 +72,26 @@ public class ProfileFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             currentUser.setSteps(currentUser.getSteps() + 1);
-            tvTotalMetersPassed.setText(
-                String.format(getResources().getString(R.string.totalStepsMade),
-                currentUser.getSteps())
-            );
         }
     };
 
     public void updateUserInfo() {
-        tvTotalMetersPassed.setText(String.format(
-            getResources().getString(R.string.totalStepsMade),
-            currentUser == null ? 0 : currentUser.getSteps())
-        );
+        int meters = 0;
+
+        if (currentUser != null) {
+            if (currentUser.getSteps() / 2 <= App.getLocationManager().getTotalMetersPassed()) {
+                meters = currentUser.getSteps() / 2;
+            } else {
+                meters = App.getLocationManager().getTotalMetersPassed();
+            }
+
+            currentUser.setExperience(currentUser.getExperience() + meters / experienceMultiplier);
+            currentUser.setLevel(currentUser.getExperience() / levelMultiplier);
+        }
+
+        tvTotalMetersPassed.setText(String.format(getResources().getString(R.string.totalDistancePassed), meters));
+        App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_UPDATE_UI));
+        App.getUserManager().updateUserInfo();
     }
 
     public BroadcastReceiver getStepsCountReceiver() {

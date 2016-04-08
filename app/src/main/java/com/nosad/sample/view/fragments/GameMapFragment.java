@@ -33,6 +33,8 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
@@ -96,7 +98,16 @@ public class GameMapFragment extends Fragment {
                 explosion,
                 new IntentFilter("explosion")
         );
-        App.getLocationManager().updateMap(mapFragment.getMap());
+        App.getLocalBroadcastManager().registerReceiver(
+                updateUIReceiver,
+                new IntentFilter(Constants.INTENT_FILTER_UPDATE_UI)
+        );
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                App.getLocationManager().updateMap(googleMap);
+            }
+        });
     }
 
     @Override
@@ -124,20 +135,9 @@ public class GameMapFragment extends Fragment {
         userProfilePicture = (ProfilePictureView) view.findViewById(R.id.mapUserAvatar);
 
         tvImmunityValue = (TextView) view.findViewById(R.id.tvImmunityValue);
-        tvImmunityValue.setText(String.format(getResources().getString(R.string.immunity_value),
-            activity.getCurrentUser().getImmunity()));
-
         tvMentalityValue = (TextView) view.findViewById(R.id.tvMentalityValue);
-        tvMentalityValue.setText(String.format(getResources().getString(R.string.mentality_value),
-            activity.getCurrentUser().getMentality()));
-
         tvExperienceValue = (TextView) view.findViewById(R.id.tvExperienceValue);
-        tvExperienceValue.setText(String.format(getResources().getString(R.string.experience_value),
-                activity.getCurrentUser().getExperience()));
-
         tvLevelValue = (TextView) view.findViewById(R.id.tvLevelValue);
-        tvLevelValue.setText(String.format(getResources().getString(R.string.level_value),
-                activity.getCurrentUser().getLevel()));
 
         ivWardsSwitch = (ImageView) view.findViewById(R.id.ivWardsSwitch);
         ivWardsSwitch.setOnClickListener(new View.OnClickListener() {
@@ -154,6 +154,28 @@ public class GameMapFragment extends Fragment {
         initDrawer(view);
 
         return view;
+    }
+
+    private BroadcastReceiver updateUIReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateUIInfo();
+        }
+    };
+
+    private void updateUIInfo() {
+        if (activity.getCurrentUser() == null) {
+            return;
+        }
+
+        tvImmunityValue.setText(String.format(getResources().getString(R.string.immunity_value),
+                activity.getCurrentUser().getImmunity()));
+        tvMentalityValue.setText(String.format(getResources().getString(R.string.mentality_value),
+                activity.getCurrentUser().getMentality()));
+        tvExperienceValue.setText(String.format(getResources().getString(R.string.experience_value),
+                activity.getCurrentUser().getExperience()));
+        tvLevelValue.setText(String.format(getResources().getString(R.string.level_value),
+                activity.getCurrentUser().getLevel()));
     }
 
     private void initDrawer(View view) {
@@ -237,6 +259,8 @@ public class GameMapFragment extends Fragment {
         Log.v(Constants.TAG, this.toString() + " onPause()");
         super.onPause();
         App.getLocalBroadcastManager().unregisterReceiver(wardsCountChangedReceiver);
+        App.getLocalBroadcastManager().unregisterReceiver(updateUIReceiver);
+        App.getLocalBroadcastManager().unregisterReceiver(explosion);
     }
 
     private class ActionBarSpell implements ActionMode.Callback {

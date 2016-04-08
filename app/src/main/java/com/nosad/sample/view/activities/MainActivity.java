@@ -1,5 +1,6 @@
 package com.nosad.sample.view.activities;
 
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -108,7 +109,9 @@ public class MainActivity extends AppCompatActivity {
                             user.setName(response.getJSONObject().getString("name"));
                             user.setId(response.getJSONObject().getString("id"));
 
-                            App.getUserManager().setCurrentUser(App.getUserManager().addUser(user));
+                            currentUser = App.getUserManager().addUser(user);
+                            App.getUserManager().setCurrentUser(currentUser);
+                            App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_UPDATE_UI));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

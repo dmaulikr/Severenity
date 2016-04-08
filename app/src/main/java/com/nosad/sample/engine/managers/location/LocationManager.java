@@ -3,11 +3,11 @@ package com.nosad.sample.engine.managers.location;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Point;
 import android.location.Location;
-import android.util.DisplayMetrics;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -68,9 +68,7 @@ public class LocationManager implements LocationListener {
             return;
         }
 
-        if (googleMap == null) {
-            googleMap = map;
-        }
+        googleMap = map;
         googleMap.setMyLocationEnabled(true);
         googleMap.setPadding(0, 200, 0, 0);
         googleMap.getUiSettings().setAllGesturesEnabled(false);
@@ -128,37 +126,8 @@ public class LocationManager implements LocationListener {
         App.getLocalBroadcastManager().sendBroadcast(intent);
     }
 
-    /**
-     * This method converts device specific pixels to density independent pixels.
-     *
-     * @param px A value in px (pixels) unit. Which we need to convert into db
-     * @return A float value to represent dp equivalent to px value
-     */
-    private int convertPixelsToDp(int px) {
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        return px / (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-    }
-
     public boolean isRequestingLocationUpdates() {
         return requestingLocationUpdates;
-    }
-
-    /**
-     * Stops location updates if started before and removes flag about requesting location
-     * updates.
-     */
-    public void stopLocationUpdates() {
-        if (!googleApiClient.isConnected()) {
-            requestingLocationUpdates = false;
-            return;
-        }
-
-        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
-        requestingLocationUpdates = false;
-
-        // TODO: Reenable websocket connection when we'll get to server side
-//        WebSocketManager.instance.disconnectWebSocketClient();
     }
 
     /**
@@ -166,8 +135,9 @@ public class LocationManager implements LocationListener {
      */
     public void createLocationRequest() {
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(1000);
-        locationRequest.setFastestInterval(1000);
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setSmallestDisplacement(10);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -195,6 +165,24 @@ public class LocationManager implements LocationListener {
 //        WebSocketManager.instance.createWebSocket(Constants.WS_ADDRESS, true);
     }
 
+
+    /**
+     * Stops location updates if started before and removes flag about requesting location
+     * updates.
+     */
+    public void stopLocationUpdates() {
+        if (!googleApiClient.isConnected()) {
+            requestingLocationUpdates = false;
+            return;
+        }
+
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        requestingLocationUpdates = false;
+
+        // TODO: Reenable websocket connection when we'll get to server side
+//        WebSocketManager.instance.disconnectWebSocketClient();
+    }
+
     /**
      * Removes old marker and place new one according to provided location.
      *
@@ -207,7 +195,8 @@ public class LocationManager implements LocationListener {
 
         String title = "Me";
         try {
-            title = App.getUserManager().getCurrentUser().getName();
+            title = App.getUserManager().getCurrentUser() == null
+                    ? "Me" : App.getUserManager().getCurrentUser().getName();
         } catch (NotAuthenticatedException e) {
             e.printStackTrace();
         }
@@ -258,10 +247,8 @@ public class LocationManager implements LocationListener {
                 Utils.latLngFromLocation(currentLocation)
         );
 
-        if (metersPassed >= 10) {
-            previousLocation = currentLocation;
-            totalMetersPassed += metersPassed;
-        }
+        previousLocation = currentLocation;
+        totalMetersPassed += metersPassed;
     }
 
     private BroadcastReceiver googleApiClientReceiver = new BroadcastReceiver() {

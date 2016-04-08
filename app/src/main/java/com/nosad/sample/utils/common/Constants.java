@@ -9,6 +9,7 @@ public class Constants {
     public static final String INTENT_FILTER_GAC = "com.nosad.sample.googleapiclient";
     public static final String INTENT_FILTER_STEPS = "com.nosad.sample.steps";
     public static final String INTENT_FILTER_WARDS_COUNT = "com.nosad.sample.wardscount";
+    public static final String INTENT_FILTER_UPDATE_UI = "com.nosad.sample.updateui";
 
     public static final String EXTRA_GAC_CONNECTED = "isConnected";
     public static final String EXTRA_STEPS = "steps";

@@ -17,10 +17,6 @@ public class User {
 
     }
 
-    public User(String email) {
-        this.email = email;
-    }
-
     public User(String email, String name, String id) {
         this.email = email;
         this.name = name;

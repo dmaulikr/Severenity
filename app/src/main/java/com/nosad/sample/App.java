@@ -42,8 +42,11 @@ public class App extends Application {
     }
 
     public void logOut() {
+        locationManager.stopLocationUpdates();
+
         LoginManager.getInstance().logOut();
         Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+        loginActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(loginActivity);
     }
 
