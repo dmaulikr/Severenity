@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.location.Location;
-import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -22,10 +20,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
-import com.nosad.sample.engine.exceptions.NotAuthenticatedException;
+import com.nosad.sample.engine.network.WebSocketManager;
 import com.nosad.sample.entity.Spell;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Novosad on 3/29/16.
@@ -44,6 +44,7 @@ public class LocationManager implements LocationListener {
     private boolean isCameraFixed = false;
 
     private int totalMetersPassed = 0;
+    private long timeSinceLastUpdate = 0;
 
     public Location getCurrentLocation() {
         return currentLocation;
@@ -56,6 +57,7 @@ public class LocationManager implements LocationListener {
         this.context = context;
         this.googleApiClient = App.getGoogleApiHelper().getGoogleApiClient();
         createLocationRequest();
+        timeSinceLastUpdate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
     }
 
     /**
@@ -135,9 +137,8 @@ public class LocationManager implements LocationListener {
      */
     public void createLocationRequest() {
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setSmallestDisplacement(10);
+        locationRequest.setInterval(1000);
+        locationRequest.setFastestInterval(1000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -161,8 +162,7 @@ public class LocationManager implements LocationListener {
                 googleApiClient, locationRequest, this);
         requestingLocationUpdates = true;
 
-        // TODO: Reenable websocket connection when we'll get to server side
-//        WebSocketManager.instance.createWebSocket(Constants.WS_ADDRESS, true);
+        App.getWebSocketManager().createSocket(Constants.WS_ADDRESS, true);
     }
 
 
@@ -179,8 +179,7 @@ public class LocationManager implements LocationListener {
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         requestingLocationUpdates = false;
 
-        // TODO: Reenable websocket connection when we'll get to server side
-//        WebSocketManager.instance.disconnectWebSocketClient();
+        App.getWebSocketManager().disconnectSocket();
     }
 
     /**
@@ -193,13 +192,7 @@ public class LocationManager implements LocationListener {
             currentUserMarker.remove();
         }
 
-        String title = "Me";
-        try {
-            title = App.getUserManager().getCurrentUser() == null
-                    ? "Me" : App.getUserManager().getCurrentUser().getName();
-        } catch (NotAuthenticatedException e) {
-            e.printStackTrace();
-        }
+        String title = App.getUserManager().getCurrentUser().getName();
 
         // TODO: Replace title with user ID or name
         currentUserMarker = googleMap.addMarker(new MarkerOptions()
@@ -229,8 +222,7 @@ public class LocationManager implements LocationListener {
         updateMarker(location);
         updateTotalDistancePassed();
 
-        // TODO: Reenable websocket connection when we'll get to server side
-//        WebSocketManager.instance.sendLocationToServer(location);
+        App.getWebSocketManager().sendLocationToServer(location);
     }
 
     /**
@@ -247,8 +239,14 @@ public class LocationManager implements LocationListener {
                 Utils.latLngFromLocation(currentLocation)
         );
 
-        previousLocation = currentLocation;
-        totalMetersPassed += metersPassed;
+        long currentUpdate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+        // lets consider speed as 2 meters per second
+        // and filter with that gps drops.
+        if (metersPassed >= 10 && timeSinceLastUpdate - currentUpdate >= 5) {
+            previousLocation = currentLocation;
+            timeSinceLastUpdate = System.currentTimeMillis();
+            totalMetersPassed += metersPassed;
+        }
     }
 
     private BroadcastReceiver googleApiClientReceiver = new BroadcastReceiver() {

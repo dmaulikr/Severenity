@@ -21,7 +21,6 @@ import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
-import com.nosad.sample.engine.exceptions.NotAuthenticatedException;
 import com.nosad.sample.engine.managers.location.StepManager;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.CustomTypefaceSpan;
@@ -73,12 +72,7 @@ public class MainActivity extends AppCompatActivity {
         initFragments();
 
         stepManager = new StepManager(getApplicationContext());
-        try {
-            currentUser = App.getUserManager().getCurrentUser();
-        } catch (NotAuthenticatedException e) {
-            e.printStackTrace();
-            App.getInstance().logOut();
-        }
+        currentUser = App.getUserManager().getCurrentUser();
 
         toolbarBottom.findViewById(R.id.menu_map).performClick();
     }

@@ -19,7 +19,7 @@ public class Constants {
      */
 
     private final static String HOST =  "localhost:3000/api";
-    public static String WS_ADDRESS = "ws://" + HOST + "/game";
+    public static String WS_ADDRESS = ""; // "ws://" + HOST + "/game";
 
     public final static int CONNECTION_READ_TIMEOUT = 10000; // milliseconds
     public final static int CONNECTION_CONNECT_TIMEOUT = 15000; // milliseconds

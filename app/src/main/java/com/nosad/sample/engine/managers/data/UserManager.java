@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
-import com.nosad.sample.engine.exceptions.NotAuthenticatedException;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
 
@@ -121,36 +120,32 @@ public class UserManager extends DataManager {
     }
 
     public void updateUserInfo() {
-        try {
-            User user = getCurrentUser();
+        User user = getCurrentUser();
 
-            if (user == null) {
-                Log.e(Constants.TAG,
-                    "User with access token: "
-                    + AccessToken.getCurrentAccessToken() +
-                    " is not created yet"
-                );
-                return;
-            }
-
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_STEPS, user.getSteps());
-            values.put(COLUMN_EXPERIENCE, user.getExperience());
-            values.put(COLUMN_LEVEL, user.getLevel());
-
-            db.update(TABLE_USERS, values, "id = ?", new String[]{user.getId()});
-            db.close();
-        } catch (NotAuthenticatedException e) {
-            e.printStackTrace();
-            LoginManager.getInstance().logOut();
+        if (user == null) {
+            Log.e(Constants.TAG,
+                "User with access token: "
+                + AccessToken.getCurrentAccessToken() +
+                " is not created yet"
+            );
+            return;
         }
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_STEPS, user.getSteps());
+        values.put(COLUMN_EXPERIENCE, user.getExperience());
+        values.put(COLUMN_LEVEL, user.getLevel());
+
+        db.update(TABLE_USERS, values, "id = ?", new String[]{user.getId()});
+        db.close();
     }
 
-    public User getCurrentUser() throws NotAuthenticatedException {
+    public User getCurrentUser(){
         if (currentUser == null) {
             if (AccessToken.getCurrentAccessToken() == null) {
-                throw new NotAuthenticatedException(Constants.EXCEPTION_FB_ACCESS_TOKEN_MISSING);
+                Log.i(Constants.TAG, "No access token found, new user is created.");
+                currentUser = new User();
             } else {
                 currentUser = getUserById(AccessToken.getCurrentAccessToken().getUserId());
             }

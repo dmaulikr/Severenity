@@ -59,8 +59,8 @@ public class StepManager {
             // This means we need to count steps ourselves
             Log.i(Constants.TAG, "New step detected by STEP_DETECTOR sensor.");
 
-            Intent stepsCount = new Intent(Constants.INTENT_FILTER_STEPS);
-            App.getLocalBroadcastManager().sendBroadcast(stepsCount);
+            Intent stepReceived = new Intent(Constants.INTENT_FILTER_STEPS);
+            App.getLocalBroadcastManager().sendBroadcast(stepReceived);
         }
 
         @Override

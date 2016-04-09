@@ -9,6 +9,7 @@ import com.facebook.login.LoginManager;
 import com.nosad.sample.engine.managers.data.UserManager;
 import com.nosad.sample.engine.managers.game.SpellManager;
 import com.nosad.sample.engine.managers.location.LocationManager;
+import com.nosad.sample.engine.network.WebSocketManager;
 import com.nosad.sample.helpers.GoogleApiHelper;
 import com.nosad.sample.utils.FontsOverride;
 import com.nosad.sample.view.activities.LoginActivity;
@@ -22,6 +23,7 @@ public class App extends Application {
     private LocalBroadcastManager localBroadcastManager;
     private UserManager userManager;
     private SpellManager spellManager;
+    private WebSocketManager webSocketManager;
 
     private static App mInstance;
     private static Context mContext;
@@ -39,6 +41,7 @@ public class App extends Application {
         localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
         userManager = new UserManager(mContext);
         spellManager = new SpellManager(mContext);
+        webSocketManager = new WebSocketManager(mContext);
     }
 
     public void logOut() {
@@ -92,5 +95,13 @@ public class App extends Application {
 
     public static SpellManager getSpellManager() {
         return getInstance().getSpellManagerInstance();
+    }
+
+    public WebSocketManager getWebSocketManagerInstance() {
+        return this.webSocketManager;
+    }
+
+    public static WebSocketManager getWebSocketManager() {
+        return getInstance().getWebSocketManagerInstance();
     }
 }

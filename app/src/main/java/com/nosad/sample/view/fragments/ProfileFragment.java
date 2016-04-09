@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.nosad.sample.App;
 import com.nosad.sample.R;
-import com.nosad.sample.engine.exceptions.NotAuthenticatedException;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
 
@@ -37,12 +36,7 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        try {
-            currentUser = App.getUserManager().getCurrentUser();
-        } catch (NotAuthenticatedException e) {
-            e.printStackTrace();
-            App.getInstance().logOut();
-        }
+        currentUser = App.getUserManager().getCurrentUser();
 
         int meters = 0;
 
