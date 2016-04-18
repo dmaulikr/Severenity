@@ -1,9 +1,15 @@
 package com.nosad.sample.engine.network;
 
+import android.content.Context;
 import android.location.Location;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
+import com.facebook.AccessToken;
+import com.google.android.gms.maps.model.LatLng;
 import com.nosad.sample.App;
+import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
 
 import org.json.JSONException;
@@ -24,6 +30,11 @@ import io.socket.emitter.Emitter;
  */
 public class WebSocketManager {
     private Socket socket;
+    private Context context;
+
+    public WebSocketManager(Context context) {
+        this.context = context;
+    }
 
     /**
      * Initializes web socket client
@@ -44,28 +55,30 @@ public class WebSocketManager {
         }
 
         socket = IO.socket(uri);
-        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("id", App.getUserManager().getCurrentUser().getId());
-                    socket.emit(Socket.EVENT_CONNECT, jsonObject);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).on(Socket.EVENT_MESSAGE, new Emitter.Listener() {
+        socket.on(Constants.SOCKET_EVENT_LOCATION, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 for (Object arg : args) {
-                    Log.i(Constants.TAG, "Socket message received: " + arg.toString());
+                    try {
+                        JSONObject jsonObject = (JSONObject) arg;
+                        final User user = new User();
+                        user.setId(jsonObject.getString("id"));
+                        final LatLng latLng = new LatLng(
+                            jsonObject.getDouble("lat") + 0.0005,
+                            jsonObject.getDouble("lng") + 0.0005
+                        );
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                App.getLocationManager().displayUserAt(user, latLng);
+                            }
+                         });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                Log.i(Constants.TAG, "Disconnected " + App.getUserManager().getCurrentUser().getName());
             }
         });
 
@@ -94,13 +107,29 @@ public class WebSocketManager {
         }
     }
 
+    /**
+     * Returns current socket.
+     *
+     * @return socket - current socket
+     */
     public Socket getSocket() {
         return socket;
     }
 
+    /**
+     * Sends location specified via socket if socket is connected.
+     * Message structure is:
+     *
+     * @param location
+     */
     public void sendLocationToServer(Location location) {
+        if (!socket.connected()) {
+            return;
+        }
+
         try {
             JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", AccessToken.getCurrentAccessToken().getUserId());
             jsonObject.put("lat", location.getLatitude());
             jsonObject.put("lng", location.getLongitude());
             socket.emit("location", jsonObject);

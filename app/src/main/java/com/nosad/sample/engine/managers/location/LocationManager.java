@@ -20,8 +20,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
-import com.nosad.sample.engine.network.WebSocketManager;
 import com.nosad.sample.entity.Spell;
+import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 
@@ -35,7 +35,8 @@ public class LocationManager implements LocationListener {
     private Location currentLocation;
     private Context context;
     private GoogleApiClient googleApiClient;
-    private Marker currentUserMarker;
+
+    private Marker currentUserMarker, otherUserMarker;
 
     private GoogleMap googleMap;
     private LocationRequest locationRequest;
@@ -143,6 +144,22 @@ public class LocationManager implements LocationListener {
     }
 
     /**
+     *
+     * @param user - user to display marker of
+     * @param latLng - location to display user at
+     */
+    public void displayUserAt(User user, LatLng latLng) {
+        if (otherUserMarker != null) {
+            otherUserMarker.remove();
+        }
+
+        otherUserMarker = googleMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .title(user.getId()));
+    }
+
+    /**
      * Initializes location updates according to created location request and sets
      * flag about requesting location updates.
      */
@@ -162,7 +179,7 @@ public class LocationManager implements LocationListener {
                 googleApiClient, locationRequest, this);
         requestingLocationUpdates = true;
 
-        App.getWebSocketManager().createSocket(Constants.WS_ADDRESS, true);
+        App.getWebSocketManager().createSocket(Constants.HOST, true);
     }
 
 
@@ -249,6 +266,10 @@ public class LocationManager implements LocationListener {
         }
     }
 
+    /**
+     * Receives Google Play client connected / disconnected state to react
+     * appropriately.
+     */
     private BroadcastReceiver googleApiClientReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -263,6 +284,11 @@ public class LocationManager implements LocationListener {
         }
     };
 
+    /**
+     * Returns local broadcast receiver Google Play services connection state updates
+     *
+     * @return googleApiClientReceiver which handles Google Play services connection state updates.
+     */
     public BroadcastReceiver getGoogleApiClientReceiver() {
         return googleApiClientReceiver;
     }

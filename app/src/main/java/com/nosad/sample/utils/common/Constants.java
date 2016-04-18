@@ -18,16 +18,18 @@ public class Constants {
      * Connection constants
      */
 
-    private final static String HOST =  "localhost:3000/api";
-    public static String WS_ADDRESS = ""; // "ws://" + HOST + "/game";
+    public final static String HOST =  "https://elbimmo.herokuapp.com";
+    private final static String API_ADDRESS = HOST + "/api";
 
     public final static int CONNECTION_READ_TIMEOUT = 10000; // milliseconds
     public final static int CONNECTION_CONNECT_TIMEOUT = 15000; // milliseconds
 
+    public final static String SOCKET_EVENT_LOCATION = "location";
+
     /**
      * RESTful APIs constants
      */
-    public static String REST_API_USERS = "http://"  + HOST + "/users";
+    public static String REST_API_USERS = HOST + "/users";
 
     /**
      * Exception constants
