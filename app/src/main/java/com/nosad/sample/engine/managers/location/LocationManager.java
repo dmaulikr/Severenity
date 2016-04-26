@@ -14,6 +14,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -170,6 +171,17 @@ public class LocationManager implements LocationListener {
                 .title(user.getId()));
     }
 
+    public void displayPlaceMarker(Place place) {
+        if (!place.getPlaceTypes().contains(Place.TYPE_POINT_OF_INTEREST)) {
+            return;
+        }
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(place.getLatLng())
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                .title(String.format("%s", place.getName())));
+    }
+
     /**
      * Initializes location updates according to created location request and sets
      * flag about requesting location updates.
@@ -274,7 +286,7 @@ public class LocationManager implements LocationListener {
         previousLocation = currentLocation;
         timeSinceLastUpdate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
         App.getUserManager().getCurrentUser().setDistance(
-            App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
+                App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
 
         updateUserInfo();
     }

@@ -14,11 +14,21 @@ import android.text.SpannableString;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceLikelihood;
+import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.managers.location.StepManager;
@@ -280,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
         App.getLocationManager().stopLocationUpdates();
         App.getGoogleApiHelper().disconnect();
         App.getLocalBroadcastManager().unregisterReceiver(
-            App.getLocationManager().getGoogleApiClientReceiver()
+                App.getLocationManager().getGoogleApiClientReceiver()
         );
     }
 

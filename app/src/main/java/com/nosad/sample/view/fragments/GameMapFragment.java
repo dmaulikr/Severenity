@@ -33,6 +33,14 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.PlaceLikelihood;
+import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -85,6 +93,19 @@ public class GameMapFragment extends Fragment {
             mapFragment = SupportMapFragment.newInstance();
         }
         fragmentManager.beginTransaction().replace(R.id.map, mapFragment).commit();
+
+        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
+                .getCurrentPlace(App.getGoogleApiHelper().getGoogleApiClient(), null);
+        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
+            @Override
+            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
+                Log.i(Constants.TAG, String.format("Attributions are: %s", likelyPlaces.getAttributions()));
+                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+                    App.getLocationManager().displayPlaceMarker(placeLikelihood.getPlace());
+                }
+                likelyPlaces.release();
+            }
+        });
     }
 
     @Override
