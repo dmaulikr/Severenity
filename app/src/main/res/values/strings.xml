@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Devoed</string>
+    <string name="app_name">Severenity</string>
 
     <!-- Third party -->
     <string name="facebook_app_id">912233188857453</string>
@@ -74,7 +74,7 @@
     <string name="lost_connection">Connection lost</string>
     <string name="mobile_connected">Mobile Connected</string>
     <string name="connection_established">Connection established</string>
-    <string name="title">Devoed</string>
+    <string name="title">Severenity</string>
     <string name="menu_shop">Shop</string>
     <string name="menu_map">Map</string>
     <string name="menu_profile">Spells</string>

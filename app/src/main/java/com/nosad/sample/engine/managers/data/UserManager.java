@@ -7,17 +7,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.facebook.AccessToken;
-import com.facebook.login.LoginManager;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
 
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_DISTANCE;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_EMAIL;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_EXPERIENCE;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_ID;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_LEVEL;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_NAME;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_NULLABLE;
-import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_STEPS;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.TABLE_USERS;
 
 /**
@@ -41,7 +40,7 @@ public class UserManager extends DataManager {
         values.put(COLUMN_ID, user.getId());
         values.put(COLUMN_NAME, user.getName());
         values.put(COLUMN_EMAIL, user.getEmail());
-        values.put(COLUMN_STEPS, user.getSteps());
+        values.put(COLUMN_DISTANCE, user.getDistance());
         values.put(COLUMN_EXPERIENCE, user.getExperience());
         values.put(COLUMN_LEVEL, user.getLevel());
 
@@ -61,7 +60,7 @@ public class UserManager extends DataManager {
 
         Cursor cursor = db.query(
                 TABLE_USERS,
-                new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_EMAIL, COLUMN_STEPS},
+                new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_EMAIL, COLUMN_DISTANCE, COLUMN_EXPERIENCE, COLUMN_LEVEL},
                 "id = ?",
                 new String[]{id},
                 null, null, null, null
@@ -72,10 +71,9 @@ public class UserManager extends DataManager {
             user.setId(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
             user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
             user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
-            String steps = cursor.getString(cursor.getColumnIndex(COLUMN_STEPS));
-            if (steps != null) {
-                user.setSteps(Integer.valueOf(steps));
-            }
+            user.setDistance(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_DISTANCE))));
+            user.setExperience(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_EXPERIENCE))));
+            user.setLevel(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_LEVEL))));
 
             cursor.close();
             db.close();
@@ -119,36 +117,31 @@ public class UserManager extends DataManager {
         db.close();
     }
 
-    public void updateUserInfo() {
-        User user = getCurrentUser();
-
-        if (user == null) {
-            Log.e(Constants.TAG,
-                "User with access token: "
-                + AccessToken.getCurrentAccessToken() +
-                " is not created yet"
-            );
-            return;
-        }
-
+    public void updateCurrentUserInDB() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_STEPS, user.getSteps());
-        values.put(COLUMN_EXPERIENCE, user.getExperience());
-        values.put(COLUMN_LEVEL, user.getLevel());
+        values.put(COLUMN_DISTANCE, currentUser.getDistance());
+        values.put(COLUMN_EXPERIENCE, currentUser.getExperience());
+        values.put(COLUMN_LEVEL, currentUser.getLevel());
 
-        db.update(TABLE_USERS, values, "id = ?", new String[]{user.getId()});
+        db.update(TABLE_USERS, values, "id = ?", new String[]{currentUser.getId()});
         db.close();
+
+        retrieveCurrentUser();
     }
 
-    public User getCurrentUser(){
+    private void retrieveCurrentUser() {
+        if (AccessToken.getCurrentAccessToken() == null) {
+            Log.i(Constants.TAG, "No access token found, new user is created.");
+            currentUser = new User();
+        } else {
+            currentUser = getUserById(AccessToken.getCurrentAccessToken().getUserId());
+        }
+    }
+
+    public User getCurrentUser() {
         if (currentUser == null) {
-            if (AccessToken.getCurrentAccessToken() == null) {
-                Log.i(Constants.TAG, "No access token found, new user is created.");
-                currentUser = new User();
-            } else {
-                currentUser = getUserById(AccessToken.getCurrentAccessToken().getUserId());
-            }
+            retrieveCurrentUser();
         }
         return currentUser;
     }

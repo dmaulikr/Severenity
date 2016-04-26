@@ -14,6 +14,9 @@ public class Constants {
     public static final String EXTRA_GAC_CONNECTED = "isConnected";
     public static final String EXTRA_STEPS = "steps";
 
+    public static final int EXPERIENCE_MULTIPLIER = 10;
+    public static final int LEVEL_MULTIPLIER = 1000;
+
     /**
      * Connection constants
      */

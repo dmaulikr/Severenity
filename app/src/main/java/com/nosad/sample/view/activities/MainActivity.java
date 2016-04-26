@@ -60,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Fragment> allFragments = new ArrayList<>();
 
-    private User currentUser;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,13 +70,13 @@ public class MainActivity extends AppCompatActivity {
         initFragments();
 
         stepManager = new StepManager(getApplicationContext());
-        currentUser = App.getUserManager().getCurrentUser();
 
         toolbarBottom.findViewById(R.id.menu_map).performClick();
-    }
 
-    public User getCurrentUser() {
-        return currentUser;
+        App.getLocalBroadcastManager().registerReceiver(
+            App.getLocationManager().getStepsCountReceiver(),
+            new IntentFilter(Constants.INTENT_FILTER_STEPS)
+        );
     }
 
     private void retrieveCurrentUserFBData() {
@@ -103,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
                             user.setName(response.getJSONObject().getString("name"));
                             user.setId(response.getJSONObject().getString("id"));
 
-                            currentUser = App.getUserManager().addUser(user);
-                            App.getUserManager().setCurrentUser(currentUser);
+                            user = App.getUserManager().addUser(user);
+                            App.getUserManager().setCurrentUser(user);
                             App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_UPDATE_UI));
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -278,14 +276,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        App.getUserManager().updateUserInfo();
+        App.getUserManager().updateCurrentUserInDB();
         App.getLocationManager().stopLocationUpdates();
         App.getGoogleApiHelper().disconnect();
         App.getLocalBroadcastManager().unregisterReceiver(
-            profileFragment.getStepsCountReceiver()
+            App.getLocationManager().getGoogleApiClientReceiver()
         );
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
         App.getLocalBroadcastManager().unregisterReceiver(
-                App.getLocationManager().getGoogleApiClientReceiver()
+                App.getLocationManager().getStepsCountReceiver()
         );
     }
 
@@ -293,11 +297,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        profileFragment.updateUserInfo();
-        App.getLocalBroadcastManager().registerReceiver(
-                profileFragment.getStepsCountReceiver(),
-                new IntentFilter(Constants.INTENT_FILTER_STEPS)
-        );
         App.getLocalBroadcastManager().registerReceiver(
                 App.getLocationManager().getGoogleApiClientReceiver(),
                 new IntentFilter(Constants.INTENT_FILTER_GAC)

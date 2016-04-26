@@ -39,6 +39,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.SpellsAdapter;
+import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
@@ -90,6 +91,8 @@ public class GameMapFragment extends Fragment {
     public void onResume() {
         Log.v(Constants.TAG, this.toString() + " onResume()");
         super.onResume();
+        updateUIInfo();
+
         App.getLocalBroadcastManager().registerReceiver(
                 wardsCountChangedReceiver,
                 new IntentFilter(Constants.INTENT_FILTER_WARDS_COUNT)
@@ -164,18 +167,15 @@ public class GameMapFragment extends Fragment {
     };
 
     private void updateUIInfo() {
-        if (activity.getCurrentUser() == null) {
+        User user = App.getUserManager().getCurrentUser();
+        if (user == null) {
             return;
         }
 
-        tvImmunityValue.setText(String.format(getResources().getString(R.string.immunity_value),
-                activity.getCurrentUser().getImmunity()));
-        tvMentalityValue.setText(String.format(getResources().getString(R.string.mentality_value),
-                activity.getCurrentUser().getMentality()));
-        tvExperienceValue.setText(String.format(getResources().getString(R.string.experience_value),
-                activity.getCurrentUser().getExperience()));
-        tvLevelValue.setText(String.format(getResources().getString(R.string.level_value),
-                activity.getCurrentUser().getLevel()));
+        tvImmunityValue.setText(String.format(getResources().getString(R.string.immunity_value), user.getImmunity()));
+        tvMentalityValue.setText(String.format(getResources().getString(R.string.mentality_value), user.getMentality()));
+        tvExperienceValue.setText(String.format(getResources().getString(R.string.experience_value), user.getExperience()));
+        tvLevelValue.setText(String.format(getResources().getString(R.string.level_value), user.getLevel()));
     }
 
     private void initDrawer(View view) {

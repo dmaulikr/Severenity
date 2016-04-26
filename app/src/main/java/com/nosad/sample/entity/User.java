@@ -7,7 +7,7 @@ public class User {
     private String id;
     private String name;
     private String email;
-    private int steps;
+    private int distance = 0;
     private int immunity = 0;
     private int mentality = 0;
     private int experience = 0;
@@ -47,12 +47,12 @@ public class User {
         this.email = email;
     }
 
-    public int getSteps() {
-        return steps;
+    public int getDistance() {
+        return distance;
     }
 
-    public void setSteps(int steps) {
-        this.steps = steps;
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 
     public int getImmunity() {

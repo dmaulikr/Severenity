@@ -23,7 +23,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     UserContract.DBUser.COLUMN_ID + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_EMAIL + TEXT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_STEPS + " INTEGER " + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_DISTANCE + " INTEGER " + COMMA_SEP +
                     UserContract.DBUser.COLUMN_EXPERIENCE + " INTEGER " + COMMA_SEP +
                     UserContract.DBUser.COLUMN_LEVEL + " INTEGER " +
                     " )";

@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.location.Location;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -40,19 +43,27 @@ public class LocationManager implements LocationListener {
 
     private GoogleMap googleMap;
     private LocationRequest locationRequest;
+
     public boolean requestingLocationUpdates = false;
     private boolean isSpellMode = false;
     private boolean isCameraFixed = false;
+    private boolean isMoving = false;
 
-    private int totalMetersPassed = 0;
     private long timeSinceLastUpdate = 0;
 
     public Location getCurrentLocation() {
         return currentLocation;
     }
-    public int getTotalMetersPassed() {
-        return totalMetersPassed;
-    }
+
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable stopMoving = new Runnable() {
+        @Override
+        public void run() {
+            isMoving = false;
+            updateTotalDistancePassed();
+            Toast.makeText(context, "Stopped moving.", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     public LocationManager(Context context) {
         this.context = context;
@@ -237,9 +248,13 @@ public class LocationManager implements LocationListener {
 
         currentLocation = location;
         updateMarker(location);
-        updateTotalDistancePassed();
 
         App.getWebSocketManager().sendLocationToServer(location);
+
+        long currentUpdate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+        if (isMoving && timeSinceLastUpdate - currentUpdate >= 60) {
+            updateTotalDistancePassed();
+        }
     }
 
     /**
@@ -256,14 +271,25 @@ public class LocationManager implements LocationListener {
                 Utils.latLngFromLocation(currentLocation)
         );
 
-        long currentUpdate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-        // lets consider speed as 2 meters per second
-        // and filter with that gps drops.
-        if (metersPassed >= 10 && timeSinceLastUpdate - currentUpdate >= 5) {
-            previousLocation = currentLocation;
-            timeSinceLastUpdate = System.currentTimeMillis();
-            totalMetersPassed += metersPassed;
+        previousLocation = currentLocation;
+        timeSinceLastUpdate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
+        App.getUserManager().getCurrentUser().setDistance(
+            App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
+
+        updateUserInfo();
+    }
+
+    private void updateUserInfo() {
+        User currentUser = App.getUserManager().getCurrentUser();
+        if (currentUser != null) {
+            currentUser.setExperience(
+                currentUser.getExperience() +
+                App.getUserManager().getCurrentUser().getDistance() / Constants.EXPERIENCE_MULTIPLIER);
+            currentUser.setLevel(currentUser.getExperience() / Constants.LEVEL_MULTIPLIER);
         }
+
+        App.getUserManager().updateCurrentUserInDB();
+        App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_UPDATE_UI));
     }
 
     /**
@@ -291,5 +317,21 @@ public class LocationManager implements LocationListener {
      */
     public BroadcastReceiver getGoogleApiClientReceiver() {
         return googleApiClientReceiver;
+    }
+
+    private BroadcastReceiver stepsCountReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!isMoving) {
+                Toast.makeText(context, "Started moving.", Toast.LENGTH_SHORT).show();
+                isMoving = true;
+            }
+            handler.removeCallbacks(stopMoving);
+            handler.postDelayed(stopMoving, 3000);
+        }
+    };
+
+    public BroadcastReceiver getStepsCountReceiver() {
+        return stepsCountReceiver;
     }
 }

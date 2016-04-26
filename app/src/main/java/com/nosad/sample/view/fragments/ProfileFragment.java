@@ -4,6 +4,7 @@ package com.nosad.sample.view.fragments;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,9 +23,6 @@ import com.nosad.sample.utils.common.Constants;
  */
 public class ProfileFragment extends Fragment {
     private TextView tvTotalMetersPassed;
-    private User currentUser;
-    private int experienceMultiplier = 10;
-    private int levelMultiplier = 1000;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -36,16 +34,12 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        currentUser = App.getUserManager().getCurrentUser();
+        User currentUser = App.getUserManager().getCurrentUser();
 
         int meters = 0;
 
         if (currentUser != null) {
-            if (currentUser.getSteps() / 2 <= App.getLocationManager().getTotalMetersPassed()) {
-                meters = currentUser.getSteps() / 2;
-            } else {
-                meters = App.getLocationManager().getTotalMetersPassed();
-            }
+            meters = currentUser.getDistance();
         }
 
         tvTotalMetersPassed = (TextView) view.findViewById(R.id.tvTotalMetersPassed);
@@ -62,33 +56,39 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    private BroadcastReceiver stepsCountReceiver = new BroadcastReceiver() {
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        updateUIInfo();
+        App.getLocalBroadcastManager().registerReceiver(
+                updateUIReceiver,
+                new IntentFilter(Constants.INTENT_FILTER_UPDATE_UI)
+        );
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        App.getLocalBroadcastManager().unregisterReceiver(updateUIReceiver);
+    }
+
+    private BroadcastReceiver updateUIReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            currentUser.setSteps(currentUser.getSteps() + 1);
+            updateUIInfo();
         }
     };
 
-    public void updateUserInfo() {
-        int meters = 0;
-
-        if (currentUser != null) {
-            if (currentUser.getSteps() / 2 <= App.getLocationManager().getTotalMetersPassed()) {
-                meters = currentUser.getSteps() / 2;
-            } else {
-                meters = App.getLocationManager().getTotalMetersPassed();
-            }
-
-            currentUser.setExperience(currentUser.getExperience() + meters / experienceMultiplier);
-            currentUser.setLevel(currentUser.getExperience() / levelMultiplier);
+    private void updateUIInfo() {
+        if (App.getUserManager().getCurrentUser() == null) {
+            return;
         }
 
-        tvTotalMetersPassed.setText(String.format(getResources().getString(R.string.totalDistancePassed), meters));
-        App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_UPDATE_UI));
-        App.getUserManager().updateUserInfo();
-    }
-
-    public BroadcastReceiver getStepsCountReceiver() {
-        return stepsCountReceiver;
+        tvTotalMetersPassed.setText(String.format(
+            getResources().getString(R.string.totalDistancePassed),
+            App.getUserManager().getCurrentUser().getDistance())
+        );
     }
 }
