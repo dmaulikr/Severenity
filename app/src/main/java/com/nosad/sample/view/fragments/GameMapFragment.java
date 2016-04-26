@@ -69,6 +69,7 @@ public class GameMapFragment extends Fragment {
     private ListView drawerList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private TextView tvMentalityValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
+    private TextView tvAttributions;
     private ImageView ivWardsSwitch;
 
     private ActionMode spellMode;
@@ -104,6 +105,7 @@ public class GameMapFragment extends Fragment {
                     App.getLocationManager().displayPlaceMarker(placeLikelihood.getPlace());
                 }
                 likelyPlaces.release();
+                tvAttributions.setText(likelyPlaces.getAttributions() == null ? "" : likelyPlaces.getAttributions());
             }
         });
     }
@@ -162,6 +164,7 @@ public class GameMapFragment extends Fragment {
         tvMentalityValue = (TextView) view.findViewById(R.id.tvMentalityValue);
         tvExperienceValue = (TextView) view.findViewById(R.id.tvExperienceValue);
         tvLevelValue = (TextView) view.findViewById(R.id.tvLevelValue);
+        tvAttributions = (TextView) view.findViewById(R.id.tvAttributions);
 
         ivWardsSwitch = (ImageView) view.findViewById(R.id.ivWardsSwitch);
         ivWardsSwitch.setOnClickListener(new View.OnClickListener() {

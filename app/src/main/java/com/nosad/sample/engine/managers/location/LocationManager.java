@@ -172,7 +172,14 @@ public class LocationManager implements LocationListener {
     }
 
     public void displayPlaceMarker(Place place) {
-        if (!place.getPlaceTypes().contains(Place.TYPE_POINT_OF_INTEREST)) {
+        for (Integer placeType : place.getPlaceTypes()) {
+            Log.i(Constants.TAG, "Place type for " + place.getName() + " is: " + placeType);
+        }
+
+        if (place.getPlaceTypes().contains(Place.TYPE_BUS_STATION)
+                || place.getPlaceTypes().contains(Place.TYPE_TRANSIT_STATION)
+                || place.getPlaceTypes().contains(Place.TYPE_SUBWAY_STATION)
+                || place.getPlaceTypes().contains(Place.TYPE_STREET_ADDRESS)) {
             return;
         }
 

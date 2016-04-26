@@ -87,6 +87,14 @@
                 android:visibility="gone"
                 android:src="@drawable/spell_ward"/>
         </RelativeLayout>
+
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/userInfo"
+            android:id="@+id/tvAttributions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <!-- The navigation drawer -->
