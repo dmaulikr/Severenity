@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:circle="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/main_calendar_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
+        android:elevation="2dp"
+        android:src="@drawable/ic_calendar"
+        circle:name="Calendar" />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/main_cloud_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
+        android:elevation="2dp"
+        android:src="@drawable/ic_cloud"
+        circle:name="Cloud" />
+
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/main_mail_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
+        android:elevation="2dp"
+        android:src="@drawable/ic_mail"
+        circle:name="Mail" />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/main_key_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
+        android:src="@drawable/ic_key"
+        circle:name="Key" />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/main_profile_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
+        android:elevation="2dp"
+        android:src="@drawable/ic_profile"
+        circle:name="Profile" />
+
+    <com.szugyi.circlemenu.view.CircleImageView
+        android:id="@+id/main_tap_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/circle"
+        android:elevation="2dp"
+        android:src="@drawable/ic_tag"
+        circle:name="Tag" />
+</merge>

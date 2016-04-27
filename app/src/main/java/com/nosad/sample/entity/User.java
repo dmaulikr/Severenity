@@ -1,5 +1,7 @@
 package com.nosad.sample.entity;
 
+import com.nosad.sample.utils.common.Constants;
+
 /**
  * Created by Novosad on 2/17/16.
  */
@@ -8,10 +10,10 @@ public class User {
     private String name;
     private String email;
     private int distance = 0;
-    private int immunity = 0;
-    private int mentality = 0;
+    private int immunity = 10;
+    private int mentality = 10;
     private int experience = 0;
-    private int level = 0;
+    private int level = 1;
 
     public User() {
 
@@ -56,7 +58,7 @@ public class User {
     }
 
     public int getImmunity() {
-        return immunity;
+        return immunity + (level + 10); // TODO: This calculation should happen in DB
     }
 
     public void setImmunity(int immunity) {
@@ -64,7 +66,7 @@ public class User {
     }
 
     public int getMentality() {
-        return mentality;
+        return mentality + (level + 10);
     }
 
     public void setMentality(int mentality) {

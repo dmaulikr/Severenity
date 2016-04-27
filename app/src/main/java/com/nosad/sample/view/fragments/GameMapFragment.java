@@ -5,10 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -26,21 +24,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -51,7 +46,8 @@ import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
-import com.nosad.sample.view.custom.GifView;
+import com.szugyi.circlemenu.view.CircleImageView;
+import com.szugyi.circlemenu.view.CircleLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,6 +67,7 @@ public class GameMapFragment extends Fragment {
     private TextView tvMentalityValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
     private TextView tvAttributions;
     private ImageView ivWardsSwitch;
+    protected CircleLayout clSymbolsMenu;
 
     private ActionMode spellMode;
 
@@ -119,10 +116,6 @@ public class GameMapFragment extends Fragment {
         App.getLocalBroadcastManager().registerReceiver(
                 wardsCountChangedReceiver,
                 new IntentFilter(Constants.INTENT_FILTER_WARDS_COUNT)
-        );
-        App.getLocalBroadcastManager().registerReceiver(
-                explosion,
-                new IntentFilter("explosion")
         );
         App.getLocalBroadcastManager().registerReceiver(
                 updateUIReceiver,
@@ -179,8 +172,62 @@ public class GameMapFragment extends Fragment {
         });
 
         initDrawer(view);
+        initSymbolsMenu(view);
 
         return view;
+    }
+
+    private void initSymbolsMenu(View view) {
+        clSymbolsMenu = (CircleLayout) view.findViewById(R.id.clSymbolsMenu);
+        clSymbolsMenu.setOnItemSelectedListener(new CircleLayout.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(View view) {
+                handleSymbolSelected(view);
+            }
+        });
+        clSymbolsMenu.setOnItemClickListener(new CircleLayout.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view) {
+                handleSymbolSelected(view);
+            }
+        });
+        clSymbolsMenu.setOnCenterClickListener(new CircleLayout.OnCenterClickListener() {
+            @Override
+            public void onCenterClick() {
+                Toast.makeText(activity, "Center clicked.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void handleSymbolSelected(View view) {
+        final String name;
+        if (view instanceof CircleImageView) {
+            name = ((CircleImageView) view).getName();
+        } else {
+            name = null;
+        }
+
+        Toast.makeText(activity, name, Toast.LENGTH_SHORT).show();
+        switch (view.getId()) {
+            case R.id.main_calendar_image:
+                // Handle calendar selection
+                break;
+            case R.id.main_cloud_image:
+                // Handle cloud selection
+                break;
+            case R.id.main_key_image:
+                // Handle key selection
+                break;
+            case R.id.main_mail_image:
+                // Handle mail selection
+                break;
+            case R.id.main_profile_image:
+                // Handle profile selection
+                break;
+            case R.id.main_tap_image:
+                // Handle tap selection
+                break;
+        }
     }
 
     private BroadcastReceiver updateUIReceiver = new BroadcastReceiver() {
@@ -284,7 +331,6 @@ public class GameMapFragment extends Fragment {
         super.onPause();
         App.getLocalBroadcastManager().unregisterReceiver(wardsCountChangedReceiver);
         App.getLocalBroadcastManager().unregisterReceiver(updateUIReceiver);
-        App.getLocalBroadcastManager().unregisterReceiver(explosion);
     }
 
     private class ActionBarSpell implements ActionMode.Callback {
@@ -320,30 +366,6 @@ public class GameMapFragment extends Fragment {
             } else {
                 ivWardsSwitch.setVisibility(View.GONE);
             }
-        }
-    };
-
-    private BroadcastReceiver explosion = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Point p = (Point) intent.getExtras().get("point");
-            final GifView gifView = new GifView(activity);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-            params.leftMargin = p.x - 100;
-            params.topMargin = p.y - 100;
-            ViewGroup view = (ViewGroup) getView();
-            view.addView(gifView, params);
-
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ((ViewGroup) getView()).removeView(gifView);
-                }
-            }, 2000);
         }
     };
 }

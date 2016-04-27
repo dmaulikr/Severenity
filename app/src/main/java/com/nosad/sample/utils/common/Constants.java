@@ -17,6 +17,11 @@ public class Constants {
     public static final int EXPERIENCE_MULTIPLIER = 10;
     public static final int LEVEL_MULTIPLIER = 1000;
 
+    public static final float RESTORE_RATE_MENTALITY_NORMAL = 0.1f; // per day
+    public static final float RESTORE_RATE_MENTALITY_MOVING = 1f;   // per 100 meters
+
+    public static final double MINIMUM_DISTANCE_FOR_UPDATE = 100;   // in meters
+
     /**
      * Connection constants
      */

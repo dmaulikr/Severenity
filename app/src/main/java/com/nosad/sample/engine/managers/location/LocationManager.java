@@ -50,8 +50,6 @@ public class LocationManager implements LocationListener {
     private boolean isCameraFixed = false;
     private boolean isMoving = false;
 
-    private long timeSinceLastUpdate = 0;
-
     public Location getCurrentLocation() {
         return currentLocation;
     }
@@ -70,7 +68,6 @@ public class LocationManager implements LocationListener {
         this.context = context;
         this.googleApiClient = App.getGoogleApiHelper().getGoogleApiClient();
         createLocationRequest();
-        timeSinceLastUpdate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
     }
 
     /**
@@ -94,10 +91,6 @@ public class LocationManager implements LocationListener {
                 if (App.getSpellManager().isSpellMode()) {
                     if (App.getSpellManager().getCurrentSpell().is(Spell.SpellType.Ward)) {
                         placeWard(latLng);
-                    }
-
-                    if (App.getSpellManager().getCurrentSpell().is(Spell.SpellType.PowerWave)) {
-                        showExplosionAt(googleMap.getProjection().toScreenLocation(latLng));
                     }
                 }
             }
@@ -133,12 +126,6 @@ public class LocationManager implements LocationListener {
         App.getSpellManager().addWard(wardMarker);
 
         return wardMarker;
-    }
-
-    private void showExplosionAt(Point p) {
-        Intent intent = new Intent("explosion");
-        intent.putExtra("point", p);
-        App.getLocalBroadcastManager().sendBroadcast(intent);
     }
 
     public boolean isRequestingLocationUpdates() {
@@ -248,7 +235,7 @@ public class LocationManager implements LocationListener {
 
         if (!isCameraFixed) {
             googleMap.animateCamera(
-                CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), 17.0f)
+                    CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), 17.0f)
             );
         }
     }
@@ -270,10 +257,7 @@ public class LocationManager implements LocationListener {
 
         App.getWebSocketManager().sendLocationToServer(location);
 
-        long currentUpdate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-        if (isMoving && timeSinceLastUpdate - currentUpdate >= 60) {
-            updateTotalDistancePassed();
-        }
+        updateTotalDistancePassed();
     }
 
     /**
@@ -290,12 +274,13 @@ public class LocationManager implements LocationListener {
                 Utils.latLngFromLocation(currentLocation)
         );
 
-        previousLocation = currentLocation;
-        timeSinceLastUpdate = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
-        App.getUserManager().getCurrentUser().setDistance(
-                App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
+        if (metersPassed >= Constants.MINIMUM_DISTANCE_FOR_UPDATE) {
+            previousLocation = currentLocation;
+            App.getUserManager().getCurrentUser().setDistance(
+                    App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
 
-        updateUserInfo();
+            updateUserInfo();
+        }
     }
 
     private void updateUserInfo() {
