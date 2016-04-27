@@ -32,15 +32,18 @@ public class SpellManager {
     }
 
     public void setCurrentSpell(Spell currentSpell) {
+        if (this.currentSpell != null && this.currentSpell.equals(currentSpell)) {
+            isSpellMode = false;
+            this.setCurrentSpell(null);
+            return;
+        }
+
+        isSpellMode = true;
         this.currentSpell = currentSpell;
     }
 
     public boolean isSpellMode() {
         return isSpellMode;
-    }
-
-    public void setIsSpellMode(boolean isSpellMode) {
-        this.isSpellMode = isSpellMode;
     }
 
     public boolean hasWards() {

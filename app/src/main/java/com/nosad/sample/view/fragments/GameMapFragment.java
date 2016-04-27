@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -19,11 +21,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +47,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.SpellsAdapter;
+import com.nosad.sample.entity.Spell;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.common.Constants;
@@ -179,12 +185,6 @@ public class GameMapFragment extends Fragment {
 
     private void initSymbolsMenu(View view) {
         clSymbolsMenu = (CircleLayout) view.findViewById(R.id.clSymbolsMenu);
-        clSymbolsMenu.setOnItemSelectedListener(new CircleLayout.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(View view) {
-                handleSymbolSelected(view);
-            }
-        });
         clSymbolsMenu.setOnItemClickListener(new CircleLayout.OnItemClickListener() {
             @Override
             public void onItemClick(View view) {
@@ -195,6 +195,17 @@ public class GameMapFragment extends Fragment {
             @Override
             public void onCenterClick() {
                 Toast.makeText(activity, "Center clicked.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        clSymbolsMenu.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    clSymbolsMenu.setRotating(true);
+                } else {
+                    clSymbolsMenu.setRotating(false);
+                }
+                return false;
             }
         });
     }
@@ -299,17 +310,16 @@ public class GameMapFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (spellMode == null) {
-                    App.getSpellManager().setIsSpellMode(true);
                     App.getSpellManager().setCurrentSpell(spellsAdapter.getItem(position));
                     spellMode = activity.startSupportActionMode(new ActionBarSpell());
                     spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), spellsAdapter.getItem(position).getTitle()));
                 } else {
-                    if (App.getSpellManager().getCurrentSpell() == spellsAdapter.getItem(position)) {
-                        App.getSpellManager().setIsSpellMode(false);
+                    App.getSpellManager().setCurrentSpell(spellsAdapter.getItem(position));
+
+                    if (App.getSpellManager().getCurrentSpell() == null) {
                         spellMode.finish();
                         spellMode = null;
                     } else {
-                        App.getSpellManager().setCurrentSpell(spellsAdapter.getItem(position));
                         spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), spellsAdapter.getItem(position).getTitle()));
                     }
                 }
@@ -352,7 +362,6 @@ public class GameMapFragment extends Fragment {
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            App.getSpellManager().setIsSpellMode(false);
             spellMode.finish();
             spellMode = null;
         }
