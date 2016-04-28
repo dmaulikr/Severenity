@@ -5,6 +5,7 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.nosad.sample.entity.contracts.MsgContract;
 import com.nosad.sample.entity.contracts.UserContract;
 
 /**
@@ -15,6 +16,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "Filter.db";
 
     private static final String TEXT_TYPE = " TEXT";
+    private static final String INT_TYPE = " INTEGER";
     private static final String COMMA_SEP = ",";
 
     private static final String DB_SQL_CREATE_USERS =
@@ -23,12 +25,23 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     UserContract.DBUser.COLUMN_ID + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_EMAIL + TEXT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_DISTANCE + " INTEGER " + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_EXPERIENCE + " INTEGER " + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_LEVEL + " INTEGER " +
+                    UserContract.DBUser.COLUMN_DISTANCE + INT_TYPE + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_EXPERIENCE + INT_TYPE + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_LEVEL + INT_TYPE +
+                    " )";
+
+    private static final String DB_SQL_CREATE_MESSAGE =
+            "CREATE TABLE " + MsgContract.DBMsg.TABLE_MESSAGE + " (" +
+                    MsgContract.DBMsg._ID + " INTEGER PRIMARY KEY," +
+                    MsgContract.DBMsg.COLUMN_USER_ID   + TEXT_TYPE + COMMA_SEP +
+                    MsgContract.DBMsg.COLUMN_MESSAGE   + TEXT_TYPE + COMMA_SEP +
+                    MsgContract.DBMsg.COLUMN_USER_NAME + TEXT_TYPE + COMMA_SEP +
+                    MsgContract.DBMsg.COLUMN_TIMESTAMP + TEXT_TYPE + COMMA_SEP +
                     " )";
 
     private static final String DB_SQL_DELETE_USERS = "DROP TABLE IF EXISTS " + UserContract.DBUser.TABLE_USERS;
+
+    private static final String DB_SQL_DELETE_MESSAGE = "DROP TABLE IF EXISTS " + MsgContract.DBMsg.TABLE_MESSAGE;
 
     public SQLiteDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
