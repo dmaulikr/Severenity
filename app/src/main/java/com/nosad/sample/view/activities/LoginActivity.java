@@ -63,8 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         requestPermissions();
-
-        FacebookSdk.sdkInitialize(this);
+        
         setContentView(R.layout.activity_login);
 
         restManager = RestManager.getInstance(getApplicationContext());

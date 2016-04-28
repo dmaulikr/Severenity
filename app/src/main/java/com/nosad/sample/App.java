@@ -4,8 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
+import com.facebook.FacebookSdk;
 
 import com.facebook.login.LoginManager;
+import com.nosad.sample.engine.managers.data.MessageManager;
 import com.nosad.sample.engine.managers.data.UserManager;
 import com.nosad.sample.engine.managers.game.SpellManager;
 import com.nosad.sample.engine.managers.location.LocationManager;
@@ -24,6 +26,7 @@ public class App extends Application {
     private UserManager userManager;
     private SpellManager spellManager;
     private WebSocketManager webSocketManager;
+    private MessageManager   msgMannager;
 
     private static App mInstance;
     private static Context mContext;
@@ -34,6 +37,8 @@ public class App extends Application {
 
         FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/zekton.ttf");
 
+        FacebookSdk.sdkInitialize(this);
+
         mInstance = this;
         mContext = getApplicationContext();
         googleApiHelper = new GoogleApiHelper(mContext);
@@ -42,6 +47,7 @@ public class App extends Application {
         userManager = new UserManager(mContext);
         spellManager = new SpellManager(mContext);
         webSocketManager = new WebSocketManager(mContext);
+        msgMannager = new MessageManager(mContext);
     }
 
     public void logOut() {
@@ -104,4 +110,13 @@ public class App extends Application {
     public static WebSocketManager getWebSocketManager() {
         return getInstance().getWebSocketManagerInstance();
     }
+
+    public MessageManager getMessageManagerInstance() {
+        return this.msgMannager;
+    };
+
+    public static MessageManager getMessageManager() {
+        return getInstance().getMessageManagerInstance();
+    }
+
 }
