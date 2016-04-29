@@ -3,6 +3,7 @@ package com.nosad.sample.engine.managers.data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.nosad.sample.entity.Message;
@@ -44,13 +45,18 @@ public class MessageManager extends DataManager {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = db.query(
-                TABLE_MESSAGE,
-                new String[]{COLUMN_USER_ID, COLUMN_MESSAGE, COLUMN_TIMESTAMP, COLUMN_USER_NAME},
-                null,
-                null,
-                null, null, null, null
-        );
+        Cursor cursor = null;
+        try {
+            cursor = db.query(
+                    TABLE_MESSAGE,
+                    new String[]{COLUMN_USER_ID, COLUMN_MESSAGE, COLUMN_TIMESTAMP, COLUMN_USER_NAME},
+                    null,
+                    null,
+                    null, null, null, null
+            );
+        }catch (SQLException e){
+            return null;
+        };
 
         if (cursor.getCount() == 0) return null;
 

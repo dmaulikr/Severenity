@@ -14,21 +14,11 @@ import android.text.SpannableString;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceLikelihood;
-import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.managers.location.StepManager;
@@ -40,7 +30,7 @@ import com.nosad.sample.view.fragments.BattlesFragment;
 import com.nosad.sample.view.fragments.GameMapFragment;
 import com.nosad.sample.view.fragments.ProfileFragment;
 import com.nosad.sample.view.fragments.ShopFragment;
-import com.nosad.sample.view.fragments.TeamsFragment;
+import com.nosad.sample.view.fragments.MessagesFragment;
 
 import org.json.JSONException;
 
@@ -58,12 +48,12 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
 
     private ShopFragment shopFragment = new ShopFragment();
-    private TeamsFragment teamsFragment = new TeamsFragment();
+    private MessagesFragment messagesFragment = new MessagesFragment();
     private ProfileFragment profileFragment = new ProfileFragment();
     private BattlesFragment battlesFragment = new BattlesFragment();
     private GameMapFragment gameMapFragment = new GameMapFragment();
     private String shopFragmentTag = ShopFragment.class.getSimpleName();
-    private String teamsFragmentTag = TeamsFragment.class.getSimpleName();
+    private String messagesFragmentTag = MessagesFragment.class.getSimpleName();
     private String profileFragmentTag = ProfileFragment.class.getSimpleName();
     private String battlesFragmentTag = BattlesFragment.class.getSimpleName();
     private String gameMapFragmentTag = GameMapFragment.class.getSimpleName();
@@ -128,13 +118,13 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.container, gameMapFragment, gameMapFragmentTag)
                 .add(R.id.container, shopFragment, shopFragmentTag)
                 .add(R.id.container, profileFragment, profileFragmentTag)
-                .add(R.id.container, teamsFragment, teamsFragmentTag)
+                .add(R.id.container, messagesFragment, messagesFragmentTag)
                 .add(R.id.container, battlesFragment, battlesFragmentTag).commit();
 
         allFragments.addAll(
                 Arrays.asList(
                         shopFragment,
-                        teamsFragment,
+                        messagesFragment,
                         profileFragment,
                         battlesFragment,
                         gameMapFragment)
@@ -274,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
 
     // TODO: Replace with transaction to real teams fragment
     private void showTeams() {
-        showFragment(teamsFragment);
+        showFragment(messagesFragment);
     }
 
     // TODO: Replace with transaction to real battles fragment
