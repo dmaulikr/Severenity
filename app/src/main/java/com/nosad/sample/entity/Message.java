@@ -1,10 +1,5 @@
 package com.nosad.sample.entity;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by Andriy on 4/27/2016.
  */

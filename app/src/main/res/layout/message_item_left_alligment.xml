@@ -17,27 +17,24 @@
 
         <TextView
             android:layout_width="60dp"
-            android:layout_height="20dp"
+            android:layout_height="23dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
             android:id="@+id/messageDate"
             android:background="#000000"
             android:layout_marginRight="1dp" />
 
         <TextView
             android:layout_width="70dp"
-            android:layout_height="20dp"
+            android:layout_height="23dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
             android:id="@+id/messageUsername"
             android:layout_marginRight="1dp"
             android:background="#000000" />
 
         <TextView
             android:layout_width="0dp"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
             android:id="@+id/messageMessage"
             android:layout_weight="100"
             android:background="#000000" />

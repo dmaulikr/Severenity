@@ -26,7 +26,7 @@ public class App extends Application {
     private UserManager userManager;
     private SpellManager spellManager;
     private WebSocketManager webSocketManager;
-    private MessageManager   msgMannager;
+    private MessageManager msgManager;
 
     private static App mInstance;
     private static Context mContext;
@@ -47,7 +47,7 @@ public class App extends Application {
         userManager = new UserManager(mContext);
         spellManager = new SpellManager(mContext);
         webSocketManager = new WebSocketManager(mContext);
-        msgMannager = new MessageManager(mContext);
+        msgManager = new MessageManager(mContext);
     }
 
     public void logOut() {
@@ -112,7 +112,7 @@ public class App extends Application {
     }
 
     public MessageManager getMessageManagerInstance() {
-        return this.msgMannager;
+        return this.msgManager;
     };
 
     public static MessageManager getMessageManager() {

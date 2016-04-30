@@ -10,8 +10,10 @@ import android.widget.TextView;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.entity.Message;
+import com.nosad.sample.utils.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Andriy on 4/29/2016.
@@ -20,10 +22,14 @@ public class MessagesAdapter extends BaseAdapter {
 
     private ArrayList<Message> _messages;
     private Context _context;
+    private String _localUserID;
+    private Date   _currentDay;
 
-    public MessagesAdapter(Context ctx, ArrayList<Message> messages) {
+    public MessagesAdapter(Context ctx, ArrayList<Message> messages, String localUserID) {
         this._context = ctx;
         this._messages = messages;
+        this._localUserID = localUserID;
+        this._currentDay = new Date();
     }
 
     @Override
@@ -48,7 +54,7 @@ public class MessagesAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return (getItem(position).getUserName().equals("And6")) ? 0 : 1;
+        return (getItem(position).getUserID().equals(_localUserID)) ? 1 : 0;
     }
 
     @Override
@@ -62,10 +68,10 @@ public class MessagesAdapter extends BaseAdapter {
             int itemViewType = getItemViewType(position);
 
             if (itemViewType == 0) {
-                messageView = inflater.inflate(R.layout.message_item_right_alligment, parent, false);
+                messageView = inflater.inflate(R.layout.message_item_left_alligment, parent, false);
             }
             else {
-                messageView = inflater.inflate(R.layout.message_item_left_alligment, parent, false);
+                messageView = inflater.inflate(R.layout.message_item_right_alligment, parent, false);
             }
         }
 
@@ -74,7 +80,10 @@ public class MessagesAdapter extends BaseAdapter {
             return null;
 
         TextView tvTime = (TextView) messageView.findViewById(R.id.messageDate);
-        tvTime.setText(message.getTimestamp());
+        if (DateUtils.isToday(message.getTimestamp()))
+            tvTime.setText(DateUtils.getTimeFromTimestamp(message.getTimestamp()));
+        else
+            tvTime.setText(DateUtils.getDateFromTimestamp(message.getTimestamp()));
 
         TextView tvUserName = (TextView) messageView.findViewById(R.id.messageUsername);
         tvUserName.setText(message.getUserName());

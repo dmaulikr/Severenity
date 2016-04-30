@@ -1,5 +1,7 @@
 package com.nosad.sample.utils.common;
 
+import java.util.Locale;
+
 /**
  * Created by Novosad on 02/06/2015.
  */
@@ -21,6 +23,9 @@ public class Constants {
     public static final float RESTORE_RATE_MENTALITY_MOVING = 1f;   // per 100 meters
 
     public static final double MINIMUM_DISTANCE_FOR_UPDATE = 100;   // in meters
+
+    public final static String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public final static Locale LOCALE = Locale.US;
 
     /**
      * Connection constants
