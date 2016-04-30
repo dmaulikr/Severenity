@@ -6,6 +6,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.fragments.MessagesFragment">
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/messagesList"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/messageText" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,20 +21,17 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true" />
 
-    <ListView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/messagesList"
-        android:layout_alignParentTop="true"
-        android:layout_above="@id/sendMessage" />
-
     <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
         android:id="@+id/messageText"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/sendMessage"
-        android:inputType="text" />
+        android:inputType="textCapSentences|textMultiLine"
+        android:maxLength="2000"
+        android:maxLines="2"
+        android:minLines="1"
+        android:fadeScrollbars="false"/>
 
 </RelativeLayout>
