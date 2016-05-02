@@ -14,6 +14,7 @@ import com.nosad.sample.engine.managers.location.LocationManager;
 import com.nosad.sample.engine.network.WebSocketManager;
 import com.nosad.sample.helpers.GoogleApiHelper;
 import com.nosad.sample.utils.FontsOverride;
+import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.LoginActivity;
 
 /**
@@ -47,6 +48,8 @@ public class App extends Application {
         userManager = new UserManager(mContext);
         spellManager = new SpellManager(mContext);
         webSocketManager = new WebSocketManager(mContext);
+        if (webSocketManager.createSocket(Constants.HOST, true));
+            webSocketManager.subscribeForMessageEvent();
         msgManager = new MessageManager(mContext);
     }
 
@@ -57,6 +60,8 @@ public class App extends Application {
         Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
         loginActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(loginActivity);
+        webSocketManager.unsubscribeFromMessageEvents();
+        webSocketManager.disconnectSocket();
     }
 
     public static synchronized App getInstance() {

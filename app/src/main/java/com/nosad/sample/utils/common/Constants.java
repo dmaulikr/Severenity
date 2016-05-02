@@ -31,13 +31,14 @@ public class Constants {
      * Connection constants
      */
 
-    public final static String HOST =  "https://elbimmo.herokuapp.com";
+    public final static String HOST =  "https://severenity.herokuapp.com";
     private final static String API_ADDRESS = HOST + "/api";
 
     public final static int CONNECTION_READ_TIMEOUT = 10000; // milliseconds
     public final static int CONNECTION_CONNECT_TIMEOUT = 15000; // milliseconds
 
     public final static String SOCKET_EVENT_LOCATION = "location";
+    public final static String SOCKET_EVENT_MESSAGE = "chat message";
 
     /**
      * RESTful APIs constants

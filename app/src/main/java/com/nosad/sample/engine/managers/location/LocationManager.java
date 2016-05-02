@@ -196,7 +196,7 @@ public class LocationManager implements LocationListener {
                 googleApiClient, locationRequest, this);
         requestingLocationUpdates = true;
 
-        App.getWebSocketManager().createSocket(Constants.HOST, true);
+        App.getWebSocketManager().subscribeForLocationEvent();
     }
 
 
@@ -213,7 +213,7 @@ public class LocationManager implements LocationListener {
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         requestingLocationUpdates = false;
 
-        App.getWebSocketManager().disconnectSocket();
+        App.getWebSocketManager().unsubscribeFromLocationEvents();
     }
 
     /**
