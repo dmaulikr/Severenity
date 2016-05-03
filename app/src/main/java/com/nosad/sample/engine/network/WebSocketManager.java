@@ -29,7 +29,7 @@ import io.socket.emitter.Emitter;
  * sockets. Responsible for managing states of the mSocket and communication layer.
  */
 public class WebSocketManager {
-    private Socket mSocket;
+    private Socket mSocket = null;
     private Context mContext;
 
     public WebSocketManager(Context context) {
@@ -41,9 +41,9 @@ public class WebSocketManager {
      *
      * @param connect - if true - calls .connect() method on create mSocket
      */
-    public void createSocket(String address, boolean connect) {
+    public boolean createSocket(String address, boolean connect) {
         if (address == null || address.equalsIgnoreCase("")) {
-            return;
+            return false;
         }
 
         URI uri;
@@ -51,7 +51,7 @@ public class WebSocketManager {
             uri = new URI(address);
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            return;
+            return false;
         }
 
         mSocket = IO.socket(uri);
@@ -59,6 +59,8 @@ public class WebSocketManager {
         if (connect) {
             mSocket.connect();
         }
+
+        return true;
     }
 
     /**
@@ -168,7 +170,6 @@ public class WebSocketManager {
 
     /**
      * Subscribes to location events from the server.
-     *
      */
     public void subscribeForMessageEvent(){
 
@@ -189,13 +190,13 @@ public class WebSocketManager {
                         message.setUserName(jsonObject.getString("name"));
                         message.setTimestamp(jsonObject.getString("timestamp"));
 
-                        /*Handler handler = new Handler(Looper.getMainLooper());
+                        Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                App.getLocationManager().displayUserAt(user, latLng);
+                                App.getMessageManager().onMessageRetrieved(message);
                             }
-                        });*/
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

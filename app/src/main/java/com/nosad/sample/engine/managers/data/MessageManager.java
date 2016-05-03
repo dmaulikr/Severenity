@@ -2,11 +2,16 @@ package com.nosad.sample.engine.managers.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 
+import com.nosad.sample.App;
 import com.nosad.sample.entity.Message;
+import com.nosad.sample.entity.User;
+import com.nosad.sample.utils.common.Constants;
 
 import java.util.ArrayList;
 
@@ -26,7 +31,7 @@ public class MessageManager extends DataManager {
         super(context);
     }
 
-    public boolean AddMessage(Message msg) {
+    public boolean addMessage(Message msg) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -41,7 +46,7 @@ public class MessageManager extends DataManager {
         return success == -1 ? false : true;
     };
 
-    public ArrayList<Message> GetMessages() {
+    public ArrayList<Message> getMessages() {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -74,6 +79,46 @@ public class MessageManager extends DataManager {
             }
             while (cursor.moveToNext());
         }
+
+        cursor.close();
+        db.close();
         return messagesList;
+    }
+
+    public boolean sendMessage(Message msg) {
+
+        if (msg == null) {
+            return false;
+        }
+
+        if (addMessage(msg)) {
+
+            App.getWebSocketManager().sendMessageToServer(msg);
+            return true;
+        }
+
+        return false;
+    }
+
+    public void onMessageRetrieved(Message msg) {
+
+        if (msg == null) {
+            return;
+        }
+
+        User user = App.getUserManager().getCurrentUser();
+        if (user != null && msg.getUserID().equals(user.getId()))
+            return;
+        else
+            addMessage(msg);
+
+        Intent intent = new Intent(Constants.INTENT_FILTER_NEW_MESSAGE);
+        Bundle extras = intent.getExtras();
+        extras.putString(COLUMN_MESSAGE, msg.getMessage());
+        extras.putString(COLUMN_TIMESTAMP, msg.getTimestamp());
+        extras.putString(COLUMN_USER_ID, msg.getUserID());
+        extras.putString(COLUMN_USER_NAME, msg.getUserName());
+
+        App.getLocalBroadcastManager().sendBroadcast(intent);
     }
 }

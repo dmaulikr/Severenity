@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.entity.Message;
@@ -20,26 +21,26 @@ import java.util.Date;
  */
 public class MessagesAdapter extends BaseAdapter {
 
-    private ArrayList<Message> _messages;
-    private Context _context;
-    private String _localUserID;
-    private Date   _currentDay;
+    public static final int OUTER_MESSAGE_DELIVERED = 0;
+    public static final int INNER_MESSAGE_DELIVERED = 1;
 
-    public MessagesAdapter(Context ctx, ArrayList<Message> messages, String localUserID) {
-        this._context = ctx;
-        this._messages = messages;
-        this._localUserID = localUserID;
-        this._currentDay = new Date();
+    private ArrayList<Message> mMessages;
+    private Context mContext;
+    private String mLocalUserID = AccessToken.getCurrentAccessToken().getUserId();
+
+    public MessagesAdapter(Context ctx, ArrayList<Message> messages) {
+        this.mContext = ctx;
+        this.mMessages = messages;
     }
 
     @Override
     public int getCount() {
-        return _messages.size();
+        return mMessages.size();
     }
 
     @Override
     public Message getItem(int position) {
-        return _messages.get(position);
+        return mMessages.get(position);
     }
 
     @Override
@@ -54,11 +55,18 @@ public class MessagesAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return (getItem(position).getUserID().equals(_localUserID)) ? 1 : 0;
+        if (getItem(position).getUserID().equals(mLocalUserID))
+            return INNER_MESSAGE_DELIVERED;
+        else
+            return OUTER_MESSAGE_DELIVERED;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        Message message = getItem(position);
+        if (message == null)
+            return null;
 
         View messageView = convertView;
 
@@ -67,17 +75,13 @@ public class MessagesAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) App.getInstance().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             int itemViewType = getItemViewType(position);
 
-            if (itemViewType == 0) {
+            if (itemViewType == OUTER_MESSAGE_DELIVERED) {
                 messageView = inflater.inflate(R.layout.message_item_left_alligment, parent, false);
             }
             else {
                 messageView = inflater.inflate(R.layout.message_item_right_alligment, parent, false);
             }
         }
-
-        Message message = getItem(position);
-        if (message == null)
-            return null;
 
         TextView tvTime = (TextView) messageView.findViewById(R.id.messageDate);
         if (DateUtils.isToday(message.getTimestamp()))
@@ -92,5 +96,10 @@ public class MessagesAdapter extends BaseAdapter {
         tvMessage.setText(message.getMessage());
 
         return messageView;
+    }
+
+    public void addItem(Message msg) {
+
+        mMessages.add(msg);
     }
 }

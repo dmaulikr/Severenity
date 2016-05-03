@@ -1,8 +1,14 @@
 package com.nosad.sample.view.fragments;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,18 +27,22 @@ import com.nosad.sample.utils.common.Constants;
 
 import java.util.ArrayList;
 
+import static com.nosad.sample.entity.contracts.MsgContract.DBMsg.COLUMN_MESSAGE;
+import static com.nosad.sample.entity.contracts.MsgContract.DBMsg.COLUMN_TIMESTAMP;
+import static com.nosad.sample.entity.contracts.MsgContract.DBMsg.COLUMN_USER_ID;
+import static com.nosad.sample.entity.contracts.MsgContract.DBMsg.COLUMN_USER_NAME;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MessagesFragment extends Fragment implements View.OnClickListener {
 
-    private ListView _messagesList;
-    private Button   _sendButton;
-    private EditText _messageEdit;
-    private User     _currentUser;
-    ArrayList<Message> _messages;
-    MessagesAdapter    _messageAdapter;
-    View               _mainView;
+    private ListView mMessagesList;
+    private Button mSendButton;
+    private EditText mMessageEdit;
+    private User mCurrentUser;
+    private MessagesAdapter mMessageAdapter;
+    private View mMainView;
 
     public MessagesFragment() {
         // Required empty public constructor
@@ -42,7 +52,7 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        _mainView = inflater.inflate(R.layout.fragment_messages, container, false);
+        mMainView = inflater.inflate(R.layout.fragment_messages, container, false);
 
 /*        Message msg = new Message();
         for (int i = 0; i < 100; i++)
@@ -54,78 +64,151 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
             App.getMessageManager().AddMessage(msg);
         }*/
 
-        configureInnerObjects();
-        loadAndDisplayMessages();
 
-        return _mainView;
+        return mMainView;
+    }
+
+    @Override
+    public void onResume() {
+        Log.v(Constants.TAG, this.toString() + " onResume()");
+        super.onResume();
+
+        configureInnerObjects();
+
+        App.getLocalBroadcastManager().registerReceiver(
+                newMessageReceiver,
+                new IntentFilter(Constants.INTENT_FILTER_NEW_MESSAGE)
+        );
+
+        App.getLocalBroadcastManager().registerReceiver(
+                keyboardEventReceiver,
+                new IntentFilter(Constants.INTENT_FILTER_KEYBOARD_EVENT)
+        );
+    }
+
+    @Override
+    public void onPause() {
+        Log.v(Constants.TAG, this.toString() + " onPause()");
+        super.onPause();
+        App.getLocalBroadcastManager().unregisterReceiver(keyboardEventReceiver);
+        App.getLocalBroadcastManager().unregisterReceiver(newMessageReceiver);
     }
 
     @Override
     public void onClick(View v) {
 
-        if (_messageEdit != null && _currentUser != null) {
+        switch (v.getId()) {
+            case R.id.sendMessage:
 
-            Message msg = new Message();
-            msg.setMessage(_messageEdit.getText().toString());
-            msg.setUserName(_currentUser.getName());
-            msg.setUserID(_currentUser.getId());
-            msg.setTimestamp(DateUtils.getTimestamp());
+                if (mCurrentUser == null)
+                    mCurrentUser = App.getUserManager().getCurrentUser();
 
-            if (_messages == null) {
+                if (mMessageEdit != null) {
 
-                _messages = new ArrayList<Message>();
-                _messages.add(msg);
-                configureAndSetMessageAdapter(_messages);
-            }
-            else {
+                    Message msg = new Message();
+                    msg.setMessage(mMessageEdit.getText().toString());
+                    msg.setUserName(mCurrentUser.getName());
+                    msg.setUserID(mCurrentUser.getId());
+                    msg.setTimestamp(DateUtils.getTimestamp());
+                    mMessageEdit.setText("");
 
-                _messages.add(msg);
-            }
+                    if (mMessageAdapter == null) {
 
-            App.getMessageManager().AddMessage(msg);
-            _messageAdapter.notifyDataSetChanged();
-            _messageEdit.setText("");
+                        ArrayList<Message> messages = new ArrayList<>(1);
+                        messages.add(msg);
+                        setMessageAdapter(messages);
+                    }
+                    else {
+                        mMessageAdapter.addItem(msg);
+                    }
+
+                    App.getMessageManager().sendMessage(msg);
+                    mMessageAdapter.notifyDataSetChanged();
+                    mMessagesList.setSelection(mMessageAdapter.getCount() - 1);
+                }
+                break;
+            default:
+                break;
         }
     }
-
-    private void loadAndDisplayMessages() {
-
-        _messages = App.getMessageManager().GetMessages();
-        if (_messages != null) {
-
-            configureAndSetMessageAdapter(_messages);
-        }
-    };
 
     private void configureInnerObjects() {
 
-        _sendButton = (Button)_mainView.findViewById(R.id.sendMessage);
-        if (_sendButton != null)
-            _sendButton.setOnClickListener(this);
+        mSendButton = (Button) mMainView.findViewById(R.id.sendMessage);
+        if (mSendButton != null)
+            mSendButton.setOnClickListener(this);
 
-        _messageEdit = (EditText)_mainView.findViewById(R.id.messageText);
-        _currentUser = App.getUserManager().getCurrentUser();
-    }
+        mMessageEdit = (EditText) mMainView.findViewById(R.id.messageText);
+        if (mMessageEdit != null) {
 
-    private boolean configureAndSetMessageAdapter(ArrayList<Message> messages) {
+            mMessageEdit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
-        if (_currentUser == null) {
-            Log.e(Constants.TAG, "MessageFragment: no logged-in user.");
-            return false;
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (mSendButton != null) {
+                        if (s.length() > 0) {
+                            mSendButton.setEnabled(true);
+                            mSendButton.setTextColor(0xFF000000);
+                        } else {
+                            mSendButton.setEnabled(false);
+                            mSendButton.setTextColor(0xFF8B8B8B);
+                        }
+                    }
+                }
+            });
         }
 
-        if (_messageAdapter == null)
-            _messageAdapter = new MessagesAdapter(getContext(), messages, _currentUser.getId());
-
-        _messagesList = (ListView) _mainView.findViewById(R.id.messagesList);
-        if (_messagesList == null) {
+        mMessagesList = (ListView) mMainView.findViewById(R.id.messagesList);
+        if (mMessagesList == null) {
 
             Log.e(Constants.TAG, "MessageFragment: no message list found.");
-            return false;
+            return;
         }
 
-        _messagesList.setAdapter(_messageAdapter);
-        _messagesList.setSelection(_messageAdapter.getCount() - 1);
-        return true;
+        ArrayList<Message> msg = App.getMessageManager().getMessages();
+        if (msg != null && !msg.isEmpty()) {
+            setMessageAdapter(msg);
+        }
     }
+
+    private void setMessageAdapter(ArrayList<Message> messages) {
+
+        if (mMessageAdapter == null)
+            mMessageAdapter = new MessagesAdapter(getContext(), messages);
+
+        mMessagesList.setAdapter(mMessageAdapter);
+        mMessagesList.setSelection(mMessageAdapter.getCount() - 1);
+    }
+
+    private BroadcastReceiver newMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Bundle extra = intent.getExtras();
+            Message msg = new Message();
+            msg.setMessage(extra.getString(COLUMN_MESSAGE));
+            msg.setTimestamp(extra.getString(COLUMN_TIMESTAMP));
+            msg.setUserName(extra.getString(COLUMN_USER_NAME));
+            msg.setUserID(extra.getString(COLUMN_USER_ID));
+
+            mMessageAdapter.addItem(msg);
+            mMessageAdapter.notifyDataSetChanged();
+            mMessagesList.setSelection(mMessageAdapter.getCount() - 1);
+        }
+    };
+
+    private BroadcastReceiver keyboardEventReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO: add message to view
+        }
+    };
+
 }

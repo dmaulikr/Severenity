@@ -53,7 +53,8 @@ public class DateUtils {
             _calendar.setTime(_dataFormat.parse(timestamp));
             int mins = _calendar.get(Calendar.MINUTE);
             String minutes = (mins < 10) ? "0" + mins : String.valueOf(mins);
-            return _calendar.get(Calendar.HOUR) + ":" + minutes;
+
+            return _calendar.get(Calendar.HOUR_OF_DAY) + ":" + minutes;
         }
         catch (Exception e) {
             return null;
