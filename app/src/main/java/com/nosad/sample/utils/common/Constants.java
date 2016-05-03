@@ -13,7 +13,6 @@ public class Constants {
     public static final String INTENT_FILTER_WARDS_COUNT = "com.nosad.sample.wardscount";
     public static final String INTENT_FILTER_UPDATE_UI = "com.nosad.sample.updateui";
     public static final String INTENT_FILTER_NEW_MESSAGE = "com.nosad.sample.newmessage";
-    public static final String INTENT_FILTER_KEYBOARD_EVENT = "com.nosad.sample.keyboardevent";
 
     public static final String EXTRA_GAC_CONNECTED = "isConnected";
     public static final String EXTRA_STEPS = "steps";

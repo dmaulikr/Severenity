@@ -12,8 +12,10 @@ import com.nosad.sample.entity.contracts.UserContract;
  * Created by Novosad on 2/17/16.
  */
 public class SQLiteDBHelper extends SQLiteOpenHelper {
-    private static final int DB_VERSION = 1;
-    private static final String DB_NAME = "Filter1.db";//"Filter.db";
+    // 1 - UserName table created
+    // 2 - added Message table
+    private static final int DB_VERSION = 2;
+    private static final String DB_NAME = "Filter.db";
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER ";
@@ -54,7 +56,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // TEMP: clearing on creation
-        //db.execSQL(DB_SQL_CREATE_USERS);
+        db.execSQL(DB_SQL_CREATE_USERS);
         db.execSQL(DB_SQL_CREATE_MESSAGE);
     }
 
@@ -62,9 +64,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        //db.execSQL(DB_SQL_DELETE_USERS);
-        db.execSQL(DB_SQL_DELETE_MESSAGE);
-        onCreate(db);
+        if (oldVersion == 1 && newVersion == DB_VERSION)
+            db.execSQL(DB_SQL_CREATE_MESSAGE);
     }
 
     @Override

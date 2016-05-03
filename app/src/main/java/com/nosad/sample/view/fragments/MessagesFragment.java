@@ -42,7 +42,6 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
     private EditText mMessageEdit;
     private User mCurrentUser;
     private MessagesAdapter mMessageAdapter;
-    private View mMainView;
 
     public MessagesFragment() {
         // Required empty public constructor
@@ -52,20 +51,11 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mMainView = inflater.inflate(R.layout.fragment_messages, container, false);
+        View mainView = inflater.inflate(R.layout.fragment_messages, container, false);
 
-/*        Message msg = new Message();
-        for (int i = 0; i < 100; i++)
-        {
-            msg.setMessage("Hello " + i);
-            msg.setTimestamp("H15654ello " + i);
-            msg.setUserName("Name " + i);
-            msg.setUserID("ID " + i);
-            App.getMessageManager().AddMessage(msg);
-        }*/
+        configureInnerObjects(mainView);
 
-
-        return mMainView;
+        return mainView;
     }
 
     @Override
@@ -73,16 +63,9 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
         Log.v(Constants.TAG, this.toString() + " onResume()");
         super.onResume();
 
-        configureInnerObjects();
-
         App.getLocalBroadcastManager().registerReceiver(
                 newMessageReceiver,
                 new IntentFilter(Constants.INTENT_FILTER_NEW_MESSAGE)
-        );
-
-        App.getLocalBroadcastManager().registerReceiver(
-                keyboardEventReceiver,
-                new IntentFilter(Constants.INTENT_FILTER_KEYBOARD_EVENT)
         );
     }
 
@@ -90,7 +73,6 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
     public void onPause() {
         Log.v(Constants.TAG, this.toString() + " onPause()");
         super.onPause();
-        App.getLocalBroadcastManager().unregisterReceiver(keyboardEventReceiver);
         App.getLocalBroadcastManager().unregisterReceiver(newMessageReceiver);
     }
 
@@ -132,18 +114,20 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void configureInnerObjects() {
+    private void configureInnerObjects(View view) {
 
-        mSendButton = (Button) mMainView.findViewById(R.id.sendMessage);
+        mSendButton = (Button) view.findViewById(R.id.sendMessage);
         if (mSendButton != null)
             mSendButton.setOnClickListener(this);
 
-        mMessageEdit = (EditText) mMainView.findViewById(R.id.messageText);
+        mMessageEdit = (EditText) view.findViewById(R.id.messageText);
         if (mMessageEdit != null) {
 
             mMessageEdit.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    if (mMessagesList != null && mMessageAdapter != null)
+                        mMessagesList.setSelection(mMessageAdapter.getCount() - 1);
                 }
 
                 @Override
@@ -165,7 +149,7 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
             });
         }
 
-        mMessagesList = (ListView) mMainView.findViewById(R.id.messagesList);
+        mMessagesList = (ListView) view.findViewById(R.id.messagesList);
         if (mMessagesList == null) {
 
             Log.e(Constants.TAG, "MessageFragment: no message list found.");
@@ -203,12 +187,4 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
             mMessagesList.setSelection(mMessageAdapter.getCount() - 1);
         }
     };
-
-    private BroadcastReceiver keyboardEventReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // TODO: add message to view
-        }
-    };
-
 }
