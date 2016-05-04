@@ -1,6 +1,7 @@
 package com.nosad.sample.view.fragments;
 
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -59,9 +60,9 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onResume() {
-        Log.v(Constants.TAG, this.toString() + " onResume()");
-        super.onResume();
+    public void onActivityCreated(Bundle bundle) {
+        Log.v(Constants.TAG, this.toString() + " onActivityCreated()");
+        super.onActivityCreated(bundle);
 
         App.getLocalBroadcastManager().registerReceiver(
                 newMessageReceiver,
@@ -70,9 +71,9 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onPause() {
+    public void onDestroy() {
         Log.v(Constants.TAG, this.toString() + " onPause()");
-        super.onPause();
+        super.onDestroy();
         App.getLocalBroadcastManager().unregisterReceiver(newMessageReceiver);
     }
 
