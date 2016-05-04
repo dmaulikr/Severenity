@@ -113,12 +113,12 @@ public class MessageManager extends DataManager {
             addMessage(msg);
 
         Intent intent = new Intent(Constants.INTENT_FILTER_NEW_MESSAGE);
-        Bundle extras = intent.getExtras();
-        extras.putString(COLUMN_MESSAGE, msg.getMessage());
-        extras.putString(COLUMN_TIMESTAMP, msg.getTimestamp());
-        extras.putString(COLUMN_USER_ID, msg.getUserID());
-        extras.putString(COLUMN_USER_NAME, msg.getUserName());
+        intent.putExtra(COLUMN_MESSAGE, msg.getMessage());
+        intent.putExtra(COLUMN_TIMESTAMP, msg.getTimestamp());
+        intent.putExtra(COLUMN_USER_ID, msg.getUserID());
+        intent.putExtra(COLUMN_USER_NAME, msg.getUserName());
 
         App.getLocalBroadcastManager().sendBroadcast(intent);
+
     }
 }

@@ -126,8 +126,6 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
             mMessageEdit.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    if (mMessagesList != null && mMessageAdapter != null)
-                        mMessagesList.setSelection(mMessageAdapter.getCount() - 1);
                 }
 
                 @Override
