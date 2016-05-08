@@ -114,8 +114,8 @@ public class WebSocketManager {
                         final User user = new User();
                         user.setId(jsonObject.getString("id"));
                         final LatLng latLng = new LatLng(
-                            jsonObject.getDouble("lat") + 0.0005,
-                            jsonObject.getDouble("lng") + 0.0005
+                                jsonObject.getDouble("lat") + 0.0005,
+                                jsonObject.getDouble("lng") + 0.0005
                         );
 
                         Handler handler = new Handler(Looper.getMainLooper());
@@ -171,11 +171,11 @@ public class WebSocketManager {
     /**
      * Subscribes to location events from the server.
      */
-    public void subscribeForMessageEvent(){
-
+    public void subscribeForMessageEvent() {
         Socket socket = getSocket();
-        if (socket == null)
+        if (socket == null) {
             return;
+        }
 
         // subscribe for message event
         socket.on(Constants.SOCKET_EVENT_MESSAGE, new Emitter.Listener() {
@@ -209,11 +209,11 @@ public class WebSocketManager {
      * Unsubscribe from location events from the server.
      *
      */
-    public void unsubscribeFromMessageEvents(){
-
+    public void unsubscribeFromMessageEvents() {
         Socket socket = getSocket();
-        if (socket == null)
+        if (socket == null) {
             return;
+        }
 
         socket.off(Constants.SOCKET_EVENT_MESSAGE);
     }
@@ -222,7 +222,7 @@ public class WebSocketManager {
      * Sends message via mSocket if mSocket is connected.
      * Message structure is:
      *
-     * @param Messgae
+     * @param message
      */
     public void sendMessageToServer(Message message) {
         if (!mSocket.connected()) {

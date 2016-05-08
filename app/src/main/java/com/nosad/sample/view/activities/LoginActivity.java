@@ -22,14 +22,14 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.nosad.sample.App;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.network.RestManager;
 import com.nosad.sample.utils.common.Constants;
@@ -40,9 +40,8 @@ import java.util.Arrays;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
-
-    private boolean accessFineLocationGranted = false;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    private static final int PERMISSION_REQUEST_CODE = 1;
 
     // The BroadcastReceiver that tracks network connectivity changes.
     private RestManager.NetworkReceiver receiver;
@@ -89,6 +88,13 @@ public class LoginActivity extends AppCompatActivity {
         accessTokenTracker.startTracking();
         profileTracker.startTracking();
 
+        initViews();
+        registerReceivers();
+
+        updateWithCurrentAccessToken();
+    }
+
+    private void initViews() {
         LoginButton loginButton = (LoginButton) findViewById(R.id.btnLoginWithFacebook);
         loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email"));
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -110,37 +116,70 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         mProgressView = findViewById(R.id.login_progress);
+    }
 
+    private void registerReceivers() {
         // Registers BroadcastReceiver to track network connection changes.
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         receiver = restManager.getNetworkReceiver();
         this.registerReceiver(receiver, filter);
+    }
 
-        updateWithCurrentAccessToken();
+    private boolean playServicesAvailable() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i(Constants.TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 
     private void requestPermissions() {
-        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+        requestPermissions(
+            new String[] {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.READ_PHONE_STATE
+            },
+            PERMISSION_REQUEST_CODE
+        );
+    }
 
-        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-            accessFineLocationGranted = true;
-        } else {
-            requestPermissions(
-                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
-                    LOCATION_PERMISSION_REQUEST_CODE
-            );
+    private boolean checkPermission() {
+        boolean result;
+
+        if (!playServicesAvailable()) {
+            return false;
         }
+
+        int phoneState = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+        int fineLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (phoneState == PackageManager.PERMISSION_GRANTED && fineLocation == PackageManager.PERMISSION_GRANTED) {
+            result = true;
+        } else {
+            result = false;
+        }
+
+        return result;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
-            case LOCATION_PERMISSION_REQUEST_CODE:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    accessFineLocationGranted = true;
-                } else {
-                    Toast.makeText(getApplicationContext(), "Request for " + permissions[0] + " denied.", Toast.LENGTH_SHORT).show();
-                    finish();
+            case PERMISSION_REQUEST_CODE:
+                for (int i = 0; i < permissions.length; i++) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        Log.i(Constants.TAG, "Request for " + permissions[i] + " is granted. ");
+                    } else {
+                        Log.i(Constants.TAG, "Request for " + permissions[i] + " is not granted. ");
+                        finish();
+                    }
                 }
                 break;
             default: break;
@@ -158,7 +197,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateWithCurrentAccessToken() {
-        if (accessFineLocationGranted) {
+        if (checkPermission()) {
             if (AccessToken.getCurrentAccessToken() != null) {
                 startActivity(mainActivityIntent);
             }

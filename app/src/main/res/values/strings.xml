@@ -75,6 +75,7 @@
     <string name="mobile_connected">Mobile Connected</string>
     <string name="connection_established">Connection established</string>
     <string name="title">Severenity</string>
+    <string name="severenity_notification">Severenity notifies</string>
     <string name="menu_shop">Shop</string>
     <string name="menu_map">Map</string>
     <string name="menu_profile">Spells</string>

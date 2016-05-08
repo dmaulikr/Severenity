@@ -1,5 +1,7 @@
 package com.nosad.sample.view.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
@@ -14,6 +16,7 @@ import android.text.SpannableString;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -22,15 +25,18 @@ import com.facebook.HttpMethod;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.managers.location.StepManager;
+import com.nosad.sample.engine.managers.messaging.GCMManager;
+import com.nosad.sample.engine.managers.messaging.RegistrationIntentService;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.CustomTypefaceSpan;
+import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.custom.SplitToolbar;
 import com.nosad.sample.view.fragments.BattlesFragment;
 import com.nosad.sample.view.fragments.GameMapFragment;
+import com.nosad.sample.view.fragments.MessagesFragment;
 import com.nosad.sample.view.fragments.ProfileFragment;
 import com.nosad.sample.view.fragments.ShopFragment;
-import com.nosad.sample.view.fragments.MessagesFragment;
 
 import org.json.JSONException;
 
@@ -38,7 +44,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
-
     private StepManager stepManager;
 
     private FrameLayout container;
@@ -60,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Fragment> allFragments = new ArrayList<>();
 
+    private boolean activityActive = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +80,54 @@ public class MainActivity extends AppCompatActivity {
 
         toolbarBottom.findViewById(R.id.menu_map).performClick();
 
+        // If device was not registered - start registration service
+        if (!App.getInstance().isCurrentDeviceRegistered()) {
+            startDeviceRegistrationService();
+        }
+
         App.getLocalBroadcastManager().registerReceiver(
-            App.getLocationManager().getStepsCountReceiver(),
-            new IntentFilter(Constants.INTENT_FILTER_STEPS)
+                App.getLocationManager().getStepsCountReceiver(),
+                new IntentFilter(Constants.INTENT_FILTER_STEPS)
         );
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(GCMManager.REGISTRATION_PROCESS);
+        intentFilter.addAction(GCMManager.MESSAGE_RECEIVED);
+        App.getLocalBroadcastManager().registerReceiver(gcmMessageReceiver, intentFilter);
+
+        processNewIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        processNewIntent(intent);
+    }
+
+    /**
+     * Processes provided intent.
+     *
+     * @param intent - intent to process.
+     */
+    private void processNewIntent(Intent intent) {
+        if (intent == null) {
+            return;
+        }
+
+        // Notification message received
+        if (intent.getAction() != null && intent.getAction().equals(GCMManager.MESSAGE_RECEIVED)) {
+            String message = intent.getStringExtra("message");
+            Utils.showAlertDialog(message, this);
+        }
+    }
+
+    /**
+     * Starts {@link RegistrationIntentService} to register current device.
+     */
+    private void startDeviceRegistrationService() {
+        Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
+        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_ID, Utils.getDeviceId(this));
+        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_NAME, Utils.getDeviceName());
+        startService(intent);
     }
 
     private void retrieveCurrentUserFBData() {
@@ -276,6 +327,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+        activityActive = false;
+
         App.getUserManager().updateCurrentUserInDB();
         App.getLocationManager().stopLocationUpdates();
         App.getGoogleApiHelper().disconnect();
@@ -297,12 +350,40 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        activityActive = true;
+
         App.getLocalBroadcastManager().registerReceiver(
                 App.getLocationManager().getGoogleApiClientReceiver(),
                 new IntentFilter(Constants.INTENT_FILTER_GAC)
         );
         App.getGoogleApiHelper().connect();
     }
+
+    /**
+     * GCM receiver for the message sent from {@link com.nosad.sample.engine.managers.messaging.GCMListener}
+     * Reacts to registration and messages.
+     */
+    private BroadcastReceiver gcmMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(GCMManager.REGISTRATION_PROCESS)) {
+                String result  = intent.getStringExtra("result");
+                String message = intent.getStringExtra("message");
+
+                if (result.equals("success")) {
+                    App.getSharedPreferences().edit().putBoolean(Constants.PREFS_DEVICE_REGISTERED, true);
+                } else {
+                    App.getSharedPreferences().edit().putBoolean(Constants.PREFS_DEVICE_REGISTERED, false);
+                }
+
+                Log.d(Constants.TAG, "onReceive: " + result + message);
+                Toast.makeText(context, result + " : " + message, Toast.LENGTH_SHORT).show();
+            } else if (intent.getAction().equals(GCMManager.MESSAGE_RECEIVED) && activityActive) {
+                String message = intent.getStringExtra("message");
+                Utils.showAlertDialog(message, MainActivity.this);
+            }
+        }
+    };
 
     public Toolbar getToolbarTop() {
         return toolbarTop;

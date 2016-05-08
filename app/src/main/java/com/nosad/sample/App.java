@@ -3,6 +3,7 @@ package com.nosad.sample;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.content.LocalBroadcastManager;
 import com.facebook.FacebookSdk;
 
@@ -11,6 +12,7 @@ import com.nosad.sample.engine.managers.data.MessageManager;
 import com.nosad.sample.engine.managers.data.UserManager;
 import com.nosad.sample.engine.managers.game.SpellManager;
 import com.nosad.sample.engine.managers.location.LocationManager;
+import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.engine.network.WebSocketManager;
 import com.nosad.sample.helpers.GoogleApiHelper;
 import com.nosad.sample.utils.FontsOverride;
@@ -28,9 +30,12 @@ public class App extends Application {
     private SpellManager spellManager;
     private WebSocketManager webSocketManager;
     private MessageManager msgManager;
+    private GCMManager gcmManager;
 
     private static App mInstance;
     private static Context mContext;
+
+    private SharedPreferences sharedPrefereces;
 
     @Override
     public void onCreate() {
@@ -48,9 +53,25 @@ public class App extends Application {
         userManager = new UserManager(mContext);
         spellManager = new SpellManager(mContext);
         webSocketManager = new WebSocketManager(mContext);
-        if (webSocketManager.createSocket(Constants.HOST, true));
+        gcmManager = new GCMManager(mContext);
+        if (webSocketManager.createSocket(Constants.HOST, true)) {
             webSocketManager.subscribeForMessageEvent();
+        }
         msgManager = new MessageManager(mContext);
+
+        sharedPrefereces = getSharedPreferences("Severenity", MODE_PRIVATE);
+    }
+
+    public SharedPreferences getSharedPreferencesInstance() {
+        return this.sharedPrefereces;
+    }
+
+    public static SharedPreferences getSharedPreferences() {
+        return getInstance().getSharedPreferencesInstance();
+    }
+
+    public boolean isCurrentDeviceRegistered() {
+        return getSharedPreferences().getBoolean(Constants.PREFS_DEVICE_REGISTERED, false);
     }
 
     public void logOut() {
@@ -86,6 +107,14 @@ public class App extends Application {
 
     public LocalBroadcastManager getLocalBroadcastManagerInstance() {
         return this.localBroadcastManager;
+    }
+
+    public static GCMManager getGCMManager() {
+        return getInstance().getGCMManagerInstance();
+    }
+
+    public GCMManager getGCMManagerInstance() {
+        return this.gcmManager;
     }
 
     public static LocalBroadcastManager getLocalBroadcastManager() {

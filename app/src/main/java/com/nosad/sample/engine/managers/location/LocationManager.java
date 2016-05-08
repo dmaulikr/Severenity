@@ -166,7 +166,9 @@ public class LocationManager implements LocationListener {
         if (place.getPlaceTypes().contains(Place.TYPE_BUS_STATION)
                 || place.getPlaceTypes().contains(Place.TYPE_TRANSIT_STATION)
                 || place.getPlaceTypes().contains(Place.TYPE_SUBWAY_STATION)
-                || place.getPlaceTypes().contains(Place.TYPE_STREET_ADDRESS)) {
+                || place.getPlaceTypes().contains(Place.TYPE_STREET_ADDRESS)
+                || place.getPlaceTypes().contains(Place.TYPE_ROUTE)
+                || place.getPlaceTypes().contains(Place.TYPE_ESTABLISHMENT)) {
             return;
         }
 
