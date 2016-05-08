@@ -36,8 +36,8 @@ public class Constants {
      * Connection constants
      */
 
-//    public final static String HOST =  "https://severenity.herokuapp.com";
-    public final static String HOST =  "http://localhost:8080";
+    public final static String HOST =  "https://severenity.herokuapp.com";
+//    public final static String HOST =  "http://localhost:8080";
     private final static String API_ADDRESS = HOST + "/api";
 
     public final static int CONNECTION_READ_TIMEOUT = 10000; // milliseconds
