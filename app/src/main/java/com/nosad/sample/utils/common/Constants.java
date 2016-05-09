@@ -15,6 +15,7 @@ public class Constants {
     public static final String INTENT_FILTER_WARDS_COUNT = "com.nosad.sample.wardscount";
     public static final String INTENT_FILTER_UPDATE_UI = "com.nosad.sample.updateui";
     public static final String INTENT_FILTER_NEW_MESSAGE = "com.nosad.sample.newmessage";
+    public static final String INTENT_FILTER_NEW_QUEST = "com.nosad.sample.newquest";
 
     public static final String INTENT_EXTRA_DEVICE_ID = "DEVICE_ID";
     public static final String INTENT_EXTRA_DEVICE_NAME = "DEVICE_NAME";

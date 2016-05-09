@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.nosad.sample.entity.contracts.MsgContract;
+import com.nosad.sample.entity.contracts.QuestContract;
 import com.nosad.sample.entity.contracts.UserContract;
 
 /**
@@ -14,7 +15,8 @@ import com.nosad.sample.entity.contracts.UserContract;
 public class SQLiteDBHelper extends SQLiteOpenHelper {
     // 1 - UserName table created
     // 2 - added Message table
-    private static final int DB_VERSION = 2;
+    // 3 - added Quests table
+    private static final int DB_VERSION = 3;
     private static final String DB_NAME = "Filter.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -32,7 +34,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     UserContract.DBUser.COLUMN_LEVEL + INT_TYPE +
                     " )";
 
-    private static final String DB_SQL_CREATE_MESSAGE =
+    private static final String DB_SQL_CREATE_MESSAGES =
             "CREATE TABLE " + MsgContract.DBMsg.TABLE_MESSAGE + " (" +
                     MsgContract.DBMsg._ID + " INTEGER PRIMARY KEY," +
                     MsgContract.DBMsg.COLUMN_USER_ID   + TEXT_TYPE + COMMA_SEP +
@@ -41,9 +43,19 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     MsgContract.DBMsg.COLUMN_TIMESTAMP + TEXT_TYPE +
                     " )";
 
+    private static final String DB_SQL_CREATE_QUESTS =
+            "CREATE TABLE " + QuestContract.DBQuest.TABLE_QUESTS + " (" +
+                    QuestContract.DBQuest._ID + " INTEGER PRIMARY KEY," +
+                    QuestContract.DBQuest.COLUMN_ID   + INT_TYPE + COMMA_SEP +
+                    QuestContract.DBQuest.COLUMN_TITLE   + TEXT_TYPE + COMMA_SEP +
+                    QuestContract.DBQuest.COLUMN_DESCRIPTION + TEXT_TYPE +
+                    " )";
+
     private static final String DB_SQL_DELETE_USERS = "DROP TABLE IF EXISTS " + UserContract.DBUser.TABLE_USERS;
 
-    private static final String DB_SQL_DELETE_MESSAGE = "DROP TABLE IF EXISTS " + MsgContract.DBMsg.TABLE_MESSAGE;
+    private static final String DB_SQL_DELETE_MESSAGES = "DROP TABLE IF EXISTS " + MsgContract.DBMsg.TABLE_MESSAGE;
+
+    private static final String DB_SQL_DELETE_QUESTS = "DROP TABLE IF EXISTS " + QuestContract.DBQuest.TABLE_QUESTS;
 
     public SQLiteDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -57,15 +69,21 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // TEMP: clearing on creation
         db.execSQL(DB_SQL_CREATE_USERS);
-        db.execSQL(DB_SQL_CREATE_MESSAGE);
+        db.execSQL(DB_SQL_CREATE_MESSAGES);
+        db.execSQL(DB_SQL_CREATE_QUESTS);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        if (oldVersion == 1 && newVersion == DB_VERSION)
-            db.execSQL(DB_SQL_CREATE_MESSAGE);
+        if (oldVersion == 1 && newVersion == 2) {
+            db.execSQL(DB_SQL_CREATE_MESSAGES);
+        }
+
+        if (oldVersion == 2 && newVersion == DB_VERSION) {
+            db.execSQL(DB_SQL_CREATE_QUESTS);
+        }
     }
 
     @Override
