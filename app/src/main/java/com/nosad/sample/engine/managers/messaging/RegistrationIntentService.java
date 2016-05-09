@@ -2,6 +2,7 @@ package com.nosad.sample.engine.managers.messaging;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -80,7 +81,8 @@ public class RegistrationIntentService extends IntentService {
             @Override
             public void onErrorCallback(NetworkResponse response) {
                 if (response != null && response.data != null) {
-                    Toast.makeText(getApplicationContext(), Arrays.toString(response.data), Toast.LENGTH_SHORT).show();
+                    Log.e(Constants.TAG, new String(response.data));
+                    Toast.makeText(getApplicationContext(), "Error occurred on server.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), Constants.REST_API_DEVICES + " response is null.", Toast.LENGTH_SHORT).show();
                 }
