@@ -7,13 +7,17 @@ public class Quest {
     private long id;
     private String title;
     private String description;
+    private long experience;
+    private long credits;
 
     public Quest() {}
 
-    public Quest(long id, String title, String description) {
+    public Quest(long id, String title, String description, long experience, long credits) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.experience = experience;
+        this.credits = credits;
     }
 
     public long getId() {
@@ -38,5 +42,21 @@ public class Quest {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public long getExperience() {
+        return experience;
+    }
+
+    public void setExperience(long experience) {
+        this.experience = experience;
+    }
+
+    public long getCredits() {
+        return credits;
+    }
+
+    public void setCredits(long credits) {
+        this.credits = credits;
     }
 }

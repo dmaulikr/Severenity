@@ -32,7 +32,7 @@ import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.custom.SplitToolbar;
-import com.nosad.sample.view.fragments.BattlesFragment;
+import com.nosad.sample.view.fragments.QuestsFragment;
 import com.nosad.sample.view.fragments.GameMapFragment;
 import com.nosad.sample.view.fragments.MessagesFragment;
 import com.nosad.sample.view.fragments.ProfileFragment;
@@ -55,12 +55,12 @@ public class MainActivity extends AppCompatActivity {
     private ShopFragment shopFragment = new ShopFragment();
     private MessagesFragment messagesFragment = new MessagesFragment();
     private ProfileFragment profileFragment = new ProfileFragment();
-    private BattlesFragment battlesFragment = new BattlesFragment();
+    private QuestsFragment battlesFragment = new QuestsFragment();
     private GameMapFragment gameMapFragment = new GameMapFragment();
     private String shopFragmentTag = ShopFragment.class.getSimpleName();
     private String messagesFragmentTag = MessagesFragment.class.getSimpleName();
     private String profileFragmentTag = ProfileFragment.class.getSimpleName();
-    private String battlesFragmentTag = BattlesFragment.class.getSimpleName();
+    private String battlesFragmentTag = QuestsFragment.class.getSimpleName();
     private String gameMapFragmentTag = GameMapFragment.class.getSimpleName();
 
     private ArrayList<Fragment> allFragments = new ArrayList<>();

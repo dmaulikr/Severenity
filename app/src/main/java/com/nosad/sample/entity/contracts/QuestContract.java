@@ -16,6 +16,8 @@ public class QuestContract {
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_EXP_AMOUNT = "experience_amount";
+        public static final String COLUMN_CREDITS_AMOUNT = "credits_amount";
         public static final String COLUMN_NULLABLE = "NULL";
     }
 }
