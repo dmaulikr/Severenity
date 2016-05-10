@@ -8,7 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.nosad.sample.App;
-import com.nosad.sample.entity.Quest;
+import com.nosad.sample.entity.quest.Quest;
 import com.nosad.sample.utils.common.Constants;
 
 import java.util.ArrayList;

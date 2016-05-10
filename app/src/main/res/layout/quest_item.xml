@@ -10,7 +10,30 @@
         android:layout_width="48dp"
         android:layout_height="48dp" />
 
+    <TextView
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_alignParentEnd="true"
+        android:drawableTop="@drawable/ic_coins"
+        android:id="@+id/tvCoinsAmountForQuest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="12sp" />
+
+    <TextView
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_toStartOf="@id/tvCoinsAmountForQuest"
+        android:drawableTop="@drawable/ic_star"
+        android:id="@+id/tvExpAmountForQuest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="12sp" />
+
     <LinearLayout
+        android:layout_toStartOf="@id/tvExpAmountForQuest"
         android:layout_toEndOf="@id/ivQuestIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,30 +51,11 @@
             android:textSize="12sp"
             android:layout_gravity="center"
             android:id="@+id/tvQuestDescription"
+            android:lines="2"
+            android:ellipsize="marquee"
+            android:singleLine="false"
             android:layout_margin="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
-        <TextView
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:layout_alignParentEnd="true"
-            android:drawableTop="@drawable/ic_coins"
-            android:id="@+id/tvCoinsAmountForQuest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="12sp" />
-
-        <TextView
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:layout_toStartOf="@id/tvCoinsAmountForQuest"
-            android:drawableTop="@drawable/ic_star"
-            android:id="@+id/tvExpAmountForQuest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="12sp" />
 </RelativeLayout>

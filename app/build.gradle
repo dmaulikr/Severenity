@@ -49,6 +49,7 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.4.3'
     compile 'com.facebook.android:facebook-android-sdk:4.9.0'
     compile 'com.github.szugyi:Android-CircleMenu:1.1.1'
+    compile 'joda-time:joda-time:2.9.3'
     compile('io.socket:socket.io-client:0.7.0') {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'

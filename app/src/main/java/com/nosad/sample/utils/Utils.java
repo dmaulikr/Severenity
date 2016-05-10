@@ -10,9 +10,13 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.nosad.sample.R;
+import com.nosad.sample.utils.common.Constants;
+
+import java.util.Date;
 
 /**
  * Created by Novosad on 8/29/2015.
@@ -108,5 +112,36 @@ public class Utils {
         });
 
         builder.show();
+    }
+
+    //1 minute = 60 seconds
+    //1 hour = 60 x 60 = 3600
+    //1 day = 3600 x 24 = 86400
+    public static String dateDifference(Date startDate, Date endDate) {
+
+        // Milliseconds
+        long difference = endDate.getTime() - startDate.getTime();
+
+        Log.d(Constants.TAG, "startDate : " + startDate);
+        Log.d(Constants.TAG, "endDate : " + endDate);
+        Log.d(Constants.TAG, "difference : " + startDate);
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        long elapsedDays = difference / daysInMilli;
+        difference = difference % daysInMilli;
+
+        long elapsedHours = difference / hoursInMilli;
+        difference = difference % hoursInMilli;
+
+        long elapsedMinutes = difference / minutesInMilli;
+        difference = difference % minutesInMilli;
+
+        long elapsedSeconds = difference / secondsInMilli;
+
+        return String.format("%d days, %d hours, %d minutes, %d seconds%n", elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
     }
 }

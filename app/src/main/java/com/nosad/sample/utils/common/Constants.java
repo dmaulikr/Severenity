@@ -6,6 +6,24 @@ import java.util.Locale;
  * Created by Novosad on 02/06/2015.
  */
 public class Constants {
+    public enum Characteristic {
+        Level("level"),
+        Immunity("immunity"),
+        Mentality("mentality"),
+        Experience("experience");
+
+        final String value;
+
+        Characteristic(final String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+
     public final static String TAG = "SAMPLE";
 
     public static final String GCM_SENDER_ID = "967925944048";
