@@ -10,18 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.location.places.Place;
 import com.nosad.sample.R;
-import com.nosad.sample.entity.quest.CaptureQuest;
-import com.nosad.sample.entity.quest.CollectQuest;
-import com.nosad.sample.entity.quest.DistanceQuest;
 import com.nosad.sample.entity.quest.Quest;
-import com.nosad.sample.utils.common.Constants;
-
-import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,11 +23,8 @@ import java.util.List;
  */
 public class QuestsAdapter extends ArrayAdapter<Quest> {
     // Couple test quests
-    private ArrayList<Quest> quests = new ArrayList<>(Arrays.asList(
-            new DistanceQuest(1, "Fitness", new DateTime(2016, 5, 15, 0, 0).toDate(), 100, 10, Quest.QuestStatus.InProgress, 4),
-            new CaptureQuest(2, "Invasion", new DateTime(2016, 5, 20, 15, 30).toDate(), 50, 20, Quest.QuestStatus.Finished, "Bank", Place.TYPE_BANK),
-            new CollectQuest(3, "Power-up", null, 10, 100, Quest.QuestStatus.New, Constants.Characteristic.Level, 3)
-    ));
+    private ArrayList<Quest> quests;
+
     private Context context;
     private int resource;
 

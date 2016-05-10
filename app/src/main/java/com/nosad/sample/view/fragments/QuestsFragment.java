@@ -14,7 +14,10 @@ import android.widget.ListView;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.QuestsAdapter;
+import com.nosad.sample.entity.quest.Quest;
 import com.nosad.sample.view.activities.MainActivity;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,7 +41,12 @@ public class QuestsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_quests, container, false);
 
-        QuestsAdapter questsAdapter = new QuestsAdapter(activity, R.layout.quest_item);
+        ArrayList<Quest> quests = App.getQuestManager().getQuests();
+        QuestsAdapter questsAdapter = new QuestsAdapter(
+            activity,
+            R.layout.quest_item,
+            quests
+        );
 
         ListView questsList = (ListView) view.findViewById(R.id.lvQuests);
         questsList.setAdapter(questsAdapter);

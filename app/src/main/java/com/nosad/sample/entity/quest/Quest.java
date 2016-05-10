@@ -14,6 +14,7 @@ public class Quest {
     }
 
     public enum QuestType {
+        None("none"),
         Distance("distance"),
         Capture("capture"),
         Collect("collect");
@@ -37,6 +38,7 @@ public class Quest {
     private long credits;
     private QuestStatus status;
     private Date expirationTime;
+    protected QuestType type = QuestType.None;
 
     public Quest() {}
 
@@ -46,6 +48,7 @@ public class Quest {
         this.experience = experience;
         this.credits = credits;
         this.status = status;
+        this.expirationTime = expirationTime;
     }
 
     public Date getExpirationTime() {
@@ -122,5 +125,13 @@ public class Quest {
 
     public void setStatus(QuestStatus status) {
         this.status = status;
+    }
+
+    public QuestType getType() {
+        return type;
+    }
+
+    public void setType(QuestType type) {
+        this.type = type;
     }
 }

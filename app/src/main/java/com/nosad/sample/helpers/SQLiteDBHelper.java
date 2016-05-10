@@ -31,8 +31,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     UserContract.DBUser.COLUMN_EMAIL + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_DISTANCE + INT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_EXPERIENCE + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_LEVEL + INT_TYPE +
-                    " )";
+                    UserContract.DBUser.COLUMN_LEVEL + INT_TYPE + " )";
 
     private static final String DB_SQL_CREATE_MESSAGES =
             "CREATE TABLE " + MsgContract.DBMsg.TABLE_MESSAGE + " (" +
@@ -40,18 +39,24 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     MsgContract.DBMsg.COLUMN_USER_ID   + TEXT_TYPE + COMMA_SEP +
                     MsgContract.DBMsg.COLUMN_MESSAGE   + TEXT_TYPE + COMMA_SEP +
                     MsgContract.DBMsg.COLUMN_USER_NAME + TEXT_TYPE + COMMA_SEP +
-                    MsgContract.DBMsg.COLUMN_TIMESTAMP + TEXT_TYPE +
-                    " )";
+                    MsgContract.DBMsg.COLUMN_TIMESTAMP + TEXT_TYPE + " )";
 
     private static final String DB_SQL_CREATE_QUESTS =
             "CREATE TABLE " + QuestContract.DBQuest.TABLE_QUESTS + " (" +
-                    QuestContract.DBQuest._ID + " INTEGER PRIMARY KEY," +
+                    QuestContract.DBQuest._ID + INT_TYPE + " PRIMARY KEY," +
                     QuestContract.DBQuest.COLUMN_ID + INT_TYPE + COMMA_SEP +
                     QuestContract.DBQuest.COLUMN_TITLE + TEXT_TYPE + COMMA_SEP +
                     QuestContract.DBQuest.COLUMN_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
                     QuestContract.DBQuest.COLUMN_EXP_AMOUNT + INT_TYPE + COMMA_SEP +
-                    QuestContract.DBQuest.COLUMN_CREDITS_AMOUNT + INT_TYPE +
-                    " )";
+                    QuestContract.DBQuest.COLUMN_CREDITS_AMOUNT + INT_TYPE + COMMA_SEP +
+                    QuestContract.DBQuest.COLUMN_STATUS + INT_TYPE + COMMA_SEP +
+                    QuestContract.DBQuest.COLUMN_TYPE + INT_TYPE + COMMA_SEP +
+                    QuestContract.DBQuest.COLUMN_EXPIRATION_TIME + TEXT_TYPE + COMMA_SEP +
+                    QuestContract.DBQuest.COLUMN_DISTANCE + INT_TYPE + QuestContract.DBQuest.COLUMN_NULLABLE + COMMA_SEP +
+                    QuestContract.DBQuest.COLUMN_PLACE_TYPE + TEXT_TYPE + QuestContract.DBQuest.COLUMN_NULLABLE + COMMA_SEP +
+                    QuestContract.DBQuest.COLUMN_PLACE_TYPE_VALUE + INT_TYPE + QuestContract.DBQuest.COLUMN_NULLABLE + COMMA_SEP +
+                    QuestContract.DBQuest.COLUMN_CHARACTERISTIC + INT_TYPE + QuestContract.DBQuest.COLUMN_NULLABLE + COMMA_SEP +
+                    QuestContract.DBQuest.COLUMN_CHARACTERISTIC_AMOUNT + INT_TYPE + QuestContract.DBQuest.COLUMN_NULLABLE + " )";
 
     private static final String DB_SQL_DELETE_USERS = "DROP TABLE IF EXISTS " + UserContract.DBUser.TABLE_USERS;
 

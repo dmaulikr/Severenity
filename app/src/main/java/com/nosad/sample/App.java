@@ -9,6 +9,7 @@ import com.facebook.FacebookSdk;
 
 import com.facebook.login.LoginManager;
 import com.nosad.sample.engine.managers.data.MessageManager;
+import com.nosad.sample.engine.managers.data.QuestManager;
 import com.nosad.sample.engine.managers.data.UserManager;
 import com.nosad.sample.engine.managers.game.SpellManager;
 import com.nosad.sample.engine.managers.location.LocationManager;
@@ -30,6 +31,7 @@ public class App extends Application {
     private SpellManager spellManager;
     private WebSocketManager webSocketManager;
     private MessageManager msgManager;
+    private QuestManager questManager;
     private GCMManager gcmManager;
 
     private static App mInstance;
@@ -53,6 +55,7 @@ public class App extends Application {
         userManager = new UserManager(mContext);
         spellManager = new SpellManager(mContext);
         webSocketManager = new WebSocketManager(mContext);
+        questManager = new QuestManager(mContext);
         gcmManager = new GCMManager(mContext);
         if (webSocketManager.createSocket(Constants.HOST, true)) {
             webSocketManager.subscribeForMessageEvent();
@@ -147,10 +150,17 @@ public class App extends Application {
 
     public MessageManager getMessageManagerInstance() {
         return this.msgManager;
-    };
+    }
 
     public static MessageManager getMessageManager() {
         return getInstance().getMessageManagerInstance();
     }
 
+    public QuestManager getQuestManagerInstance() {
+        return this.questManager;
+    }
+
+    public static QuestManager getQuestManager() {
+        return getInstance().getQuestManagerInstance();
+    }
 }
