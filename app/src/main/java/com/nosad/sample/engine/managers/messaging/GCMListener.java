@@ -8,11 +8,16 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
+import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Class is responsible for handling GCM messages from application server.
@@ -23,11 +28,48 @@ import com.nosad.sample.view.activities.MainActivity;
 public class GCMListener extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        String message = data.getString("message");
-        Intent intent = new Intent(GCMManager.MESSAGE_RECEIVED);
-        intent.putExtra("message", message);
-        App.getLocalBroadcastManager().sendBroadcast(intent);
-        sendNotification(message);
+        String type = data.getString("type");
+        if (type == null) {
+            Log.e(Constants.TAG, "'type' is missing in GCM message.");
+            return;
+        }
+
+        switch (type) {
+            case "message":
+                Intent messageIntent = new Intent(GCMManager.MESSAGE_RECEIVED);
+                String message = data.getString("message");
+
+                messageIntent.putExtra("message", message);
+
+                App.getLocalBroadcastManager().sendBroadcast(messageIntent);
+                sendNotification(message);
+                break;
+            case "quest":
+                Intent questIntent = new Intent(GCMManager.QUEST_RECEIVED);
+                String quest = data.getString("quest");
+
+                if (quest == null) {
+                    Log.e(Constants.TAG, "'quest' object is missing in GCM message");
+                    return;
+                }
+
+                try {
+                    JSONObject questObj = new JSONObject(quest);
+                    String questType = questObj.getString("type");
+
+                    questIntent.putExtra("type", questType);
+
+                    App.getLocalBroadcastManager().sendBroadcast(questIntent);
+                    sendNotification(questType);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            default:
+                Log.e(Constants.TAG, "Unknown GCM message type received from the server.");
+                return;
+        }
     }
 
     /**

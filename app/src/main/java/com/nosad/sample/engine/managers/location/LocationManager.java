@@ -323,20 +323,4 @@ public class LocationManager implements LocationListener {
     public BroadcastReceiver getGoogleApiClientReceiver() {
         return googleApiClientReceiver;
     }
-
-    private BroadcastReceiver stepsCountReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (!isMoving) {
-                Toast.makeText(context, "Started moving.", Toast.LENGTH_SHORT).show();
-                isMoving = true;
-            }
-            handler.removeCallbacks(stopMoving);
-            handler.postDelayed(stopMoving, 3000);
-        }
-    };
-
-    public BroadcastReceiver getStepsCountReceiver() {
-        return stepsCountReceiver;
-    }
 }
