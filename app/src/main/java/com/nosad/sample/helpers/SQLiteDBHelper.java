@@ -5,9 +5,21 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.google.android.gms.location.places.Place;
+import com.nosad.sample.App;
 import com.nosad.sample.entity.contracts.MsgContract;
 import com.nosad.sample.entity.contracts.QuestContract;
 import com.nosad.sample.entity.contracts.UserContract;
+import com.nosad.sample.entity.quest.CaptureQuest;
+import com.nosad.sample.entity.quest.CollectQuest;
+import com.nosad.sample.entity.quest.DistanceQuest;
+import com.nosad.sample.entity.quest.Quest;
+import com.nosad.sample.utils.common.Constants;
+
+import org.joda.time.DateTime;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Novosad on 2/17/16.

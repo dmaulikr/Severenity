@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.google.android.gms.location.places.Place;
 import com.nosad.sample.App;
 import com.nosad.sample.entity.quest.CaptureQuest;
 import com.nosad.sample.entity.quest.CollectQuest;
@@ -15,21 +14,16 @@ import com.nosad.sample.entity.quest.DistanceQuest;
 import com.nosad.sample.entity.quest.Quest;
 import com.nosad.sample.utils.common.Constants;
 
-import org.joda.time.DateTime;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Locale;
+import java.util.List;
 
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_CHARACTERISTIC;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_CHARACTERISTIC_AMOUNT;
+import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_CREDITS_AMOUNT;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_DESCRIPTION;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_DISTANCE;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_EXPIRATION_TIME;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_EXP_AMOUNT;
-import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_CREDITS_AMOUNT;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_ID;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_PLACE_TYPE;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_PLACE_TYPE_VALUE;
@@ -49,9 +43,38 @@ public class QuestManager extends DataManager {
         super(context);
     }
 
-    public boolean addQuest(Quest quest) {
+    public void addQuests(List<Quest> quests) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
 
+        try {
+            db.beginTransaction();
+            for (Quest quest : quests) {
+                db.insert(TABLE_QUESTS, "NULL", createValuesFrom(quest));
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            if (db.inTransaction()) {
+                db.endTransaction();
+            }
+        }
+
+        db.close();
+    }
+
+    public void deleteQuest(Quest quest) {
+        checkIfNull(quest);
+
+        deleteQuestById(quest.getId());
+    }
+
+    public void deleteQuestById(long id) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(TABLE_QUESTS, "id = ?", new String[]{ String.valueOf(id) });
+        db.close();
+    }
+
+    private ContentValues createValuesFrom(Quest quest) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, quest.getId());
         values.put(COLUMN_TITLE, quest.getTitle());
@@ -60,9 +83,7 @@ public class QuestManager extends DataManager {
         values.put(COLUMN_CREDITS_AMOUNT, quest.getCredits());
         values.put(COLUMN_STATUS, quest.getStatus().ordinal());
         values.put(COLUMN_TYPE, quest.getType().ordinal());
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.TIME_FORMAT, Locale.US);
-        values.put(COLUMN_EXPIRATION_TIME, dateFormat.format(quest.getExpirationTime()));
+        values.put(COLUMN_EXPIRATION_TIME, quest.getExpirationTime());
 
         if (quest.getType() == Quest.QuestType.Distance) {
             values.put(COLUMN_DISTANCE, ((DistanceQuest) quest).getDistance());
@@ -74,10 +95,92 @@ public class QuestManager extends DataManager {
             values.put(COLUMN_CHARACTERISTIC_AMOUNT, ((CollectQuest) quest).getAmount());
         }
 
-        long success = db.insert(TABLE_QUESTS, "NULL", values);
+        return values;
+    }
+
+    public boolean addQuest(Quest quest) {
+        Quest q = getQuest(quest);
+        if (q != null) {
+            return false;
+        }
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        long success = db.insert(TABLE_QUESTS, "NULL", createValuesFrom(quest));
         db.close();
 
         return success != -1;
+    }
+
+
+    public Quest getQuestById(long id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                TABLE_QUESTS,
+                new String[] {
+                        COLUMN_ID, COLUMN_TITLE, COLUMN_DESCRIPTION,
+                        COLUMN_EXP_AMOUNT, COLUMN_CREDITS_AMOUNT, COLUMN_EXPIRATION_TIME,
+                        COLUMN_STATUS, COLUMN_TYPE, COLUMN_DISTANCE,
+                        COLUMN_PLACE_TYPE, COLUMN_PLACE_TYPE_VALUE,
+                        COLUMN_CHARACTERISTIC, COLUMN_CHARACTERISTIC_AMOUNT
+                },
+                "id = " + id,
+                null, null, null, null, null
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            Quest quest = getQuestFromCursor(cursor);
+
+            if (quest.getType() == Quest.QuestType.Distance) {
+                quest = new DistanceQuest(quest, cursor.getInt(cursor.getColumnIndex(COLUMN_DISTANCE)));
+            } else if (quest.getType() == Quest.QuestType.Capture) {
+                quest = new CaptureQuest(quest,
+                    cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_TYPE)),
+                    cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE_VALUE))
+                );
+            } else if (quest.getType() == Quest.QuestType.Collect) {
+                Constants.Characteristic characteristic = Constants.Characteristic.values()[
+                        cursor.getInt(cursor.getColumnIndex(COLUMN_CHARACTERISTIC))
+                        ];
+
+                quest = new CollectQuest(quest, characteristic, cursor.getInt(cursor.getColumnIndex(COLUMN_CHARACTERISTIC_AMOUNT)));
+            }
+
+            cursor.close();
+            db.close();
+
+            return quest;
+        } else {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+            return null;
+        }
+    }
+
+    private Quest getQuestFromCursor(Cursor cursor) {
+        Quest quest = new Quest();
+        quest.setId(cursor.getLong(cursor.getColumnIndex(COLUMN_ID)));
+        quest.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
+        quest.setType(Quest.QuestType.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_TYPE))]);
+        quest.setStatus(Quest.QuestStatus.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS))]);
+        quest.setExperience(cursor.getLong(cursor.getColumnIndex(COLUMN_EXP_AMOUNT)));
+        quest.setCredits(cursor.getLong(cursor.getColumnIndex(COLUMN_CREDITS_AMOUNT)));
+
+        String expirationTime = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRATION_TIME));
+        if (!expirationTime.equals("null")) {
+            quest.setExpirationTime(expirationTime);
+        }
+
+        return quest;
+    }
+
+    public Quest getQuest(Quest quest) {
+        checkIfNull(quest);
+
+        return getQuestById(quest.getId());
     }
 
     public ArrayList<Quest> getQuests() {
@@ -103,56 +206,29 @@ public class QuestManager extends DataManager {
         }
 
         if (cursor.getCount() == 0) {
-            return new ArrayList<>(Arrays.asList(
-                    new DistanceQuest(1, "Fitness", new DateTime(2016, 5, 15, 0, 0).toDate(), 100, 10, Quest.QuestStatus.InProgress, 4),
-                    new CaptureQuest(2, "Invasion", new DateTime(2016, 5, 20, 15, 30).toDate(), 50, 20, Quest.QuestStatus.Finished, "Bank", Place.TYPE_BANK),
-                    new CollectQuest(3, "Power-up", null, 10, 100, Quest.QuestStatus.New, Constants.Characteristic.Level, 3)
-            ));
+            return null;
         }
 
         ArrayList<Quest> questsList = new ArrayList<>(cursor.getCount());
 
         if (cursor.moveToFirst()) {
             do {
-                Quest.QuestType type = Quest.QuestType.values()[
-                    cursor.getInt(cursor.getColumnIndex(COLUMN_TYPE))
-                ];
+                Quest quest = getQuestFromCursor(cursor);
 
-                Quest.QuestStatus status = Quest.QuestStatus.values()[
-                    cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS))
-                ];
-
-                Quest quest = new Quest();
-                quest.setId(cursor.getLong(cursor.getColumnIndex(COLUMN_ID)));
-                quest.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
-                quest.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION)));
-                quest.setExperience(cursor.getLong(cursor.getColumnIndex(COLUMN_EXP_AMOUNT)));
-                quest.setCredits(cursor.getLong(cursor.getColumnIndex(COLUMN_CREDITS_AMOUNT)));
-                try {
-                    quest.setExpirationTime(
-                        new SimpleDateFormat(Constants.TIME_FORMAT, Locale.US)
-                            .parse(cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRATION_TIME)))
-                    );
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                quest.setType(type);
-                quest.setStatus(status);
-
-                if (type == Quest.QuestType.Distance) {
+                if (quest.getType() == Quest.QuestType.Distance) {
                     DistanceQuest distanceQuest = new DistanceQuest(quest,
                         cursor.getInt(cursor.getColumnIndex(COLUMN_DISTANCE))
                     );
 
                     questsList.add(distanceQuest);
-                } else if (type == Quest.QuestType.Capture) {
+                } else if (quest.getType() == Quest.QuestType.Capture) {
                     CaptureQuest captureQuest = new CaptureQuest(quest,
                         cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_TYPE)),
                         cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE_VALUE))
                     );
 
                     questsList.add(captureQuest);
-                } else if (type == Quest.QuestType.Collect) {
+                } else if (quest.getType() == Quest.QuestType.Collect) {
                     Constants.Characteristic characteristic = Constants.Characteristic.values()[
                         cursor.getInt(cursor.getColumnIndex(COLUMN_CHARACTERISTIC))
                     ];
@@ -179,7 +255,9 @@ public class QuestManager extends DataManager {
             return;
         }
 
-        addQuest(quest);
+        if (!addQuest(quest)) {
+            return;
+        }
 
         Intent intent = new Intent(Constants.INTENT_FILTER_NEW_QUEST);
         intent.putExtra(COLUMN_ID, quest.getId());
@@ -187,20 +265,23 @@ public class QuestManager extends DataManager {
         intent.putExtra(COLUMN_DESCRIPTION, quest.getDescription());
         intent.putExtra(COLUMN_EXP_AMOUNT, quest.getExperience());
         intent.putExtra(COLUMN_CREDITS_AMOUNT, quest.getCredits());
-        intent.putExtra(COLUMN_STATUS, quest.getStatus());
-        intent.putExtra(COLUMN_TYPE, quest.getType());
+        intent.putExtra(COLUMN_STATUS, quest.getStatus().ordinal());
+        intent.putExtra(COLUMN_TYPE, quest.getType().ordinal());
         intent.putExtra(COLUMN_EXPIRATION_TIME, quest.getExpirationTime());
 
         if (quest.getType() == Quest.QuestType.Distance) {
+            intent.putExtra(COLUMN_TYPE, Quest.QuestType.Distance.ordinal());
             intent.putExtra(COLUMN_DISTANCE, ((DistanceQuest) quest).getDistance());
         }
 
         if (quest.getType() == Quest.QuestType.Capture) {
+            intent.putExtra(COLUMN_TYPE, Quest.QuestType.Capture.ordinal());
             intent.putExtra(COLUMN_PLACE_TYPE, ((CaptureQuest) quest).getPlaceType());
             intent.putExtra(COLUMN_PLACE_TYPE_VALUE, ((CaptureQuest) quest).getPlaceTypeValue());
         }
 
         if (quest.getType() == Quest.QuestType.Collect) {
+            intent.putExtra(COLUMN_TYPE, Quest.QuestType.Collect.ordinal());
             intent.putExtra(COLUMN_CHARACTERISTIC, ((CollectQuest) quest).getCharacteristic().ordinal());
             intent.putExtra(COLUMN_PLACE_TYPE_VALUE, ((CollectQuest) quest).getAmount());
         }

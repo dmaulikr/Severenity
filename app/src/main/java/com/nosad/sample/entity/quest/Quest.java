@@ -1,7 +1,6 @@
 package com.nosad.sample.entity.quest;
 
-import java.util.Calendar;
-import java.util.Date;
+import com.nosad.sample.utils.common.Constants;
 
 /**
  * Created by Novosad on 5/9/16.
@@ -37,12 +36,15 @@ public class Quest {
     private long experience;
     private long credits;
     private QuestStatus status;
-    private Date expirationTime;
+    /**
+     * In format of {@link Constants.TIME_FORMAT}: yyyy-MM-dd'T'HH:mm:ss.SSSZ
+     */
+    private String expirationTime;
     protected QuestType type = QuestType.None;
 
     public Quest() {}
 
-    public Quest(long id, String title, Date expirationTime, long experience, long credits, QuestStatus status) {
+    public Quest(long id, String title, String expirationTime, long experience, long credits, QuestStatus status) {
         this.id = id;
         this.title = title;
         this.experience = experience;
@@ -51,23 +53,8 @@ public class Quest {
         this.expirationTime = expirationTime;
     }
 
-    public Date getExpirationTime() {
+    public String getExpirationTime() {
         return expirationTime;
-    }
-
-    /**
-     * Sets the expiration time in Calendar values, e.g. Calendar.HOUR, 1
-     *
-     * @param field {@link Calendar} field for MONTH, HOUR or so.
-     * @param value value in field specified.
-     */
-    public void setExpirationTimeFromNow(int field, int value) {
-        Date now = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(now);
-        calendar.add(field, value);
-
-        this.expirationTime = calendar.getTime();
     }
 
     /**
@@ -75,7 +62,7 @@ public class Quest {
      *
      * @param expirationTime date of the expiration
      */
-    public void setExpirationTime(Date expirationTime) {
+    public void setExpirationTime(String expirationTime) {
         this.expirationTime = expirationTime;
     }
 

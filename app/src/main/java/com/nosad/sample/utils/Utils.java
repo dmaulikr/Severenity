@@ -1,20 +1,28 @@
 package com.nosad.sample.utils;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.nosad.sample.R;
+import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.utils.common.Constants;
+import com.nosad.sample.view.activities.MainActivity;
 
 import java.util.Date;
 
@@ -112,6 +120,62 @@ public class Utils {
         });
 
         builder.show();
+    }
+
+    /**
+     * Shows alert dialog with given message on given context.
+     *
+     * @param message - message to be displayed.
+     * @param context - context where to show message.
+     */
+    public static void showPromptDialog(String message, Context context, final PromptCallback callback) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getResources().getString(R.string.severenity_notification));
+        builder.setMessage(message);
+        builder.setPositiveButton(context.getResources().getString(R.string.accept), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                callback.onAccept();
+            }
+        });
+        builder.setNegativeButton(context.getResources().getString(R.string.decline), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                callback.onDecline();
+            }
+        });
+
+        builder.show();
+    }
+
+    public interface PromptCallback {
+        void onAccept();
+        void onDecline();
+    }
+
+    /**
+     * Sends notification to the {@link MainActivity} so notification can be displayed inside
+     * of the activity.
+     *
+     * @param message - text of the message.
+     */
+    public static void sendNotification(String message, Context context, Intent intent, int notificationId) {
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle(context.getResources().getString(R.string.severenity_notification))
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        notificationManager.notify(notificationId, notificationBuilder.build());
     }
 
     //1 minute = 60 seconds

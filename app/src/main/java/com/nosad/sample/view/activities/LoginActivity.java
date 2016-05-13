@@ -201,8 +201,6 @@ public class LoginActivity extends AppCompatActivity {
             if (AccessToken.getCurrentAccessToken() != null) {
                 startActivity(mainActivityIntent);
             }
-        } else {
-            Toast.makeText(getApplicationContext(), "Please provide permissions to use your location data.", Toast.LENGTH_SHORT).show();
         }
     }
 

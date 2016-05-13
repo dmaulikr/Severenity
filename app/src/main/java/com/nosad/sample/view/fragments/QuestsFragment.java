@@ -1,20 +1,31 @@
 package com.nosad.sample.view.fragments;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.QuestsAdapter;
+import com.nosad.sample.entity.quest.CaptureQuest;
+import com.nosad.sample.entity.quest.CollectQuest;
+import com.nosad.sample.entity.quest.DistanceQuest;
 import com.nosad.sample.entity.quest.Quest;
+import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
 
 import java.util.ArrayList;
@@ -24,6 +35,11 @@ import java.util.ArrayList;
  */
 public class QuestsFragment extends Fragment {
     private MainActivity activity;
+    private ListView questsList;
+    private TextView emptyList;
+
+    private QuestsAdapter questsAdapter;
+    private ArrayList<Quest> quests = new ArrayList<>();
 
     public QuestsFragment() {
         // Required empty public constructor
@@ -36,20 +52,39 @@ public class QuestsFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        App.getLocalBroadcastManager().registerReceiver(
+                questReceiver,
+                new IntentFilter(Constants.INTENT_FILTER_NEW_QUEST)
+        );
+        questsAdapter.refreshWith(App.getQuestManager().getQuests());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        App.getLocalBroadcastManager().unregisterReceiver(questReceiver);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_quests, container, false);
 
-        ArrayList<Quest> quests = App.getQuestManager().getQuests();
-        QuestsAdapter questsAdapter = new QuestsAdapter(
-            activity,
-            R.layout.quest_item,
-            quests
-        );
+        ArrayList<Quest> dbQuests = App.getQuestManager().getQuests();
+        if (dbQuests != null) {
+            quests.addAll(dbQuests);
+        }
+        questsAdapter = new QuestsAdapter(activity, R.layout.quest_item, quests);
 
-        ListView questsList = (ListView) view.findViewById(R.id.lvQuests);
+        questsList = (ListView) view.findViewById(R.id.lvQuests);
         questsList.setAdapter(questsAdapter);
+        activity.registerForContextMenu(questsList);
+
+        emptyList = (TextView) view.findViewById(R.id.tvEmptyList);
+        checkEmptyList();
 
         questsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -61,5 +96,85 @@ public class QuestsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.menu_delete:
+                Quest quest = questsAdapter.getItem(info.position);
+                App.getQuestManager().deleteQuest(quest);
+                questsAdapter.remove(quest);
+                checkEmptyList();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 
+    private void checkEmptyList() {
+        if (questsAdapter.getCount() > 0) {
+            emptyList.setVisibility(View.GONE);
+        } else {
+            emptyList.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * GCM receiver for the message sent from {@link com.nosad.sample.engine.managers.messaging.GCMListener}
+     * Reacts to registration and messages.
+     */
+    private BroadcastReceiver questReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle questObj = intent.getExtras();
+            int questType = questObj.getInt("type");
+
+            Quest q = new Quest();
+            q.setId(questObj.getLong("id"));
+            q.setTitle(questObj.getString("title"));
+            q.setCredits(questObj.getLong("credits"));
+            q.setExperience(questObj.getLong("experience"));
+
+            String expirationTime = questObj.getString("expirationTime");
+            if (expirationTime != null && !expirationTime.equals("null")) {
+                q.setExpirationTime(expirationTime);
+            }
+
+            q.setStatus(Quest.QuestStatus.New);
+
+            if (questType == Quest.QuestType.Distance.ordinal()) {
+                q.setType(Quest.QuestType.Distance);
+
+                int distance = questObj.getInt("distance");
+                q = new DistanceQuest(q, distance);
+            } else if (questType == Quest.QuestType.Capture.ordinal()) {
+                q.setType(Quest.QuestType.Capture);
+
+                String placeType = questObj.getString("placeType");
+                int placeTypeValue = questObj.getInt("placeTypeValue");
+                q = new CaptureQuest(q, placeType, placeTypeValue);
+            } else if (questType == Quest.QuestType.Collect.ordinal()) {
+                q.setType(Quest.QuestType.Collect);
+                int characteristic = questObj.getInt("characteristic");
+                int characteristicAmount = questObj.getInt("characteristicAmount");
+                Constants.Characteristic c;
+                if (characteristic == Constants.Characteristic.Level.ordinal()) {
+                    c = Constants.Characteristic.Level;
+                } else if (characteristic == Constants.Characteristic.Experience.ordinal()) {
+                    c = Constants.Characteristic.Experience;
+                } else if (characteristic == Constants.Characteristic.Mentality.ordinal()) {
+                    c = Constants.Characteristic.Mentality;
+                } else if (characteristic == Constants.Characteristic.Immunity.ordinal()) {
+                    c = Constants.Characteristic.Immunity;
+                } else {
+                    Log.e(Constants.TAG, "Unknown characteristic " + characteristic + " received.");
+                    return;
+                }
+
+                q = new CollectQuest(q, c, characteristicAmount);
+            }
+            questsAdapter.add(q);
+            checkEmptyList();
+        }
+    };
 }

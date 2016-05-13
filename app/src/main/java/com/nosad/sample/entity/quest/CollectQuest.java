@@ -3,7 +3,10 @@ package com.nosad.sample.entity.quest;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Novosad on 5/10/16.
@@ -19,7 +22,7 @@ public class CollectQuest extends Quest {
         fillData(characteristic, amount);
     }
 
-    public CollectQuest(long id, String title, Date expirationTime, long experience, long credits, Quest.QuestStatus status, Constants.Characteristic characteristic, int amount) {
+    public CollectQuest(long id, String title, String expirationTime, long experience, long credits, Quest.QuestStatus status, Constants.Characteristic characteristic, int amount) {
         super(id, title, expirationTime, experience, credits, status);
 
         fillData(characteristic, amount);
@@ -33,7 +36,16 @@ public class CollectQuest extends Quest {
             setDescription("Get " + characteristic.toString() + " " + amount);
         } else {
             setExpirationTime(getExpirationTime());
-            setDescription("Get " + characteristic.toString() + " " + amount + " in " + Utils.dateDifference(new Date(), getExpirationTime()));
+            try {
+                setDescription("Get " + characteristic.toString() + " " + amount + " in " +
+                    Utils.dateDifference(
+                        new Date(),
+                        new SimpleDateFormat(Constants.TIME_FORMAT, Locale.US).parse(getExpirationTime())
+                    )
+                );
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -51,5 +63,10 @@ public class CollectQuest extends Quest {
 
     public void setCharacteristic(Constants.Characteristic characteristic) {
         this.characteristic = characteristic;
+    }
+
+    @Override
+    public QuestType getType() {
+        return type;
     }
 }
