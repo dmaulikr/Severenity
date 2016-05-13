@@ -29,10 +29,10 @@ public class UserManager extends DataManager {
         super(context);
     }
 
-    public User addUser(User user) {
+    public boolean addUser(User user) {
         User u = getUser(user);
         if (u != null) {
-            return u;
+            return false;
         }
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -47,7 +47,7 @@ public class UserManager extends DataManager {
         long success = db.insert(TABLE_USERS, COLUMN_NULLABLE, values);
         db.close();
 
-        return success == -1 ? null : user;
+        return success != -1;
     }
 
     public User getUserById(String id) {

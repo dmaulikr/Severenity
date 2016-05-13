@@ -97,5 +97,7 @@
     <string name="spell_selected">Spell selected: %s</string>
     <string name="experience_value">Experience: %d</string>
     <string name="level_value">Level: %d</string>
+    <string name="empty_quests">You do not have any accepted quests.</string>
+    <string name="menu_delete">Delete</string>
 
 </resources>

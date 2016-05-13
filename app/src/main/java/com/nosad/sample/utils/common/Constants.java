@@ -10,7 +10,8 @@ public class Constants {
         Level("level"),
         Immunity("immunity"),
         Mentality("mentality"),
-        Experience("experience");
+        Experience("experience"),
+        None("none");
 
         final String value;
 
@@ -47,7 +48,7 @@ public class Constants {
     public static final float RESTORE_RATE_MENTALITY_MOVING = 1f;   // per 100 meters
 
     public static final double MINIMUM_DISTANCE_FOR_UPDATE = 100;   // in meters
-    public final static String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
+    public final static String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public final static Locale LOCALE = Locale.US;
 
     /**
@@ -81,4 +82,9 @@ public class Constants {
      */
 
     public static String PREFS_DEVICE_REGISTERED = "deviceRegistered";
+
+    /**
+     * Notification messages
+     */
+    public static String NOTIFICATION_MSG_NEW_QUEST = "New quest received! Accept the challenge?";
 }

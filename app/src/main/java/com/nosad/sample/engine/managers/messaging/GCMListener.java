@@ -1,18 +1,13 @@
 package com.nosad.sample.engine.managers.messaging;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import com.nosad.sample.App;
-import com.nosad.sample.R;
+import com.nosad.sample.entity.quest.Quest;
+import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
 
@@ -36,13 +31,14 @@ public class GCMListener extends GcmListenerService {
 
         switch (type) {
             case "message":
-                Intent messageIntent = new Intent(GCMManager.MESSAGE_RECEIVED);
                 String message = data.getString("message");
 
+                Intent messageIntent = new Intent(this, MainActivity.class);
+                messageIntent.setAction(GCMManager.MESSAGE_RECEIVED);
                 messageIntent.putExtra("message", message);
 
                 App.getLocalBroadcastManager().sendBroadcast(messageIntent);
-                sendNotification(message);
+                Utils.sendNotification(message, this, messageIntent, 0);
                 break;
             case "quest":
                 Intent questIntent = new Intent(GCMManager.QUEST_RECEIVED);
@@ -56,11 +52,34 @@ public class GCMListener extends GcmListenerService {
                 try {
                     JSONObject questObj = new JSONObject(quest);
                     String questType = questObj.getString("type");
+                    long id = questObj.getLong("id");
 
-                    questIntent.putExtra("type", questType);
+                    if (App.getQuestManager().getQuestById(id) != null) {
+                        return;
+                    }
+
+                    questIntent.putExtra("id", id);
+                    questIntent.putExtra("title", questObj.getString("title"));
+                    questIntent.putExtra("credits", questObj.getLong("credits"));
+                    questIntent.putExtra("experience", questObj.getLong("experience"));
+                    questIntent.putExtra("expirationTime", questObj.getString("expirationTime"));
+                    questIntent.putExtra("status", Quest.QuestStatus.New.ordinal());
+
+                    if (questType.equals(Quest.QuestType.Distance.toString())) {
+                        questIntent.putExtra("type", Quest.QuestType.Distance.ordinal());
+                        questIntent.putExtra("distance", questObj.getInt("distance"));
+                    } else if (questType.equals(Quest.QuestType.Capture.toString())) {
+                        questIntent.putExtra("type", Quest.QuestType.Capture.ordinal());
+                        questIntent.putExtra("placeType", questObj.getString("placeType"));
+                        questIntent.putExtra("placeTypeValue", questObj.getInt("placeTypeValue"));
+                    } else if (questType.equals(Quest.QuestType.Collect.toString())) {
+                        questIntent.putExtra("type", Quest.QuestType.Collect.ordinal());
+                        questIntent.putExtra("characteristic", questObj.getString("characteristic"));
+                        questIntent.putExtra("characteristicAmount", questObj.getInt("characteristicAmount"));
+                    }
 
                     App.getLocalBroadcastManager().sendBroadcast(questIntent);
-                    sendNotification(questType);
+                    Utils.sendNotification(Constants.NOTIFICATION_MSG_NEW_QUEST, this, questIntent, (int) id);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -70,32 +89,5 @@ public class GCMListener extends GcmListenerService {
                 Log.e(Constants.TAG, "Unknown GCM message type received from the server.");
                 return;
         }
-    }
-
-    /**
-     * Sends notification to the {@link MainActivity} so notification can be displayed inside
-     * of the activity.
-     *
-     * @param message - text of the message.
-     */
-    private void sendNotification(String message) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        intent.setAction(GCMManager.MESSAGE_RECEIVED);
-        intent.putExtra("message", message);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_notification)
-                .setContentTitle(getResources().getString(R.string.severenity_notification))
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
-
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(0, notificationBuilder.build());
     }
 }

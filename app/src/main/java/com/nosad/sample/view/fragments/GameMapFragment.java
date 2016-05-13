@@ -19,14 +19,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -47,8 +45,6 @@ import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
-import com.szugyi.circlemenu.view.CircleImageView;
-import com.szugyi.circlemenu.view.CircleLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,7 +64,6 @@ public class GameMapFragment extends Fragment {
     private TextView tvMentalityValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
     private TextView tvAttributions;
     private ImageView ivWardsSwitch;
-    protected CircleLayout clSymbolsMenu;
 
     private ActionMode spellMode;
 
@@ -173,67 +168,8 @@ public class GameMapFragment extends Fragment {
         });
 
         initDrawer(view);
-        initSymbolsMenu(view);
 
         return view;
-    }
-
-    private void initSymbolsMenu(View view) {
-        clSymbolsMenu = (CircleLayout) view.findViewById(R.id.clSymbolsMenu);
-        clSymbolsMenu.setOnItemClickListener(new CircleLayout.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view) {
-                handleSymbolSelected(view);
-            }
-        });
-        clSymbolsMenu.setOnCenterClickListener(new CircleLayout.OnCenterClickListener() {
-            @Override
-            public void onCenterClick() {
-                Toast.makeText(activity, "Center clicked.", Toast.LENGTH_SHORT).show();
-            }
-        });
-        clSymbolsMenu.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                    clSymbolsMenu.setRotating(true);
-                } else {
-                    clSymbolsMenu.setRotating(false);
-                }
-                return false;
-            }
-        });
-    }
-
-    private void handleSymbolSelected(View view) {
-        final String name;
-        if (view instanceof CircleImageView) {
-            name = ((CircleImageView) view).getName();
-        } else {
-            name = null;
-        }
-
-        Toast.makeText(activity, name, Toast.LENGTH_SHORT).show();
-        switch (view.getId()) {
-            case R.id.main_calendar_image:
-                // Handle calendar selection
-                break;
-            case R.id.main_cloud_image:
-                // Handle cloud selection
-                break;
-            case R.id.main_key_image:
-                // Handle key selection
-                break;
-            case R.id.main_mail_image:
-                // Handle mail selection
-                break;
-            case R.id.main_profile_image:
-                // Handle profile selection
-                break;
-            case R.id.main_tap_image:
-                // Handle tap selection
-                break;
-        }
     }
 
     private BroadcastReceiver updateUIReceiver = new BroadcastReceiver() {

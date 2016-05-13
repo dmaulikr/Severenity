@@ -1,8 +1,12 @@
 package com.nosad.sample.entity.quest;
 
 import com.nosad.sample.utils.Utils;
+import com.nosad.sample.utils.common.Constants;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Novosad on 5/10/16.
@@ -18,7 +22,7 @@ public class CaptureQuest extends Quest {
         fillData(placeType, placeTypeValue);
     }
 
-    public CaptureQuest(long id, String title, Date expirationTime, long experience, long credits, Quest.QuestStatus status, String placeType, int placeTypeValue) {
+    public CaptureQuest(long id, String title, String expirationTime, long experience, long credits, Quest.QuestStatus status, String placeType, int placeTypeValue) {
         super(id, title, expirationTime, experience, credits, status);
 
         fillData(placeType, placeTypeValue);
@@ -32,7 +36,16 @@ public class CaptureQuest extends Quest {
             setDescription("Capture " + placeType);
         } else {
             setExpirationTime(getExpirationTime());
-            setDescription("Capture " + placeType + " in " + Utils.dateDifference(new Date(), getExpirationTime()));
+            try {
+                setDescription("Capture " + placeType + " in " +
+                    Utils.dateDifference(
+                        new Date(),
+                        new SimpleDateFormat(Constants.TIME_FORMAT, Locale.US).parse(getExpirationTime())
+                    )
+                );
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -50,5 +63,10 @@ public class CaptureQuest extends Quest {
 
     public void setPlaceTypeValue(int placeTypeValue) {
         this.placeTypeValue = placeTypeValue;
+    }
+
+    @Override
+    public QuestType getType() {
+        return type;
     }
 }

@@ -1,11 +1,14 @@
 package com.nosad.sample.view.activities;
 
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,7 +17,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -27,6 +33,10 @@ import com.nosad.sample.R;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.engine.managers.messaging.RegistrationIntentService;
 import com.nosad.sample.entity.User;
+import com.nosad.sample.entity.quest.CaptureQuest;
+import com.nosad.sample.entity.quest.CollectQuest;
+import com.nosad.sample.entity.quest.DistanceQuest;
+import com.nosad.sample.entity.quest.Quest;
 import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
@@ -83,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(GCMManager.REGISTRATION_PROCESS);
         intentFilter.addAction(GCMManager.MESSAGE_RECEIVED);
+        intentFilter.addAction(GCMManager.QUEST_RECEIVED);
         App.getLocalBroadcastManager().registerReceiver(gcmMessageReceiver, intentFilter);
 
         processNewIntent(getIntent());
@@ -108,6 +119,45 @@ public class MainActivity extends AppCompatActivity {
             String message = intent.getStringExtra("message");
             Utils.showAlertDialog(message, this);
         }
+
+        // Quest received
+        if (intent.getAction() != null && intent.getAction().equals(GCMManager.QUEST_RECEIVED)) {
+            handleQuestIntent(intent);
+        }
+    }
+
+    private Quest getQuestFromIntent(Intent intent) {
+        Quest quest = new Quest();
+        Quest.QuestType type = Quest.QuestType.values()[intent.getIntExtra("type", 0)];
+        quest.setId(intent.getLongExtra("id", 0));
+        quest.setType(type);
+        quest.setTitle(intent.getStringExtra("title"));
+        quest.setStatus(Quest.QuestStatus.values()[intent.getIntExtra("status", 0)]);
+        quest.setExpirationTime(intent.getStringExtra("expirationTime"));
+        quest.setCredits(intent.getLongExtra("credits", 0));
+        quest.setExperience(intent.getLongExtra("experience", 0));
+
+        if (type == Quest.QuestType.Distance) {
+            quest = new DistanceQuest(quest, intent.getIntExtra("distance", 1));
+        } else if (type == Quest.QuestType.Capture) {
+            quest = new CaptureQuest(quest, intent.getStringExtra("placeType"), intent.getIntExtra("placeTypeValue", 0));
+        } else if (type == Quest.QuestType.Collect) {
+            String characteristic = intent.getStringExtra("characteristic");
+            Constants.Characteristic c = Constants.Characteristic.None;
+            if (characteristic.equals(Constants.Characteristic.Level.toString())) {
+                c = Constants.Characteristic.Level;
+            } else if (characteristic.equals(Constants.Characteristic.Experience.toString())) {
+                c = Constants.Characteristic.Experience;
+            } else if (characteristic.equals(Constants.Characteristic.Mentality.toString())) {
+                c = Constants.Characteristic.Mentality;
+            } else if (characteristic.equals(Constants.Characteristic.Immunity.toString())) {
+                c = Constants.Characteristic.Immunity;
+            }
+
+            quest = new CollectQuest(quest, c, intent.getIntExtra("characteristicAmount", 0));
+        }
+
+        return quest;
     }
 
     /**
@@ -142,7 +192,10 @@ public class MainActivity extends AppCompatActivity {
                             user.setName(response.getJSONObject().getString("name"));
                             user.setId(response.getJSONObject().getString("id"));
 
-                            user = App.getUserManager().addUser(user);
+                            if (!App.getUserManager().addUser(user)) {
+                                return;
+                            }
+
                             App.getUserManager().setCurrentUser(user);
                             App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_UPDATE_UI));
                         } catch (JSONException e) {
@@ -367,9 +420,43 @@ public class MainActivity extends AppCompatActivity {
             } else if (intent.getAction().equals(GCMManager.MESSAGE_RECEIVED) && activityActive) {
                 String message = intent.getStringExtra("message");
                 Utils.showAlertDialog(message, MainActivity.this);
+            } else if (intent.getAction().equals(GCMManager.QUEST_RECEIVED) && activityActive) {
+                handleQuestIntent(intent);
             }
         }
     };
+
+    private void handleQuestIntent(Intent intent) {
+        final Quest q = getQuestFromIntent(intent);
+        final NotificationManager notificationManager =
+                ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
+        Utils.showPromptDialog(Constants.NOTIFICATION_MSG_NEW_QUEST, MainActivity.this, new Utils.PromptCallback() {
+            @Override
+            public void onAccept() {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        App.getQuestManager().onQuestReceived(q);
+                    }
+                });
+                notificationManager.cancel((int) q.getId());
+            }
+
+            @Override
+            public void onDecline() {
+                notificationManager.cancel((int) q.getId());
+            }
+        });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId() == R.id.lvQuests) {
+            getMenuInflater().inflate(R.menu.list_menu, menu);
+        }
+    }
 
     public Toolbar getToolbarTop() {
         return toolbarTop;

@@ -114,8 +114,8 @@ public class WebSocketManager {
                         final User user = new User();
                         user.setId(jsonObject.getString("id"));
                         final LatLng latLng = new LatLng(
-                                jsonObject.getDouble("lat") + 0.0005,
-                                jsonObject.getDouble("lng") + 0.0005
+                                jsonObject.getDouble("lat"),
+                                jsonObject.getDouble("lng")
                         );
 
                         Handler handler = new Handler(Looper.getMainLooper());
@@ -240,5 +240,4 @@ public class WebSocketManager {
             e.printStackTrace();
         }
     }
-
 }

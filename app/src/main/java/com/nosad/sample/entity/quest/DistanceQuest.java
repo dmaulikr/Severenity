@@ -1,8 +1,12 @@
 package com.nosad.sample.entity.quest;
 
 import com.nosad.sample.utils.Utils;
+import com.nosad.sample.utils.common.Constants;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Novosad on 5/10/16.
@@ -17,7 +21,7 @@ public class DistanceQuest extends Quest {
         fillData(distance);
     }
 
-    public DistanceQuest(long id, String title, Date expirationTime, long experience, long credits, Quest.QuestStatus status, int distance) {
+    public DistanceQuest(long id, String title, String expirationTime, long experience, long credits, Quest.QuestStatus status, int distance) {
         super(id, title, expirationTime, experience, credits, status);
 
         fillData(distance);
@@ -30,7 +34,14 @@ public class DistanceQuest extends Quest {
             setDescription("Pass " + distance + " km");
         } else {
             setExpirationTime(getExpirationTime());
-            setDescription("Pass " + distance + " km in " + Utils.dateDifference(new Date(), getExpirationTime()));
+            try {
+                setDescription("Pass " + distance + " km in " + Utils.dateDifference(
+                        new Date(),
+                        new SimpleDateFormat(Constants.TIME_FORMAT, Locale.US).parse(getExpirationTime())
+                ));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -40,5 +51,10 @@ public class DistanceQuest extends Quest {
 
     public void setDistance(int distance) {
         this.distance = distance;
+    }
+
+    @Override
+    public QuestType getType() {
+        return type;
     }
 }

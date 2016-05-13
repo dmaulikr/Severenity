@@ -16,16 +16,16 @@ public class QuestContract {
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_DESCRIPTION = "description";
-        public static final String COLUMN_EXP_AMOUNT = "experience_amount";
-        public static final String COLUMN_CREDITS_AMOUNT = "credits_amount";
-        public static final String COLUMN_EXPIRATION_TIME = "expiration_time";
+        public static final String COLUMN_EXP_AMOUNT = "experience";
+        public static final String COLUMN_CREDITS_AMOUNT = "credits";
+        public static final String COLUMN_EXPIRATION_TIME = "expirationTime";
         public static final String COLUMN_STATUS = "status";
         public static final String COLUMN_TYPE = "type";
         public static final String COLUMN_DISTANCE = "distance";
-        public static final String COLUMN_PLACE_TYPE = "place_type";
-        public static final String COLUMN_PLACE_TYPE_VALUE = "place_type_value";
+        public static final String COLUMN_PLACE_TYPE = "placeType";
+        public static final String COLUMN_PLACE_TYPE_VALUE = "placeTypeValue";
         public static final String COLUMN_CHARACTERISTIC = "characteristic";
-        public static final String COLUMN_CHARACTERISTIC_AMOUNT = "characteristic_amount";
+        public static final String COLUMN_CHARACTERISTIC_AMOUNT = "characteristicAmount";
         public static final String COLUMN_NULLABLE = "NULL";
     }
 }

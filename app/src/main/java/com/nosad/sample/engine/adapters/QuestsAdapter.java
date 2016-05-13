@@ -1,6 +1,7 @@
 package com.nosad.sample.engine.adapters;
 
 import android.content.Context;
+import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.nosad.sample.R;
 import com.nosad.sample.entity.quest.Quest;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,7 +25,7 @@ import java.util.List;
  */
 public class QuestsAdapter extends ArrayAdapter<Quest> {
     // Couple test quests
-    private ArrayList<Quest> quests;
+    private ArrayList<Quest> quests = new ArrayList<>();
 
     private Context context;
     private int resource;
@@ -36,7 +38,7 @@ public class QuestsAdapter extends ArrayAdapter<Quest> {
 
     public QuestsAdapter(Context context, int resource, List<Quest> objects) {
         this(context, resource);
-        this.quests = new ArrayList<>(objects);
+        this.quests.addAll(objects);
     }
 
     @Override
@@ -93,5 +95,37 @@ public class QuestsAdapter extends ArrayAdapter<Quest> {
         }
 
         return convertView;
+    }
+
+    @Override
+    public void add(Quest object) {
+        if (object != null) {
+            quests.add(object);
+        }
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void remove(Quest object) {
+        for (Quest quest : quests) {
+            if (quest.getId() == object.getId()) {
+                quests.remove(quest);
+                notifyDataSetChanged();
+                break;
+            }
+        }
+    }
+
+    public void refreshWith(Collection<? extends Quest> collection) {
+        quests.clear();
+        addAll(collection);
+    }
+
+    @Override
+    public void addAll(Collection<? extends Quest> collection) {
+        if (collection != null) {
+            quests.addAll(collection);
+        }
+        notifyDataSetChanged();
     }
 }

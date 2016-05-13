@@ -3,13 +3,25 @@ package com.nosad.sample.engine.managers.location;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.os.Handler;
-import android.os.Looper;
+import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.android.volley.toolbox.Volley;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -28,8 +40,10 @@ import com.nosad.sample.entity.Spell;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
+import com.squareup.picasso.Picasso;
 
-import java.util.concurrent.TimeUnit;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Novosad on 3/29/16.
@@ -48,21 +62,10 @@ public class LocationManager implements LocationListener {
     public boolean requestingLocationUpdates = false;
     private boolean isSpellMode = false;
     private boolean isCameraFixed = false;
-    private boolean isMoving = false;
 
     public Location getCurrentLocation() {
         return currentLocation;
     }
-
-    private Handler handler = new Handler(Looper.getMainLooper());
-    private Runnable stopMoving = new Runnable() {
-        @Override
-        public void run() {
-            isMoving = false;
-            updateTotalDistancePassed();
-            Toast.makeText(context, "Stopped moving.", Toast.LENGTH_SHORT).show();
-        }
-    };
 
     public LocationManager(Context context) {
         this.context = context;
@@ -228,10 +231,12 @@ public class LocationManager implements LocationListener {
         }
 
         String title = App.getUserManager().getCurrentUser().getName();
+        String profileId = App.getUserManager().getCurrentUser().getId();
 
         // TODO: Replace title with user ID or name
         currentUserMarker = googleMap.addMarker(new MarkerOptions()
                 .position(Utils.latLngFromLocation(location))
+                .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(profileId)))
                 .title(title));
 
         if (!isCameraFixed) {
@@ -322,5 +327,24 @@ public class LocationManager implements LocationListener {
      */
     public BroadcastReceiver getGoogleApiClientReceiver() {
         return googleApiClientReceiver;
+    }
+
+    private Bitmap getMarkerBitmapFromView(String profileId) {
+        View customMarkerView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.photo_marker, null);
+        ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.ivPhotoMarker);
+        Picasso.with(context).load("https://graph.facebook.com/" + profileId + "/picture?type=normal").into(markerImageView);
+        customMarkerView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        customMarkerView.layout(0, 0, customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight());
+        customMarkerView.buildDrawingCache();
+        Bitmap returnedBitmap = Bitmap.createBitmap(customMarkerView.getMeasuredWidth(), customMarkerView.getMeasuredHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(returnedBitmap);
+        canvas.drawColor(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        Drawable drawable = customMarkerView.getBackground();
+        if (drawable != null) {
+            drawable.draw(canvas);
+        }
+        customMarkerView.draw(canvas);
+        return returnedBitmap;
     }
 }
