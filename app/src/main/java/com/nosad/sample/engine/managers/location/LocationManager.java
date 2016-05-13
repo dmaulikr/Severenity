@@ -24,6 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
+import com.nosad.sample.engine.adapters.MarkerInfoAdapter;
 import com.nosad.sample.entity.Spell;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.Utils;
@@ -49,6 +50,8 @@ public class LocationManager implements LocationListener {
     private boolean isSpellMode = false;
     private boolean isCameraFixed = false;
     private boolean isMoving = false;
+
+    private MarkerInfoAdapter mMarkerInfoAdapter = new MarkerInfoAdapter();
 
     public Location getCurrentLocation() {
         return currentLocation;
@@ -93,17 +96,51 @@ public class LocationManager implements LocationListener {
                         placeWard(latLng);
                     }
                 }
+                else {
+                    resetCameraLocation();
+                }
             }
         });
 
         googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
-                isCameraFixed = false;
+                resetCameraLocation();
                 App.getSpellManager().cancelSpellMode();
                 return true;
             }
         });
+
+        // set adapter for custom view
+        if (mMarkerInfoAdapter != null) {
+            googleMap.setInfoWindowAdapter(mMarkerInfoAdapter);
+        }
+
+        // Set this to stick with current marker for some time
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                fixCameraAtLocation(marker.getPosition());
+                return false;
+            }
+        });
+
+        // set listener for tracking clicking on the info
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+
+                Toast.makeText(App.getInstance().getApplicationContext(), marker.getId().toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    /**
+     * Resets current camera position to current location
+     */
+    public void resetCameraLocation() {
+        fixCameraAtLocation(Utils.latLngFromLocation(currentLocation));
+        isCameraFixed = false;
     }
 
     /**
