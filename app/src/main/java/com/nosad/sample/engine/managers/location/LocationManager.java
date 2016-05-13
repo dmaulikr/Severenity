@@ -194,7 +194,7 @@ public class LocationManager implements LocationListener {
 
         otherUserMarker = googleMap.addMarker(new MarkerOptions()
                 .position(latLng)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
                 .title(user.getId()));
     }
 
@@ -254,7 +254,7 @@ public class LocationManager implements LocationListener {
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         requestingLocationUpdates = false;
 
-        App.getWebSocketManager().unsubscribeFromLocationEvents();
+        App.getWebSocketManager().unSubscribeFromLocationEvents();
     }
 
     /**
