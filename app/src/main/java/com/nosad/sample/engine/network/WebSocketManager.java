@@ -79,8 +79,8 @@ public class WebSocketManager {
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
-            unsubscribeFromMessageEvents();
-            unsubscribeFromLocationEvents();
+            unSubscribeFromMessageEvents();
+            unSubscribeFromLocationEvents();
             mSocket.close();
         }
     }
@@ -98,7 +98,7 @@ public class WebSocketManager {
      * Subscribes to location events from the server.
      *
      */
-    public void subscribeForLocationEvent(){
+    public void subscribeForLocationEvent() {
 
         Socket socket = getSocket();
         if (socket == null)
@@ -137,7 +137,7 @@ public class WebSocketManager {
      * Unsubscribe from location events from the server.
      *
      */
-    public void unsubscribeFromLocationEvents(){
+    public void unSubscribeFromLocationEvents() {
 
         Socket socket = getSocket();
         if (socket == null)
@@ -209,7 +209,7 @@ public class WebSocketManager {
      * Unsubscribe from location events from the server.
      *
      */
-    public void unsubscribeFromMessageEvents() {
+    public void unSubscribeFromMessageEvents() {
         Socket socket = getSocket();
         if (socket == null) {
             return;

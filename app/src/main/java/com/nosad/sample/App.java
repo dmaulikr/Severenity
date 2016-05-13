@@ -84,7 +84,6 @@ public class App extends Application {
         Intent loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
         loginActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(loginActivity);
-        webSocketManager.unsubscribeFromMessageEvents();
         webSocketManager.disconnectSocket();
     }
 
