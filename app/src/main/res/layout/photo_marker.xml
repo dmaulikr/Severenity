@@ -13,6 +13,7 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:src="@drawable/com_facebook_profile_picture_blank_square"
         android:layout_marginStart="13dp"
         android:id="@+id/ivPhotoMarker"
         android:layout_width="48dp"
