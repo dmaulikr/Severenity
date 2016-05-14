@@ -47,7 +47,6 @@ public class Constants {
     public static final float RESTORE_RATE_MENTALITY_NORMAL = 0.1f; // per day
     public static final float RESTORE_RATE_MENTALITY_MOVING = 1f;   // per 100 meters
 
-    public static final double MINIMUM_DISTANCE_FOR_UPDATE = 100;   // in meters
     public final static String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public final static Locale LOCALE = Locale.US;
 

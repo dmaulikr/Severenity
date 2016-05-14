@@ -53,6 +53,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.9.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.github.aakira:expandable-layout:1.5.1@aar'
     compile 'joda-time:joda-time:2.9.3'
     compile('io.socket:socket.io-client:0.7.0') {
         // excluding org.json which is provided by Android

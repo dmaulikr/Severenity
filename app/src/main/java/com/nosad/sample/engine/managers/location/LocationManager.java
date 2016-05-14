@@ -9,20 +9,13 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.os.Bundle;
-import android.support.annotation.DrawableRes;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.Volley;
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
-import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -38,14 +31,10 @@ import com.google.maps.android.SphericalUtil;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.MarkerInfoAdapter;
-import com.nosad.sample.entity.Spell;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by Novosad on 3/29/16.
@@ -75,6 +64,14 @@ public class LocationManager implements LocationListener {
         this.context = context;
         this.googleApiClient = App.getGoogleApiHelper().getGoogleApiClient();
         createLocationRequest();
+
+        checkDistanceHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateTotalDistancePassed();
+                checkDistanceHandler.postDelayed(this, interval);
+            }
+        }, interval);
     }
 
     /**
@@ -96,11 +93,8 @@ public class LocationManager implements LocationListener {
             @Override
             public void onMapClick(LatLng latLng) {
                 if (App.getSpellManager().isSpellMode()) {
-                    if (App.getSpellManager().getCurrentSpell().is(Spell.SpellType.Ward)) {
-                        placeWard(latLng);
-                    }
-                }
-                else {
+                    // Handle spells here if needed
+                } else {
                     resetCameraLocation();
                 }
             }
@@ -156,17 +150,6 @@ public class LocationManager implements LocationListener {
     public void fixCameraAtLocation(LatLng latLng) {
         isCameraFixed = true;
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
-    }
-
-    private Marker placeWard(LatLng latLng) {
-        Marker wardMarker = googleMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.pin_spell_ward))
-                .title(App.getSpellManager().getCurrentSpell().getTitle()));
-
-        App.getSpellManager().addWard(wardMarker);
-
-        return wardMarker;
     }
 
     public boolean isRequestingLocationUpdates() {
@@ -300,9 +283,10 @@ public class LocationManager implements LocationListener {
         updateMarker(location);
 
         App.getWebSocketManager().sendLocationToServer(location);
-
-        updateTotalDistancePassed();
     }
+
+    private Handler checkDistanceHandler = new Handler();
+    private int interval = 5000;
 
     /**
      * Adds distance passed between 2 last locations if it is bigger than 1 meter.
@@ -313,18 +297,16 @@ public class LocationManager implements LocationListener {
             return;
         }
 
-        double metersPassed = SphericalUtil.computeDistanceBetween(
-                Utils.latLngFromLocation(previousLocation),
-                Utils.latLngFromLocation(currentLocation)
+        final double metersPassed = SphericalUtil.computeDistanceBetween(
+            Utils.latLngFromLocation(previousLocation),
+            Utils.latLngFromLocation(currentLocation)
         );
 
-        if (metersPassed >= Constants.MINIMUM_DISTANCE_FOR_UPDATE) {
-            previousLocation = currentLocation;
-            App.getUserManager().getCurrentUser().setDistance(
-                    App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
+        previousLocation = currentLocation;
+        App.getUserManager().getCurrentUser().setDistance(
+                App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
 
-            updateUserInfo();
-        }
+        updateUserInfo();
     }
 
     private void updateUserInfo() {

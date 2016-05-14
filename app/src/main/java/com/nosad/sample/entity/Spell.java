@@ -7,8 +7,10 @@ import com.nosad.sample.R;
  */
 public class Spell {
     public enum SpellType {
-        Ward,
-        PowerWave
+        Capture,
+        Dispel,
+        Shield,
+        Attack
     }
 
     private SpellType spellType;
@@ -18,23 +20,33 @@ public class Spell {
         this.spellType = spellType;
 
         switch (spellType) {
-            case Ward:
+            case Capture:
+                this.spellIconResource = R.drawable.menu_marker;
+                break;
+            case Dispel:
+                this.spellIconResource = R.drawable.spell_wave;
+                break;
+            case Shield:
                 this.spellIconResource = R.drawable.spell_ward;
                 break;
-            case PowerWave:
-                this.spellIconResource = R.drawable.spell_wave;
+            case Attack:
+                this.spellIconResource = R.drawable.menu_arrow_right;
                 break;
         }
     }
 
     public String getTitle() {
         switch (spellType) {
-            case Ward:
-                return "Ward";
-            case PowerWave:
-                return "Power Wave";
+            case Capture:
+                return "Capture";
+            case Dispel:
+                return "Dispell";
+            case Shield:
+                return "Shield";
+            case Attack:
+                return "Attack";
             default:
-                return "Unkown";
+                return "Unknown";
         }
     }
 

@@ -20,8 +20,10 @@ import java.util.List;
  */
 public class SpellsAdapter extends ArrayAdapter<Spell> {
     private ArrayList<Spell> spells = new ArrayList<>(Arrays.asList(
-            new Spell(Spell.SpellType.Ward),
-            new Spell(Spell.SpellType.PowerWave)
+            new Spell(Spell.SpellType.Capture),
+            new Spell(Spell.SpellType.Dispel),
+            new Spell(Spell.SpellType.Shield),
+            new Spell(Spell.SpellType.Attack)
     ));
     private Context context;
     private int resource;

@@ -63,7 +63,6 @@ public class GameMapFragment extends Fragment {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private TextView tvMentalityValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
     private TextView tvAttributions;
-    private ImageView ivWardsSwitch;
 
     private ActionMode spellMode;
 
@@ -110,10 +109,6 @@ public class GameMapFragment extends Fragment {
         updateUIInfo();
 
         App.getLocalBroadcastManager().registerReceiver(
-                wardsCountChangedReceiver,
-                new IntentFilter(Constants.INTENT_FILTER_WARDS_COUNT)
-        );
-        App.getLocalBroadcastManager().registerReceiver(
                 updateUIReceiver,
                 new IntentFilter(Constants.INTENT_FILTER_UPDATE_UI)
         );
@@ -154,18 +149,6 @@ public class GameMapFragment extends Fragment {
         tvExperienceValue = (TextView) view.findViewById(R.id.tvExperienceValue);
         tvLevelValue = (TextView) view.findViewById(R.id.tvLevelValue);
         tvAttributions = (TextView) view.findViewById(R.id.tvAttributions);
-
-        ivWardsSwitch = (ImageView) view.findViewById(R.id.ivWardsSwitch);
-        ivWardsSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    App.getSpellManager().moveToNextWard();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
 
         initDrawer(view);
 
@@ -270,7 +253,6 @@ public class GameMapFragment extends Fragment {
     public void onPause() {
         Log.v(Constants.TAG, this.toString() + " onPause()");
         super.onPause();
-        App.getLocalBroadcastManager().unregisterReceiver(wardsCountChangedReceiver);
         App.getLocalBroadcastManager().unregisterReceiver(updateUIReceiver);
     }
 
@@ -297,15 +279,4 @@ public class GameMapFragment extends Fragment {
             spellMode = null;
         }
     }
-
-    private BroadcastReceiver wardsCountChangedReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (App.getSpellManager().hasWards()) {
-                ivWardsSwitch.setVisibility(View.VISIBLE);
-            } else {
-                ivWardsSwitch.setVisibility(View.GONE);
-            }
-        }
-    };
 }
