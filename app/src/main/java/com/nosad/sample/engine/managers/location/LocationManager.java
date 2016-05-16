@@ -331,11 +331,11 @@ public class LocationManager implements LocationListener {
                         }
 
                         // Average running speed is:
-                        // from 3.7 meters/sec to 10.4 meters/sec (elite athletes)
+                        // from 4.7 meters/sec to 6.7 meters/sec (elite athletes)
                         // Average walking speed is 1.4 meters/sec
                         // We are assuming that people have walked at least for 10 seconds
                         // and are not running better than elite athletes
-                        if (metersPassed > 14 && metersPassed < 104) {
+                        if (metersPassed > 14 && metersPassed < 67) {
                             App.getUserManager().getCurrentUser().setDistance(
                                     App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
 
