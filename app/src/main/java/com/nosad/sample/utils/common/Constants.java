@@ -29,6 +29,9 @@ public class Constants {
 
     public static final String GCM_SENDER_ID = "967925944048";
 
+    /**
+     * Intent filter and intent extra constants
+     */
     public static final String INTENT_FILTER_GAC = "com.nosad.sample.googleapiclient";
     public static final String INTENT_FILTER_WARDS_COUNT = "com.nosad.sample.wardscount";
     public static final String INTENT_FILTER_UPDATE_UI = "com.nosad.sample.updateui";
@@ -39,8 +42,16 @@ public class Constants {
     public static final String INTENT_EXTRA_DEVICE_NAME = "DEVICE_NAME";
 
     public static final String EXTRA_GAC_CONNECTED = "isConnected";
-    public static final String EXTRA_STEPS = "steps";
 
+    // Average running speed is:
+    // from 4.7 meters/sec to 6.7 meters/sec (elite athletes)
+    // Average walking speed is 1.4 meters/sec
+    // We are assuming that people have walked at least for 10 seconds
+    // and are not running better than elite athletes
+    public static final int AVERAGE_WALKING_SPEED = 14; // meters for 10 seconds
+    public static final int MAX_RUNNING_SPEED = 67; // meters for 10 seconds
+    public static final int MIN_RUNNING_SPEED = 47; // meters for 10 seconds
+    public static final int AVERAGE_RUNNING_SPEED = 57; // meters for 10 seconds
     public static final int EXPERIENCE_MULTIPLIER = 10;
     public static final int LEVEL_MULTIPLIER = 1000;
 

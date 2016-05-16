@@ -317,7 +317,6 @@ public class LocationManager implements LocationListener {
             @Override
             public void onResponseCallback(JSONObject response) {
                 if (response != null) {
-                    Log.d(Constants.TAG, "Directions API: " + response.toString());
                     try {
                         double metersPassed = 0;
                         JSONArray routes = response.getJSONArray("routes");
@@ -330,12 +329,8 @@ public class LocationManager implements LocationListener {
                             }
                         }
 
-                        // Average running speed is:
-                        // from 4.7 meters/sec to 6.7 meters/sec (elite athletes)
-                        // Average walking speed is 1.4 meters/sec
-                        // We are assuming that people have walked at least for 10 seconds
-                        // and are not running better than elite athletes
-                        if (metersPassed > 14 && metersPassed < 67) {
+
+                        if (metersPassed > Constants.AVERAGE_WALKING_SPEED && metersPassed < Constants.MAX_RUNNING_SPEED) {
                             App.getUserManager().getCurrentUser().setDistance(
                                     App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
 
