@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -35,7 +37,7 @@ import java.util.ArrayList;
  */
 public class QuestsFragment extends Fragment {
     private MainActivity activity;
-    private ListView questsList;
+    private RecyclerView questsList;
     private TextView emptyList;
 
     private QuestsAdapter questsAdapter;
@@ -77,31 +79,26 @@ public class QuestsFragment extends Fragment {
         if (dbQuests != null) {
             quests.addAll(dbQuests);
         }
-        questsAdapter = new QuestsAdapter(activity, R.layout.quest_item, quests);
+        questsAdapter = new QuestsAdapter(activity, quests);
 
-        questsList = (ListView) view.findViewById(R.id.lvQuests);
+        questsList = (RecyclerView) view.findViewById(R.id.rvQuests);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
+        questsList.setLayoutManager(linearLayoutManager);
         questsList.setAdapter(questsAdapter);
         activity.registerForContextMenu(questsList);
 
         emptyList = (TextView) view.findViewById(R.id.tvEmptyList);
         checkEmptyList();
 
-        questsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //
-            }
-        });
-
         return view;
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int position = ((QuestsAdapter) questsList.getAdapter()).getPosition();
         switch (item.getItemId()) {
             case R.id.menu_delete:
-                Quest quest = questsAdapter.getItem(info.position);
+                Quest quest = questsAdapter.getItem(position);
                 App.getQuestManager().deleteQuest(quest);
                 questsAdapter.remove(quest);
                 checkEmptyList();
@@ -112,7 +109,7 @@ public class QuestsFragment extends Fragment {
     }
 
     private void checkEmptyList() {
-        if (questsAdapter.getCount() > 0) {
+        if (questsAdapter.getItemCount() > 0) {
             emptyList.setVisibility(View.GONE);
         } else {
             emptyList.setVisibility(View.VISIBLE);

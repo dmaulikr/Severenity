@@ -27,7 +27,6 @@ import org.json.JSONObject;
  * Using Volley for queueing requests and handling responses.
  */
 public class RestManager {
-    private static RestManager instance;
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
     private Context context;
@@ -39,19 +38,12 @@ public class RestManager {
     // Whether the display should be refreshed.
     public static boolean refreshDisplay = true;
 
-    public static synchronized RestManager getInstance(Context context) {
-        if (instance == null) {
-            instance = new RestManager(context);
-        }
-        return instance;
-    }
-
     /**
      * Private singleton constructor.
      *
      * @param context - context of the caller (activity, application etc.)
      */
-    private RestManager(Context context) {
+    public RestManager(Context context) {
         this.context = context;
         requestQueue = getRequestQueue();
 

@@ -1,11 +1,15 @@
 package com.nosad.sample.entity.quest;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
+import com.nosad.sample.BR;
 import com.nosad.sample.utils.common.Constants;
 
 /**
  * Created by Novosad on 5/9/16.
  */
-public class Quest {
+public class Quest extends BaseObservable {
     public enum QuestStatus {
         New,
         InProgress,
@@ -30,6 +34,7 @@ public class Quest {
         }
     }
 
+    private boolean isFinished;
     private long id;
     private String title;
     private String description;
@@ -37,7 +42,7 @@ public class Quest {
     private long credits;
     private QuestStatus status;
     /**
-     * In format of {@link Constants.TIME_FORMAT}: yyyy-MM-dd'T'HH:mm:ss.SSSZ
+     * In format of {@link Constants}: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
      */
     private String expirationTime;
     protected QuestType type = QuestType.None;
@@ -74,44 +79,56 @@ public class Quest {
         this.id = id;
     }
 
+    @Bindable
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+        notifyPropertyChanged(BR.title);
     }
 
+    @Bindable
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+        notifyPropertyChanged(BR.description);
     }
 
+    @Bindable
     public long getExperience() {
         return experience;
     }
 
     public void setExperience(long experience) {
         this.experience = experience;
+        notifyPropertyChanged(BR.experience);
     }
 
+    @Bindable
     public long getCredits() {
         return credits;
     }
 
     public void setCredits(long credits) {
         this.credits = credits;
+        notifyPropertyChanged(BR.credits);
     }
 
+    @Bindable
     public QuestStatus getStatus() {
         return status;
     }
 
     public void setStatus(QuestStatus status) {
         this.status = status;
+        isFinished = status == QuestStatus.Finished;
+        notifyPropertyChanged(BR.status);
+        notifyPropertyChanged(BR.isFinished);
     }
 
     public QuestType getType() {
@@ -120,5 +137,10 @@ public class Quest {
 
     public void setType(QuestType type) {
         this.type = type;
+    }
+
+    @Bindable
+    public boolean getIsFinished() {
+        return isFinished;
     }
 }

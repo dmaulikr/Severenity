@@ -453,7 +453,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId() == R.id.lvQuests) {
+        if (v.getId() == R.id.rvQuests) {
             getMenuInflater().inflate(R.menu.list_menu, menu);
         }
     }

@@ -14,6 +14,7 @@ import com.nosad.sample.engine.managers.data.UserManager;
 import com.nosad.sample.engine.managers.game.SpellManager;
 import com.nosad.sample.engine.managers.location.LocationManager;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
+import com.nosad.sample.engine.network.RestManager;
 import com.nosad.sample.engine.network.WebSocketManager;
 import com.nosad.sample.helpers.GoogleApiHelper;
 import com.nosad.sample.utils.FontsOverride;
@@ -33,6 +34,7 @@ public class App extends Application {
     private MessageManager msgManager;
     private QuestManager questManager;
     private GCMManager gcmManager;
+    private RestManager restManager;
 
     private static App mInstance;
     private static Context mContext;
@@ -55,6 +57,7 @@ public class App extends Application {
         userManager = new UserManager(mContext);
         spellManager = new SpellManager(mContext);
         webSocketManager = new WebSocketManager(mContext);
+        restManager = new RestManager(mContext);
         questManager = new QuestManager(mContext);
         gcmManager = new GCMManager(mContext);
         if (webSocketManager.createSocket(Constants.HOST, true)) {
@@ -129,6 +132,14 @@ public class App extends Application {
 
     public static UserManager getUserManager() {
         return getInstance().getUserManagerInstance();
+    }
+
+    public RestManager getRestManagerInstance() {
+        return this.restManager;
+    }
+
+    public static RestManager getRestManager() {
+        return getInstance().getRestManagerInstance();
     }
 
     public SpellManager getSpellManagerInstance() {

@@ -1,18 +1,14 @@
 package com.nosad.sample.engine.adapters;
 
-import android.content.Context;
-import android.database.DataSetObserver;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.databinding.DataBindingUtil;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.nosad.sample.R;
+import com.nosad.sample.databinding.QuestItemBinding;
 import com.nosad.sample.entity.quest.Quest;
+import com.nosad.sample.view.activities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,35 +19,40 @@ import java.util.List;
  *
  * Created by Novosad on 4/4/16.
  */
-public class QuestsAdapter extends ArrayAdapter<Quest> {
+public class QuestsAdapter extends RecyclerView.Adapter<QuestsAdapter.QuestViewHolder> {
     // Couple test quests
     private ArrayList<Quest> quests = new ArrayList<>();
+    private MainActivity context;
 
-    private Context context;
-    private int resource;
+    private int position;
 
-    public QuestsAdapter(Context context, int resource) {
-        super(context, resource);
-        this.context = context;
-        this.resource = resource;
+    public int getPosition() {
+        return position;
     }
 
-    public QuestsAdapter(Context context, int resource, List<Quest> objects) {
-        this(context, resource);
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public QuestsAdapter(MainActivity context, List<Quest> objects) {
+        this.context = context;
         this.quests.addAll(objects);
     }
 
-    @Override
-    public int getCount() {
-        return quests.size();
+    public class QuestViewHolder extends RecyclerView.ViewHolder {
+        private QuestItemBinding questItemBinding;
+
+        public QuestViewHolder(View v) {
+            super(v);
+            questItemBinding = DataBindingUtil.bind(v);
+            v.setOnCreateContextMenuListener(context);
+        }
     }
 
-    @Override
     public Quest getItem(int position) {
         return quests.get(position);
     }
 
-    @Override
     public int getPosition(Quest item) {
         int index = -1;
 
@@ -65,39 +66,6 @@ public class QuestsAdapter extends ArrayAdapter<Quest> {
         return index;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Quest quest = getItem(position);
-
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(resource, parent, false);
-        }
-
-        ImageView ivQuestIcon = (ImageView) convertView.findViewById(R.id.ivQuestIcon);
-
-        TextView tvTitle = (TextView) convertView.findViewById(R.id.tvQuestTitle);
-        tvTitle.setText(quest.getTitle());
-
-        TextView tvDescription = (TextView) convertView.findViewById(R.id.tvQuestDescription);
-        tvDescription.setText(quest.getDescription());
-
-        TextView tvExperience = (TextView) convertView.findViewById(R.id.tvExpAmountForQuest);
-        tvExperience.setText(String.valueOf(quest.getExperience()));
-
-        TextView tvCoins = (TextView) convertView.findViewById(R.id.tvCoinsAmountForQuest);
-        tvCoins.setText(String.valueOf(quest.getCredits()));
-
-        if (quest.getStatus() == Quest.QuestStatus.Finished) {
-            convertView.setBackgroundColor(Color.GRAY);
-            tvTitle.setPaintFlags(tvTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            tvDescription.setPaintFlags(tvDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            ivQuestIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.menu_check, context.getTheme()));
-        }
-
-        return convertView;
-    }
-
-    @Override
     public void add(Quest object) {
         if (object != null) {
             quests.add(object);
@@ -105,7 +73,6 @@ public class QuestsAdapter extends ArrayAdapter<Quest> {
         notifyDataSetChanged();
     }
 
-    @Override
     public void remove(Quest object) {
         for (Quest quest : quests) {
             if (quest.getId() == object.getId()) {
@@ -121,11 +88,41 @@ public class QuestsAdapter extends ArrayAdapter<Quest> {
         addAll(collection);
     }
 
-    @Override
     public void addAll(Collection<? extends Quest> collection) {
         if (collection != null) {
             quests.addAll(collection);
         }
         notifyDataSetChanged();
+    }
+
+    @Override
+    public QuestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        QuestItemBinding questItemBinding = QuestItemBinding.inflate(inflater, parent, false);
+        return new QuestViewHolder(questItemBinding.getRoot());
+    }
+
+    @Override
+    public void onBindViewHolder(final QuestViewHolder holder, int position) {
+        Quest quest = quests.get(position);
+        holder.questItemBinding.setQuest(quest);
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                setPosition(holder.getAdapterPosition());
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void onViewRecycled(QuestViewHolder holder) {
+        holder.itemView.setOnLongClickListener(null);
+        super.onViewRecycled(holder);
+    }
+
+    @Override
+    public int getItemCount() {
+        return quests.size();
     }
 }

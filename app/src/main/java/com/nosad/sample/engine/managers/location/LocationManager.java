@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -31,10 +33,14 @@ import com.google.maps.android.SphericalUtil;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.MarkerInfoAdapter;
+import com.nosad.sample.engine.network.RequestCallback;
+import com.nosad.sample.engine.network.RestManager;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
 
 /**
  * Created by Novosad on 3/29/16.
@@ -161,9 +167,9 @@ public class LocationManager implements LocationListener {
      */
     public void createLocationRequest() {
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(1000);
+        locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(1000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
     }
 
     /**
@@ -305,6 +311,34 @@ public class LocationManager implements LocationListener {
         previousLocation = currentLocation;
         App.getUserManager().getCurrentUser().setDistance(
                 App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
+
+
+        String previousLocationStr = previousLocation.getLatitude() + "," + previousLocation.getLongitude();
+        String currentLocationStr = currentLocation.getLatitude() + "," + currentLocation.getLongitude();
+        String url = "http://maps.googleapis.com/maps/api/directions/json?"
+                    + "origin=" + previousLocationStr
+                    + "&destination=" + currentLocationStr
+                    + "&mode=driving&units=metric";
+
+        App.getRestManager().createRequest(url, Request.Method.GET, null, new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
+                if (response != null) {
+                    Log.d(Constants.TAG, "Directions API: " + response.toString());
+                } else {
+                    Log.d(Constants.TAG, "Directions API response is null.");
+                }
+            }
+
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+                if (response != null) {
+                    Log.d(Constants.TAG, "Error: " + response.toString());
+                } else {
+                    Log.d(Constants.TAG, "Error: directions API response is null.");
+                }
+            }
+        });
 
         updateUserInfo();
     }

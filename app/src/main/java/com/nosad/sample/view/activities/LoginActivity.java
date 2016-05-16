@@ -15,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -30,6 +29,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.network.RestManager;
 import com.nosad.sample.utils.common.Constants;
@@ -37,7 +37,7 @@ import com.nosad.sample.utils.common.Constants;
 import java.util.Arrays;
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via Facebook account.
  */
 public class LoginActivity extends AppCompatActivity {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
@@ -45,8 +45,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // The BroadcastReceiver that tracks network connectivity changes.
     private RestManager.NetworkReceiver receiver;
-
-    private RestManager restManager;
 
     public Profile profile;
     private AccessTokenTracker accessTokenTracker;
@@ -65,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
         
         setContentView(R.layout.activity_login);
 
-        restManager = RestManager.getInstance(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
         mainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -121,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
     private void registerReceivers() {
         // Registers BroadcastReceiver to track network connection changes.
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        receiver = restManager.getNetworkReceiver();
+        receiver = App.getRestManager().getNetworkReceiver();
         this.registerReceiver(receiver, filter);
     }
 
@@ -235,7 +232,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onResume();
 
         // Update if connection is available
-        restManager.updateConnectedFlags();
+        App.getRestManager().updateConnectedFlags();
 
         if (AccessToken.getCurrentAccessToken() == null) {
             LoginManager.getInstance().logOut();

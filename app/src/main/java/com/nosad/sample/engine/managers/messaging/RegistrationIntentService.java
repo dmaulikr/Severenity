@@ -65,7 +65,7 @@ public class RegistrationIntentService extends IntentService {
             e.printStackTrace();
         }
 
-        RestManager.getInstance(getApplicationContext()).createRequest(Constants.REST_API_DEVICES, Request.Method.POST, device, new RequestCallback() {
+        App.getRestManager().createRequest(Constants.REST_API_DEVICES, Request.Method.POST, device, new RequestCallback() {
             @Override
             public void onResponseCallback(JSONObject response) {
                 try {
