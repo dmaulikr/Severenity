@@ -40,6 +40,8 @@ import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -167,9 +169,9 @@ public class LocationManager implements LocationListener {
      */
     public void createLocationRequest() {
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(1000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        locationRequest.setInterval(Constants.INTERVAL_LOCATION_UPDATE);
+        locationRequest.setFastestInterval(Constants.INTERVAL_FAST_LOCATION_UPDATE);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     /**
@@ -292,7 +294,7 @@ public class LocationManager implements LocationListener {
     }
 
     private Handler checkDistanceHandler = new Handler();
-    private int interval = 5000;
+    private int interval = Constants.INTERVAL_LOCATION_UPDATE;
 
     /**
      * Adds distance passed between 2 last locations if it is bigger than 1 meter.
@@ -303,28 +305,46 @@ public class LocationManager implements LocationListener {
             return;
         }
 
-        final double metersPassed = SphericalUtil.computeDistanceBetween(
-            Utils.latLngFromLocation(previousLocation),
-            Utils.latLngFromLocation(currentLocation)
-        );
-
-        previousLocation = currentLocation;
-        App.getUserManager().getCurrentUser().setDistance(
-                App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
-
-
         String previousLocationStr = previousLocation.getLatitude() + "," + previousLocation.getLongitude();
         String currentLocationStr = currentLocation.getLatitude() + "," + currentLocation.getLongitude();
         String url = "http://maps.googleapis.com/maps/api/directions/json?"
                     + "origin=" + previousLocationStr
                     + "&destination=" + currentLocationStr
-                    + "&mode=driving&units=metric";
+                    + "&mode=walking&units=metric";
 
+        previousLocation = currentLocation;
         App.getRestManager().createRequest(url, Request.Method.GET, null, new RequestCallback() {
             @Override
             public void onResponseCallback(JSONObject response) {
                 if (response != null) {
                     Log.d(Constants.TAG, "Directions API: " + response.toString());
+                    try {
+                        double metersPassed = 0;
+                        JSONArray routes = response.getJSONArray("routes");
+                        for (int i = 0; i < routes.length(); i++) {
+                            JSONObject route = routes.getJSONObject(i);
+                            JSONArray legs = route.getJSONArray("legs");
+                            for (int j = 0; j < legs.length(); j++) {
+                                JSONObject distance = legs.getJSONObject(j).getJSONObject("distance");
+                                metersPassed += distance.getDouble("value");
+                            }
+                        }
+
+                        // Average running speed is:
+                        // from 3.7 meters/sec to 10.4 meters/sec (elite athletes)
+                        // Average walking speed is 1.4 meters/sec
+                        // We are assuming that people have walked at least for 10 seconds
+                        // and are not running better than elite athletes
+                        if (metersPassed > 14 && metersPassed < 104) {
+                            App.getUserManager().getCurrentUser().setDistance(
+                                    App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
+
+                            updateUserInfo();
+                            Toast.makeText(context, "Distance passed: " + metersPassed, Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     Log.d(Constants.TAG, "Directions API response is null.");
                 }
@@ -339,8 +359,6 @@ public class LocationManager implements LocationListener {
                 }
             }
         });
-
-        updateUserInfo();
     }
 
     private void updateUserInfo() {
