@@ -11,7 +11,7 @@ import com.facebook.login.LoginManager;
 import com.nosad.sample.engine.managers.data.MessageManager;
 import com.nosad.sample.engine.managers.data.QuestManager;
 import com.nosad.sample.engine.managers.data.UserManager;
-import com.nosad.sample.engine.managers.game.SpellManager;
+import com.nosad.sample.engine.managers.game.ChipManager;
 import com.nosad.sample.engine.managers.location.LocationManager;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.engine.network.RestManager;
@@ -29,7 +29,7 @@ public class App extends Application {
     private LocationManager locationManager;
     private LocalBroadcastManager localBroadcastManager;
     private UserManager userManager;
-    private SpellManager spellManager;
+    private ChipManager chipManager;
     private WebSocketManager webSocketManager;
     private MessageManager msgManager;
     private QuestManager questManager;
@@ -55,7 +55,7 @@ public class App extends Application {
         locationManager = new LocationManager(mContext);
         localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
         userManager = new UserManager(mContext);
-        spellManager = new SpellManager(mContext);
+        chipManager = new ChipManager(mContext);
         webSocketManager = new WebSocketManager(mContext);
         restManager = new RestManager(mContext);
         questManager = new QuestManager(mContext);
@@ -142,11 +142,11 @@ public class App extends Application {
         return getInstance().getRestManagerInstance();
     }
 
-    public SpellManager getSpellManagerInstance() {
-        return this.spellManager;
+    public ChipManager getSpellManagerInstance() {
+        return this.chipManager;
     }
 
-    public static SpellManager getSpellManager() {
+    public static ChipManager getSpellManager() {
         return getInstance().getSpellManagerInstance();
     }
 

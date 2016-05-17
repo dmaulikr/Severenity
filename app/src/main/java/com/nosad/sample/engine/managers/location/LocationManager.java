@@ -29,12 +29,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.SphericalUtil;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.MarkerInfoAdapter;
 import com.nosad.sample.engine.network.RequestCallback;
-import com.nosad.sample.engine.network.RestManager;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
@@ -100,7 +98,7 @@ public class LocationManager implements LocationListener {
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                if (App.getSpellManager().isSpellMode()) {
+                if (App.getSpellManager().isChipMode()) {
                     // Handle spells here if needed
                 } else {
                     resetCameraLocation();
@@ -112,7 +110,7 @@ public class LocationManager implements LocationListener {
             @Override
             public boolean onMyLocationButtonClick() {
                 resetCameraLocation();
-                App.getSpellManager().cancelSpellMode();
+                App.getSpellManager().cancelChipMode();
                 return true;
             }
         });
@@ -334,8 +332,8 @@ public class LocationManager implements LocationListener {
                                     App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
 
                             updateUserInfo();
-                            Toast.makeText(context, "Distance passed: " + metersPassed, Toast.LENGTH_SHORT).show();
                         }
+                        Toast.makeText(context, "Distance passed: " + metersPassed, Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

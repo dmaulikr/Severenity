@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nosad.sample.R;
-import com.nosad.sample.entity.Spell;
+import com.nosad.sample.entity.Chip;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,43 +18,43 @@ import java.util.List;
 /**
  * Created by Novosad on 4/4/16.
  */
-public class SpellsAdapter extends ArrayAdapter<Spell> {
-    private ArrayList<Spell> spells = new ArrayList<>(Arrays.asList(
-            new Spell(Spell.SpellType.Capture),
-            new Spell(Spell.SpellType.Dispel),
-            new Spell(Spell.SpellType.Shield),
-            new Spell(Spell.SpellType.Attack)
+public class ChipAdapter extends ArrayAdapter<Chip> {
+    private ArrayList<Chip> chips = new ArrayList<>(Arrays.asList(
+            new Chip(Chip.ChipType.Capture),
+            new Chip(Chip.ChipType.Dispel),
+            new Chip(Chip.ChipType.Shield),
+            new Chip(Chip.ChipType.Attack)
     ));
     private Context context;
     private int resource;
 
-    public SpellsAdapter(Context context, int resource) {
+    public ChipAdapter(Context context, int resource) {
         super(context, resource);
         this.context = context;
         this.resource = resource;
     }
 
-    public SpellsAdapter(Context context, int resource, List<Spell> objects) {
+    public ChipAdapter(Context context, int resource, List<Chip> objects) {
         this(context, resource);
-        this.spells = new ArrayList<>(objects);
+        this.chips = new ArrayList<>(objects);
     }
 
     @Override
     public int getCount() {
-        return spells.size();
+        return chips.size();
     }
 
     @Override
-    public Spell getItem(int position) {
-        return spells.get(position);
+    public Chip getItem(int position) {
+        return chips.get(position);
     }
 
     @Override
-    public int getPosition(Spell item) {
+    public int getPosition(Chip item) {
         int index = -1;
 
-        for (int i = 0; i < spells.size(); i++) {
-            if (spells.get(i).equals(item)) {
+        for (int i = 0; i < chips.size(); i++) {
+            if (chips.get(i).equals(item)) {
                 index = i;
                 break;
             }
@@ -65,18 +65,18 @@ public class SpellsAdapter extends ArrayAdapter<Spell> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Spell spell = getItem(position);
+        Chip chip = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(resource, parent, false);
         }
 
         TextView tvTitle = (TextView) convertView.findViewById(R.id.tvSpellTitle);
-        tvTitle.setText(spell.getTitle());
+        tvTitle.setText(chip.getTitle());
 
         ImageView ivIcon = (ImageView) convertView.findViewById(R.id.ivSpellIcon);
         ivIcon.setImageDrawable(
-            context.getResources().getDrawable(spell.getSpellIconResource(), context.getTheme())
+            context.getResources().getDrawable(chip.getChipIconResource(), context.getTheme())
         );
 
         return convertView;

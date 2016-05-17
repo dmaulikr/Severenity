@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,7 +39,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
-import com.nosad.sample.engine.adapters.SpellsAdapter;
+import com.nosad.sample.engine.adapters.ChipAdapter;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.common.Constants;
@@ -66,7 +65,7 @@ public class GameMapFragment extends Fragment {
 
     private ActionMode spellMode;
 
-    private SpellsAdapter spellsAdapter;
+    private ChipAdapter chipAdapter;
 
     public GameMapFragment() {
         // Required empty public constructor
@@ -214,27 +213,27 @@ public class GameMapFragment extends Fragment {
             }
         });
 
-        spellsAdapter = new SpellsAdapter(activity, R.layout.spell_item);
+        chipAdapter = new ChipAdapter(activity, R.layout.spell_item);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
         drawerList = (ListView) view.findViewById(R.id.lvSpells);
-        drawerList.setAdapter(spellsAdapter);
+        drawerList.setAdapter(chipAdapter);
 
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (spellMode == null) {
-                    App.getSpellManager().setCurrentSpell(spellsAdapter.getItem(position));
+                    App.getSpellManager().setCurrentChip(chipAdapter.getItem(position));
                     spellMode = activity.startSupportActionMode(new ActionBarSpell());
-                    spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), spellsAdapter.getItem(position).getTitle()));
+                    spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), chipAdapter.getItem(position).getTitle()));
                 } else {
-                    App.getSpellManager().setCurrentSpell(spellsAdapter.getItem(position));
+                    App.getSpellManager().setCurrentChip(chipAdapter.getItem(position));
 
-                    if (App.getSpellManager().getCurrentSpell() == null) {
+                    if (App.getSpellManager().getCurrentChip() == null) {
                         spellMode.finish();
                         spellMode = null;
                     } else {
-                        spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), spellsAdapter.getItem(position).getTitle()));
+                        spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), chipAdapter.getItem(position).getTitle()));
                     }
                 }
 
