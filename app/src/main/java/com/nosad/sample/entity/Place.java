@@ -3,6 +3,7 @@ package com.nosad.sample.entity;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Andriy on 5/15/2016.
@@ -11,7 +12,7 @@ public class Place {
 
     private String mPlaceID;
     private String mPlaceName;
-    private ArrayList<String> mPlaceOwnerIDs;
+    private HashMap<Integer, String> mPlaceOwnerIDs;
     private LatLng mPlacePos;
 
     public Place(String placeID, String placeName, LatLng latlng) {
@@ -19,11 +20,22 @@ public class Place {
         this.mPlaceID = placeID;
         this.mPlaceName = placeName;
         this.mPlacePos = latlng;
-        mPlaceOwnerIDs = new ArrayList<>();
+        mPlaceOwnerIDs = new HashMap<>();
     }
 
-    public void    addOwner(String owner) { this.mPlaceOwnerIDs.add(owner); };
-    //public boolean hasOwner(Srring ownerID) { return this.mPlaceOwnerID; };
+    public void addOwner(String owner) {
+
+        this.mPlaceOwnerIDs.put(owner.hashCode(), owner);
+    };
+
+    public boolean hasOwner(String ownerID) {
+
+        if (mPlaceOwnerIDs == null) {
+            return false;
+        }
+
+        return mPlaceOwnerIDs.containsKey(ownerID.hashCode());
+    };
 
     public String getPlaceID() { return this.mPlaceID; };
     public String getPlaceName() { return this.mPlaceName; };

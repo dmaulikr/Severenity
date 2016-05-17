@@ -9,6 +9,7 @@ import com.facebook.FacebookSdk;
 
 import com.facebook.login.LoginManager;
 import com.nosad.sample.engine.managers.data.MessageManager;
+import com.nosad.sample.engine.managers.data.PlacesManager;
 import com.nosad.sample.engine.managers.data.QuestManager;
 import com.nosad.sample.engine.managers.data.UserManager;
 import com.nosad.sample.engine.managers.game.ChipManager;
@@ -35,6 +36,7 @@ public class App extends Application {
     private QuestManager questManager;
     private GCMManager gcmManager;
     private RestManager restManager;
+    private PlacesManager mPlacesManager;
 
     private static App mInstance;
     private static Context mContext;
@@ -66,6 +68,7 @@ public class App extends Application {
         msgManager = new MessageManager(mContext);
 
         sharedPrefereces = getSharedPreferences("Severenity", MODE_PRIVATE);
+        mPlacesManager = new PlacesManager(mContext);
     }
 
     public SharedPreferences getSharedPreferencesInstance() {
@@ -172,5 +175,13 @@ public class App extends Application {
 
     public static QuestManager getQuestManager() {
         return getInstance().getQuestManagerInstance();
+    }
+
+    public PlacesManager getPlacesManagerInstance() {
+        return this.mPlacesManager;
+    }
+
+    public static PlacesManager getPlacesManager() {
+        return getInstance().getPlacesManagerInstance();
     }
 }

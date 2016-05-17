@@ -35,6 +35,14 @@ public class MarkerInfoAdapter implements GoogleMap.InfoWindowAdapter {
 
             markerName.setText(marker.getTitle());
 
+            TextView hiddenTextForID = (TextView)customView.findViewById(R.id.place_ID);
+            if (hiddenTextForID == null) {
+                return null;
+            }
+
+            String str = marker.getSnippet();
+            hiddenTextForID.setText(marker.getSnippet());
+
             return customView;
         }
         return null;

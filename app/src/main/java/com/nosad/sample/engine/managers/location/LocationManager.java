@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.facebook.AccessToken;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -41,6 +42,8 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by Novosad on 3/29/16.
@@ -139,6 +142,8 @@ public class LocationManager implements LocationListener {
                 Toast.makeText(App.getInstance().getApplicationContext(), marker.getId().toString(), Toast.LENGTH_LONG).show();
             }
         });
+
+        displayPlaceMarkerFromDB();
     }
 
     /**
@@ -203,10 +208,22 @@ public class LocationManager implements LocationListener {
             return;
         }
 
-        googleMap.addMarker(new MarkerOptions()
-                .position(place.getLatLng())
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-                .title(String.format("%s", place.getName())));
+        if (App.getPlacesManager().findPlaceByID(place.getId()) == null) {
+
+            com.nosad.sample.entity.Place place_inner = new com.nosad.sample.entity.Place(
+                    place.getId().toString(),
+                    place.getName().toString(),
+                    place.getLatLng());
+
+            App.getPlacesManager().addPlace(place_inner);
+            //App.getPlacesManager().addOwnerToPlace(place_inner.getPlaceID(), AccessToken.getCurrentAccessToken().getUserId());
+
+            googleMap.addMarker(new MarkerOptions()
+                    .position(place.getLatLng())
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                    .title(String.format("%s", place.getName()))
+                    .snippet(place.getId()));
+        }
     }
 
     /**
@@ -412,5 +429,21 @@ public class LocationManager implements LocationListener {
         }
         customMarkerView.draw(canvas);
         return returnedBitmap;
+    }
+
+    public void displayPlaceMarkerFromDB() {
+
+        ArrayList<com.nosad.sample.entity.Place> place_inner = App.getPlacesManager().getPlaces();
+        if (place_inner == null)
+            return;
+
+        for (com.nosad.sample.entity.Place pl: place_inner) {
+
+            googleMap.addMarker(new MarkerOptions()
+                    .position(pl.getPlacePos())
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                    .title(String.format("%s", pl.getPlaceName()))
+                    .snippet(pl.getPlaceID()));
+        }
     }
 }
