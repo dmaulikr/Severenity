@@ -5,4 +5,73 @@
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark"
     android:elevation="4dp">
+    <RelativeLayout
+        android:id="@+id/userInfo"
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="64dp">
+
+        <com.facebook.login.widget.ProfilePictureView
+            android:id="@+id/mapUserAvatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tvImmunityValue"
+            android:textColor="@color/colorWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/mapUserAvatar"
+            android:layout_margin="5dp"
+            android:textSize="12sp"
+            android:text="@string/immunity_value" />
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tvMentalityValue"
+            android:textColor="@color/colorWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/tvImmunityValue"
+            android:layout_margin="5dp"
+            android:layout_marginBottom="0dp"
+            android:textSize="12sp"
+            android:text="@string/mentality_value" />
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tvExperienceValue"
+            android:textColor="@color/colorWhite"
+            android:layout_below="@id/tvImmunityValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/mapUserAvatar"
+            android:layout_margin="5dp"
+            android:layout_marginBottom="0dp"
+            android:textSize="12sp"
+            android:text="@string/experience_value" />
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tvLevelValue"
+            android:textColor="@color/colorWhite"
+            android:layout_below="@id/tvImmunityValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/tvExperienceValue"
+            android:layout_margin="5dp"
+            android:layout_marginBottom="0dp"
+            android:textSize="12sp"
+            android:text="@string/level_value" />
+
+        <CheckBox
+            android:id="@+id/cbDriving"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
 </android.support.v7.widget.Toolbar>

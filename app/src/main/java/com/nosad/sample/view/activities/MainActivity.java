@@ -20,13 +20,17 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.facebook.login.widget.ProfilePictureView;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
@@ -47,6 +51,7 @@ import com.nosad.sample.view.fragments.QuestsFragment;
 import com.nosad.sample.view.fragments.ShopFragment;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout container;
     private SplitToolbar toolbarBottom;
     private Toolbar toolbarTop;
+
+    private ProfilePictureView userProfilePicture;
+    private TextView tvMentalityValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
 
     private FragmentManager fragmentManager;
 
@@ -225,12 +233,37 @@ public class MainActivity extends AppCompatActivity {
 
     private void initToolbars() {
         toolbarTop = (Toolbar) findViewById(R.id.toolbarTop);
-        toolbarTop.setNavigationIcon(R.mipmap.menu_arrow_left);
-        SpannableString s = new SpannableString(getResources().getString(R.string.title));
-        Typeface prometheus = Typeface.createFromAsset(getAssets(), "fonts/zekton.ttf");
-        s.setSpan(new CustomTypefaceSpan("", prometheus), 0, s.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        toolbarTop.setTitleTextColor(getResources().getColor(R.color.colorAccent, getTheme()));
-        toolbarTop.setTitle(s);
+        GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        try {
+                            if (object == null) {
+                                return;
+                            }
+
+                            userProfilePicture.setProfileId(object.getString("id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).executeAsync();
+
+        userProfilePicture = (ProfilePictureView) toolbarTop.findViewById(R.id.mapUserAvatar);
+
+        tvImmunityValue = (TextView) toolbarTop.findViewById(R.id.tvImmunityValue);
+        tvMentalityValue = (TextView) toolbarTop.findViewById(R.id.tvMentalityValue);
+        tvExperienceValue = (TextView) toolbarTop.findViewById(R.id.tvExperienceValue);
+        tvLevelValue = (TextView) toolbarTop.findViewById(R.id.tvLevelValue);
+
+        CheckBox cbDriving = (CheckBox) toolbarTop.findViewById(R.id.cbDriving);
+        cbDriving.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                App.getLocationManager().isDriving = isChecked;
+            }
+        });
 
         setSupportActionBar(toolbarTop);
 
@@ -373,6 +406,8 @@ public class MainActivity extends AppCompatActivity {
         App.getUserManager().updateCurrentUserInDB();
         App.getLocationManager().stopLocationUpdates();
         App.getGoogleApiHelper().disconnect();
+
+        App.getLocalBroadcastManager().unregisterReceiver(updateUIReceiver);
         App.getLocalBroadcastManager().unregisterReceiver(
                 App.getLocationManager().getGoogleApiClientReceiver()
         );
@@ -388,6 +423,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         activityActive = true;
+
+        updateUIInfo();
+
+        App.getLocalBroadcastManager().registerReceiver(
+                updateUIReceiver,
+                new IntentFilter(Constants.INTENT_FILTER_UPDATE_UI)
+        );
 
         App.getLocalBroadcastManager().registerReceiver(
                 App.getLocationManager().getGoogleApiClientReceiver(),
@@ -458,5 +500,24 @@ public class MainActivity extends AppCompatActivity {
 
     public Toolbar getToolbarTop() {
         return toolbarTop;
+    }
+
+    private BroadcastReceiver updateUIReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateUIInfo();
+        }
+    };
+
+    private void updateUIInfo() {
+        User user = App.getUserManager().getCurrentUser();
+        if (user == null) {
+            return;
+        }
+
+        tvImmunityValue.setText(String.format(getResources().getString(R.string.immunity_value), user.getImmunity()));
+        tvMentalityValue.setText(String.format(getResources().getString(R.string.mentality_value), user.getMentality()));
+        tvExperienceValue.setText(String.format(getResources().getString(R.string.experience_value), user.getExperience()));
+        tvLevelValue.setText(String.format(getResources().getString(R.string.level_value), user.getLevel()));
     }
 }

@@ -80,6 +80,8 @@ public class LocationManager implements LocationListener {
         }, interval);
     }
 
+    public boolean isDriving = false;
+
     /**
      * Updates the active map with the map got from fragment
      *
@@ -308,7 +310,7 @@ public class LocationManager implements LocationListener {
         String url = "http://maps.googleapis.com/maps/api/directions/json?"
                     + "origin=" + previousLocationStr
                     + "&destination=" + currentLocationStr
-                    + "&mode=walking&units=metric";
+                    + "&mode=" + (isDriving ? "driving" : "walking") + "&units=metric";
 
         previousLocation = currentLocation;
         App.getRestManager().createRequest(url, Request.Method.GET, null, new RequestCallback() {

@@ -22,6 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -54,14 +56,11 @@ import org.json.JSONObject;
 public class GameMapFragment extends Fragment {
     private SupportMapFragment mapFragment;
     private MainActivity activity;
-
-    private ProfilePictureView userProfilePicture;
+    private TextView tvAttributions;
 
     private DrawerLayout drawerLayout;
     private ListView drawerList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private TextView tvMentalityValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
-    private TextView tvAttributions;
 
     private ActionMode spellMode;
 
@@ -105,12 +104,7 @@ public class GameMapFragment extends Fragment {
     public void onResume() {
         Log.v(Constants.TAG, this.toString() + " onResume()");
         super.onResume();
-        updateUIInfo();
 
-        App.getLocalBroadcastManager().registerReceiver(
-                updateUIReceiver,
-                new IntentFilter(Constants.INTENT_FILTER_UPDATE_UI)
-        );
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -123,54 +117,11 @@ public class GameMapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-
-        GraphRequest.newMeRequest(
-            AccessToken.getCurrentAccessToken(),
-            new GraphRequest.GraphJSONObjectCallback() {
-                @Override
-                public void onCompleted(JSONObject object, GraphResponse response) {
-                    try {
-                        if (object == null) {
-                            return;
-                        }
-
-                        userProfilePicture.setProfileId(object.getString("id"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-        }).executeAsync();
-
-        userProfilePicture = (ProfilePictureView) view.findViewById(R.id.mapUserAvatar);
-
-        tvImmunityValue = (TextView) view.findViewById(R.id.tvImmunityValue);
-        tvMentalityValue = (TextView) view.findViewById(R.id.tvMentalityValue);
-        tvExperienceValue = (TextView) view.findViewById(R.id.tvExperienceValue);
-        tvLevelValue = (TextView) view.findViewById(R.id.tvLevelValue);
         tvAttributions = (TextView) view.findViewById(R.id.tvAttributions);
 
         initDrawer(view);
 
         return view;
-    }
-
-    private BroadcastReceiver updateUIReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            updateUIInfo();
-        }
-    };
-
-    private void updateUIInfo() {
-        User user = App.getUserManager().getCurrentUser();
-        if (user == null) {
-            return;
-        }
-
-        tvImmunityValue.setText(String.format(getResources().getString(R.string.immunity_value), user.getImmunity()));
-        tvMentalityValue.setText(String.format(getResources().getString(R.string.mentality_value), user.getMentality()));
-        tvExperienceValue.setText(String.format(getResources().getString(R.string.experience_value), user.getExperience()));
-        tvLevelValue.setText(String.format(getResources().getString(R.string.level_value), user.getLevel()));
     }
 
     private void initDrawer(View view) {
@@ -252,7 +203,6 @@ public class GameMapFragment extends Fragment {
     public void onPause() {
         Log.v(Constants.TAG, this.toString() + " onPause()");
         super.onPause();
-        App.getLocalBroadcastManager().unregisterReceiver(updateUIReceiver);
     }
 
     private class ActionBarSpell implements ActionMode.Callback {
