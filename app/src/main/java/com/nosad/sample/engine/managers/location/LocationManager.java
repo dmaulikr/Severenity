@@ -329,7 +329,6 @@ public class LocationManager implements LocationListener {
                             }
                         }
 
-
                         if (metersPassed > Constants.AVERAGE_WALKING_SPEED && metersPassed < Constants.MAX_RUNNING_SPEED) {
                             App.getUserManager().getCurrentUser().setDistance(
                                     App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());

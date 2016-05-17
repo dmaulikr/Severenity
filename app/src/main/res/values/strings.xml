@@ -84,10 +84,11 @@
     <string name="select_action">Select action</string>
 
     <!-- Titles -->
-    <string name="title_shop">Shop coming soon.</string>
+    <string name="title_shop">Shop</string>
     <string name="title_map">Map</string>
     <string name="title_teams">Teams coming soon.</string>
     <string name="title_profile">Profile</string>
+    <string name="title_inventory">Inventory</string>
     <string name="title_battles">Battles coming soon.</string>
     <string name="totalDistancePassed">Total distance passed:\n%d meters</string>
 

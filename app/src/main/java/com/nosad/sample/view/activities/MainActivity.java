@@ -18,7 +18,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.ContextMenu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -43,7 +42,7 @@ import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.custom.SplitToolbar;
 import com.nosad.sample.view.fragments.GameMapFragment;
 import com.nosad.sample.view.fragments.MessagesFragment;
-import com.nosad.sample.view.fragments.ProfileFragment;
+import com.nosad.sample.view.fragments.PlayerFragment;
 import com.nosad.sample.view.fragments.QuestsFragment;
 import com.nosad.sample.view.fragments.ShopFragment;
 
@@ -61,12 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
     private ShopFragment shopFragment = new ShopFragment();
     private MessagesFragment messagesFragment = new MessagesFragment();
-    private ProfileFragment profileFragment = new ProfileFragment();
+    private PlayerFragment playerFragment = new PlayerFragment();
     private QuestsFragment battlesFragment = new QuestsFragment();
     private GameMapFragment gameMapFragment = new GameMapFragment();
     private String shopFragmentTag = ShopFragment.class.getSimpleName();
     private String messagesFragmentTag = MessagesFragment.class.getSimpleName();
-    private String profileFragmentTag = ProfileFragment.class.getSimpleName();
+    private String playerFragmentTag = PlayerFragment.class.getSimpleName();
     private String battlesFragmentTag = QuestsFragment.class.getSimpleName();
     private String gameMapFragmentTag = GameMapFragment.class.getSimpleName();
 
@@ -209,19 +208,18 @@ public class MainActivity extends AppCompatActivity {
         container = (FrameLayout) findViewById(R.id.container);
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .add(R.id.container, gameMapFragment, gameMapFragmentTag)
-                .add(R.id.container, shopFragment, shopFragmentTag)
-                .add(R.id.container, profileFragment, profileFragmentTag)
-                .add(R.id.container, messagesFragment, messagesFragmentTag)
-                .add(R.id.container, battlesFragment, battlesFragmentTag).commit();
+            .add(R.id.container, gameMapFragment, gameMapFragmentTag)
+            .add(R.id.container, shopFragment, shopFragmentTag)
+            .add(R.id.container, playerFragment, playerFragmentTag)
+            .add(R.id.container, messagesFragment, messagesFragmentTag)
+            .add(R.id.container, battlesFragment, battlesFragmentTag).commit();
 
-        allFragments.addAll(
-                Arrays.asList(
-                        shopFragment,
-                        messagesFragment,
-                        profileFragment,
-                        battlesFragment,
-                        gameMapFragment)
+        allFragments.addAll(Arrays.asList(
+            shopFragment,
+            messagesFragment,
+            playerFragment,
+            battlesFragment,
+            gameMapFragment)
         );
     }
 
@@ -348,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
 
     // TODO: Replace with transaction to real profile fragment
     private void showProfile() {
-        showFragment(profileFragment);
+        showFragment(playerFragment);
     }
 
     // TODO: Replace with transaction to real shop fragment
