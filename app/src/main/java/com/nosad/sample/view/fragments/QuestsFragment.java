@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,6 +30,7 @@ import com.nosad.sample.entity.quest.DistanceQuest;
 import com.nosad.sample.entity.quest.Quest;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
+import com.nosad.sample.view.custom.DividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -84,6 +86,8 @@ public class QuestsFragment extends Fragment {
         questsList = (RecyclerView) view.findViewById(R.id.rvQuests);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
         questsList.setLayoutManager(linearLayoutManager);
+        questsList.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL_LIST));
+        questsList.setItemAnimator(new DefaultItemAnimator());
         questsList.setAdapter(questsAdapter);
         activity.registerForContextMenu(questsList);
 
