@@ -28,9 +28,12 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.SphericalUtil;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.MarkerInfoAdapter;
@@ -56,6 +59,7 @@ public class LocationManager implements LocationListener {
     private Location currentLocation;
     private Context context;
     private GoogleApiClient googleApiClient;
+    private float currentZoom = (Constants.MAX_ZOOM_LEVEL + Constants.MIN_ZOOM_LEVEL) / 2 + 1.0f;
 
     private Marker currentUserMarker, otherUserMarker;
 
@@ -100,8 +104,27 @@ public class LocationManager implements LocationListener {
 
         googleMap = map;
         googleMap.setMyLocationEnabled(true);
-        googleMap.setPadding(0, 200, 0, 0);
-        googleMap.getUiSettings().setAllGesturesEnabled(false);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+        googleMap.getUiSettings().setScrollGesturesEnabled(false);
+        googleMap.getUiSettings().setTiltGesturesEnabled(false);
+        googleMap.getUiSettings().setCompassEnabled(true);
+        googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                if ((cameraPosition.zoom < Constants.MAX_ZOOM_LEVEL || cameraPosition.zoom > Constants.MIN_ZOOM_LEVEL) && currentLocation != null) {
+                    googleMap.getUiSettings().setZoomGesturesEnabled(false);
+                    if (cameraPosition.zoom < Constants.MAX_ZOOM_LEVEL) {
+                        currentZoom = Constants.MAX_ZOOM_LEVEL;
+                    } else {
+                        currentZoom = Constants.MIN_ZOOM_LEVEL;
+                    }
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(currentLocation), currentZoom));
+                } else {
+                    currentZoom = cameraPosition.zoom;
+                    googleMap.getUiSettings().setZoomGesturesEnabled(true);
+                }
+            }
+        });
 
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -171,7 +194,7 @@ public class LocationManager implements LocationListener {
      */
     public void fixCameraAtLocation(LatLng latLng) {
         isCameraFixed = true;
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17.0f));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
     public boolean isRequestingLocationUpdates() {
@@ -296,7 +319,7 @@ public class LocationManager implements LocationListener {
 
         if (!isCameraFixed) {
             googleMap.animateCamera(
-                    CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), 17.0f)
+                CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), currentZoom)
             );
         }
     }
@@ -355,7 +378,7 @@ public class LocationManager implements LocationListener {
                             }
                         }
 
-                        if (metersPassed > Constants.AVERAGE_WALKING_SPEED && metersPassed < Constants.MAX_RUNNING_SPEED) {
+                        if (metersPassed > Constants.AVERAGE_WALKING_SPEED && metersPassed < Constants.AVERAGE_RUNNING_SPEED) {
                             App.getUserManager().getCurrentUser().setDistance(
                                     App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
 

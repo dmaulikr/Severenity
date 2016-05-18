@@ -44,6 +44,9 @@ public class Constants {
 
     public static final String EXTRA_GAC_CONNECTED = "isConnected";
 
+    /**
+     * Map related constants.
+     */
     // Average running speed is:
     // from 4.7 meters/sec to 6.7 meters/sec (elite athletes)
     // Average walking speed is 1.4 meters/sec
@@ -56,14 +59,14 @@ public class Constants {
     public static final int EXPERIENCE_MULTIPLIER = 10;
     public static final int LEVEL_MULTIPLIER = 1000;
 
-    public static final float RESTORE_RATE_MENTALITY_NORMAL = 0.1f; // per day
-    public static final float RESTORE_RATE_MENTALITY_MOVING = 1f;   // per 100 meters
-
     public static final int INTERVAL_FAST_LOCATION_UPDATE = 5000;
     public static final int INTERVAL_LOCATION_UPDATE = 10000;
 
     public final static String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public final static Locale LOCALE = Locale.US;
+
+    public final static float MIN_ZOOM_LEVEL = 20.0f;
+    public final static float MAX_ZOOM_LEVEL = 17.0f;
 
     /**
      * Connection constants
@@ -101,4 +104,10 @@ public class Constants {
      * Notification messages
      */
     public static String NOTIFICATION_MSG_NEW_QUEST = "New quest received! Accept the challenge?";
+
+    /**
+     * Gameplay constants
+     */
+    public static final float RESTORE_RATE_MENTALITY_NORMAL = 0.1f; // per day
+    public static final float RESTORE_RATE_MENTALITY_MOVING = 1f;   // per 100 meters
 }
