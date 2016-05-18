@@ -31,7 +31,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     // 3 - added Quests table
     // 4 - added place/owners tables
     private static final int DB_VERSION = 4;
-    private static final String DB_NAME = "Filter.db"
+    private static final String DB_NAME = "Filter.db";
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER ";
