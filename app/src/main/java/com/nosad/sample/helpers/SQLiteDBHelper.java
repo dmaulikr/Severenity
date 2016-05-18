@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.google.android.gms.location.places.Place;
 import com.nosad.sample.App;
 import com.nosad.sample.entity.contracts.MsgContract;
+import com.nosad.sample.entity.contracts.PlaceContract;
 import com.nosad.sample.entity.contracts.QuestContract;
 import com.nosad.sample.entity.contracts.UserContract;
 import com.nosad.sample.entity.quest.CaptureQuest;
@@ -28,11 +29,13 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     // 1 - UserName table created
     // 2 - added Message table
     // 3 - added Quests table
-    private static final int DB_VERSION = 3;
-    private static final String DB_NAME = "Filter.db";
+    // 4 - added place/owners tables
+    private static final int DB_VERSION = 4;
+    private static final String DB_NAME = "Filter.db"
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER ";
+    private static final String REAL_TYPE = " REAL ";
     private static final String COMMA_SEP = ",";
 
     private static final String DB_SQL_CREATE_USERS =
@@ -70,11 +73,47 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     QuestContract.DBQuest.COLUMN_CHARACTERISTIC + INT_TYPE + QuestContract.DBQuest.COLUMN_NULLABLE + COMMA_SEP +
                     QuestContract.DBQuest.COLUMN_CHARACTERISTIC_AMOUNT + INT_TYPE + QuestContract.DBQuest.COLUMN_NULLABLE + " )";
 
+    // !!! DO NOT CALL THIS STATEMENT DIRECTLY. Use createPlaces method instead
+    // should be used in pare with DB_SQL_CREATE_PLACES_OWNERS
+    private static final String DB_SQL_CREATE_PLACES =
+            "CREATE TABLE " + PlaceContract.DBPlaces.TABLE_PLACES + " (" +
+                    PlaceContract.DBPlaces._ID + INT_TYPE    + " PRIMARY KEY," +
+                    PlaceContract.DBPlaces.COLUMN_PLACE_ID   + TEXT_TYPE + COMMA_SEP +
+                    PlaceContract.DBPlaces.COLUMN_PLACE_NAME + TEXT_TYPE + COMMA_SEP +
+                    PlaceContract.DBPlaces.COLUMN_PLACE_LNG  + REAL_TYPE + COMMA_SEP +
+                    PlaceContract.DBPlaces.COLUMN_PLACE_LAT  + REAL_TYPE + " )";
+
+    // !!! DO NOT CALL THIS STATEMENT DIRECTLY. Use createPlaces method instead
+    // should be used in pare with DB_SQL_CREATE_PLACES
+    private static final String DB_SQL_CREATE_PLACES_OWNERS =
+            "CREATE TABLE " + PlaceContract.DBPlacesOwners.TABLE_PLACES_OWNERS + " (" +
+                    PlaceContract.DBPlaces.COLUMN_PLACE_ID             + TEXT_TYPE + COMMA_SEP +
+                    PlaceContract.DBPlacesOwners.COLUMN_PLACE_OWNER_ID + TEXT_TYPE + " )";
+
+
     private static final String DB_SQL_DELETE_USERS = "DROP TABLE IF EXISTS " + UserContract.DBUser.TABLE_USERS;
 
     private static final String DB_SQL_DELETE_MESSAGES = "DROP TABLE IF EXISTS " + MsgContract.DBMsg.TABLE_MESSAGE;
 
     private static final String DB_SQL_DELETE_QUESTS = "DROP TABLE IF EXISTS " + QuestContract.DBQuest.TABLE_QUESTS;
+
+    // !!! DO NOT CALL THIS STATEMENT DIRECTLY. Use deletePlaces method instead
+    // should be used in pare with DB_SQL_DELETE_PLACES_OWNERS
+    private static final String DB_SQL_DELETE_PLACES = "DROP TABLE IF EXISTS " + PlaceContract.DBPlaces.TABLE_PLACES;
+
+    // !!! DO NOT CALL THIS STATEMENT DIRECTLY. Use deletePlaces method instead
+    // should be used in pare with DB_SQL_DELETE_PLACES
+    private static final String DB_SQL_DELETE_PLACES_OWNERS = "DROP TABLE IF EXISTS " + PlaceContract.DBPlacesOwners.TABLE_PLACES_OWNERS;
+
+    private void createPlace(SQLiteDatabase db) {
+        db.execSQL(DB_SQL_CREATE_PLACES);
+        db.execSQL(DB_SQL_CREATE_PLACES_OWNERS);
+    }
+
+    private void deletePlaces(SQLiteDatabase db) {
+        db.execSQL(DB_SQL_DELETE_PLACES);
+        db.execSQL(DB_SQL_DELETE_PLACES_OWNERS);
+    }
 
     public SQLiteDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -90,6 +129,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         db.execSQL(DB_SQL_CREATE_USERS);
         db.execSQL(DB_SQL_CREATE_MESSAGES);
         db.execSQL(DB_SQL_CREATE_QUESTS);
+        createPlace(db);
     }
 
     @Override
@@ -102,6 +142,10 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
         if (oldVersion == 2 && newVersion == DB_VERSION) {
             db.execSQL(DB_SQL_CREATE_QUESTS);
+        }
+
+        if (oldVersion == 3 && newVersion == DB_VERSION) {
+            createPlace(db);
         }
     }
 
