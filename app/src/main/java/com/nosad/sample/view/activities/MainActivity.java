@@ -36,6 +36,7 @@ import com.nosad.sample.R;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.engine.managers.messaging.RegistrationIntentService;
 import com.nosad.sample.entity.User;
+import com.nosad.sample.entity.contracts.PlaceContract;
 import com.nosad.sample.entity.quest.CaptureQuest;
 import com.nosad.sample.entity.quest.CollectQuest;
 import com.nosad.sample.entity.quest.DistanceQuest;
@@ -43,6 +44,7 @@ import com.nosad.sample.entity.quest.Quest;
 import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
+import com.nosad.sample.view.Dialogs.PlacesInfoDialog;
 import com.nosad.sample.view.custom.SplitToolbar;
 import com.nosad.sample.view.fragments.GameMapFragment;
 import com.nosad.sample.view.fragments.MessagesFragment;
@@ -411,6 +413,7 @@ public class MainActivity extends AppCompatActivity {
         App.getLocalBroadcastManager().unregisterReceiver(
                 App.getLocationManager().getGoogleApiClientReceiver()
         );
+        App.getLocalBroadcastManager().unregisterReceiver(showPlaceInfoDialog);
     }
 
     @Override
@@ -435,6 +438,12 @@ public class MainActivity extends AppCompatActivity {
                 App.getLocationManager().getGoogleApiClientReceiver(),
                 new IntentFilter(Constants.INTENT_FILTER_GAC)
         );
+
+        App.getLocalBroadcastManager().registerReceiver(
+                showPlaceInfoDialog,
+                new IntentFilter(Constants.INTENT_FILTER_SHOW_PLACE_INFO_DIALOG)
+        );
+
         App.getGoogleApiHelper().connect();
     }
 
@@ -520,4 +529,17 @@ public class MainActivity extends AppCompatActivity {
         tvExperienceValue.setText(String.format(getResources().getString(R.string.experience_value), user.getExperience()));
         tvLevelValue.setText(String.format(getResources().getString(R.string.level_value), user.getLevel()));
     }
+
+    private BroadcastReceiver showPlaceInfoDialog = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Bundle extra = intent.getExtras();
+            String placeID = extra.getString(PlaceContract.DBPlaces.COLUMN_PLACE_ID);
+
+            PlacesInfoDialog placeInfoDialog = PlacesInfoDialog.newInstance(placeID);
+            FragmentManager fm = getSupportFragmentManager();
+            placeInfoDialog.show(fm, "placeInfoDialog");
+        }
+    };
 }

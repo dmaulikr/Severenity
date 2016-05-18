@@ -37,9 +37,31 @@ public class Place {
         return mPlaceOwnerIDs.containsKey(ownerID.hashCode());
     };
 
+    public ArrayList<String> getOwners(String exceptUserID) {
+
+        if (mPlaceOwnerIDs.isEmpty()) {
+            return null;
+        }
+
+        ArrayList<String> owners = new ArrayList<>(mPlaceOwnerIDs.size());
+
+        for (String owner: mPlaceOwnerIDs.values()) {
+
+            if (exceptUserID.isEmpty()) {
+                owners.add(owner);
+            }
+            else {
+                if (owner.hashCode() != exceptUserID.hashCode()) {
+                    owners.add(owner);
+                }
+            }
+        }
+
+        return owners;
+    }
+
     public String getPlaceID() { return this.mPlaceID; };
     public String getPlaceName() { return this.mPlaceName; };
 
-    public void   setPlacePos(LatLng pos) { this.mPlacePos = pos; };
     public LatLng getPlacePos() { return this.mPlacePos; };
 }

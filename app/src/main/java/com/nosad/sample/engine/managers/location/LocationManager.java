@@ -1,5 +1,6 @@
 package com.nosad.sample.engine.managers.location;
 
+import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -35,8 +36,10 @@ import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.MarkerInfoAdapter;
 import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.entity.User;
+import com.nosad.sample.entity.contracts.PlaceContract;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
+import com.nosad.sample.view.Dialogs.PlacesInfoDialog;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -139,7 +142,13 @@ public class LocationManager implements LocationListener {
             @Override
             public void onInfoWindowClick(Marker marker) {
 
-                Toast.makeText(App.getInstance().getApplicationContext(), marker.getId().toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(App.getInstance().getApplicationContext(), marker.getId().toString(), Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_INFO_DIALOG);
+                intent.putExtra(PlaceContract.DBPlaces.COLUMN_PLACE_ID, marker.getSnippet());
+
+                App.getLocalBroadcastManager().sendBroadcast(intent);
+                //marker.hideInfoWindow();
             }
         });
 

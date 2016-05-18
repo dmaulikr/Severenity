@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="5dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/owners_list"
+        android:id="@+id/placeInfoOwnerTitle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/placeInfoOwnersInfo"
+        android:layout_below="@+id/placeInfoOwnerTitle" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:id="@+id/ownersList"
+        android:layout_below="@+id/placeInfoOwnersInfo"
+        android:layout_alignParentStart="false"
+        android:headerDividersEnabled="false"
+        android:focusable="false"
+        android:layout_marginTop="5dp" />
+</RelativeLayout>
