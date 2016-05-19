@@ -38,6 +38,8 @@ public class Constants {
     public static final String INTENT_FILTER_NEW_MESSAGE = "com.nosad.sample.newmessage";
     public static final String INTENT_FILTER_NEW_QUEST = "com.nosad.sample.newquest";
     public static final String INTENT_FILTER_SHOW_PLACE_INFO_DIALOG = "com.nosad.sample.showplaceinfodialog";
+    public static final String INTENT_FILTER_SHOW_PLACE_ACTIONS = "com.nosad.sample.showplaceactions";
+    public static final String INTENT_FILTER_HIDE_PLACE_ACTIONS = "com.nosad.sample.hideplaceactions";
 
     public static final String INTENT_EXTRA_DEVICE_ID = "DEVICE_ID";
     public static final String INTENT_EXTRA_DEVICE_NAME = "DEVICE_NAME";

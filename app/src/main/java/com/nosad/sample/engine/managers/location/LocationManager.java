@@ -127,6 +127,9 @@ public class LocationManager implements LocationListener {
                 } else {
                     resetCameraLocation();
                 }
+
+                Intent intent = new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS);
+                App.getLocalBroadcastManager().sendBroadcast(intent);
             }
         });
 
@@ -149,6 +152,9 @@ public class LocationManager implements LocationListener {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 fixCameraAtLocation(marker.getPosition());
+
+                Intent intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS);
+                App.getLocalBroadcastManager().sendBroadcast(intent);
                 return false;
             }
         });

@@ -21,9 +21,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -45,6 +48,7 @@ import com.nosad.sample.engine.adapters.ChipAdapter;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.common.Constants;
+import com.nosad.sample.view.Dialogs.PlacesInfoDialog;
 import com.nosad.sample.view.activities.MainActivity;
 
 import org.json.JSONException;
@@ -60,6 +64,7 @@ public class GameMapFragment extends Fragment {
 
     private DrawerLayout drawerLayout;
     private ListView drawerList;
+    private LinearLayout mPlaceActions;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
     private ActionMode spellMode;
@@ -111,6 +116,21 @@ public class GameMapFragment extends Fragment {
                 App.getLocationManager().updateMap(googleMap);
             }
         });
+
+        App.getLocalBroadcastManager().registerReceiver(
+                showPlaceInfoDialog,
+                new IntentFilter(Constants.INTENT_FILTER_SHOW_PLACE_INFO_DIALOG)
+        );
+
+        App.getLocalBroadcastManager().registerReceiver(
+                showPlaceActions,
+                new IntentFilter(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS)
+        );
+
+        App.getLocalBroadcastManager().registerReceiver(
+                hidePlaceActions,
+                new IntentFilter(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS)
+        );
     }
 
     @Override
@@ -126,6 +146,8 @@ public class GameMapFragment extends Fragment {
 
     private void initDrawer(View view) {
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerMap);
+
+        mPlaceActions = (LinearLayout)view.findViewById(R.id.placeActions);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(
                 activity, drawerLayout, activity.getToolbarTop(),
@@ -203,7 +225,66 @@ public class GameMapFragment extends Fragment {
     public void onPause() {
         Log.v(Constants.TAG, this.toString() + " onPause()");
         super.onPause();
+
+        App.getLocalBroadcastManager().unregisterReceiver(showPlaceInfoDialog);
+        App.getLocalBroadcastManager().unregisterReceiver(showPlaceActions);
+        App.getLocalBroadcastManager().unregisterReceiver(hidePlaceActions);
     }
+
+    private BroadcastReceiver showPlaceInfoDialog = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Bundle extra = intent.getExtras();
+            try {
+                JSONObject objectInfo = new JSONObject(extra.getString(Constants.OBJECT_INFO));
+
+                switch (objectInfo.getInt(Constants.OBJECT_TYPE_IDENTIFIER)) {
+                    case Constants.TYPE_PLACE: {
+
+                        PlacesInfoDialog placeInfoDialog = PlacesInfoDialog.newInstance(objectInfo.getString(Constants.PLACE_ID));
+                        FragmentManager fm = getFragmentManager();
+                        placeInfoDialog.show(fm, "placeInfoDialog");
+                        break;
+                    }
+
+                    default: {
+                        Log.d(Constants.TAG, "Unsupported object type: " + objectInfo.getInt(Constants.OBJECT_TYPE_IDENTIFIER) + " for displaying info dialog.");
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
+
+    private BroadcastReceiver showPlaceActions = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (mPlaceActions.getVisibility() == View.INVISIBLE) {
+
+                mPlaceActions.setVisibility(View.VISIBLE);
+                Animation anim = AnimationUtils.loadAnimation(context, R.anim.place_actions_slide_in);
+                mPlaceActions.startAnimation(anim);
+            }
+        }
+    };
+
+    private BroadcastReceiver hidePlaceActions = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (mPlaceActions.getVisibility() == View.VISIBLE) {
+
+                Animation anim = AnimationUtils.loadAnimation(context, R.anim.place_actions_slide_out);
+                mPlaceActions.startAnimation(anim);
+                mPlaceActions.setVisibility(View.INVISIBLE);
+            }
+        }
+    };
 
     private class ActionBarSpell implements ActionMode.Callback {
         @Override

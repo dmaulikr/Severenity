@@ -24,6 +24,23 @@
             android:id="@+id/tvAttributions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:visibility="invisible"
+            android:id="@+id/placeActions">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CAPTURE"
+                android:id="@+id/captionButton" />
+
+        </LinearLayout>
     </RelativeLayout>
 
     <!-- The navigation drawer -->
