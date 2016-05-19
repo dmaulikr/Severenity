@@ -1,6 +1,5 @@
 package com.nosad.sample.engine.managers.location;
 
-import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.facebook.AccessToken;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -30,10 +28,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.SphericalUtil;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.MarkerInfoAdapter;
@@ -42,7 +38,6 @@ import com.nosad.sample.entity.User;
 import com.nosad.sample.entity.contracts.PlaceContract;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
-import com.nosad.sample.view.Dialogs.PlacesInfoDialog;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -89,8 +84,6 @@ public class LocationManager implements LocationListener {
             }
         }, interval);
     }
-
-    public boolean isDriving = false;
 
     /**
      * Updates the active map with the map got from fragment
@@ -359,7 +352,7 @@ public class LocationManager implements LocationListener {
         String url = "http://maps.googleapis.com/maps/api/directions/json?"
                     + "origin=" + previousLocationStr
                     + "&destination=" + currentLocationStr
-                    + "&mode=" + (isDriving ? "driving" : "walking") + "&units=metric";
+                    + "&mode=walking&units=metric";
 
         previousLocation = currentLocation;
         App.getRestManager().createRequest(url, Request.Method.GET, null, new RequestCallback() {
@@ -379,10 +372,7 @@ public class LocationManager implements LocationListener {
                         }
 
                         if (metersPassed > Constants.AVERAGE_WALKING_SPEED && metersPassed < Constants.AVERAGE_RUNNING_SPEED) {
-                            App.getUserManager().getCurrentUser().setDistance(
-                                    App.getUserManager().getCurrentUser().getDistance() + Double.valueOf(metersPassed).intValue());
-
-                            updateUserInfo();
+                            updateUserInfo(Double.valueOf(metersPassed).intValue());
                         }
                         Toast.makeText(context, "Distance passed: " + metersPassed, Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
@@ -404,12 +394,15 @@ public class LocationManager implements LocationListener {
         });
     }
 
-    private void updateUserInfo() {
+    private void updateUserInfo(int metersPassed) {
         User currentUser = App.getUserManager().getCurrentUser();
         if (currentUser != null) {
+            currentUser.setDistance(
+                App.getUserManager().getCurrentUser().getDistance() + metersPassed);
+
             currentUser.setExperience(
                 currentUser.getExperience() +
-                App.getUserManager().getCurrentUser().getDistance() / Constants.EXPERIENCE_MULTIPLIER);
+                    metersPassed / Constants.EXPERIENCE_MULTIPLIER);
             currentUser.setLevel(currentUser.getExperience() / Constants.LEVEL_MULTIPLIER);
         }
 

@@ -59,8 +59,8 @@ public class Constants {
     public static final int EXPERIENCE_MULTIPLIER = 10;
     public static final int LEVEL_MULTIPLIER = 1000;
 
-    public static final int INTERVAL_FAST_LOCATION_UPDATE = 5000;
-    public static final int INTERVAL_LOCATION_UPDATE = 10000;
+    public static final int INTERVAL_FAST_LOCATION_UPDATE = 1000;
+    public static final int INTERVAL_LOCATION_UPDATE = 5000;
 
     public final static String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public final static Locale LOCALE = Locale.US;

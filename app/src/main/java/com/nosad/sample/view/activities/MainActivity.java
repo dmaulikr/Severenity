@@ -259,14 +259,6 @@ public class MainActivity extends AppCompatActivity {
         tvExperienceValue = (TextView) toolbarTop.findViewById(R.id.tvExperienceValue);
         tvLevelValue = (TextView) toolbarTop.findViewById(R.id.tvLevelValue);
 
-        CheckBox cbDriving = (CheckBox) toolbarTop.findViewById(R.id.cbDriving);
-        cbDriving.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                App.getLocationManager().isDriving = isChecked;
-            }
-        });
-
         setSupportActionBar(toolbarTop);
 
         toolbarBottom = (SplitToolbar) findViewById(R.id.toolbarBottom);
