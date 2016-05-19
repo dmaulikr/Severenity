@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nosad.sample.R;
-import com.nosad.sample.entity.Chip;
+import com.nosad.sample.entity.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,11 +20,12 @@ import java.util.List;
  */
 public class ChipAdapter extends ArrayAdapter<Chip> {
     private ArrayList<Chip> chips = new ArrayList<>(Arrays.asList(
-            new Chip(Chip.ChipType.Capture),
-            new Chip(Chip.ChipType.Dispel),
-            new Chip(Chip.ChipType.Shield),
-            new Chip(Chip.ChipType.Attack)
+            new Chip(Chip.ChipType.Capture, "Captures place to collect data that improves your implant.", 0, Chip.Rarity.Common),
+            new Chip(Chip.ChipType.Dispel, "Shorts the selected chip, so it stops working.", 1, Chip.Rarity.Uncommon),
+            new Chip(Chip.ChipType.Shield, "Defends your implant from incoming attacking signals", 0, Chip.Rarity.Rare),
+            new Chip(Chip.ChipType.Attack, "Deals damage to the selected implant.", 2, Chip.Rarity.Common)
     ));
+
     private Context context;
     private int resource;
 

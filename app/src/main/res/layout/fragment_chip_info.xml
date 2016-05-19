@@ -1,0 +1,92 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.nosad.sample.view.Dialogs.ChipInfoFragment">
+    <data>
+        <variable name="chip" type="com.nosad.sample.entity.chip.Chip" />
+    </data>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/com_facebook_close" />
+
+        <ImageView
+            android:id="@+id/ivChipInfoImage"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            chipIconResource="@{chip.chipIconResource}" />
+
+        <RelativeLayout
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:id="@+id/rlChipRarity"
+            android:layout_toEndOf="@id/ivChipInfoImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/tvChipRarityLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rarity" />
+            <TextView
+                android:layout_below="@id/tvChipRarityLabel"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/tvChipRarity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{chip.rarity.toString()}"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:id="@+id/rlChipType"
+            android:layout_toEndOf="@id/rlChipRarity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/tvChipTypeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type" />
+            <TextView
+                android:layout_below="@id/tvChipTypeLabel"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/tvChipType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{chip.chipType.toString()}"/>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_centerInParent="true"
+            android:id="@+id/tvChipDescription"
+            android:layout_toEndOf="@id/ivChipInfoImage"
+            android:layout_below="@id/rlChipRarity"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{chip.description}" />
+
+        <TextView
+            android:layout_below="@id/ivChipInfoImage"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/tvChipDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{String.valueOf(chip.level)}" />
+
+    </RelativeLayout>
+</layout>

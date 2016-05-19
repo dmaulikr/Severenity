@@ -4,15 +4,14 @@ package com.nosad.sample.view.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 
 import com.nosad.sample.R;
-import com.nosad.sample.entity.Chip;
+import com.nosad.sample.entity.chip.Chip;
+import com.nosad.sample.view.activities.MainActivity;
 import com.nosad.sample.view.custom.ChipRecycleViewAdapter;
 
 import java.util.ArrayList;
@@ -24,10 +23,10 @@ import java.util.Arrays;
 public class InventoryFragment extends Fragment {
     private RecyclerView rvInventory;
     private ArrayList<Chip> chips = new ArrayList<>(Arrays.asList(
-            new Chip(Chip.ChipType.Capture),
-            new Chip(Chip.ChipType.Dispel),
-            new Chip(Chip.ChipType.Shield),
-            new Chip(Chip.ChipType.Attack)
+            new Chip(Chip.ChipType.Capture, "Captures place to collect data that improves your implant.", 0, Chip.Rarity.Common),
+            new Chip(Chip.ChipType.Dispel, "Shorts the selected chip, so it stops working.", 1, Chip.Rarity.Uncommon),
+            new Chip(Chip.ChipType.Shield, "Defends your implant from incoming attacking signals", 0, Chip.Rarity.Rare),
+            new Chip(Chip.ChipType.Attack, "Deals damage to selected implant.", 2, Chip.Rarity.Common)
     ));
 
     public InventoryFragment() {
@@ -43,7 +42,7 @@ public class InventoryFragment extends Fragment {
         rvInventory = (RecyclerView) view.findViewById(R.id.rvChips);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         rvInventory.setLayoutManager(gridLayoutManager);
-        rvInventory.setAdapter(new ChipRecycleViewAdapter(getActivity(), chips));
+        rvInventory.setAdapter(new ChipRecycleViewAdapter((MainActivity) getActivity(), chips));
 
         return view;
     }

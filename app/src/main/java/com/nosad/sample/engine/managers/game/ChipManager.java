@@ -3,7 +3,7 @@ package com.nosad.sample.engine.managers.game;
 import android.content.Context;
 
 import com.google.android.gms.maps.model.Marker;
-import com.nosad.sample.entity.Chip;
+import com.nosad.sample.entity.chip.Chip;
 
 import java.util.ArrayList;
 
