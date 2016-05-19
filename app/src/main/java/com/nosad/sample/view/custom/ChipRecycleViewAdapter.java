@@ -1,18 +1,15 @@
 package com.nosad.sample.view.custom;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.nosad.sample.R;
 import com.nosad.sample.databinding.ChipGridItemBinding;
-import com.nosad.sample.entity.Chip;
+import com.nosad.sample.entity.chip.Chip;
+import com.nosad.sample.view.Dialogs.ChipInfoFragment;
+import com.nosad.sample.view.activities.MainActivity;
 
 import java.util.ArrayList;
 
@@ -21,9 +18,9 @@ import java.util.ArrayList;
  */
 public class ChipRecycleViewAdapter extends RecyclerView.Adapter<ChipRecycleViewAdapter.ChipViewHolder> {
     private ArrayList<Chip> chipList;
-    private Context context;
+    private MainActivity context;
 
-    public ChipRecycleViewAdapter(Context context, ArrayList<Chip> itemList) {
+    public ChipRecycleViewAdapter(MainActivity context, ArrayList<Chip> itemList) {
         this.chipList = itemList;
         this.context = context;
     }
@@ -31,7 +28,15 @@ public class ChipRecycleViewAdapter extends RecyclerView.Adapter<ChipRecycleView
     @Override
     public ChipViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ChipGridItemBinding chipGridItemBinding = ChipGridItemBinding.inflate(inflater, parent, false);
+        final ChipGridItemBinding chipGridItemBinding = ChipGridItemBinding.inflate(inflater, parent, false);
+        chipGridItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChipInfoFragment chipInfoFragment = ChipInfoFragment.newInstance(chipGridItemBinding.getChip());
+                chipInfoFragment.show(context.getSupportFragmentManager(), ChipInfoFragment.class.getSimpleName());
+            }
+        });
+
         return new ChipViewHolder(chipGridItemBinding.getRoot());
     }
 
@@ -52,12 +57,6 @@ public class ChipRecycleViewAdapter extends RecyclerView.Adapter<ChipRecycleView
         public ChipViewHolder(View view) {
             super(view);
             chipGridItemBinding = DataBindingUtil.bind(view);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(), "Selected chip: " + chipList.get(getLayoutPosition()).getTitle(), Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 }
