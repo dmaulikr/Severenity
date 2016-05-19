@@ -5,10 +5,10 @@
     android:layout_height="wrap_content"
     android:id="@+id/ownersItem">
 
-    <com.facebook.login.widget.ProfilePictureView
-        android:id="@+id/mapUserAvatar"
+    <ImageView
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:id="@+id/userAvatar"
         android:layout_margin="5dp" />
 
     <TextView
@@ -18,8 +18,8 @@
         android:text="Medium Text"
         android:id="@+id/ownerUserName"
         android:layout_alignParentBottom="false"
-        android:layout_toRightOf="@+id/mapUserAvatar"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp" />
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/userAvatar" />
 
 </RelativeLayout>

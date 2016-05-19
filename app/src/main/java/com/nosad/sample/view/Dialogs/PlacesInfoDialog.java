@@ -2,19 +2,31 @@ package com.nosad.sample.view.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.PlaceInfoAdapter;
 import com.nosad.sample.entity.Place;
 import com.nosad.sample.entity.contracts.PlaceContract;
+import com.nosad.sample.utils.common.Constants;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -23,7 +35,7 @@ import java.util.ArrayList;
  */
 public class PlacesInfoDialog extends DialogFragment {
 
-    PlaceInfoAdapter mPlaceInfoAdapter;
+    private PlaceInfoAdapter mPlaceInfoAdapter;
 
     public static PlacesInfoDialog newInstance(String placeID) {
         PlacesInfoDialog frag = new PlacesInfoDialog();
@@ -66,19 +78,24 @@ public class PlacesInfoDialog extends DialogFragment {
 
         // TODO: AF: temporary add users as owners. Remove this afterwards
         place.addOwner("1245689");
-        place.addOwner("445646546");
-        place.addOwner("1457987987");
-        place.addOwner("77897111564");
-        place.addOwner("9879454110");
+        place.addOwner("1245691");
+        place.addOwner("1245692");
+        place.addOwner("1245697");
+        place.addOwner("1245698");
+        place.addOwner("1245700");
+        place.addOwner("1245702");
+        place.addOwner("1245703");
+        place.addOwner("1245704");
+        place.addOwner("1245707");
+        place.addOwner("1245708");
+
 
         String currentUserID = App.getUserManager().getCurrentUser().getId();
         boolean currentUserOwnThisPlace = place.hasOwner(currentUserID);
         ArrayList<String> owners = place.getOwners(currentUserOwnThisPlace ? currentUserID : "");
 
         TextView captionView = (TextView)view.findViewById(R.id.placeInfoOwnersInfo);
-        if (captionView != null) {
-            captionView.setText(getDialogCaption(owners.size(), currentUserOwnThisPlace));
-        }
+        captionView.setText(getDialogCaption(owners.size(), currentUserOwnThisPlace));
 
         if (owners.size() == 0) {
             ListView ownersList = (ListView) view.findViewById(R.id.ownersList);
@@ -86,11 +103,15 @@ public class PlacesInfoDialog extends DialogFragment {
                 ownersList.setVisibility(View.GONE);
         }
 
-        mPlaceInfoAdapter = new PlaceInfoAdapter(getContext(), owners);
+        mPlaceInfoAdapter = new PlaceInfoAdapter(getContext());
         ListView ownersList = (ListView)view.findViewById(R.id.ownersList);
-        if (ownersList != null) {
-            ownersList.setAdapter(mPlaceInfoAdapter);
+        ownersList.setAdapter(mPlaceInfoAdapter);
+
+        for (String owner: owners) {
+            executePhotoAndNameRequest(owner);
         }
+
+        App.getLocalBroadcastManager().registerReceiver(updateView, new IntentFilter("updateView"));
 
         return true;
     }
@@ -104,4 +125,47 @@ public class PlacesInfoDialog extends DialogFragment {
 
         return adb.create();
     }
+
+    private void executePhotoAndNameRequest(String strUserID) {
+
+        Bundle params = new Bundle();
+        params.putString("fields", "id,name,first_name,last_name");
+
+        new GraphRequest(AccessToken.getCurrentAccessToken(), strUserID, params, HttpMethod.GET,
+                new GraphRequest.Callback() {
+                    @Override
+                    public void onCompleted(GraphResponse response) {
+                        if (response != null) {
+                            try {
+
+                                JSONObject data = response.getJSONObject();
+                                if (data.has("name") && data.has("id")) {
+
+                                    PlaceInfoAdapter.InfoData infoData = new PlaceInfoAdapter.InfoData();
+                                    infoData.userID   = data.getString("id");
+                                    infoData.userName = data.getString("name");
+
+                                    mPlaceInfoAdapter.addItem(infoData);
+                                    mPlaceInfoAdapter.notifyDataSetChanged();
+                                }
+                                else {
+                                    Log.v(Constants.TAG, "No name and id data passed for user");
+                                }
+
+
+                            } catch (Exception e) {
+                                Log.v(Constants.TAG, "No name and id data passed for user with ID: ");
+                            }
+                        }
+                    }
+                }).executeAsync();
+    }
+
+    private BroadcastReceiver updateView = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            mPlaceInfoAdapter.notifyDataSetChanged();
+        }
+    };
 }

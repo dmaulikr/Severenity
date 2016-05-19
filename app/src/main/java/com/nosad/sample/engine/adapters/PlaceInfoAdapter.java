@@ -5,26 +5,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.login.widget.ProfilePictureView;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 /**
  * Created by Andriy on 5/18/2016.
  */
+
 public class PlaceInfoAdapter extends BaseAdapter {
 
-    Context mContext;
-    private ArrayList<String> mData;
-    ProfilePictureView mUserProfilePicture;
+    static public class InfoData {
+        public String userID;
+        public String userName;
+    }
 
-    public PlaceInfoAdapter(Context ctx, ArrayList<String> data) {
+    private Context mContext;
+    private ArrayList<InfoData> mData;
+
+    public PlaceInfoAdapter(Context ctx) {
         mContext = ctx;
-        mData = data;
+        mData = new ArrayList<>();
     }
 
     @Override
@@ -33,13 +39,17 @@ public class PlaceInfoAdapter extends BaseAdapter {
     }
 
     @Override
-    public String getItem(int position) {
+    public InfoData getItem(int position) {
         return mData.get(position);
     }
 
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    public void addItem(InfoData data) {
+        mData.add(data);
     }
 
     @Override
@@ -52,13 +62,13 @@ public class PlaceInfoAdapter extends BaseAdapter {
             ownersView = inflater.inflate(R.layout.placeinfo_list_item, parent, false);
         }
 
-        String userID = getItem(position);
+        InfoData userData = getItem(position);
 
-        mUserProfilePicture = (ProfilePictureView)ownersView.findViewById(R.id.mapUserAvatar);
-        mUserProfilePicture.setProfileId(userID);
+        ImageView userProfilePicture = (ImageView)ownersView.findViewById(R.id.userAvatar);
+        Picasso.with(mContext).load("https://graph.facebook.com/" + userData.userID + "/picture?type=normal").into(userProfilePicture);
 
         TextView userName = (TextView)ownersView.findViewById(R.id.ownerUserName);
-        userName.setText("User name");
+        userName.setText(userData.userName);
 
         return ownersView;
     }
