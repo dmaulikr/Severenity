@@ -2,12 +2,6 @@ package com.nosad.sample.view.Dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -99,8 +93,7 @@ public class PlacesInfoDialog extends DialogFragment {
 
         if (owners.size() == 0) {
             ListView ownersList = (ListView) view.findViewById(R.id.ownersList);
-            if (ownersList != null)
-                ownersList.setVisibility(View.GONE);
+            ownersList.setVisibility(View.GONE);
         }
 
         mPlaceInfoAdapter = new PlaceInfoAdapter(getContext());
@@ -110,8 +103,6 @@ public class PlacesInfoDialog extends DialogFragment {
         for (String owner: owners) {
             executePhotoAndNameRequest(owner);
         }
-
-        App.getLocalBroadcastManager().registerReceiver(updateView, new IntentFilter("updateView"));
 
         return true;
     }
@@ -160,12 +151,4 @@ public class PlacesInfoDialog extends DialogFragment {
                     }
                 }).executeAsync();
     }
-
-    private BroadcastReceiver updateView = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            mPlaceInfoAdapter.notifyDataSetChanged();
-        }
-    };
 }

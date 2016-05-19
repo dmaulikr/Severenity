@@ -1,7 +1,6 @@
 package com.nosad.sample.view.fragments;
 
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -118,42 +117,33 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
     private void configureInnerObjects(View view) {
 
         mSendButton = (Button) view.findViewById(R.id.sendMessage);
-        if (mSendButton != null)
-            mSendButton.setOnClickListener(this);
+        mSendButton.setOnClickListener(this);
 
         mMessageEdit = (EditText) view.findViewById(R.id.messageText);
-        if (mMessageEdit != null) {
+        mMessageEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-            mMessageEdit.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if (mSendButton != null) {
-                        if (s.length() > 0) {
-                            mSendButton.setEnabled(true);
-                            mSendButton.setTextColor(0xFF000000);
-                        } else {
-                            mSendButton.setEnabled(false);
-                            mSendButton.setTextColor(0xFF8B8B8B);
-                        }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (mSendButton != null) {
+                    if (s.length() > 0) {
+                        mSendButton.setEnabled(true);
+                        mSendButton.setTextColor(0xFF000000);
+                    } else {
+                        mSendButton.setEnabled(false);
+                        mSendButton.setTextColor(0xFF8B8B8B);
                     }
                 }
-            });
-        }
+            }
+        });
 
         mMessagesList = (ListView) view.findViewById(R.id.messagesList);
-        if (mMessagesList == null) {
-
-            Log.e(Constants.TAG, "MessageFragment: no message list found.");
-            return;
-        }
 
         ArrayList<Message> msg = App.getMessageManager().getMessages();
         if (msg != null && !msg.isEmpty()) {
