@@ -1,6 +1,10 @@
 package com.nosad.sample.entity;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.nosad.sample.utils.common.Constants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,4 +68,18 @@ public class Place {
     public String getPlaceName() { return this.mPlaceName; };
 
     public LatLng getPlacePos() { return this.mPlacePos; };
+
+    public String getJSONPlaceInfo() {
+
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put(Constants.OBJECT_TYPE_IDENTIFIER, Constants.TYPE_PLACE);
+            obj.put(Constants.PLACE_ID, mPlaceID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+        return obj.toString();
+    }
 }

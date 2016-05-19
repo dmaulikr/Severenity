@@ -2,6 +2,9 @@ package com.nosad.sample.entity;
 
 import com.nosad.sample.utils.common.Constants;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Novosad on 2/17/16.
  */
@@ -87,5 +90,18 @@ public class User {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public String getJSONUserInfo() {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put(Constants.OBJECT_TYPE_IDENTIFIER, Constants.TYPE_USER);
+            obj.put(Constants.USER_ID, id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+        return obj.toString();
     }
 }

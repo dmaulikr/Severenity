@@ -527,11 +527,27 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
 
             Bundle extra = intent.getExtras();
-            String placeID = extra.getString(PlaceContract.DBPlaces.COLUMN_PLACE_ID);
+            try {
+                JSONObject objectInfo = new JSONObject(extra.getString(Constants.OBJECT_INFO));
 
-            PlacesInfoDialog placeInfoDialog = PlacesInfoDialog.newInstance(placeID);
-            FragmentManager fm = getSupportFragmentManager();
-            placeInfoDialog.show(fm, "placeInfoDialog");
+                switch (objectInfo.getInt(Constants.OBJECT_TYPE_IDENTIFIER)) {
+                    case Constants.TYPE_PLACE: {
+
+                        PlacesInfoDialog placeInfoDialog = PlacesInfoDialog.newInstance(objectInfo.getString(Constants.PLACE_ID));
+                        FragmentManager fm = getSupportFragmentManager();
+                        placeInfoDialog.show(fm, "placeInfoDialog");
+                        break;
+                    }
+
+                    default: {
+                        Log.d(Constants.TAG, "Unsupported object type: " + objectInfo.getInt(Constants.OBJECT_TYPE_IDENTIFIER) + " for displaying info dialog.");
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     };
 }

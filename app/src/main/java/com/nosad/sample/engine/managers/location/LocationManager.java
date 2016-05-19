@@ -158,10 +158,8 @@ public class LocationManager implements LocationListener {
             @Override
             public void onInfoWindowClick(Marker marker) {
 
-                //Toast.makeText(App.getInstance().getApplicationContext(), marker.getId().toString(), Toast.LENGTH_LONG).show();
-
                 Intent intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_INFO_DIALOG);
-                intent.putExtra(PlaceContract.DBPlaces.COLUMN_PLACE_ID, marker.getSnippet());
+                intent.putExtra(Constants.OBJECT_INFO, marker.getSnippet());
 
                 App.getLocalBroadcastManager().sendBroadcast(intent);
                 //marker.hideInfoWindow();
@@ -217,7 +215,8 @@ public class LocationManager implements LocationListener {
         otherUserMarker = googleMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
-                .title(user.getId()));
+                .title(user.getId())
+                .snippet(user.getJSONUserInfo()));
     }
 
     public void displayPlaceMarker(Place place) {
@@ -247,7 +246,7 @@ public class LocationManager implements LocationListener {
                     .position(place.getLatLng())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
                     .title(String.format("%s", place.getName()))
-                    .snippet(place.getId()));
+                    .snippet(place_inner.getJSONPlaceInfo()));
         }
     }
 
@@ -303,12 +302,14 @@ public class LocationManager implements LocationListener {
 
         String title = App.getUserManager().getCurrentUser().getName();
         String profileId = App.getUserManager().getCurrentUser().getId();
+        String userJSONIdentifier = App.getUserManager().getCurrentUser().getJSONUserInfo();
 
         // TODO: Replace title with user ID or name
         currentUserMarker = googleMap.addMarker(new MarkerOptions()
                 .position(Utils.latLngFromLocation(location))
                 .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(profileId)))
-                .title(title));
+                .title(title)
+                .snippet(userJSONIdentifier));
 
         if (!isCameraFixed) {
             googleMap.animateCamera(
@@ -468,7 +469,7 @@ public class LocationManager implements LocationListener {
                     .position(pl.getPlacePos())
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                     .title(String.format("%s", pl.getPlaceName()))
-                    .snippet(pl.getPlaceID()));
+                    .snippet(pl.getJSONPlaceInfo()));
         }
     }
 }

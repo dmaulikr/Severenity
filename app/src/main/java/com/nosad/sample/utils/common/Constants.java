@@ -110,4 +110,17 @@ public class Constants {
      */
     public static final float RESTORE_RATE_MENTALITY_NORMAL = 0.1f; // per day
     public static final float RESTORE_RATE_MENTALITY_MOVING = 1f;   // per 100 meters
+
+    /**
+     * PlaceInfo constants.
+     * Used to pass specific data (as JSONobject) from  place to marker via snippet field.
+     */
+    public static final String OBJECT_INFO = "objectInfo";
+    public static final String OBJECT_TYPE_IDENTIFIER = "placeType";
+    public static final String PLACE_ID = "placeID";
+    public static final String USER_ID  = "userID";
+
+    public static final int    TYPE_USER  = 1;
+    public static final int    TYPE_PLACE = 2;
+
 }
