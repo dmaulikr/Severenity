@@ -137,7 +137,7 @@ public class PlacesManager extends DataManager {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
-        try{
+        try {
             ContentValues values = new ContentValues();
             values.put(COLUMN_PLACE_ID,   place.getPlaceID());
             values.put(COLUMN_PLACE_NAME, place.getPlaceName());
