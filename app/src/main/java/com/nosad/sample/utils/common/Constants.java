@@ -33,7 +33,6 @@ public class Constants {
      * Intent filter and intent extra constants
      */
     public static final String INTENT_FILTER_GAC = "com.nosad.sample.googleapiclient";
-    public static final String INTENT_FILTER_WARDS_COUNT = "com.nosad.sample.wardscount";
     public static final String INTENT_FILTER_UPDATE_UI = "com.nosad.sample.updateui";
     public static final String INTENT_FILTER_NEW_MESSAGE = "com.nosad.sample.newmessage";
     public static final String INTENT_FILTER_NEW_QUEST = "com.nosad.sample.newquest";
@@ -52,9 +51,10 @@ public class Constants {
     // Average running speed is:
     // from 4.7 meters/sec to 6.7 meters/sec (elite athletes)
     // Average walking speed is 1.4 meters/sec
+    // After some dev testing Oleg found that slow walking speed is 0.6-0.8 meters/sec
     // We are assuming that people have walked at least for 10 seconds
     // and are not running better than elite athletes
-    public static final int AVERAGE_WALKING_SPEED = 14; // meters for 10 seconds
+    public static final int AVERAGE_WALKING_SPEED = 7; // meters for 10 seconds
     public static final int MAX_RUNNING_SPEED = 67; // meters for 10 seconds
     public static final int MIN_RUNNING_SPEED = 47; // meters for 10 seconds
     public static final int AVERAGE_RUNNING_SPEED = 57; // meters for 10 seconds
@@ -115,7 +115,7 @@ public class Constants {
 
     /**
      * PlaceInfo constants.
-     * Used to pass specific data (as JSONobject) from  place to marker via snippet field.
+     * Used to pass specific data (as {@link org.json.JSONObject}) from  place to marker via snippet field.
      */
     public static final String OBJECT_INFO = "objectInfo";
     public static final String OBJECT_TYPE_IDENTIFIER = "placeType";

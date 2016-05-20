@@ -18,6 +18,7 @@ import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.PlaceInfoAdapter;
 import com.nosad.sample.entity.Place;
 import com.nosad.sample.entity.contracts.PlaceContract;
+import com.nosad.sample.utils.FacebookUtils;
 import com.nosad.sample.utils.common.Constants;
 
 import org.json.JSONObject;
@@ -117,38 +118,28 @@ public class PlacesInfoDialog extends DialogFragment {
         return adb.create();
     }
 
-    private void executePhotoAndNameRequest(String strUserID) {
+    private void executePhotoAndNameRequest(String id) {
+        FacebookUtils.getFacebookUserById(id, "id,name,first_name,last_name", new FacebookUtils.Callback() {
+            @Override
+            public void onResponse(GraphResponse response) {
+                if (response != null) {
+                    try {
+                        JSONObject data = response.getJSONObject();
+                        if (data.has("name") && data.has("id")) {
+                            PlaceInfoAdapter.InfoData infoData = new PlaceInfoAdapter.InfoData();
+                            infoData.userID   = data.getString("id");
+                            infoData.userName = data.getString("name");
 
-        Bundle params = new Bundle();
-        params.putString("fields", "id,name,first_name,last_name");
-
-        new GraphRequest(AccessToken.getCurrentAccessToken(), strUserID, params, HttpMethod.GET,
-                new GraphRequest.Callback() {
-                    @Override
-                    public void onCompleted(GraphResponse response) {
-                        if (response != null) {
-                            try {
-
-                                JSONObject data = response.getJSONObject();
-                                if (data.has("name") && data.has("id")) {
-
-                                    PlaceInfoAdapter.InfoData infoData = new PlaceInfoAdapter.InfoData();
-                                    infoData.userID   = data.getString("id");
-                                    infoData.userName = data.getString("name");
-
-                                    mPlaceInfoAdapter.addItem(infoData);
-                                    mPlaceInfoAdapter.notifyDataSetChanged();
-                                }
-                                else {
-                                    Log.v(Constants.TAG, "No name and id data passed for user");
-                                }
-
-
-                            } catch (Exception e) {
-                                Log.v(Constants.TAG, "No name and id data passed for user with ID: ");
-                            }
+                            mPlaceInfoAdapter.addItem(infoData);
+                            mPlaceInfoAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.v(Constants.TAG, "No name and id data passed for user");
                         }
+                    } catch (Exception e) {
+                        Log.v(Constants.TAG, "No name and id data passed for user with ID: ");
                     }
-                }).executeAsync();
+                }
+            }
+        });
     }
 }

@@ -389,10 +389,9 @@ public class LocationManager implements LocationListener {
                             }
                         }
 
-                        if (metersPassed > Constants.AVERAGE_WALKING_SPEED && metersPassed < Constants.AVERAGE_RUNNING_SPEED) {
+                        if (metersPassed > Constants.AVERAGE_WALKING_SPEED && metersPassed < Constants.MIN_RUNNING_SPEED) {
                             updateUserInfo(Double.valueOf(metersPassed).intValue());
                         }
-                        Toast.makeText(context, "Distance passed: " + metersPassed, Toast.LENGTH_SHORT).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
