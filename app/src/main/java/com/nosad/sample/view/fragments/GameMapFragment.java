@@ -305,6 +305,7 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
 
                 if (!mPlaceIDtoCapture.isEmpty()) {
                     App.getPlacesManager().addOwnerToPlace(mPlaceIDtoCapture, App.getUserManager().getCurrentUser().getId());
+                    App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
 
                     Toast.makeText(getContext(), "Place has been captured", Toast.LENGTH_SHORT).show();
                 }
