@@ -128,8 +128,7 @@ public class LocationManager implements LocationListener {
                     resetCameraLocation();
                 }
 
-                Intent intent = new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS);
-                App.getLocalBroadcastManager().sendBroadcast(intent);
+                App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
             }
         });
 
@@ -153,8 +152,20 @@ public class LocationManager implements LocationListener {
             public boolean onMarkerClick(Marker marker) {
                 fixCameraAtLocation(marker.getPosition());
 
-                Intent intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS);
-                App.getLocalBroadcastManager().sendBroadcast(intent);
+                try {
+                    JSONObject markerType = new JSONObject(marker.getSnippet());
+
+                    if (markerType.getInt(Constants.OBJECT_TYPE_IDENTIFIER) == Constants.TYPE_PLACE) {
+
+                        Intent intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS);
+                        intent.putExtra(Constants.PLACE_ID, markerType.getString(Constants.PLACE_ID));
+
+                        App.getLocalBroadcastManager().sendBroadcast(intent);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 return false;
             }
         });
@@ -168,7 +179,7 @@ public class LocationManager implements LocationListener {
                 intent.putExtra(Constants.OBJECT_INFO, marker.getSnippet());
 
                 App.getLocalBroadcastManager().sendBroadcast(intent);
-                //marker.hideInfoWindow();
+                App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
             }
         });
 

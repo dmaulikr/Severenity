@@ -24,16 +24,12 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.PlaceLikelihood;
@@ -45,7 +41,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.ChipAdapter;
-import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.Dialogs.PlacesInfoDialog;
@@ -57,7 +52,7 @@ import org.json.JSONObject;
 /**
  * Handles user with map activity (actual game)
  */
-public class GameMapFragment extends Fragment {
+public class GameMapFragment extends Fragment implements View.OnClickListener {
     private SupportMapFragment mapFragment;
     private MainActivity activity;
     private TextView tvAttributions;
@@ -70,6 +65,7 @@ public class GameMapFragment extends Fragment {
     private ActionMode spellMode;
 
     private ChipAdapter chipAdapter;
+    private String mPlaceIDtoCapture;
 
     public GameMapFragment() {
         // Required empty public constructor
@@ -148,6 +144,7 @@ public class GameMapFragment extends Fragment {
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerMap);
 
         mPlaceActions = (LinearLayout)view.findViewById(R.id.placeActions);
+        ((Button)mPlaceActions.findViewById(R.id.captureButton)).setOnClickListener(this);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(
                 activity, drawerLayout, activity.getToolbarTop(),
@@ -264,6 +261,20 @@ public class GameMapFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
 
+            Bundle intentData = intent.getExtras();
+            mPlaceIDtoCapture = intentData.getString(Constants.PLACE_ID);
+
+            // TODO: AF: for now do not show action if user owns this place
+            com.nosad.sample.entity.Place place = App.getPlacesManager().findPlaceByID(mPlaceIDtoCapture);
+            if (place.hasOwner(App.getUserManager().getCurrentUser().getId())) {
+
+                if (mPlaceActions.getVisibility() == View.VISIBLE) {
+                    App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
+                }
+
+                return;
+            }
+
             if (mPlaceActions.getVisibility() == View.INVISIBLE) {
 
                 mPlaceActions.setVisibility(View.VISIBLE);
@@ -285,6 +296,22 @@ public class GameMapFragment extends Fragment {
             }
         }
     };
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.captureButton:
+
+                if (!mPlaceIDtoCapture.isEmpty()) {
+                    App.getPlacesManager().addOwnerToPlace(mPlaceIDtoCapture, App.getUserManager().getCurrentUser().getId());
+
+                    Toast.makeText(getContext(), "Place has been captured", Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+        }
+    }
 
     private class ActionBarSpell implements ActionMode.Callback {
         @Override
