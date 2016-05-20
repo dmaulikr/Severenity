@@ -4,12 +4,17 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.facebook.AccessToken;
+import com.facebook.GraphResponse;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.common.util.concurrent.Runnables;
 import com.nosad.sample.App;
+import com.nosad.sample.engine.adapters.PlaceInfoAdapter;
 import com.nosad.sample.entity.Message;
 import com.nosad.sample.entity.User;
+import com.nosad.sample.utils.FacebookUtils;
 import com.nosad.sample.utils.common.Constants;
 
 import org.json.JSONException;
@@ -111,20 +116,42 @@ public class WebSocketManager {
                 for (Object arg : args) {
                     try {
                         JSONObject jsonObject = (JSONObject) arg;
-                        final User user = new User();
-                        user.setId(jsonObject.getString("id"));
-                        final LatLng latLng = new LatLng(
-                                jsonObject.getDouble("lat"),
-                                jsonObject.getDouble("lng")
-                        );
 
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(new Runnable() {
+                        String id = jsonObject.getString("id");
+                        final User user = new User();
+                        user.setId(id);
+
+                        final LatLng latLng = new LatLng(jsonObject.getDouble("lat"), jsonObject.getDouble("lng"));
+
+                        final Handler handler = new Handler(Looper.getMainLooper());
+                        final Runnable displayUserAtLocation = new Runnable() {
                             @Override
                             public void run() {
                                 App.getLocationManager().displayUserAt(user, latLng);
                             }
-                        });
+                        };
+
+                        if (App.getUserManager().getUserById(id) == null) {
+                            FacebookUtils.getFacebookUserById(id, "id,public_profile,name,email", new FacebookUtils.Callback() {
+                                @Override
+                                public void onResponse(GraphResponse response) {
+                                    try {
+                                        JSONObject data = response.getJSONObject();
+                                        if (data.has("name") && data.has("id") && data.has("email")) {
+                                            user.setEmail(data.getString("email"));
+                                            user.setName(data.getString("name"));
+
+                                            App.getUserManager().addUser(user);
+                                            handler.post(displayUserAtLocation);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                        } else {
+                            handler.post(displayUserAtLocation);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

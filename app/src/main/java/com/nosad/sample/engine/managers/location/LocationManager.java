@@ -33,11 +33,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.MarkerInfoAdapter;
+import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.entity.contracts.PlaceContract;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
+import com.nosad.sample.view.activities.MainActivity;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -232,7 +234,7 @@ public class LocationManager implements LocationListener {
         otherUserMarker = googleMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
-                .title(user.getId())
+                .title(user.getName())
                 .snippet(user.getJSONUserInfo()));
     }
 
@@ -354,7 +356,7 @@ public class LocationManager implements LocationListener {
     }
 
     private Handler checkDistanceHandler = new Handler();
-    private int interval = Constants.INTERVAL_LOCATION_UPDATE;
+    private int interval = Constants.INTERVAL_LOCATION_UPDATE * 2;
 
     /**
      * Adds distance passed between 2 last locations if it is bigger than 1 meter.
@@ -389,7 +391,7 @@ public class LocationManager implements LocationListener {
                             }
                         }
 
-                        if (metersPassed > Constants.AVERAGE_WALKING_SPEED && metersPassed < Constants.MIN_RUNNING_SPEED) {
+                        if (metersPassed >= Constants.AVERAGE_WALKING_SPEED && metersPassed <= Constants.AVERAGE_RUNNING_SPEED) {
                             updateUserInfo(Double.valueOf(metersPassed).intValue());
                         }
                     } catch (JSONException e) {
@@ -420,7 +422,18 @@ public class LocationManager implements LocationListener {
             currentUser.setExperience(
                 currentUser.getExperience() +
                     metersPassed / Constants.EXPERIENCE_MULTIPLIER);
-            currentUser.setLevel(currentUser.getExperience() / Constants.LEVEL_MULTIPLIER);
+
+            int calculatedLevel = currentUser.getExperience() / Constants.LEVEL_MULTIPLIER;
+            if (calculatedLevel > currentUser.getLevel()) {
+                currentUser.setLevel(calculatedLevel);
+
+                Intent levelUpIntent = new Intent(context, MainActivity.class);
+                levelUpIntent.setAction(GCMManager.MESSAGE_RECEIVED);
+                levelUpIntent.putExtra("level", String.valueOf(calculatedLevel));
+
+                App.getLocalBroadcastManager().sendBroadcast(levelUpIntent);
+                Utils.sendNotification(Constants.NOTIFICATION_MSG_LEVEL_UP + calculatedLevel, context, levelUpIntent, 0);
+            }
         }
 
         App.getUserManager().updateCurrentUserInDB();

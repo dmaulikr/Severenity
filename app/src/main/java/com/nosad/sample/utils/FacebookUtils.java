@@ -15,6 +15,13 @@ public class FacebookUtils {
         void onResponse(GraphResponse response);
     }
 
+    /**
+     * Returns facebook user in response which can be handled via callback.
+     *
+     * @param id - id of the user to get in response.
+     * @param fields - fields of the user data to receive.
+     * @param callback - callback to run with {@link GraphResponse object} as response.
+     */
     public static void getFacebookUserById(String id, String fields, final Callback callback) {
         Bundle params = new Bundle();
         params.putString("fields", fields);

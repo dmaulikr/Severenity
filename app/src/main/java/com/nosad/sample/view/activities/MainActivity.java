@@ -131,6 +131,12 @@ public class MainActivity extends AppCompatActivity {
         if (intent.getAction() != null && intent.getAction().equals(GCMManager.QUEST_RECEIVED)) {
             handleQuestIntent(intent);
         }
+
+        // Level up
+        if (intent.getAction() != null && intent.getAction().equals(GCMManager.LEVEL_UP_RECEIVED)) {
+            String level = intent.getStringExtra("level");
+            Utils.showAlertDialog(Constants.NOTIFICATION_MSG_LEVEL_UP + level, this);
+        }
     }
 
     private Quest getQuestFromIntent(Intent intent) {
@@ -455,6 +461,9 @@ public class MainActivity extends AppCompatActivity {
                 Utils.showAlertDialog(message, MainActivity.this);
             } else if (intent.getAction().equals(GCMManager.QUEST_RECEIVED) && activityActive) {
                 handleQuestIntent(intent);
+            } else if (intent.getAction().equals(GCMManager.LEVEL_UP_RECEIVED) && activityActive) {
+                String level = intent.getStringExtra("level");
+                Utils.showAlertDialog(Constants.NOTIFICATION_MSG_LEVEL_UP + level, MainActivity.this);
             }
         }
     };

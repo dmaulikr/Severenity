@@ -11,6 +11,7 @@ public class GCMManager {
     public static final String REGISTRATION_PROCESS = "registration";
     public static final String MESSAGE_RECEIVED = "message_received";
     public static final String QUEST_RECEIVED = "quest_received";
+    public static final String LEVEL_UP_RECEIVED = "level_up_received";
 
     private Context context;
 

@@ -50,11 +50,10 @@ public class Constants {
      */
     // Average running speed is:
     // from 4.7 meters/sec to 6.7 meters/sec (elite athletes)
-    // Average walking speed is 1.4 meters/sec
-    // After some dev testing Oleg found that slow walking speed is 0.6-0.8 meters/sec
+    // Average walking speed is 1.4 meters/sec, lets take 1.2 meters for calm walk.
     // We are assuming that people have walked at least for 10 seconds
     // and are not running better than elite athletes
-    public static final int AVERAGE_WALKING_SPEED = 7; // meters for 10 seconds
+    public static final int AVERAGE_WALKING_SPEED = 12; // meters for 10 seconds
     public static final int MAX_RUNNING_SPEED = 67; // meters for 10 seconds
     public static final int MIN_RUNNING_SPEED = 47; // meters for 10 seconds
     public static final int AVERAGE_RUNNING_SPEED = 57; // meters for 10 seconds
@@ -106,6 +105,7 @@ public class Constants {
      * Notification messages
      */
     public static String NOTIFICATION_MSG_NEW_QUEST = "New quest received! Accept the challenge?";
+    public static String NOTIFICATION_MSG_LEVEL_UP = "Greetings! You have reached level ";
 
     /**
      * Gameplay constants
