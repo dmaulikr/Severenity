@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.nosad.sample.App;
-import com.nosad.sample.entity.Place;
+import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.utils.common.Constants;
 
 import java.util.ArrayList;
@@ -34,16 +34,16 @@ public class PlacesManager extends DataManager {
         super(context);
     }
 
-    private Place placeFromCursor(Cursor cursor) {
+    private GamePlace placeFromCursor(Cursor cursor) {
 
         String strID       = cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_ID));
         String placeName   = cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_NAME));
         LatLng pos         = new LatLng(cursor.getDouble(cursor.getColumnIndex(COLUMN_PLACE_LAT)), cursor.getDouble(cursor.getColumnIndex(COLUMN_PLACE_LNG)));
 
-        return new Place(strID, placeName, pos);
+        return new GamePlace(strID, placeName, pos);
     }
 
-    private boolean findPlacesOwner(Place place) {
+    private boolean findPlacesOwner(GamePlace place) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = null;
@@ -75,7 +75,7 @@ public class PlacesManager extends DataManager {
         }
     }
 
-    public Place findPlaceByID(String placeID) {
+    public GamePlace findPlaceByID(String placeID) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -105,7 +105,7 @@ public class PlacesManager extends DataManager {
                 return null;
             }
 
-            Place place = null;
+            GamePlace place = null;
             if (cursor.moveToFirst()) {
                 place = placeFromCursor(cursor);
             }
@@ -128,7 +128,7 @@ public class PlacesManager extends DataManager {
         }
     }
 
-    public boolean addPlace(Place place) {
+    public boolean addPlace(GamePlace place) {
 
         if (findPlaceByID(place.getPlaceID()) != null) {
             Log.e(Constants.TAG, "PlacesManager: place with ID " + place.getPlaceID() + " already exists." );
@@ -160,9 +160,9 @@ public class PlacesManager extends DataManager {
         return true;
     }
 
-    public Place addOwnerToPlace(String placeID, String ownerID) {
+    public GamePlace addOwnerToPlace(String placeID, String ownerID) {
 
-        Place place = findPlaceByID(placeID);
+        GamePlace place = findPlaceByID(placeID);
         if (place == null) {
             Log.e(Constants.TAG, "PlacesManager: no place with ID " + placeID + " already exist." );
             return null;
@@ -199,7 +199,7 @@ public class PlacesManager extends DataManager {
         return place;
     }
 
-    public ArrayList<Place> getPlaces() {
+    public ArrayList<GamePlace> getPlaces() {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -214,11 +214,11 @@ public class PlacesManager extends DataManager {
                     null,
                     null);
 
-            ArrayList<Place> places = new ArrayList<>(cursor.getCount());
+            ArrayList<GamePlace> places = new ArrayList<>(cursor.getCount());
 
             if (cursor.moveToFirst()) {
                 do {
-                    Place place = placeFromCursor(cursor);
+                    GamePlace place = placeFromCursor(cursor);
                     findPlacesOwner(place);
                     places.add(place);
 

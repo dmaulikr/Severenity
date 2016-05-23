@@ -9,7 +9,6 @@ import android.util.Log;
 import com.facebook.AccessToken;
 import com.facebook.GraphResponse;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.common.util.concurrent.Runnables;
 import com.nosad.sample.App;
 import com.nosad.sample.engine.adapters.PlaceInfoAdapter;
 import com.nosad.sample.entity.Message;

@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -35,8 +34,8 @@ import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.MarkerInfoAdapter;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.engine.network.RequestCallback;
+import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.User;
-import com.nosad.sample.entity.contracts.PlaceContract;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
@@ -253,7 +252,7 @@ public class LocationManager implements LocationListener {
 
         if (App.getPlacesManager().findPlaceByID(place.getId()) == null) {
 
-            com.nosad.sample.entity.Place place_inner = new com.nosad.sample.entity.Place(
+            GamePlace place_inner = new GamePlace(
                     place.getId().toString(),
                     place.getName().toString(),
                     place.getLatLng());
@@ -488,11 +487,11 @@ public class LocationManager implements LocationListener {
 
     public void displayPlaceMarkerFromDB() {
 
-        ArrayList<com.nosad.sample.entity.Place> place_inner = App.getPlacesManager().getPlaces();
+        ArrayList<GamePlace> place_inner = App.getPlacesManager().getPlaces();
         if (place_inner == null)
             return;
 
-        for (com.nosad.sample.entity.Place pl: place_inner) {
+        for (GamePlace pl: place_inner) {
 
             googleMap.addMarker(new MarkerOptions()
                     .position(pl.getPlacePos())

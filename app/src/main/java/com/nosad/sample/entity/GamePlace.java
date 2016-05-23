@@ -12,14 +12,14 @@ import java.util.HashMap;
 /**
  * Created by Andriy on 5/15/2016.
  */
-public class Place {
+public class GamePlace {
 
     private String mPlaceID;
     private String mPlaceName;
     private HashMap<Integer, String> mPlaceOwnerIDs;
     private LatLng mPlacePos;
 
-    public Place(String placeID, String placeName, LatLng latlng) {
+    public GamePlace(String placeID, String placeName, LatLng latlng) {
 
         this.mPlaceID = placeID;
         this.mPlaceName = placeName;

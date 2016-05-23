@@ -9,14 +9,11 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.PlaceInfoAdapter;
-import com.nosad.sample.entity.Place;
+import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.contracts.PlaceContract;
 import com.nosad.sample.utils.FacebookUtils;
 import com.nosad.sample.utils.common.Constants;
@@ -66,7 +63,7 @@ public class PlacesInfoDialog extends DialogFragment {
 
         String placeID = getArguments().getString(PlaceContract.DBPlaces.COLUMN_PLACE_ID);
 
-        Place place = App.getPlacesManager().findPlaceByID(placeID);
+        GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
         if (place == null) {
             return false;
         }

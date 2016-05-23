@@ -41,6 +41,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.ChipAdapter;
+import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.Dialogs.PlacesInfoDialog;
@@ -265,7 +266,7 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
             mPlaceIDtoCapture = intentData.getString(Constants.PLACE_ID);
 
             // TODO: AF: for now do not show action if user owns this place
-            com.nosad.sample.entity.Place place = App.getPlacesManager().findPlaceByID(mPlaceIDtoCapture);
+            GamePlace place = App.getPlacesManager().findPlaceByID(mPlaceIDtoCapture);
             if (place.hasOwner(App.getUserManager().getCurrentUser().getId())) {
 
                 if (mPlaceActions.getVisibility() == View.VISIBLE) {
