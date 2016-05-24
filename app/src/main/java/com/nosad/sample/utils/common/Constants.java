@@ -125,4 +125,29 @@ public class Constants {
     public static final int    TYPE_USER  = 1;
     public static final int    TYPE_PLACE = 2;
 
+    /**
+     * User action and view circles parameters
+     */
+    public static final int VIEW_CIRCLE_STOKE_COLOR = 0xffff0000;
+    public static final int VIEW_CIRCLE_SHADE_COLOR = 0x44ff0000;
+    public static final int VIEW_CIRCLE_BORDER_SIZE = 2;
+
+    public static final int ACTION_CIRCLE_STOKE_COLOR = 0xff0000ff;
+    public static final int ACTION_CIRCLE_SHADE_COLOR = 0x440000ff;
+    public static final int ACTION_CIRCLE_BORDER_SIZE = 2;
+
+    /**
+     *
+     */
+    public static final double EARTH_CIRCUMFERENCE = 40075.04;
+    public static final int EAST_DIRECTION  = 0;
+    public static final int WEST_DIRECTION  = 1;
+    public static final int NORTH_DIRECTION = 2;
+    public static final int SOUTH_DIRECTION = 3;
+    public static final int EN_DIRECTION    = 4;
+    public static final int ES_DIRECTION    = 5;
+    public static final int WN_DIRECTION    = 6;
+    public static final int WS_DIRECTION    = 7;
+
+    public static final int DISTANCE_TO_UPDATE_POSITIONS_CONSTS = 10; // 10 meters
 }

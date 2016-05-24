@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.nosad.sample.App;
 import com.nosad.sample.entity.GamePlace;
+import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 
 import java.util.ArrayList;
@@ -197,6 +198,62 @@ public class PlacesManager extends DataManager {
 
         place.addOwner(ownerID);
         return place;
+    }
+
+    /**
+     * gets the list of the places that are within certain square and the
+     * distance to then from current place are no longer that @param distance
+     *
+     * @param currentLocation - current users location
+     * @param westSouth       - left bottom edge of abstract square within which places should be considered
+     * @param northEast       - left bottom edge of abstract square within which places should be considered
+     * @param distance        - distance within which places should be considered (besically  the radius of User's ViewArea)
+     * @return the list of places that met requirements
+     */
+    public ArrayList<GamePlace> getLimitedPlaces(LatLng currentLocation, LatLng westSouth, LatLng northEast, double distance) {
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = null;
+        try {
+
+            String condition = "((" + COLUMN_PLACE_LAT + " > ? AND " + COLUMN_PLACE_LAT + " < ? ) AND ( " +
+                                    COLUMN_PLACE_LNG + " > ? AND " + COLUMN_PLACE_LNG + " < ? ))";
+
+            String[] compare = new String[]{Double.toString(westSouth.latitude), Double.toString(northEast.latitude),
+                                Double.toString(westSouth.longitude), Double.toString(northEast.longitude)};
+
+            cursor = db.query(TABLE_PLACES,
+                    null,
+                    condition,
+                    compare,
+                    null,
+                    null,
+                    null);
+
+            ArrayList<GamePlace> places = new ArrayList<>(cursor.getCount());
+
+            if (cursor.moveToFirst()) {
+                do {
+                    GamePlace place = placeFromCursor(cursor);
+
+                    if (Utils.distanceBetweenLocations(currentLocation, place.getPlacePos()) <= distance) {
+                        findPlacesOwner(place);
+                        places.add(place);
+                    }
+
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
+            db.close();
+
+            return places;
+
+        } catch (SQLException e) {
+            Log.e(Constants.TAG, "PlacesManager: error querying request. " + e.getMessage());
+            return null;
+        }
     }
 
     public ArrayList<GamePlace> getPlaces() {

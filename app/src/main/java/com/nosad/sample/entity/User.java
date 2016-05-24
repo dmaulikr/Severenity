@@ -17,6 +17,8 @@ public class User {
     private int mentality = 10;
     private int experience = 0;
     private int level = 1;
+    private double mViewRadius   = 100.0; // 50.0 meters for now
+    private double mActionRadius =  10.0; // 10.0 meters for now
 
     public User() {
 
@@ -27,6 +29,10 @@ public class User {
         this.name = name;
         this.id = id;
     }
+
+    public double getViewRadius() { return mViewRadius; }
+
+    public double getActionRadius() { return  mActionRadius; }
 
     public String getId() {
         return id;

@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -26,6 +27,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -51,8 +54,7 @@ import java.util.ArrayList;
  * Created by Novosad on 3/29/16.
  */
 public class LocationManager implements LocationListener {
-    private Location previousLocation;
-    private Location currentLocation;
+    private Location previousLocation, currentLocation, mLocationOfLastSquareUpdate;
     private Context context;
     private GoogleApiClient googleApiClient;
     private float currentZoom = (Constants.MAX_ZOOM_LEVEL + Constants.MIN_ZOOM_LEVEL) / 2 + 1.0f;
@@ -65,6 +67,8 @@ public class LocationManager implements LocationListener {
     public boolean requestingLocationUpdates = false;
     private boolean isSpellMode = false;
     private boolean isCameraFixed = false;
+    private Circle mViewCircle, mActionCircle;
+    private LatLng mWestSouthPoint, mNorthEastPoint;
 
     private MarkerInfoAdapter mMarkerInfoAdapter = new MarkerInfoAdapter();
 
@@ -158,10 +162,21 @@ public class LocationManager implements LocationListener {
 
                     if (markerType.getInt(Constants.OBJECT_TYPE_IDENTIFIER) == Constants.TYPE_PLACE) {
 
-                        Intent intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS);
-                        intent.putExtra(Constants.PLACE_ID, markerType.getString(Constants.PLACE_ID));
+                        String placeID = markerType.getString(Constants.PLACE_ID);
+                        GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
+                        if (place == null) {
+                            Log.d(Constants.TAG, "Was not anble to find place with provided ID: " + placeID);
+                            return false;
+                        }
 
-                        App.getLocalBroadcastManager().sendBroadcast(intent);
+                        if (Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
+                                App.getUserManager().getCurrentUser().getActionRadius()) {
+
+                            Intent intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS);
+                            intent.putExtra(Constants.PLACE_ID, placeID);
+
+                            App.getLocalBroadcastManager().sendBroadcast(intent);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -184,7 +199,8 @@ public class LocationManager implements LocationListener {
             }
         });
 
-        displayPlaceMarkerFromDB();
+        // remove blue circle around location
+        map.setMyLocationEnabled(false);
     }
 
     /**
@@ -221,8 +237,7 @@ public class LocationManager implements LocationListener {
     }
 
     /**
-     *
-     * @param user - user to display marker of
+     * @param user   - user to display marker of
      * @param latLng - location to display user at
      */
     public void displayUserAt(User user, LatLng latLng) {
@@ -331,7 +346,7 @@ public class LocationManager implements LocationListener {
 
         if (!isCameraFixed) {
             googleMap.animateCamera(
-                CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), currentZoom)
+                    CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), currentZoom)
             );
         }
     }
@@ -348,8 +363,23 @@ public class LocationManager implements LocationListener {
             return;
         }
 
+        if (mLocationOfLastSquareUpdate != null &&
+                location.distanceTo(mLocationOfLastSquareUpdate) >= Constants.DISTANCE_TO_UPDATE_POSITIONS_CONSTS) {
+
+            Toast.makeText(App.getInstance(), "Going to update square", Toast.LENGTH_SHORT).show();
+
+            googleMap.clear();
+            mViewCircle = null;
+            mActionCircle = null;
+
+            mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
+            displayPlaceMarkerFromDB(true);
+        }
+
         currentLocation = location;
+
         updateMarker(location);
+        displayUserActionAndViewCircles();
 
         App.getWebSocketManager().sendLocationToServer(location);
     }
@@ -369,9 +399,9 @@ public class LocationManager implements LocationListener {
         String previousLocationStr = previousLocation.getLatitude() + "," + previousLocation.getLongitude();
         String currentLocationStr = currentLocation.getLatitude() + "," + currentLocation.getLongitude();
         String url = "http://maps.googleapis.com/maps/api/directions/json?"
-                    + "origin=" + previousLocationStr
-                    + "&destination=" + currentLocationStr
-                    + "&mode=walking&units=metric";
+                + "origin=" + previousLocationStr
+                + "&destination=" + currentLocationStr
+                + "&mode=walking&units=metric";
 
         previousLocation = currentLocation;
         App.getRestManager().createRequest(url, Request.Method.GET, null, new RequestCallback() {
@@ -416,11 +446,11 @@ public class LocationManager implements LocationListener {
         User currentUser = App.getUserManager().getCurrentUser();
         if (currentUser != null) {
             currentUser.setDistance(
-                App.getUserManager().getCurrentUser().getDistance() + metersPassed);
+                    App.getUserManager().getCurrentUser().getDistance() + metersPassed);
 
             currentUser.setExperience(
-                currentUser.getExperience() +
-                    metersPassed / Constants.EXPERIENCE_MULTIPLIER);
+                    currentUser.getExperience() +
+                            metersPassed / Constants.EXPERIENCE_MULTIPLIER);
 
             int calculatedLevel = currentUser.getExperience() / Constants.LEVEL_MULTIPLIER;
             if (calculatedLevel > currentUser.getLevel()) {
@@ -450,6 +480,8 @@ public class LocationManager implements LocationListener {
             if (googleApiClientConnected) {
                 startLocationUpdates();
                 currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
+                displayPlaceMarkerFromDB(true);
                 previousLocation = currentLocation;
             } else {
                 stopLocationUpdates();
@@ -485,13 +517,23 @@ public class LocationManager implements LocationListener {
         return returnedBitmap;
     }
 
-    public void displayPlaceMarkerFromDB() {
+    public void displayPlaceMarkerFromDB(boolean squareLimited) {
 
-        ArrayList<GamePlace> place_inner = App.getPlacesManager().getPlaces();
+        ArrayList<GamePlace> place_inner = null;
+        if (squareLimited) {
+            place_inner = App.getPlacesManager().getLimitedPlaces(Utils.latLngFromLocation(currentLocation),
+                    mWestSouthPoint,
+                    mNorthEastPoint,
+                    App.getUserManager().getCurrentUser().getViewRadius());
+        }
+        else {
+            place_inner = App.getPlacesManager().getPlaces();
+        }
+
         if (place_inner == null)
             return;
 
-        for (GamePlace pl: place_inner) {
+        for (GamePlace pl : place_inner) {
 
             googleMap.addMarker(new MarkerOptions()
                     .position(pl.getPlacePos())
@@ -499,5 +541,66 @@ public class LocationManager implements LocationListener {
                     .title(String.format("%s", pl.getPlaceName()))
                     .snippet(pl.getJSONPlaceInfo()));
         }
+    }
+
+    private void displayUserActionAndViewCircles() {
+
+        if (mViewCircle == null) {
+
+            CircleOptions viewCircle = new CircleOptions()
+                    .fillColor(Constants.VIEW_CIRCLE_SHADE_COLOR)
+                    .strokeColor(Constants.VIEW_CIRCLE_STOKE_COLOR)
+                    .radius(App.getUserManager().getCurrentUser().getViewRadius())
+                    .center(Utils.latLngFromLocation(currentLocation))
+                    .strokeWidth(Constants.VIEW_CIRCLE_BORDER_SIZE);
+
+            mViewCircle = googleMap.addCircle(viewCircle);
+        } else {
+            mViewCircle.setCenter(Utils.latLngFromLocation(currentLocation));
+        }
+
+        if (mActionCircle == null) {
+            CircleOptions actionCircle = new CircleOptions()
+                    .fillColor(Constants.ACTION_CIRCLE_SHADE_COLOR)
+                    .strokeColor(Constants.ACTION_CIRCLE_STOKE_COLOR)
+                    .radius(App.getUserManager().getCurrentUser().getActionRadius())
+                    .center(Utils.latLngFromLocation(currentLocation))
+                    .strokeWidth(Constants.ACTION_CIRCLE_BORDER_SIZE);
+
+            mActionCircle = googleMap.addCircle(actionCircle);
+        } else {
+            mActionCircle.setCenter(Utils.latLngFromLocation(currentLocation));
+        }
+    }
+
+    /**
+     * Gets the left bottom and right top position of abstract square for request less amount
+     * off places.
+     *
+     * @return the position where the last update has happened
+     */
+    private Location updateSquarePointsForFilteringLocations() {
+
+        mWestSouthPoint = Utils.getPositionInMeter(Utils.latLngFromLocation(currentLocation), 100, Constants.WS_DIRECTION);
+//        googleMap.addMarker(new MarkerOptions()
+//                .position(mWestSouthPoint)
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+//
+//        Location ll = new Location("location");
+//        ll.setLatitude(mWestSouthPoint.latitude);
+//        ll.setLongitude(mWestSouthPoint.longitude);
+//        float f = currentLocation.distanceTo(ll);
+//        Log.d(Constants.TAG, "Distance from WS to curent: " + Float.toString(f));
+
+        mNorthEastPoint = Utils.getPositionInMeter(Utils.latLngFromLocation(currentLocation), 100, Constants.EN_DIRECTION);
+//        googleMap.addMarker(new MarkerOptions()
+//                .position(mNorthEastPoint)
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+//        ll.setLatitude(mNorthEastPoint.latitude);
+//        ll.setLongitude(mNorthEastPoint.longitude);
+//        f = currentLocation.distanceTo(ll);
+//        Log.d(Constants.TAG, "Distance from EN to curent: " + Float.toString(f));
+
+        return currentLocation;
     }
 }

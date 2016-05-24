@@ -208,4 +208,91 @@ public class Utils {
 
         return String.format("%d days, %d hours, %d minutes, %d seconds%n", elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
     }
+
+    /**
+     * Returns new LatLong from current by adding x meters
+     *
+     * @param currentPos - start position to move from
+     * @param meters     - distance to new position in meters.
+     * @param direction  - new position direction: South, North, East, West.
+     */
+    public static LatLng getPositionInMeter(LatLng currentPos, double meters, int direction) {
+
+        double verticalShift   = 360 * ( meters / 1000) / Constants.EARTH_CIRCUMFERENCE;
+        double horizontalShift = verticalShift / Math.cos(currentPos.latitude*Math.PI/180);
+
+        switch (direction) {
+
+            case Constants.SOUTH_DIRECTION: {
+                double shift = currentPos.latitude - verticalShift;
+                return new LatLng(shift, currentPos.longitude);
+            }
+
+            case Constants.NORTH_DIRECTION: {
+                double shift = currentPos.latitude + verticalShift;
+                return new LatLng(shift, currentPos.longitude);
+            }
+
+            case Constants.WEST_DIRECTION: {
+                double shift = currentPos.longitude - horizontalShift;
+                return new LatLng(currentPos.latitude, shift);
+            }
+
+            case Constants.EAST_DIRECTION: {
+                double shift = currentPos.longitude + horizontalShift;
+                return new LatLng(currentPos.latitude, shift);
+            }
+
+            case Constants.WS_DIRECTION: {
+                double shiftV = currentPos.latitude - verticalShift;
+                double shiftH = currentPos.longitude - horizontalShift;
+
+                return new LatLng(shiftV, shiftH);
+            }
+
+            case Constants.WN_DIRECTION: {
+                double shiftV = currentPos.latitude + verticalShift;
+                double shiftH = currentPos.longitude - horizontalShift;
+
+                return new LatLng(shiftV, shiftH);
+            }
+
+            case Constants.EN_DIRECTION: {
+                double shiftV = currentPos.latitude  + verticalShift;
+                double shiftH = currentPos.longitude + horizontalShift;
+
+                return new LatLng(shiftV, shiftH);
+            }
+
+            case Constants.ES_DIRECTION: {
+                double shiftV = currentPos.latitude  - verticalShift;
+                double shiftH = currentPos.longitude + horizontalShift;
+
+                return new LatLng(shiftV, shiftH);
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * calculate the distance between two places
+     *
+     * @param startPos - the position of start point
+     * @param endPos   - the position of destination point
+     * @return distance in meters
+     */
+    public static float distanceBetweenLocations(LatLng startPos, LatLng endPos) {
+
+        Location locationStart = new Location("Start location");
+        locationStart.setLatitude(startPos.latitude);
+        locationStart.setLongitude(startPos.longitude);
+
+        Location locationDest = new Location("Dest location");
+        locationDest.setLatitude(endPos.latitude);
+        locationDest.setLongitude(endPos.longitude);
+
+        return locationStart.distanceTo(locationDest);
+    }
 }
