@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.menu_shop_selected, getTheme()));
+                                item.setIcon(getResources().getDrawable(R.drawable.shop_new, getTheme()));
                             }
                         });
                         showShop();
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.menu_profile_selected, getTheme()));
+                                item.setIcon(getResources().getDrawable(R.drawable.profile_new, getTheme()));
                             }
                         });
                         showProfile();
@@ -294,25 +294,25 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.menu_map_selected, getTheme()));
+                                item.setIcon(getResources().getDrawable(R.drawable.map_new, getTheme()));
                             }
                         });
                         showMap();
                         return true;
-                    case R.id.menu_teams:
+                    case R.id.menu_chat:
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.menu_teams_selected, getTheme()));
+                                item.setIcon(getResources().getDrawable(R.drawable.chat_new, getTheme()));
                             }
                         });
                         showTeams();
                         return true;
-                    case R.id.menu_battles:
+                    case R.id.menu_quests:
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.menu_chalice_selected, getTheme()));
+                                item.setIcon(getResources().getDrawable(R.drawable.quests_new, getTheme()));
                             }
                         });
                         showBattles();
@@ -331,19 +331,19 @@ public class MainActivity extends AppCompatActivity {
             MenuItem item = toolbarBottom.getMenu().getItem(i);
             switch (item.getItemId()) {
                 case R.id.menu_shop:
-                    item.setIcon(getResources().getDrawable(R.drawable.menu_shop, getTheme()));
+                    item.setIcon(getResources().getDrawable(R.drawable.shop, getTheme()));
                     break;
                 case R.id.menu_profile:
-                    item.setIcon(getResources().getDrawable(R.drawable.menu_profile, getTheme()));
+                    item.setIcon(getResources().getDrawable(R.drawable.profile, getTheme()));
                     break;
                 case R.id.menu_map:
-                    item.setIcon(getResources().getDrawable(R.drawable.menu_map, getTheme()));
+                    item.setIcon(getResources().getDrawable(R.drawable.map, getTheme()));
                     break;
-                case R.id.menu_teams:
-                    item.setIcon(getResources().getDrawable(R.drawable.menu_teams, getTheme()));
+                case R.id.menu_chat:
+                    item.setIcon(getResources().getDrawable(R.drawable.chat, getTheme()));
                     break;
-                case R.id.menu_battles:
-                    item.setIcon(getResources().getDrawable(R.drawable.menu_chalice, getTheme()));
+                case R.id.menu_quests:
+                    item.setIcon(getResources().getDrawable(R.drawable.quests, getTheme()));
                     break;
                 default: break;
             }

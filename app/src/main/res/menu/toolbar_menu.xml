@@ -8,35 +8,35 @@
         android:orderInCategory="100"
         android:id="@+id/menu_shop"
         android:title="@string/menu_shop"
-        android:icon="@drawable/menu_shop"
+        android:icon="@drawable/shop"
         app:showAsAction="always"
         />
     <item
         android:orderInCategory="200"
         android:id="@+id/menu_profile"
         android:title="@string/menu_profile"
-        android:icon="@drawable/menu_profile"
+        android:icon="@drawable/profile"
         app:showAsAction="always"
         />
     <item
         android:orderInCategory="300"
         android:id="@+id/menu_map"
         android:title="@string/menu_map"
-        android:icon="@drawable/menu_map"
+        android:icon="@drawable/map"
         app:showAsAction="always"
         />
     <item
         android:orderInCategory="400"
-        android:id="@+id/menu_teams"
+        android:id="@+id/menu_chat"
         android:title="@string/menu_teams"
-        android:icon="@drawable/menu_teams"
+        android:icon="@drawable/chat"
         app:showAsAction="always"
         />
     <item
         android:orderInCategory="500"
-        android:id="@+id/menu_battles"
+        android:id="@+id/menu_quests"
         android:title="@string/menu_battles"
-        android:icon="@drawable/menu_chalice"
+        android:icon="@drawable/quests"
         app:showAsAction="always"
         />
 </menu>
