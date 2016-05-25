@@ -169,14 +169,19 @@ public class LocationManager implements LocationListener {
                             return false;
                         }
 
+                        Intent intent = null;
                         if (Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
                                 App.getUserManager().getCurrentUser().getActionRadius()) {
 
-                            Intent intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS);
+                            intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS);
                             intent.putExtra(Constants.PLACE_ID, placeID);
-
-                            App.getLocalBroadcastManager().sendBroadcast(intent);
                         }
+                        else {
+
+                            intent = new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS);
+                        }
+
+                        App.getLocalBroadcastManager().sendBroadcast(intent);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
