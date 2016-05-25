@@ -219,7 +219,7 @@ public class Utils {
     public static LatLng getPositionInMeter(LatLng currentPos, double meters, int direction) {
 
         double verticalShift   = 360 * ( meters / 1000) / Constants.EARTH_CIRCUMFERENCE;
-        double horizontalShift = verticalShift / Math.cos(currentPos.latitude*Math.PI/180);
+        double horizontalShift = verticalShift / Math.cos(currentPos.latitude * Math.PI/180);
 
         switch (direction) {
 

@@ -149,5 +149,5 @@ public class Constants {
     public static final int WN_DIRECTION    = 6;
     public static final int WS_DIRECTION    = 7;
 
-    public static final int DISTANCE_TO_UPDATE_POSITIONS_CONSTS = 10; // 10 meters
+    public static final int DISTANCE_TO_UPDATE_POSITIONS_CONSTS = 5;
 }

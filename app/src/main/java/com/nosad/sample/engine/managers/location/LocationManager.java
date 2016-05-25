@@ -165,7 +165,7 @@ public class LocationManager implements LocationListener {
                         String placeID = markerType.getString(Constants.PLACE_ID);
                         GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
                         if (place == null) {
-                            Log.d(Constants.TAG, "Was not anble to find place with provided ID: " + placeID);
+                            Log.d(Constants.TAG, "Was not able to find place with provided ID: " + placeID);
                             return false;
                         }
 
@@ -480,8 +480,11 @@ public class LocationManager implements LocationListener {
             if (googleApiClientConnected) {
                 startLocationUpdates();
                 currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-                mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
-                displayPlaceMarkerFromDB(true);
+                if (currentLocation != null) {
+
+                    mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
+                    displayPlaceMarkerFromDB(true);
+                }
                 previousLocation = currentLocation;
             } else {
                 stopLocationUpdates();
@@ -582,24 +585,7 @@ public class LocationManager implements LocationListener {
     private Location updateSquarePointsForFilteringLocations() {
 
         mWestSouthPoint = Utils.getPositionInMeter(Utils.latLngFromLocation(currentLocation), 100, Constants.WS_DIRECTION);
-//        googleMap.addMarker(new MarkerOptions()
-//                .position(mWestSouthPoint)
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-//
-//        Location ll = new Location("location");
-//        ll.setLatitude(mWestSouthPoint.latitude);
-//        ll.setLongitude(mWestSouthPoint.longitude);
-//        float f = currentLocation.distanceTo(ll);
-//        Log.d(Constants.TAG, "Distance from WS to curent: " + Float.toString(f));
-
         mNorthEastPoint = Utils.getPositionInMeter(Utils.latLngFromLocation(currentLocation), 100, Constants.EN_DIRECTION);
-//        googleMap.addMarker(new MarkerOptions()
-//                .position(mNorthEastPoint)
-//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-//        ll.setLatitude(mNorthEastPoint.latitude);
-//        ll.setLongitude(mNorthEastPoint.longitude);
-//        f = currentLocation.distanceTo(ll);
-//        Log.d(Constants.TAG, "Distance from EN to curent: " + Float.toString(f));
 
         return currentLocation;
     }
