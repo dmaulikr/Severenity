@@ -18,7 +18,7 @@ public class User {
     private int experience = 0;
     private int level = 1;
     private double mViewRadius   = 100.0; // 50.0 meters for now
-    private double mActionRadius =  10.0; // 10.0 meters for now
+    private double mActionRadius =  25.0; // 25.0 meters for now
 
     public User() {
 

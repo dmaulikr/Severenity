@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.util.LruCache;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nosad.sample.R;
+import com.nosad.sample.utils.common.Constants;
 
 import org.json.JSONObject;
 
@@ -137,17 +139,17 @@ public class RestManager {
                 // to true. This causes the display to be refreshed when the user
                 // returns to the app.
                 if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                    Toast.makeText(context, R.string.wifi_connected, Toast.LENGTH_SHORT).show();
+                    Log.d(Constants.TAG, context.getResources().getString(R.string.wifi_connected));
                 } else if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
                     // If the setting is ANY network and there is a network connection
                     // (which by process of elimination would be mobile), sets refreshDisplay to true.
-                    Toast.makeText(context, R.string.mobile_connected, Toast.LENGTH_SHORT).show();
+                    Log.d(Constants.TAG, context.getResources().getString(R.string.mobile_connected));
                 } else {
-                    Toast.makeText(context, R.string.connection_established, Toast.LENGTH_SHORT).show();
+                    Log.d(Constants.TAG, context.getResources().getString(R.string.connection_established));
                 }
             } else {
                 refreshDisplay = false;
-                Toast.makeText(context, R.string.lost_connection, Toast.LENGTH_SHORT).show();
+                Log.d(Constants.TAG, context.getResources().getString(R.string.lost_connection));
             }
         }
     }

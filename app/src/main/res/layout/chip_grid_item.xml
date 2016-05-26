@@ -31,13 +31,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="13sp"
-                android:textColor="@color/colorAccent"
+                android:textColor="@color/accent"
                 android:gravity="center"
                 android:layout_below="@+id/ivChipImage"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:text="@{chip.title}"
-                android:background="@color/colorPrimaryDark"/>
+                android:background="@color/primaryDark"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </layout>

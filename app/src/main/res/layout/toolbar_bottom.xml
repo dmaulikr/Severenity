@@ -4,6 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/primaryDark"
     android:elevation="4dp">
 </com.nosad.sample.view.custom.SplitToolbar>

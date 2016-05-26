@@ -4,7 +4,7 @@
     android:id="@+id/drawerMap"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/primaryDark"
     tools:context=".view.fragments.GameMapFragment">
     
     <!-- The main content view -->

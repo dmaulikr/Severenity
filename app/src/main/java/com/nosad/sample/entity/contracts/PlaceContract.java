@@ -17,7 +17,7 @@ public class PlaceContract {
         public static final String TABLE_PLACES = "places";
         public static final String COLUMN_PLACE_ID = "place_id";
         public static final String COLUMN_PLACE_NAME = "place_name";
-        public static final String COLUMN_PLACE_LAT = "pos_latitude";
+        public static final String COLUMN_PLACE_LAT = "place_latitude";
         public static final String COLUMN_PLACE_LNG = "place_longitude";
     }
 

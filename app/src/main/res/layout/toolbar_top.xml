@@ -3,11 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/primaryDark"
     android:elevation="4dp">
     <RelativeLayout
         android:id="@+id/userInfo"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/primaryDark"
         android:layout_width="match_parent"
         android:layout_height="64dp">
 
@@ -19,7 +19,7 @@
         <TextView
             android:gravity="center"
             android:id="@+id/tvImmunityValue"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/mapUserAvatar"
@@ -30,7 +30,7 @@
         <TextView
             android:gravity="center"
             android:id="@+id/tvMentalityValue"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/tvImmunityValue"
@@ -42,7 +42,7 @@
         <TextView
             android:gravity="center"
             android:id="@+id/tvExperienceValue"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/white"
             android:layout_below="@id/tvImmunityValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         <TextView
             android:gravity="center"
             android:id="@+id/tvLevelValue"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/white"
             android:layout_below="@id/tvImmunityValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
