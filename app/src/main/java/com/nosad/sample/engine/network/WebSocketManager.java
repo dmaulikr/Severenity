@@ -4,13 +4,11 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphResponse;
 import com.google.android.gms.maps.model.LatLng;
 import com.nosad.sample.App;
-import com.nosad.sample.engine.adapters.PlaceInfoAdapter;
 import com.nosad.sample.entity.Message;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.FacebookUtils;

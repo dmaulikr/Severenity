@@ -8,8 +8,16 @@
         android:id="@+id/tvTotalMetersPassed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:layout_alignParentStart="false"
+        android:layout_centerHorizontal="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listOwnPlaces"
+        android:layout_below="@+id/tvTotalMetersPassed"
+        android:layout_above="@+id/ivFBLogout" />
 
     <ImageView
         android:id="@+id/ivFBLogout"

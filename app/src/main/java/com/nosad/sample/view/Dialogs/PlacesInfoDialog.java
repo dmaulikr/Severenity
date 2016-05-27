@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.facebook.GraphResponse;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
-import com.nosad.sample.engine.adapters.PlaceInfoAdapter;
+import com.nosad.sample.engine.adapters.InfoAdapter;
 import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.contracts.PlaceContract;
 import com.nosad.sample.utils.FacebookUtils;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
  */
 public class PlacesInfoDialog extends DialogFragment {
 
-    private PlaceInfoAdapter mPlaceInfoAdapter;
+    private InfoAdapter mInfoAdapter;
 
     public static PlacesInfoDialog newInstance(String placeID) {
         PlacesInfoDialog frag = new PlacesInfoDialog();
@@ -94,9 +94,9 @@ public class PlacesInfoDialog extends DialogFragment {
             ownersList.setVisibility(View.GONE);
         }
 
-        mPlaceInfoAdapter = new PlaceInfoAdapter(getContext());
+        mInfoAdapter = new InfoAdapter(getContext(), InfoAdapter.PLACE_INFO);
         ListView ownersList = (ListView)view.findViewById(R.id.ownersList);
-        ownersList.setAdapter(mPlaceInfoAdapter);
+        ownersList.setAdapter(mInfoAdapter);
 
         for (String owner: owners) {
             executePhotoAndNameRequest(owner);
@@ -123,12 +123,12 @@ public class PlacesInfoDialog extends DialogFragment {
                     try {
                         JSONObject data = response.getJSONObject();
                         if (data.has("name") && data.has("id")) {
-                            PlaceInfoAdapter.InfoData infoData = new PlaceInfoAdapter.InfoData();
-                            infoData.userID   = data.getString("id");
-                            infoData.userName = data.getString("name");
+                            InfoAdapter.InfoData infoData = new InfoAdapter.InfoData();
+                            infoData.dataID         = data.getString("id");
+                            infoData.dataString = data.getString("name");
 
-                            mPlaceInfoAdapter.addItem(infoData);
-                            mPlaceInfoAdapter.notifyDataSetChanged();
+                            mInfoAdapter.addItem(infoData);
+                            mInfoAdapter.notifyDataSetChanged();
                         } else {
                             Log.v(Constants.TAG, "No name and id data passed for user");
                         }
