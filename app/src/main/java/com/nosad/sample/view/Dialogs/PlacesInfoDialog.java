@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,12 +28,15 @@ import java.util.ArrayList;
  */
 public class PlacesInfoDialog extends DialogFragment {
 
+    public static final String SHOW_RELOCATION_BUTTON = "showRelocationButton";
+
     private InfoAdapter mInfoAdapter;
 
-    public static PlacesInfoDialog newInstance(String placeID) {
+    public static PlacesInfoDialog newInstance(String placeID, boolean showRelocationButton) {
         PlacesInfoDialog frag = new PlacesInfoDialog();
         Bundle b = new Bundle();
         b.putString(PlaceContract.DBPlaces.COLUMN_PLACE_ID, placeID);
+        b.putBoolean(SHOW_RELOCATION_BUTTON, showRelocationButton);
         frag.setArguments(b);
         return frag;
     }
@@ -101,6 +105,10 @@ public class PlacesInfoDialog extends DialogFragment {
         for (String owner: owners) {
             executePhotoAndNameRequest(owner);
         }
+
+        boolean showRelocationButton = getArguments().getBoolean(SHOW_RELOCATION_BUTTON, false);
+        Button gotobutton = (Button)view.findViewById(R.id.showLocation);
+        gotobutton.setVisibility(showRelocationButton ? View.VISIBLE : View.GONE);
 
         return true;
     }

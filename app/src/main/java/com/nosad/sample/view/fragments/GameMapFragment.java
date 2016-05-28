@@ -235,12 +235,14 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
 
             Bundle extra = intent.getExtras();
             try {
-                JSONObject objectInfo = new JSONObject(extra.getString(Constants.OBJECT_INFO));
+                JSONObject objectInfo = new JSONObject(extra.getString(Constants.OBJECT_INFO_AS_JSON));
 
                 switch (objectInfo.getInt(Constants.OBJECT_TYPE_IDENTIFIER)) {
                     case Constants.TYPE_PLACE: {
 
-                        PlacesInfoDialog placeInfoDialog = PlacesInfoDialog.newInstance(objectInfo.getString(Constants.PLACE_ID));
+                        boolean showRelocationButton = extra.getBoolean(PlacesInfoDialog.SHOW_RELOCATION_BUTTON, false);
+                        PlacesInfoDialog placeInfoDialog = PlacesInfoDialog.newInstance(objectInfo.getString(Constants.PLACE_ID),
+                                showRelocationButton);
                         FragmentManager fm = getFragmentManager();
                         placeInfoDialog.show(fm, "placeInfoDialog");
                         break;

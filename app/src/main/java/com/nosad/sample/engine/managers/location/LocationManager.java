@@ -197,7 +197,7 @@ public class LocationManager implements LocationListener {
             public void onInfoWindowClick(Marker marker) {
 
                 Intent intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_INFO_DIALOG);
-                intent.putExtra(Constants.OBJECT_INFO, marker.getSnippet());
+                intent.putExtra(Constants.OBJECT_INFO_AS_JSON, marker.getSnippet());
 
                 App.getLocalBroadcastManager().sendBroadcast(intent);
                 App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
@@ -549,6 +549,7 @@ public class LocationManager implements LocationListener {
                     .title(String.format("%s", pl.getPlaceName()))
                     .snippet(pl.getJSONPlaceInfo()));
         }
+
     }
 
     private void displayUserActionAndViewCircles() {

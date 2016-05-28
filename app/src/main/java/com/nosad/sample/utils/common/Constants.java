@@ -115,9 +115,9 @@ public class Constants {
 
     /**
      * PlaceInfo constants.
-     * Used to pass specific data (as {@link org.json.JSONObject}) from  place to marker via snippet field.
+     * Used to pass specific data (as {@link org.json.JSONObject}) via markers spinner object.
      */
-    public static final String OBJECT_INFO = "objectInfo";
+    public static final String OBJECT_INFO_AS_JSON = "objectInfo";
     public static final String OBJECT_TYPE_IDENTIFIER = "placeType";
     public static final String PLACE_ID = "placeID";
     public static final String USER_ID  = "userID";
