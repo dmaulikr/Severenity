@@ -12,18 +12,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.nosad.sample.App;
 import com.nosad.sample.R;
+import com.nosad.sample.engine.adapters.InfoAdapter;
+import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends Fragment {
     private TextView tvTotalMetersPassed;
+    private ListView mPlacesList;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -53,6 +59,19 @@ public class ProfileFragment extends Fragment {
                 App.getInstance().logOut();
             }
         });
+
+        mPlacesList = (ListView)view.findViewById(R.id.listOwnPlaces);
+        InfoAdapter infoAdapter = new InfoAdapter(getContext(), InfoAdapter.USER_INFO);
+
+        ArrayList<GamePlace> places = App.getPlacesManager().findPlacesByOwner(App.getUserManager().getCurrentUser().getId());
+        for (GamePlace gp: places) {
+            InfoAdapter.InfoData data = new InfoAdapter.InfoData();
+            data.dataID     = gp.getPlaceID();
+            data.dataString = gp.getPlaceName();
+            infoAdapter.addItem(data);
+        }
+
+        mPlacesList.setAdapter(infoAdapter);
 
         return view;
     }

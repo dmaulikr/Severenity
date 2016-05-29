@@ -129,6 +129,45 @@ public class PlacesManager extends DataManager {
         }
     }
 
+    public ArrayList<GamePlace> findPlacesByOwner(String ownerID) {
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = null;
+
+        // find if place has owners
+        try {
+            cursor = db.query(
+                    TABLE_PLACES_OWNERS,
+                    new String[]{COLUMN_PLACE_ID},
+                    COLUMN_PLACE_OWNER_ID + " = ?",
+                    new String[] { ownerID },
+                    null, null, null, null);
+
+            ArrayList<GamePlace> places = new ArrayList<>(cursor.getCount());
+
+            if (cursor.moveToFirst()) {
+                do {
+                    String placeID = cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_ID));
+
+                    GamePlace place = findPlaceByID(placeID);
+                    if (place != null) {
+                        places.add(place);
+                    }
+                }
+                while (cursor.moveToNext());
+            }
+
+            cursor.close();
+            db.close();
+            return places;
+
+        }catch (SQLException e){
+            Log.e(Constants.TAG, "PlacesManager: error querying request. " + e.getMessage());
+            db.close();
+            return null;
+        }
+    }
+
     public boolean addPlace(GamePlace place) {
 
         if (findPlaceByID(place.getPlaceID()) != null) {

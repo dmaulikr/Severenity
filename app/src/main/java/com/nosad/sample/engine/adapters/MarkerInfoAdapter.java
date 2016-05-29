@@ -40,7 +40,6 @@ public class MarkerInfoAdapter implements GoogleMap.InfoWindowAdapter {
                 return null;
             }
 
-            String str = marker.getSnippet();
             hiddenTextForID.setText(marker.getSnippet());
 
             return customView;

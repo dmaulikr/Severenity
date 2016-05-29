@@ -6,13 +6,14 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.GraphResponse;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
-import com.nosad.sample.engine.adapters.PlaceInfoAdapter;
+import com.nosad.sample.engine.adapters.InfoAdapter;
 import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.contracts.PlaceContract;
 import com.nosad.sample.utils.FacebookUtils;
@@ -27,12 +28,15 @@ import java.util.ArrayList;
  */
 public class PlacesInfoDialog extends DialogFragment {
 
-    private PlaceInfoAdapter mPlaceInfoAdapter;
+    public static final String SHOW_RELOCATION_BUTTON = "showRelocationButton";
 
-    public static PlacesInfoDialog newInstance(String placeID) {
+    private InfoAdapter mInfoAdapter;
+
+    public static PlacesInfoDialog newInstance(String placeID, boolean showRelocationButton) {
         PlacesInfoDialog frag = new PlacesInfoDialog();
         Bundle b = new Bundle();
         b.putString(PlaceContract.DBPlaces.COLUMN_PLACE_ID, placeID);
+        b.putBoolean(SHOW_RELOCATION_BUTTON, showRelocationButton);
         frag.setArguments(b);
         return frag;
     }
@@ -94,13 +98,17 @@ public class PlacesInfoDialog extends DialogFragment {
             ownersList.setVisibility(View.GONE);
         }
 
-        mPlaceInfoAdapter = new PlaceInfoAdapter(getContext());
+        mInfoAdapter = new InfoAdapter(getContext(), InfoAdapter.PLACE_INFO);
         ListView ownersList = (ListView)view.findViewById(R.id.ownersList);
-        ownersList.setAdapter(mPlaceInfoAdapter);
+        ownersList.setAdapter(mInfoAdapter);
 
         for (String owner: owners) {
             executePhotoAndNameRequest(owner);
         }
+
+        boolean showRelocationButton = getArguments().getBoolean(SHOW_RELOCATION_BUTTON, false);
+        Button gotobutton = (Button)view.findViewById(R.id.showLocation);
+        gotobutton.setVisibility(showRelocationButton ? View.VISIBLE : View.GONE);
 
         return true;
     }
@@ -123,12 +131,12 @@ public class PlacesInfoDialog extends DialogFragment {
                     try {
                         JSONObject data = response.getJSONObject();
                         if (data.has("name") && data.has("id")) {
-                            PlaceInfoAdapter.InfoData infoData = new PlaceInfoAdapter.InfoData();
-                            infoData.userID   = data.getString("id");
-                            infoData.userName = data.getString("name");
+                            InfoAdapter.InfoData infoData = new InfoAdapter.InfoData();
+                            infoData.dataID         = data.getString("id");
+                            infoData.dataString = data.getString("name");
 
-                            mPlaceInfoAdapter.addItem(infoData);
-                            mPlaceInfoAdapter.notifyDataSetChanged();
+                            mInfoAdapter.addItem(infoData);
+                            mInfoAdapter.notifyDataSetChanged();
                         } else {
                             Log.v(Constants.TAG, "No name and id data passed for user");
                         }
