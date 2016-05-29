@@ -266,14 +266,76 @@ public class LocationManager implements LocationListener {
                 || place.getPlaceTypes().contains(Place.TYPE_TRANSIT_STATION)
                 || place.getPlaceTypes().contains(Place.TYPE_SUBWAY_STATION)
                 || place.getPlaceTypes().contains(Place.TYPE_STREET_ADDRESS)
-                || place.getPlaceTypes().contains(Place.TYPE_ROUTE)) {
+                || place.getPlaceTypes().contains(Place.TYPE_ROUTE)
+                || place.getPlaceTypes().contains(Place.TYPE_MOVING_COMPANY)
+                || place.getPlaceTypes().contains(Place.TYPE_MOVIE_RENTAL)
+                || place.getPlaceTypes().contains(Place.TYPE_CAR_DEALER)
+                || place.getPlaceTypes().contains(Place.TYPE_CAR_RENTAL)
+                || place.getPlaceTypes().contains(Place.TYPE_CAR_REPAIR)
+                || place.getPlaceTypes().contains(Place.TYPE_CAR_WASH)
+                || place.getPlaceTypes().contains(Place.TYPE_TAXI_STAND)
+                || place.getPlaceTypes().contains(Place.TYPE_HAIR_CARE)
+                || place.getPlaceTypes().contains(Place.TYPE_LAUNDRY)
+                || place.getPlaceTypes().contains(Place.TYPE_OTHER)) {
             return;
+        } else if (place.getPlaceTypes().contains(Place.TYPE_BICYCLE_STORE)
+                || place.getPlaceTypes().contains(Place.TYPE_CLOTHING_STORE)
+                || place.getPlaceTypes().contains(Place.TYPE_CONVENIENCE_STORE)
+                || place.getPlaceTypes().contains(Place.TYPE_DEPARTMENT_STORE)
+                || place.getPlaceTypes().contains(Place.TYPE_FURNITURE_STORE)
+                || place.getPlaceTypes().contains(Place.TYPE_HOME_GOODS_STORE)
+                || place.getPlaceTypes().contains(Place.TYPE_JEWELRY_STORE)
+                || place.getPlaceTypes().contains(Place.TYPE_PET_STORE)
+                || place.getPlaceTypes().contains(Place.TYPE_SHOE_STORE)
+                || place.getPlaceTypes().contains(Place.TYPE_STORE)
+                || place.getPlaceTypes().contains(Place.TYPE_SHOPPING_MALL)
+                || place.getPlaceTypes().contains(Place.TYPE_BANK)
+                || place.getPlaceTypes().contains(Place.TYPE_ATM)
+                || place.getPlaceTypes().contains(Place.TYPE_CASINO)
+                || place.getPlaceTypes().contains(Place.TYPE_INSURANCE_AGENCY)
+                || place.getPlaceTypes().contains(Place.TYPE_GROCERY_OR_SUPERMARKET)
+                || place.getPlaceTypes().contains(Place.TYPE_ACCOUNTING)) {
+            // display money
+        } else if (place.getPlaceTypes().contains(Place.TYPE_MEAL_DELIVERY)
+                || place.getPlaceTypes().contains(Place.TYPE_MEAL_TAKEAWAY)
+                || place.getPlaceTypes().contains(Place.TYPE_BAKERY)
+                || place.getPlaceTypes().contains(Place.TYPE_BAR)
+                || place.getPlaceTypes().contains(Place.TYPE_RESTAURANT)
+                || place.getPlaceTypes().contains(Place.TYPE_CAFE)
+                || place.getPlaceTypes().contains(Place.TYPE_HOSPITAL)
+                || place.getPlaceTypes().contains(Place.TYPE_DENTIST)
+                || place.getPlaceTypes().contains(Place.TYPE_DOCTOR)
+                || place.getPlaceTypes().contains(Place.TYPE_PHARMACY)) {
+            // display HP recovery
+        } else if (place.getPlaceTypes().contains(Place.TYPE_ART_GALLERY)
+                || place.getPlaceTypes().contains(Place.TYPE_BOOK_STORE)
+                || place.getPlaceTypes().contains(Place.TYPE_LIBRARY)
+                || place.getPlaceTypes().contains(Place.TYPE_SCHOOL)
+                || place.getPlaceTypes().contains(Place.TYPE_MUSEUM)
+                || place.getPlaceTypes().contains(Place.TYPE_UNIVERSITY)) {
+            // display intelligence amount rise
+        } else if (place.getPlaceTypes().contains(Place.TYPE_ELECTRICIAN)
+                || place.getPlaceTypes().contains(Place.TYPE_ELECTRONICS_STORE)
+                || place.getPlaceTypes().contains(Place.TYPE_HARDWARE_STORE)) {
+            // display implant repair
+        } else if (place.getPlaceTypes().contains(Place.TYPE_CEMETERY)
+                || place.getPlaceTypes().contains(Place.TYPE_CHURCH)
+                || place.getPlaceTypes().contains(Place.TYPE_INSURANCE_AGENCY)
+                || place.getPlaceTypes().contains(Place.TYPE_HINDU_TEMPLE)
+                || place.getPlaceTypes().contains(Place.TYPE_MOSQUE)
+                || place.getPlaceTypes().contains(Place.TYPE_SYNAGOGUE)) {
+            // display immunity amount rise
+        } else if (place.getPlaceTypes().contains(Place.TYPE_GYM)
+                || place.getPlaceTypes().contains(Place.TYPE_STADIUM)) {
+            // display HP rise
+        } else {
+            // display only experience got
         }
 
         if (App.getPlacesManager().findPlaceByID(place.getId()) == null) {
 
             GamePlace place_inner = new GamePlace(
-                    place.getId().toString(),
+                    place.getId(),
                     place.getName().toString(),
                     place.getLatLng());
 
@@ -348,6 +410,8 @@ public class LocationManager implements LocationListener {
                 .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(profileId)))
                 .title(title)
                 .snippet(userJSONIdentifier));
+
+        Log.d(Constants.TAG, "Current location: " + Utils.latLngFromLocation(location));
 
         if (!isCameraFixed) {
             googleMap.animateCamera(
