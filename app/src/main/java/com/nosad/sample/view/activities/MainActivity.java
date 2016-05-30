@@ -35,6 +35,7 @@ import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.engine.managers.messaging.RegistrationIntentService;
+import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.entity.quest.CaptureQuest;
 import com.nosad.sample.entity.quest.CollectQuest;
@@ -43,6 +44,7 @@ import com.nosad.sample.entity.quest.Quest;
 import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
+import com.nosad.sample.view.Dialogs.PlacesInfoDialog;
 import com.nosad.sample.view.custom.SplitToolbar;
 import com.nosad.sample.view.fragments.GameMapFragment;
 import com.nosad.sample.view.fragments.MessagesFragment;
@@ -56,7 +58,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.OnRelocateMapListener {
     private FrameLayout container;
     private SplitToolbar toolbarBottom;
     private Toolbar toolbarTop;
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private String playerFragmentTag = PlayerFragment.class.getSimpleName();
     private String battlesFragmentTag = QuestsFragment.class.getSimpleName();
     private String gameMapFragmentTag = GameMapFragment.class.getSimpleName();
+    private PlacesInfoDialog mPlaceInfoDialog;
 
     private ArrayList<Fragment> allFragments = new ArrayList<>();
 
@@ -409,6 +412,8 @@ public class MainActivity extends AppCompatActivity {
         App.getLocalBroadcastManager().unregisterReceiver(
                 App.getLocationManager().getGoogleApiClientReceiver()
         );
+
+        App.getLocalBroadcastManager().unregisterReceiver(showPlaceInfoDialog);
     }
 
     @Override
@@ -435,6 +440,11 @@ public class MainActivity extends AppCompatActivity {
         );
 
         App.getGoogleApiHelper().connect();
+
+        App.getLocalBroadcastManager().registerReceiver(
+                showPlaceInfoDialog,
+                new IntentFilter(Constants.INTENT_FILTER_SHOW_PLACE_INFO_DIALOG)
+        );
     }
 
     /**
@@ -521,5 +531,46 @@ public class MainActivity extends AppCompatActivity {
         tvMentalityValue.setText(String.format(getResources().getString(R.string.mentality_value), user.getMentality()));
         tvExperienceValue.setText(String.format(getResources().getString(R.string.experience_value), user.getExperience()));
         tvLevelValue.setText(String.format(getResources().getString(R.string.level_value), user.getLevel()));
+    }
+
+    private BroadcastReceiver showPlaceInfoDialog = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Bundle extra = intent.getExtras();
+            try {
+                JSONObject objectInfo = new JSONObject(extra.getString(Constants.OBJECT_INFO_AS_JSON));
+
+                switch (objectInfo.getInt(Constants.OBJECT_TYPE_IDENTIFIER)) {
+                    case Constants.TYPE_PLACE: {
+
+                        boolean showRelocationButton = extra.getBoolean(PlacesInfoDialog.SHOW_RELOCATION_BUTTON, false);
+                        mPlaceInfoDialog = PlacesInfoDialog.newInstance(objectInfo.getString(Constants.PLACE_ID),
+                                showRelocationButton);
+                        FragmentManager fm = getSupportFragmentManager();
+                        mPlaceInfoDialog.show(fm, "placeInfoDialog");
+                        break;
+                    }
+
+                    default: {
+                        Log.d(Constants.TAG, "Unsupported object type: " + objectInfo.getInt(Constants.OBJECT_TYPE_IDENTIFIER) + " for displaying info dialog.");
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
+
+    @Override
+    public void OnRelocate(String placeID) {
+        if (mPlaceInfoDialog != null) {
+            mPlaceInfoDialog.dismiss();
+
+            toolbarBottom.findViewById(R.id.menu_map).performClick();
+            App.getLocationManager().showPlaceAtPosition(placeID);
+        }
     }
 }

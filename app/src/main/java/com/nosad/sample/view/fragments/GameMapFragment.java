@@ -115,11 +115,6 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
         });
 
         App.getLocalBroadcastManager().registerReceiver(
-                showPlaceInfoDialog,
-                new IntentFilter(Constants.INTENT_FILTER_SHOW_PLACE_INFO_DIALOG)
-        );
-
-        App.getLocalBroadcastManager().registerReceiver(
                 showPlaceActions,
                 new IntentFilter(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS)
         );
@@ -224,41 +219,9 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
         Log.v(Constants.TAG, this.toString() + " onPause()");
         super.onPause();
 
-        App.getLocalBroadcastManager().unregisterReceiver(showPlaceInfoDialog);
         App.getLocalBroadcastManager().unregisterReceiver(showPlaceActions);
         App.getLocalBroadcastManager().unregisterReceiver(hidePlaceActions);
     }
-
-    private BroadcastReceiver showPlaceInfoDialog = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            Bundle extra = intent.getExtras();
-            try {
-                JSONObject objectInfo = new JSONObject(extra.getString(Constants.OBJECT_INFO_AS_JSON));
-
-                switch (objectInfo.getInt(Constants.OBJECT_TYPE_IDENTIFIER)) {
-                    case Constants.TYPE_PLACE: {
-
-                        boolean showRelocationButton = extra.getBoolean(PlacesInfoDialog.SHOW_RELOCATION_BUTTON, false);
-                        PlacesInfoDialog placeInfoDialog = PlacesInfoDialog.newInstance(objectInfo.getString(Constants.PLACE_ID),
-                                showRelocationButton);
-                        FragmentManager fm = getFragmentManager();
-                        placeInfoDialog.show(fm, "placeInfoDialog");
-                        break;
-                    }
-
-                    default: {
-                        Log.d(Constants.TAG, "Unsupported object type: " + objectInfo.getInt(Constants.OBJECT_TYPE_IDENTIFIER) + " for displaying info dialog.");
-                    }
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-    };
 
     private BroadcastReceiver showPlaceActions = new BroadcastReceiver() {
         @Override

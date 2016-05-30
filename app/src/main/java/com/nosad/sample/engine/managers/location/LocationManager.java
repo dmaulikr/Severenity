@@ -59,7 +59,7 @@ public class LocationManager implements LocationListener {
     private GoogleApiClient googleApiClient;
     private float currentZoom = (Constants.MAX_ZOOM_LEVEL + Constants.MIN_ZOOM_LEVEL) / 2 + 1.0f;
 
-    private Marker currentUserMarker, otherUserMarker;
+    private Marker currentUserMarker, otherUserMarker, mTempUseresPlaceMarker;
 
     private GoogleMap googleMap;
     private LocationRequest locationRequest;
@@ -214,6 +214,9 @@ public class LocationManager implements LocationListener {
     public void resetCameraLocation() {
         fixCameraAtLocation(Utils.latLngFromLocation(currentLocation));
         isCameraFixed = false;
+        if (mTempUseresPlaceMarker != null) {
+            mTempUseresPlaceMarker.remove();
+        }
     }
 
     /**
@@ -340,7 +343,6 @@ public class LocationManager implements LocationListener {
                     place.getLatLng());
 
             App.getPlacesManager().addPlace(place_inner);
-            //App.getPlacesManager().addOwnerToPlace(place_inner.getPlaceID(), AccessToken.getCurrentAccessToken().getUserId());
 
             googleMap.addMarker(new MarkerOptions()
                     .position(place.getLatLng())
@@ -658,5 +660,28 @@ public class LocationManager implements LocationListener {
         mNorthEastPoint = Utils.getPositionInMeter(Utils.latLngFromLocation(currentLocation), 100, Constants.EN_DIRECTION);
 
         return currentLocation;
+    }
+
+    /**
+     * Adds temporary marker to the map and navigates to it.
+     * This marker will be deleted once user select map to relocate to it's
+     * current place,
+     *
+     * @param placeID  id of the place to be displayed.
+     */
+    public void showPlaceAtPosition(String placeID) {
+
+        GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
+        if (mTempUseresPlaceMarker != null) {
+            mTempUseresPlaceMarker.remove();
+        }
+
+        mTempUseresPlaceMarker = googleMap.addMarker(new MarkerOptions()
+                .position(place.getPlacePos())
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                .title(String.format("%s", place.getPlaceName()))
+                .snippet(place.getJSONPlaceInfo()));
+
+        fixCameraAtLocation(mTempUseresPlaceMarker.getPosition());
     }
 }

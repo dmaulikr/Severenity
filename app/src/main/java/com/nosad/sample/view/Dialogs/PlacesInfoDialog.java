@@ -1,5 +1,6 @@
 package com.nosad.sample.view.Dialogs;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -28,9 +29,14 @@ import java.util.ArrayList;
  */
 public class PlacesInfoDialog extends DialogFragment {
 
+    public static interface OnRelocateMapListener {
+        public abstract void OnRelocate(String placeID);
+    }
+
     public static final String SHOW_RELOCATION_BUTTON = "showRelocationButton";
 
     private InfoAdapter mInfoAdapter;
+    private OnRelocateMapListener mListener;
 
     public static PlacesInfoDialog newInstance(String placeID, boolean showRelocationButton) {
         PlacesInfoDialog frag = new PlacesInfoDialog();
@@ -39,6 +45,17 @@ public class PlacesInfoDialog extends DialogFragment {
         b.putBoolean(SHOW_RELOCATION_BUTTON, showRelocationButton);
         frag.setArguments(b);
         return frag;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            this.mListener = (OnRelocateMapListener)activity;
+        }
+        catch (final ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnRelocateMapListener");
+        }
     }
 
     private String getDialogCaption(int ownersCount, boolean currentUserOwner) {
@@ -65,7 +82,7 @@ public class PlacesInfoDialog extends DialogFragment {
 
     private boolean prepareViewForDisplaying(View view) {
 
-        String placeID = getArguments().getString(PlaceContract.DBPlaces.COLUMN_PLACE_ID);
+        final String placeID = getArguments().getString(PlaceContract.DBPlaces.COLUMN_PLACE_ID);
 
         GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
         if (place == null) {
@@ -108,7 +125,19 @@ public class PlacesInfoDialog extends DialogFragment {
 
         boolean showRelocationButton = getArguments().getBoolean(SHOW_RELOCATION_BUTTON, false);
         Button gotobutton = (Button)view.findViewById(R.id.showLocation);
-        gotobutton.setVisibility(showRelocationButton ? View.VISIBLE : View.GONE);
+        if (showRelocationButton) {
+
+            gotobutton.setVisibility(View.VISIBLE);
+            gotobutton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.OnRelocate(placeID);
+                }
+            });
+        }
+        else {
+            gotobutton.setVisibility(View.GONE);
+        }
 
         return true;
     }
