@@ -44,7 +44,7 @@ public class PlacesManager extends DataManager {
         return new GamePlace(strID, placeName, pos);
     }
 
-    private boolean findPlacesOwner(GamePlace place) {
+    private boolean findPlaceOwners(GamePlace place) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = null;
@@ -119,7 +119,7 @@ public class PlacesManager extends DataManager {
                 return null;
             }
 
-            findPlacesOwner(place);
+            findPlaceOwners(place);
 
             return place;
 
@@ -277,7 +277,7 @@ public class PlacesManager extends DataManager {
                     GamePlace place = placeFromCursor(cursor);
 
                     if (Utils.distanceBetweenLocations(currentLocation, place.getPlacePos()) < distance) {
-                        findPlacesOwner(place);
+                        findPlaceOwners(place);
                         places.add(place);
                     }
 
@@ -315,7 +315,7 @@ public class PlacesManager extends DataManager {
             if (cursor.moveToFirst()) {
                 do {
                     GamePlace place = placeFromCursor(cursor);
-                    findPlacesOwner(place);
+                    findPlaceOwners(place);
                     places.add(place);
 
                 } while (cursor.moveToNext());
@@ -364,4 +364,23 @@ public class PlacesManager extends DataManager {
             return;
         };
     }
+
+    public boolean deleteOwnership(String placeID, String ownerID) {
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = null;
+        try {
+
+            String where = COLUMN_PLACE_OWNER_ID + " = ? and " + COLUMN_PLACE_ID + " = ?";
+            String[] conditions = new String[]{ownerID, placeID};
+            return db.delete(TABLE_PLACES_OWNERS,
+                    where,
+                    conditions) == 0 ? false : true;
+
+        }catch (SQLException e){
+            Log.e(Constants.TAG, "PlacesManager: error querying request. " + e.getMessage());
+            return false;
+        }
+    };
 }
