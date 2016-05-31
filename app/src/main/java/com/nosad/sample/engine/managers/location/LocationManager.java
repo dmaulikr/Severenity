@@ -689,6 +689,8 @@ public class LocationManager implements LocationListener {
                 .title(String.format("%s", place.getPlaceName()))
                 .snippet(place.getJSONPlaceInfo()));
 
+        mTempUseresPlaceMarker.showInfoWindow();
+
         fixCameraAtLocation(mTempUseresPlaceMarker.getPosition());
 
         mIsUpdatingLocationProcessStoped = true;
