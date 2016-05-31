@@ -67,6 +67,7 @@ public class LocationManager implements LocationListener {
     public boolean requestingLocationUpdates = false;
     private boolean isSpellMode = false;
     private boolean isCameraFixed = false;
+    private boolean mIsUpdatingLocationProcessStoped = false;
     private Circle mViewCircle, mActionCircle;
     private LatLng mWestSouthPoint, mNorthEastPoint;
 
@@ -214,6 +215,7 @@ public class LocationManager implements LocationListener {
     public void resetCameraLocation() {
         fixCameraAtLocation(Utils.latLngFromLocation(currentLocation));
         isCameraFixed = false;
+        mIsUpdatingLocationProcessStoped = false;
         if (mTempUseresPlaceMarker != null) {
             mTempUseresPlaceMarker.remove();
         }
@@ -431,6 +433,11 @@ public class LocationManager implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         if (googleMap == null || location == null) {
+            return;
+        }
+
+        if (mIsUpdatingLocationProcessStoped) {
+            Toast.makeText(App.getInstance(), "Updating process paused.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -683,5 +690,7 @@ public class LocationManager implements LocationListener {
                 .snippet(place.getJSONPlaceInfo()));
 
         fixCameraAtLocation(mTempUseresPlaceMarker.getPosition());
+
+        mIsUpdatingLocationProcessStoped = true;
     }
 }
