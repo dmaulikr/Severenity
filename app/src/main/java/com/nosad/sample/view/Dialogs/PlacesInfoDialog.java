@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -143,13 +146,12 @@ public class PlacesInfoDialog extends DialogFragment {
     }
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_placeinfo, null);
-        adb.setView(prepareViewForDisplaying(view) ? view : null);
+        View view = inflater.inflate(R.layout.dialog_placeinfo, null);
+        prepareViewForDisplaying(view);
 
-        return adb.create();
+        return view;
     }
 
     private void executePhotoAndNameRequest(String id) {
