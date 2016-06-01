@@ -10,6 +10,7 @@ import android.util.Log;
 import android.util.LruCache;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,9 +18,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.nosad.sample.App;
 import com.nosad.sample.R;
+import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.utils.common.Constants;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -176,5 +180,82 @@ public class RestManager {
      */
     public boolean isConnected() {
         return wifiConnected || mobileConnected;
+    }
+
+    /**
+     * Sends API request to store place on the server DB.
+     *
+     * @param place - place to store on the server.
+     */
+    public void sendPlaceToServer(GamePlace place) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("placeId", place.getPlaceID());
+            data.put("name", place.getPlaceName());
+            data.put("lng", String.valueOf(place.getPlacePos().longitude));
+            data.put("lat", String.valueOf(place.getPlacePos().latitude));
+
+            App.getRestManager().createRequest(Constants.REST_API_PLACES, Request.Method.POST, data, new RequestCallback() {
+                @Override
+                public void onResponseCallback(JSONObject response) {
+                    if (response != null) {
+                        Log.d(Constants.TAG, response.toString());
+                    } else {
+                        Log.e(Constants.TAG, "Place add has null response.");
+                    }
+                }
+
+                @Override
+                public void onErrorCallback(NetworkResponse response) {
+                    if (response != null) {
+                        Log.e(Constants.TAG, response.toString());
+                    } else {
+                        Log.e(Constants.TAG, "Place add error has null response.");
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends API request to add owner to the list of owners for the place
+     *
+     * @param userId - user that should be added to owners.
+     * @param placeId - place captured.
+     */
+    public void sendPlaceOwnerToServer(String userId, String placeId) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("placeId", placeId);
+            data.put("action", Constants.PlaceAction.Capture.toString());
+
+            JSONObject dataObject = new JSONObject();
+            dataObject.put("userId", userId);
+            data.put("data", dataObject);
+
+            App.getRestManager().createRequest(Constants.REST_API_PLACES, Request.Method.PUT, data, new RequestCallback() {
+                @Override
+                public void onResponseCallback(JSONObject response) {
+                    if (response != null) {
+                        Log.d(Constants.TAG, response.toString());
+                    } else {
+                        Log.e(Constants.TAG, "Place owner update has null response.");
+                    }
+                }
+
+                @Override
+                public void onErrorCallback(NetworkResponse response) {
+                    if (response != null) {
+                        Log.e(Constants.TAG, response.toString());
+                    } else {
+                        Log.e(Constants.TAG, "Place owner update error has null response.");
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

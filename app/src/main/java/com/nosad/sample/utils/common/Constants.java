@@ -25,6 +25,22 @@ public class Constants {
         }
     }
 
+    public enum PlaceAction {
+        Capture("capture"),
+        Remove("remove");
+
+        final String value;
+
+        PlaceAction(final String value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+
     public final static String TAG = "SAMPLE";
 
     public static final String GCM_SENDER_ID = "967925944048";
@@ -75,7 +91,6 @@ public class Constants {
 
     public final static String HOST =  "https://severenity.herokuapp.com";
 //    public final static String HOST =  "http://localhost:8080";
-    private final static String API_ADDRESS = HOST + "/api";
 
     public final static int CONNECTION_READ_TIMEOUT = 10000; // milliseconds
     public final static int CONNECTION_CONNECT_TIMEOUT = 15000; // milliseconds
@@ -89,6 +104,8 @@ public class Constants {
     public static String REST_API_USERS = HOST + "/users";
     public static String REST_API_DEVICES = HOST + "/devices";
     public static String REST_API_SEND = HOST + "/send";
+    public static String REST_API_PLACES = HOST + "/places";
+    public static String REST_API_PLACES_ALL = HOST + "/places/all";
 
     /**
      * Exception constants
@@ -105,7 +122,7 @@ public class Constants {
      * Notification messages
      */
     public static String NOTIFICATION_MSG_NEW_QUEST = "New quest received! Accept the challenge?";
-    public static String NOTIFICATION_MSG_LEVEL_UP = "Greetings! You have reached level ";
+    public static String NOTIFICATION_MSG_LEVEL_UP = "Greetings! You have reached level";
 
     /**
      * Gameplay constants

@@ -8,11 +8,18 @@ import android.database.SQLException;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 import com.nosad.sample.App;
+import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -197,6 +204,7 @@ public class PlacesManager extends DataManager {
             db.close();
         }
 
+        App.getRestManager().sendPlaceToServer(place);
         return true;
     }
 
@@ -236,6 +244,8 @@ public class PlacesManager extends DataManager {
         }
 
         place.addOwner(ownerID);
+
+        App.getRestManager().sendPlaceOwnerToServer(ownerID, place.getPlaceID());
         return place;
     }
 
