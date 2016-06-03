@@ -61,7 +61,7 @@ public class ProfileFragment extends Fragment {
         });
 
         mPlacesList = (ListView)view.findViewById(R.id.listOwnPlaces);
-        InfoAdapter infoAdapter = new InfoAdapter(getContext(), InfoAdapter.USER_INFO);
+        InfoAdapter infoAdapter = new InfoAdapter(getContext(), InfoAdapter.USER_INFO, false);
 
         ArrayList<GamePlace> places = App.getPlacesManager().findPlacesByOwner(App.getUserManager().getCurrentUser().getId());
         for (GamePlace gp: places) {

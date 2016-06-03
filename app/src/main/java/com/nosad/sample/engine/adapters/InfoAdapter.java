@@ -29,6 +29,7 @@ public class InfoAdapter extends BaseAdapter {
     // identifiers for the adapter
     public static final int PLACE_INFO = 0;
     public static final int USER_INFO  = 1;
+    public static final String INDEX   = "Index";
 
     static public class InfoData {
         public String dataID;
@@ -38,11 +39,13 @@ public class InfoAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<InfoData> mData;
     private int mAdapterIdentifier;
+    private boolean mObjectWithinActionView;
 
-    public InfoAdapter(Context ctx, int identifier) {
+    public InfoAdapter(Context ctx, int identifier, boolean objectWithinActionView) {
         mContext = ctx;
         mData = new ArrayList<>();
         mAdapterIdentifier = identifier;
+        mObjectWithinActionView = objectWithinActionView;
     }
 
     @Override
@@ -64,10 +67,12 @@ public class InfoAdapter extends BaseAdapter {
         mData.add(data);
     }
 
+    public void removeItem(int position) {mData.remove(position);};
+
     public void setData(ArrayList<InfoData> data) {mData = data; }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View listItemView = convertView;
         if (listItemView == null) {
@@ -91,13 +96,29 @@ public class InfoAdapter extends BaseAdapter {
         switch (mAdapterIdentifier) {
             case PLACE_INFO: {
 
-                InfoData userData = getItem(position);
+                final InfoData placeData = getItem(position);
 
                 ImageView userProfilePicture = (ImageView)listItemView.findViewById(R.id.userAvatar);
-                Picasso.with(mContext).load("https://graph.facebook.com/" + userData.dataID + "/picture?type=normal").into(userProfilePicture);
+                Picasso.with(mContext).load("https://graph.facebook.com/" + placeData.dataID + "/picture?type=normal").into(userProfilePicture);
 
                 TextView userName = (TextView)listItemView.findViewById(R.id.ownerUserName);
-                userName.setText(userData.dataString);
+                userName.setText(placeData.dataString);
+
+                if (mObjectWithinActionView) {
+                    ImageView delete = (ImageView)listItemView.findViewById(R.id.deleteIcon);
+                    delete.setVisibility(View.VISIBLE);
+                    delete.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+
+                            Intent intent = new Intent(Constants.INTENT_FILTER_DELETE_OWNER);
+                            intent.putExtra(Constants.USER_ID, placeData.dataID);
+                            intent.putExtra(INDEX, position);
+                            App.getLocalBroadcastManager().sendBroadcast(intent);
+                        }
+                    });
+                }
 
                 break;
             }

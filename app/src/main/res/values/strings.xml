@@ -103,8 +103,6 @@
     <string name="menu_delete">Delete</string>
 
     <string name="owners_list">Owners list:</string>
-    <string name="owner_current_user">You</string>
-    <string name="owner_and">and</string>
     <string name="other_owners">%1$d</string>
     <string name="owner_singular">user</string>
     <string name="owner_plural">users</string>

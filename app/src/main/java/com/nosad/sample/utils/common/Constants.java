@@ -55,6 +55,7 @@ public class Constants {
     public static final String INTENT_FILTER_SHOW_PLACE_INFO_DIALOG = "com.nosad.sample.showplaceinfodialog";
     public static final String INTENT_FILTER_SHOW_PLACE_ACTIONS = "com.nosad.sample.showplaceactions";
     public static final String INTENT_FILTER_HIDE_PLACE_ACTIONS = "com.nosad.sample.hideplaceactions";
+    public static final String INTENT_FILTER_DELETE_OWNER = "com.nosad.sample.deleteowner";
 
     public static final String INTENT_EXTRA_DEVICE_ID = "DEVICE_ID";
     public static final String INTENT_EXTRA_DEVICE_NAME = "DEVICE_NAME";

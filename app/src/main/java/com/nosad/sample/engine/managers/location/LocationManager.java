@@ -260,6 +260,7 @@ public class LocationManager implements LocationListener {
                 .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
                 .title(user.getName())
                 .snippet(user.getJSONUserInfo()));
+
     }
 
     public void displayPlaceMarker(Place place) {
@@ -437,6 +438,7 @@ public class LocationManager implements LocationListener {
         }
 
         if (mIsUpdatingLocationProcessStoped) {
+            currentLocation = location;
             Toast.makeText(App.getInstance(), "Updating process paused.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -616,9 +618,12 @@ public class LocationManager implements LocationListener {
 
         for (GamePlace pl : place_inner) {
 
+            String currentUserID = App.getUserManager().getCurrentUser().getId();
+            float placeIconColor = pl.hasOwner(currentUserID) == true ? BitmapDescriptorFactory.HUE_YELLOW : BitmapDescriptorFactory.HUE_RED;
+
             googleMap.addMarker(new MarkerOptions()
                     .position(pl.getPlacePos())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                    .icon(BitmapDescriptorFactory.defaultMarker(placeIconColor))
                     .title(String.format("%s", pl.getPlaceName()))
                     .snippet(pl.getJSONPlaceInfo()));
         }

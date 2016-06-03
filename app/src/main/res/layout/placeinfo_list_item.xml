@@ -20,6 +20,18 @@
         android:layout_alignParentBottom="false"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
-        android:layout_toRightOf="@+id/userAvatar" />
+        android:layout_toRightOf="@+id/userAvatar"
+        android:layout_marginRight="5dp" />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/deleteIcon"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:src="@drawable/delete"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp" />
 
 </RelativeLayout>

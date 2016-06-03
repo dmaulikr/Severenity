@@ -1,8 +1,10 @@
 package com.nosad.sample.view.Dialogs;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -15,12 +17,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.GraphResponse;
+import com.google.android.gms.maps.model.LatLng;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.InfoAdapter;
 import com.nosad.sample.entity.GamePlace;
+import com.nosad.sample.entity.User;
 import com.nosad.sample.entity.contracts.PlaceContract;
 import com.nosad.sample.utils.FacebookUtils;
+import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 
 import org.json.JSONObject;
@@ -32,14 +37,16 @@ import java.util.ArrayList;
  */
 public class PlacesInfoDialog extends DialogFragment {
 
-    public static interface OnRelocateMapListener {
-        public abstract void OnRelocate(String placeID);
+    public interface OnRelocateMapListener {
+         void OnRelocate(String placeID);
     }
 
     public static final String SHOW_RELOCATION_BUTTON = "showRelocationButton";
 
     private InfoAdapter mInfoAdapter;
     private OnRelocateMapListener mListener;
+    private String mPlaceID;
+    private TextView mCaptionView;
 
     public static PlacesInfoDialog newInstance(String placeID, boolean showRelocationButton) {
         PlacesInfoDialog frag = new PlacesInfoDialog();
@@ -49,6 +56,19 @@ public class PlacesInfoDialog extends DialogFragment {
         frag.setArguments(b);
         return frag;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        App.getLocalBroadcastManager().registerReceiver(onDeleteOwner, new IntentFilter(Constants.INTENT_FILTER_DELETE_OWNER));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        App.getLocalBroadcastManager().unregisterReceiver(onDeleteOwner);
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -61,70 +81,57 @@ public class PlacesInfoDialog extends DialogFragment {
         }
     }
 
-    private String getDialogCaption(int ownersCount, boolean currentUserOwner) {
+    private String getDialogCaption(int ownersCount) {
 
-        String caption = "";
         if (ownersCount == 0) {
 
-            if (currentUserOwner) {
-                caption = getResources().getString(R.string.owner_current_user);
-            }
-            else {
-                caption = getResources().getString(R.string.owners_none);
-            }
-
+            return getResources().getString(R.string.owners_none);
         } else {
 
-            caption = (currentUserOwner ? (getResources().getString(R.string.owner_current_user) + " " + getResources().getString(R.string.owner_and)) : "")
-                    + " " + String.format(getResources().getString(R.string.other_owners), ownersCount)
-                    + " " + (ownersCount == 1 ? getResources().getString(R.string.owner_singular) : getResources().getString(R.string.owner_plural));
+            return  String.format(getResources().getString(R.string.other_owners), ownersCount)
+                    + " " + (ownersCount == 1 ? getResources().getString(R.string.owner_singular) : getResources().getString(R.string.owner_plural))
+                    + " " + getResources().getString(R.string.owner_own_this_place);
         }
-
-        return caption + " " + getResources().getString(R.string.owner_own_this_place);
     }
 
     private boolean prepareViewForDisplaying(View view) {
 
-        final String placeID = getArguments().getString(PlaceContract.DBPlaces.COLUMN_PLACE_ID);
+        mPlaceID = getArguments().getString(PlaceContract.DBPlaces.COLUMN_PLACE_ID);
 
-        GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
+        GamePlace place = App.getPlacesManager().findPlaceByID(mPlaceID);
         if (place == null) {
             return false;
         }
 
-        // TODO: AF: temporary add users as owners. Remove this afterwards
-        place.addOwner("1245689");
-        place.addOwner("1245691");
-        place.addOwner("1245692");
-        place.addOwner("1245697");
-        place.addOwner("1245698");
-        place.addOwner("1245700");
-        place.addOwner("1245702");
-        place.addOwner("1245703");
-        place.addOwner("1245704");
-        place.addOwner("1245707");
-        place.addOwner("1245708");
+        User currentUser = App.getUserManager().getCurrentUser();
+        if (currentUser == null) {
+            Log.e(Constants.TAG, "was not able to get current user.");
+            return false;
+        }
 
+        ArrayList<String> owners = place.getOwners("");
 
-        String currentUserID = App.getUserManager().getCurrentUser().getId();
-        boolean currentUserOwnThisPlace = place.hasOwner(currentUserID);
-        ArrayList<String> owners = place.getOwners(currentUserOwnThisPlace ? currentUserID : "");
+        int ownersCount = (owners != null) ? owners.size() : 0;
 
-        TextView captionView = (TextView)view.findViewById(R.id.placeInfoOwnersInfo);
-        captionView.setText(getDialogCaption(owners.size(), currentUserOwnThisPlace));
+        mCaptionView = (TextView)view.findViewById(R.id.placeInfoOwnersInfo);
+        mCaptionView.setText(getDialogCaption(ownersCount));
 
-        if (owners.size() == 0) {
+        if (ownersCount == 0) {
             ListView ownersList = (ListView) view.findViewById(R.id.ownersList);
             ownersList.setVisibility(View.GONE);
         }
+        else {
+            for (String owner: owners) {
+                executePhotoAndNameRequest(owner);
+            }
+        }
 
-        mInfoAdapter = new InfoAdapter(getContext(), InfoAdapter.PLACE_INFO);
+        LatLng currentPos = Utils.latLngFromLocation(App.getLocationManager().getCurrentLocation());
+        boolean isPlaceWithinUsersActionView = (Utils.distanceBetweenLocations(currentPos, place.getPlacePos()) <= currentUser.getActionRadius());
+
+        mInfoAdapter = new InfoAdapter(getContext(), InfoAdapter.PLACE_INFO, isPlaceWithinUsersActionView);
         ListView ownersList = (ListView)view.findViewById(R.id.ownersList);
         ownersList.setAdapter(mInfoAdapter);
-
-        for (String owner: owners) {
-            executePhotoAndNameRequest(owner);
-        }
 
         boolean showRelocationButton = getArguments().getBoolean(SHOW_RELOCATION_BUTTON, false);
         Button gotobutton = (Button)view.findViewById(R.id.showLocation);
@@ -134,7 +141,7 @@ public class PlacesInfoDialog extends DialogFragment {
             gotobutton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.OnRelocate(placeID);
+                    mListener.OnRelocate(mPlaceID);
                 }
             });
         }
@@ -163,7 +170,7 @@ public class PlacesInfoDialog extends DialogFragment {
                         JSONObject data = response.getJSONObject();
                         if (data.has("name") && data.has("id")) {
                             InfoAdapter.InfoData infoData = new InfoAdapter.InfoData();
-                            infoData.dataID         = data.getString("id");
+                            infoData.dataID = data.getString("id");
                             infoData.dataString = data.getString("name");
 
                             mInfoAdapter.addItem(infoData);
@@ -178,4 +185,24 @@ public class PlacesInfoDialog extends DialogFragment {
             }
         });
     }
+
+    private BroadcastReceiver onDeleteOwner = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle extra = intent.getExtras();
+            int itemIndex = extra.getInt(InfoAdapter.INDEX, -1);
+            String ownerID = extra.getString(Constants.USER_ID);
+
+            if (itemIndex != -1) {
+                mInfoAdapter.removeItem(itemIndex);
+                mInfoAdapter.notifyDataSetChanged();
+                App.getPlacesManager().deleteOwnership(mPlaceID, ownerID);
+
+                if (mCaptionView != null) {
+                    mCaptionView.setText(getDialogCaption(mInfoAdapter.getCount()));
+                }
+            }
+        }
+    };
 }
