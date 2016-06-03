@@ -65,9 +65,8 @@ public class LocationManager implements LocationListener {
     private LocationRequest locationRequest;
 
     public boolean requestingLocationUpdates = false;
-    private boolean isSpellMode = false;
     private boolean isCameraFixed = false;
-    private boolean mIsUpdatingLocationProcessStoped = false;
+    private boolean mIsUpdatingLocationProcessStopped = false;
     private Circle mViewCircle, mActionCircle;
     private LatLng mWestSouthPoint, mNorthEastPoint;
 
@@ -215,7 +214,7 @@ public class LocationManager implements LocationListener {
     public void resetCameraLocation() {
         fixCameraAtLocation(Utils.latLngFromLocation(currentLocation));
         isCameraFixed = false;
-        mIsUpdatingLocationProcessStoped = false;
+        mIsUpdatingLocationProcessStopped = false;
         if (mTempUseresPlaceMarker != null) {
             mTempUseresPlaceMarker.remove();
         }
@@ -437,7 +436,7 @@ public class LocationManager implements LocationListener {
             return;
         }
 
-        if (mIsUpdatingLocationProcessStoped) {
+        if (mIsUpdatingLocationProcessStopped) {
             currentLocation = location;
             Toast.makeText(App.getInstance(), "Updating process paused.", Toast.LENGTH_SHORT).show();
             return;
@@ -698,6 +697,6 @@ public class LocationManager implements LocationListener {
 
         fixCameraAtLocation(mTempUseresPlaceMarker.getPosition());
 
-        mIsUpdatingLocationProcessStoped = true;
+        mIsUpdatingLocationProcessStopped = true;
     }
 }

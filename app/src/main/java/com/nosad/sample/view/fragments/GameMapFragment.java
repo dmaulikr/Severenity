@@ -145,7 +145,7 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerMap);
 
         mPlaceActions = (LinearLayout)view.findViewById(R.id.placeActions);
-        ((Button)mPlaceActions.findViewById(R.id.captureButton)).setOnClickListener(this);
+        mPlaceActions.findViewById(R.id.captureButton).setOnClickListener(this);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(
                 activity, drawerLayout, activity.getToolbarTop(),

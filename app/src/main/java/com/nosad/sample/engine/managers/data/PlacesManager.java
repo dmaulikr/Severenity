@@ -54,7 +54,7 @@ public class PlacesManager extends DataManager {
     private boolean findPlaceOwners(GamePlace place) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = null;
+        Cursor cursor;
 
         // find if place has owners
         try {
@@ -68,8 +68,7 @@ public class PlacesManager extends DataManager {
             if (cursor.moveToFirst()) {
                 do {
                     place.addOwner(cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_OWNER_ID)));
-                }
-                while (cursor.moveToNext());
+                } while (cursor.moveToNext());
             }
 
             cursor.close();
@@ -87,7 +86,7 @@ public class PlacesManager extends DataManager {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = null;
+        Cursor cursor;
         try {
             cursor = db.query(
                     TABLE_PLACES,
@@ -119,7 +118,6 @@ public class PlacesManager extends DataManager {
             }
 
             cursor.close();
-            cursor = null;
             db.close();
 
             if (place == null) {
@@ -139,7 +137,7 @@ public class PlacesManager extends DataManager {
     public ArrayList<GamePlace> findPlacesByOwner(String ownerID) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = null;
+        Cursor cursor;
 
         // find if place has owners
         try {
@@ -263,7 +261,7 @@ public class PlacesManager extends DataManager {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = null;
+        Cursor cursor;
         try {
 
             String condition = "((" + COLUMN_PLACE_LAT + " > ? AND " + COLUMN_PLACE_LAT + " < ? ) AND ( " +
@@ -309,7 +307,7 @@ public class PlacesManager extends DataManager {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = null;
+        Cursor cursor;
         try {
 
             cursor = db.query(TABLE_PLACES,
@@ -345,7 +343,7 @@ public class PlacesManager extends DataManager {
     public void dumpPlaces() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = null;
+        Cursor cursor;
         try {
 
             String table = TABLE_PLACES_OWNERS+ " left join " + TABLE_PLACES  + " on " + TABLE_PLACES + "." + COLUMN_PLACE_ID + " = " + TABLE_PLACES_OWNERS + "." + COLUMN_PLACE_ID;
@@ -353,7 +351,7 @@ public class PlacesManager extends DataManager {
 
             Log.d(Constants.TAG, "Records: " + Integer.toString(cursor.getCount()));
 
-            Toast.makeText(App.getInstance().getApplicationContext(), Integer.toString(cursor.getCount()).toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.getInstance().getApplicationContext(), Integer.toString(cursor.getCount()), Toast.LENGTH_SHORT).show();
 
             String str;
             if (cursor.moveToFirst()) {
@@ -369,24 +367,21 @@ public class PlacesManager extends DataManager {
             cursor.close();
             db.close();
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.e(Constants.TAG, "PlacesManager: error querying request. " + e.getMessage());
             return;
-        };
+        }
     }
 
     public boolean deleteOwnership(String placeID, String ownerID) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = null;
         try {
 
             String where = COLUMN_PLACE_OWNER_ID + " = ? and " + COLUMN_PLACE_ID + " = ?";
             String[] conditions = new String[]{ownerID, placeID};
-            return db.delete(TABLE_PLACES_OWNERS,
-                    where,
-                    conditions) == 0 ? false : true;
+            return db.delete(TABLE_PLACES_OWNERS, where, conditions) != 0;
 
         }catch (SQLException e){
             Log.e(Constants.TAG, "PlacesManager: error querying request. " + e.getMessage());
