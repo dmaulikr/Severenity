@@ -25,6 +25,7 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
@@ -39,6 +40,8 @@ import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.engine.managers.messaging.RegistrationIntentService;
 import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.engine.network.RestManager;
+import com.nosad.sample.entity.User;
+import com.nosad.sample.utils.FacebookUtils;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 
@@ -220,15 +223,35 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponseCallback(JSONObject response) {
                     try {
-                        JSONArray devices = response.getJSONArray("devices");
-                        String userId = response.getString("userId");
+                        String result = response.getString("result");
 
-                        // If device was not registered to the user - start registration service
-                        if (devices.length() == 0) {
-                            startDeviceRegistrationService(userId);
-                        } else {
-                            isAuthorizing = false;
-                            startActivity(mMainActivityIntent);
+                        switch (result) {
+                            case "success":
+                                JSONObject userObject = response.getJSONObject("user");
+                                JSONArray devices = userObject.getJSONArray("devices");
+                                String userId = userObject.getString("userId");
+
+                                // If device was not registered to the user - start registration service
+                                if (devices.length() == 0) {
+                                    startDeviceRegistrationService(userId);
+                                } else {
+                                    isAuthorizing = false;
+                                    startActivity(mMainActivityIntent);
+                                }
+                                break;
+                            case "continue":
+                                if (response.getInt("reason") == 1) {
+                                    createUser();
+                                } else {
+                                    Log.e(Constants.TAG, "Unknown reason value.");
+                                }
+                                break;
+                            case "error":
+                                Log.e(Constants.TAG, "Error handling is not implemented yet.");
+                                break;
+                            default:
+                                Log.e(Constants.TAG, "Unknown result value.");
+                                break;
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -241,6 +264,45 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void createUser() {
+        FacebookUtils.getFacebookUserById(AccessToken.getCurrentAccessToken().getUserId(), "id,name,email", new FacebookUtils.Callback() {
+            @Override
+            public void onResponse(GraphResponse response) {
+                User user = new User();
+                user.setId(AccessToken.getCurrentAccessToken().getUserId());
+                try {
+                    JSONObject data = response.getJSONObject();
+                    if (data.has("name") && data.has("id") && data.has("email")) {
+                        user.setEmail(data.getString("email"));
+                        user.setName(data.getString("name"));
+
+                        App.getRestManager().createUser(user, new RequestCallback() {
+                            @Override
+                            public void onResponseCallback(JSONObject response) {
+                                if (response != null) {
+                                    Log.d(Constants.TAG, response.toString());
+                                } else {
+                                    Log.e(Constants.TAG, "User create has null response.");
+                                }
+                            }
+
+                            @Override
+                            public void onErrorCallback(NetworkResponse response) {
+                                if (response != null) {
+                                    Log.e(Constants.TAG, response.toString());
+                                } else {
+                                    Log.e(Constants.TAG, "User create error has null response.");
+                                }
+                            }
+                        });
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**

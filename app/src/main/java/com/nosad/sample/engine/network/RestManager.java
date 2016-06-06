@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.entity.GamePlace;
+import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
 
 import org.json.JSONArray;
@@ -285,5 +286,24 @@ public class RestManager {
         }
 
         return null;
+    }
+
+    /**
+     * Sends a request to create a speicified {@link User} on the server.
+     *
+     * @param user - user to create on the server.
+     * @param callback - callback to execute with response.
+     */
+    public void createUser(User user, RequestCallback callback) {
+        JSONObject userObject = new JSONObject();
+        try {
+            userObject.put("id", user.getId());
+            userObject.put("name", user.getName());
+            userObject.put("email", user.getEmail());
+
+            App.getRestManager().createRequest(Constants.REST_API_CREATE_USER, Request.Method.POST, userObject, callback);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

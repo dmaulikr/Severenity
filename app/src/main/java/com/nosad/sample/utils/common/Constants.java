@@ -104,6 +104,7 @@ public class Constants {
      * RESTful APIs constants
      */
     public static String REST_API_USERS = HOST + "/users";
+    public static String REST_API_CREATE_USER = HOST + "/users/create";
     public static String REST_API_DEVICES = "/devices";
     public static String REST_API_SEND = HOST + "/send";
     public static String REST_API_PLACES = HOST + "/places";
