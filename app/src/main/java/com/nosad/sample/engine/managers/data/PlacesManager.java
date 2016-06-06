@@ -202,7 +202,25 @@ public class PlacesManager extends DataManager {
             db.close();
         }
 
-        App.getRestManager().sendPlaceToServer(place);
+        App.getRestManager().sendPlaceToServer(place, new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
+                if (response != null) {
+                    Log.d(Constants.TAG, response.toString());
+                } else {
+                    Log.e(Constants.TAG, "Place add has null response.");
+                }
+            }
+
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+                if (response != null) {
+                    Log.e(Constants.TAG, response.toString());
+                } else {
+                    Log.e(Constants.TAG, "Place add error has null response.");
+                }
+            }
+        });
         return true;
     }
 
@@ -243,7 +261,26 @@ public class PlacesManager extends DataManager {
 
         place.addOwner(ownerID);
 
-        App.getRestManager().sendPlaceOwnerToServer(ownerID, place.getPlaceID());
+        App.getRestManager().sendPlaceOwnerToServer(ownerID, place.getPlaceID(), new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
+                if (response != null) {
+                    Log.d(Constants.TAG, response.toString());
+                } else {
+                    Log.e(Constants.TAG, "Place owner update has null response.");
+                }
+            }
+
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+                if (response != null) {
+                    Log.e(Constants.TAG, response.toString());
+                } else {
+                    Log.e(Constants.TAG, "Place owner update error has null response.");
+                }
+            }
+        });
+
         return place;
     }
 

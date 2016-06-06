@@ -23,6 +23,7 @@ import com.nosad.sample.R;
 import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.utils.common.Constants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -187,7 +188,7 @@ public class RestManager {
      *
      * @param place - place to store on the server.
      */
-    public void sendPlaceToServer(GamePlace place) {
+    public void sendPlaceToServer(GamePlace place, RequestCallback callback) {
         JSONObject data = new JSONObject();
         try {
             data.put("placeId", place.getPlaceID());
@@ -195,25 +196,7 @@ public class RestManager {
             data.put("lng", String.valueOf(place.getPlacePos().longitude));
             data.put("lat", String.valueOf(place.getPlacePos().latitude));
 
-            App.getRestManager().createRequest(Constants.REST_API_PLACES, Request.Method.POST, data, new RequestCallback() {
-                @Override
-                public void onResponseCallback(JSONObject response) {
-                    if (response != null) {
-                        Log.d(Constants.TAG, response.toString());
-                    } else {
-                        Log.e(Constants.TAG, "Place add has null response.");
-                    }
-                }
-
-                @Override
-                public void onErrorCallback(NetworkResponse response) {
-                    if (response != null) {
-                        Log.e(Constants.TAG, response.toString());
-                    } else {
-                        Log.e(Constants.TAG, "Place add error has null response.");
-                    }
-                }
-            });
+            App.getRestManager().createRequest(Constants.REST_API_PLACES, Request.Method.POST, data, callback);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -225,7 +208,7 @@ public class RestManager {
      * @param userId - user that should be added to owners.
      * @param placeId - place captured.
      */
-    public void sendPlaceOwnerToServer(String userId, String placeId) {
+    public void sendPlaceOwnerToServer(String userId, String placeId, RequestCallback callback) {
         JSONObject data = new JSONObject();
         try {
             data.put("placeId", placeId);
@@ -235,25 +218,32 @@ public class RestManager {
             dataObject.put("userId", userId);
             data.put("data", dataObject);
 
-            App.getRestManager().createRequest(Constants.REST_API_PLACES, Request.Method.PUT, data, new RequestCallback() {
-                @Override
-                public void onResponseCallback(JSONObject response) {
-                    if (response != null) {
-                        Log.d(Constants.TAG, response.toString());
-                    } else {
-                        Log.e(Constants.TAG, "Place owner update has null response.");
-                    }
-                }
+            App.getRestManager().createRequest(Constants.REST_API_PLACES, Request.Method.PUT, data, callback);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
-                @Override
-                public void onErrorCallback(NetworkResponse response) {
-                    if (response != null) {
-                        Log.e(Constants.TAG, response.toString());
-                    } else {
-                        Log.e(Constants.TAG, "Place owner update error has null response.");
-                    }
-                }
-            });
+    /**
+     * Retrieves user from the server.
+     *
+     * @param userId - id of the user to retrieve
+     */
+    public void getUser(String userId, RequestCallback callback) {
+        createRequest(Constants.REST_API_USERS + "/" + userId, Request.Method.GET, null, callback);
+    }
+
+    /**
+     * Authorize user against the server.
+     * If user does not exist - server will create a new one with Facebook ID provided.
+     *
+     * @param userId - id of the user to authorize or create.
+     */
+    public void authorizeUser(String userId, RequestCallback callback) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("userId", userId);
+            createRequest(Constants.REST_API_USERS, Request.Method.POST, data, callback);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.facebook.AccessToken;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.nosad.sample.App;
@@ -35,11 +36,12 @@ public class RegistrationIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String deviceId = intent.getStringExtra(Constants.INTENT_EXTRA_DEVICE_ID);
         String deviceName = intent.getStringExtra(Constants.INTENT_EXTRA_DEVICE_NAME);
+        String userId = intent.getStringExtra(Constants.INTENT_EXTRA_USER_ID);
 
         try {
             InstanceID instanceID = InstanceID.getInstance(this);
             String registrationId = instanceID.getToken(getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-            registerDevice(deviceName, deviceId, registrationId);
+            registerDevice(userId, deviceName, deviceId, registrationId);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,11 +53,12 @@ public class RegistrationIntentService extends IntentService {
      * with according message.
      * Otherwise error response is returned with appropriate message.
      *
-     * @param deviceName - name of the registered device
-     * @param deviceId - IMEI of the device
-     * @param registrationId - registration id of the device
+     * @param userId - id of the user to register device to.
+     * @param deviceName - name of the registered device.
+     * @param deviceId - IMEI of the device.
+     * @param registrationId - registration id of the device.
      */
-    private void registerDevice(String deviceName, String deviceId, String registrationId) {
+    private void registerDevice(String userId, String deviceName, String deviceId, String registrationId) {
         JSONObject device = new JSONObject();
         try {
             device.put("deviceId", deviceId);
@@ -65,13 +68,17 @@ public class RegistrationIntentService extends IntentService {
             e.printStackTrace();
         }
 
-        App.getRestManager().createRequest(Constants.REST_API_DEVICES, Request.Method.POST, device, new RequestCallback() {
+        App.getRestManager().createRequest(Constants.REST_API_USERS + "/" + userId + Constants.REST_API_DEVICES, Request.Method.POST, device, new RequestCallback() {
             @Override
             public void onResponseCallback(JSONObject response) {
                 try {
                     Intent intent = new Intent(GCMManager.REGISTRATION_PROCESS);
                     intent.putExtra("result", response.getString("result"));
-                    intent.putExtra("message", response.getString("message"));
+
+                    // TODO: Oleg add user data send in intent
+                    JSONObject user = response.getJSONObject("data").getJSONObject("user");
+                    Log.d(Constants.TAG, "User registered: " + user.toString());
+
                     App.getLocalBroadcastManager().sendBroadcast(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();

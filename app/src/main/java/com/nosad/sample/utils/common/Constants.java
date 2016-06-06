@@ -57,6 +57,7 @@ public class Constants {
     public static final String INTENT_FILTER_HIDE_PLACE_ACTIONS = "com.nosad.sample.hideplaceactions";
     public static final String INTENT_FILTER_DELETE_OWNER = "com.nosad.sample.deleteowner";
 
+    public static final String INTENT_EXTRA_USER_ID = "USER_ID";
     public static final String INTENT_EXTRA_DEVICE_ID = "DEVICE_ID";
     public static final String INTENT_EXTRA_DEVICE_NAME = "DEVICE_NAME";
 
@@ -103,7 +104,7 @@ public class Constants {
      * RESTful APIs constants
      */
     public static String REST_API_USERS = HOST + "/users";
-    public static String REST_API_DEVICES = HOST + "/devices";
+    public static String REST_API_DEVICES = "/devices";
     public static String REST_API_SEND = HOST + "/send";
     public static String REST_API_PLACES = HOST + "/places";
     public static String REST_API_PLACES_ALL = HOST + "/places/all";

@@ -29,7 +29,6 @@ import com.facebook.login.widget.ProfilePictureView;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
-import com.nosad.sample.engine.managers.messaging.RegistrationIntentService;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.entity.quest.CaptureQuest;
 import com.nosad.sample.entity.quest.CollectQuest;
@@ -88,13 +87,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
         toolbarBottom.findViewById(R.id.menu_map).performClick();
 
-        // If device was not registered - start registration service
-        if (!App.getInstance().isCurrentDeviceRegistered()) {
-            startDeviceRegistrationService();
-        }
-
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(GCMManager.REGISTRATION_PROCESS);
         intentFilter.addAction(GCMManager.MESSAGE_RECEIVED);
         intentFilter.addAction(GCMManager.QUEST_RECEIVED);
         App.getLocalBroadcastManager().registerReceiver(gcmMessageReceiver, intentFilter);
@@ -167,16 +160,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         }
 
         return quest;
-    }
-
-    /**
-     * Starts {@link RegistrationIntentService} to register current device.
-     */
-    private void startDeviceRegistrationService() {
-        Intent intent = new Intent(MainActivity.this, RegistrationIntentService.class);
-        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_ID, Utils.getDeviceId(this));
-        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_NAME, Utils.getDeviceName());
-        startService(intent);
     }
 
     private void retrieveCurrentUserFBData() {
@@ -447,19 +430,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private BroadcastReceiver gcmMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(GCMManager.REGISTRATION_PROCESS)) {
-                String result  = intent.getStringExtra("result");
-                String message = intent.getStringExtra("message");
-
-                if (result.equals("success")) {
-                    App.getSharedPreferences().edit().putBoolean(Constants.PREFS_DEVICE_REGISTERED, true).apply();
-                } else {
-                    App.getSharedPreferences().edit().putBoolean(Constants.PREFS_DEVICE_REGISTERED, false).apply();
-                }
-
-                Log.d(Constants.TAG, "onReceive: " + result + message);
-                Toast.makeText(context, result + " : " + message, Toast.LENGTH_SHORT).show();
-            } else if (intent.getAction().equals(GCMManager.MESSAGE_RECEIVED) && activityActive) {
+            if (intent.getAction().equals(GCMManager.MESSAGE_RECEIVED) && activityActive) {
                 String message = intent.getStringExtra("message");
                 Utils.showAlertDialog(message, MainActivity.this);
             } else if (intent.getAction().equals(GCMManager.QUEST_RECEIVED) && activityActive) {

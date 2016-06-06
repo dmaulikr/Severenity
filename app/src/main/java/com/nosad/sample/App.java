@@ -79,10 +79,6 @@ public class App extends Application {
         return getInstance().getSharedPreferencesInstance();
     }
 
-    public boolean isCurrentDeviceRegistered() {
-        return getSharedPreferences().getBoolean(Constants.PREFS_DEVICE_REGISTERED, false);
-    }
-
     public void logOut() {
         locationManager.stopLocationUpdates();
 

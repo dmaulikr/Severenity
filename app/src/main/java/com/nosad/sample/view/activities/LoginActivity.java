@@ -4,6 +4,8 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -15,7 +17,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -31,8 +35,16 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
+import com.nosad.sample.engine.managers.messaging.GCMManager;
+import com.nosad.sample.engine.managers.messaging.RegistrationIntentService;
+import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.engine.network.RestManager;
+import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -44,16 +56,17 @@ public class LoginActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 1;
 
     // The BroadcastReceiver that tracks network connectivity changes.
-    private RestManager.NetworkReceiver receiver;
+    private RestManager.NetworkReceiver mNetworkReceiver;
 
     public Profile profile;
-    private AccessTokenTracker accessTokenTracker;
-    private ProfileTracker profileTracker;
-    private CallbackManager callbackManager;
+    private AccessTokenTracker mAccessTokenTracker;
+    private ProfileTracker mProfileTracker;
+    private CallbackManager mCallbackManager;
 
     private View mProgressView;
 
-    private Intent mainActivityIntent;
+    private Intent mMainActivityIntent;
+    private boolean isAuthorizing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,41 +76,41 @@ public class LoginActivity extends AppCompatActivity {
         
         setContentView(R.layout.activity_login);
 
-        callbackManager = CallbackManager.Factory.create();
+        mCallbackManager = CallbackManager.Factory.create();
 
-        mainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
+        mMainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
 
-        profileTracker = new ProfileTracker() {
+        mProfileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                 profile = Profile.getCurrentProfile();
-                profileTracker.stopTracking();
+                mProfileTracker.stopTracking();
             }
         };
 
-        accessTokenTracker = new AccessTokenTracker() {
+        mAccessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                updateWithCurrentAccessToken();
+                authorizeCurrentUser();
             }
         };
 
-        accessTokenTracker.startTracking();
-        profileTracker.startTracking();
+        mAccessTokenTracker.startTracking();
+        mProfileTracker.startTracking();
 
         initViews();
         registerReceivers();
 
-        updateWithCurrentAccessToken();
+        authorizeCurrentUser();
     }
 
     private void initViews() {
         LoginButton loginButton = (LoginButton) findViewById(R.id.btnLoginWithFacebook);
         loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email"));
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                updateWithCurrentAccessToken();
+                authorizeCurrentUser();
             }
 
             @Override
@@ -118,8 +131,12 @@ public class LoginActivity extends AppCompatActivity {
     private void registerReceivers() {
         // Registers BroadcastReceiver to track network connection changes.
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        receiver = App.getRestManager().getNetworkReceiver();
-        this.registerReceiver(receiver, filter);
+        mNetworkReceiver = App.getRestManager().getNetworkReceiver();
+        this.registerReceiver(mNetworkReceiver, filter);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(GCMManager.REGISTRATION_PROCESS);
+        App.getLocalBroadcastManager().registerReceiver(gcmReceiver, intentFilter);
     }
 
     private boolean playServicesAvailable() {
@@ -157,11 +174,9 @@ public class LoginActivity extends AppCompatActivity {
         int phoneState = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         int fineLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
 
-        if (phoneState == PackageManager.PERMISSION_GRANTED && fineLocation == PackageManager.PERMISSION_GRANTED) {
-            result = true;
-        } else {
-            result = false;
-        }
+        result =
+            phoneState == PackageManager.PERMISSION_GRANTED &&
+            fineLocation == PackageManager.PERMISSION_GRANTED;
 
         return result;
     }
@@ -188,17 +203,55 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
 
         // Unregisters BroadcastReceiver when app is destroyed.
-        if (receiver != null) {
-            this.unregisterReceiver(receiver);
+        this.unregisterReceiver(mNetworkReceiver);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        App.getLocalBroadcastManager().unregisterReceiver(gcmReceiver);
+    }
+
+    private void authorizeCurrentUser() {
+        if (checkPermission() && AccessToken.getCurrentAccessToken() != null && !isAuthorizing) {
+            isAuthorizing = true;
+            showProgress(true);
+            App.getRestManager().authorizeUser(AccessToken.getCurrentAccessToken().getUserId(), new RequestCallback() {
+                @Override
+                public void onResponseCallback(JSONObject response) {
+                    try {
+                        JSONArray devices = response.getJSONArray("devices");
+                        String userId = response.getString("userId");
+
+                        // If device was not registered to the user - start registration service
+                        if (devices.length() == 0) {
+                            startDeviceRegistrationService(userId);
+                        } else {
+                            isAuthorizing = false;
+                            startActivity(mMainActivityIntent);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onErrorCallback(NetworkResponse response) {
+
+                }
+            });
         }
     }
 
-    private void updateWithCurrentAccessToken() {
-        if (checkPermission()) {
-            if (AccessToken.getCurrentAccessToken() != null) {
-                startActivity(mainActivityIntent);
-            }
-        }
+    /**
+     * Starts {@link RegistrationIntentService} to register current device.
+     */
+    private void startDeviceRegistrationService(String userId) {
+        Intent intent = new Intent(LoginActivity.this, RegistrationIntentService.class);
+        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_ID, Utils.getDeviceId(this));
+        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_NAME, Utils.getDeviceName());
+        intent.putExtra(Constants.INTENT_EXTRA_USER_ID, userId);
+        startService(intent);
     }
 
     /**
@@ -253,7 +306,27 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
+    private BroadcastReceiver gcmReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(GCMManager.REGISTRATION_PROCESS)) {
+                showProgress(false);
+                isAuthorizing = false;
+
+                String result = intent.getStringExtra("result");
+
+                // TODO: Oleg add user receive from intent.
+
+                if (result.equals("success")) {
+                    startActivity(mMainActivityIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Something went wrong :-(", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    };
 }
 
