@@ -48,12 +48,15 @@ import com.nosad.sample.engine.adapters.ChipAdapter;
 import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.utils.CustomTypefaceSpan;
+import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.Dialogs.PlacesInfoDialog;
 import com.nosad.sample.view.activities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import okhttp3.internal.Util;
 
 /**
  * Handles user with map activity (actual game)
@@ -274,9 +277,11 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.captureButton:
 
-                if (!mPlaceIDtoCapture.isEmpty()) {
-                    App.getPlacesManager().addOwnerToPlace(mPlaceIDtoCapture, App.getUserManager().getCurrentUser().getId());
-                    App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
+                if (/*!mPlaceIDtoCapture.isEmpty()*/true) {
+                    //App.getPlacesManager().addOwnerToPlace(mPlaceIDtoCapture, App.getUserManager().getCurrentUser().getId());
+                    //App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
+
+                    App.getRestManager().getPlacesFromServer(Utils.latLngFromLocation(App.getLocationManager().getCurrentLocation()), 100);
 
                     Toast.makeText(getContext(), "Place has been captured", Toast.LENGTH_SHORT).show();
                 }
