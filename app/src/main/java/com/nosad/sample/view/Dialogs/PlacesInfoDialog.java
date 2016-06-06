@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.InfoAdapter;
+import com.nosad.sample.engine.adapters.PlaceInfoAdapter;
 import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.entity.contracts.PlaceContract;
@@ -43,7 +44,7 @@ public class PlacesInfoDialog extends DialogFragment {
 
     public static final String SHOW_RELOCATION_BUTTON = "showRelocationButton";
 
-    private InfoAdapter mInfoAdapter;
+    private PlaceInfoAdapter mInfoAdapter;
     private OnRelocateMapListener mListener;
     private String mPlaceID;
     private TextView mCaptionView;
@@ -129,7 +130,7 @@ public class PlacesInfoDialog extends DialogFragment {
         LatLng currentPos = Utils.latLngFromLocation(App.getLocationManager().getCurrentLocation());
         boolean isPlaceWithinUsersActionView = (Utils.distanceBetweenLocations(currentPos, place.getPlacePos()) <= currentUser.getActionRadius());
 
-        mInfoAdapter = new InfoAdapter(getContext(), InfoAdapter.PLACE_INFO, isPlaceWithinUsersActionView);
+        mInfoAdapter = new PlaceInfoAdapter(getContext(), isPlaceWithinUsersActionView);
         ListView ownersList = (ListView)view.findViewById(R.id.ownersList);
         ownersList.setAdapter(mInfoAdapter);
 
@@ -191,7 +192,7 @@ public class PlacesInfoDialog extends DialogFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle extra = intent.getExtras();
-            int itemIndex = extra.getInt(InfoAdapter.INDEX, -1);
+            int itemIndex = extra.getInt(PlaceInfoAdapter.ITEM_INDEX, -1);
             String ownerID = extra.getString(Constants.USER_ID);
 
             if (itemIndex != -1) {

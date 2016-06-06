@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.InfoAdapter;
+import com.nosad.sample.engine.adapters.UserInfoAdapter;
 import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
@@ -61,7 +62,7 @@ public class ProfileFragment extends Fragment {
         });
 
         mPlacesList = (ListView)view.findViewById(R.id.listOwnPlaces);
-        InfoAdapter infoAdapter = new InfoAdapter(getContext(), InfoAdapter.USER_INFO, false);
+        UserInfoAdapter infoAdapter = new UserInfoAdapter(getContext());
 
         ArrayList<GamePlace> places = App.getPlacesManager().findPlacesByOwner(App.getUserManager().getCurrentUser().getId());
         for (GamePlace gp: places) {
