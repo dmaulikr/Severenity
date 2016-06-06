@@ -170,8 +170,8 @@ public class LocationManager implements LocationListener {
                         }
 
                         Intent intent = null;
-                        if (Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
-                                App.getUserManager().getCurrentUser().getActionRadius()) {
+                        if (/*Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
+                                App.getUserManager().getCurrentUser().getActionRadius()*/ true) {
 
                             intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS);
                             intent.putExtra(Constants.PLACE_ID, placeID);
