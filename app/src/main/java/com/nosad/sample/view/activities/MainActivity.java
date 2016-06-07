@@ -19,12 +19,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.facebook.login.widget.ProfilePictureView;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
@@ -56,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private Toolbar toolbarTop;
 
     private ProfilePictureView userProfilePicture;
-    private TextView tvMentalityValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
+    private TextView tvIntelligenceValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
 
     private FragmentManager fragmentManager;
 
@@ -81,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        retrieveCurrentUserFBData();
         initToolbars();
         initFragments();
 
@@ -150,8 +147,8 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 c = Constants.Characteristic.Level;
             } else if (characteristic.equals(Constants.Characteristic.Experience.toString())) {
                 c = Constants.Characteristic.Experience;
-            } else if (characteristic.equals(Constants.Characteristic.Mentality.toString())) {
-                c = Constants.Characteristic.Mentality;
+            } else if (characteristic.equals(Constants.Characteristic.Intelligence.toString())) {
+                c = Constants.Characteristic.Intelligence;
             } else if (characteristic.equals(Constants.Characteristic.Immunity.toString())) {
                 c = Constants.Characteristic.Immunity;
             }
@@ -160,41 +157,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         }
 
         return quest;
-    }
-
-    private void retrieveCurrentUserFBData() {
-        Bundle params = new Bundle();
-        params.putString("fields", "id,name,email");
-        new GraphRequest(
-                AccessToken.getCurrentAccessToken(),
-                "/me",
-                params,
-                HttpMethod.GET,
-                new GraphRequest.Callback() {
-                    @Override
-                    public void onCompleted(GraphResponse response) {
-                        try {
-                            Log.i(Constants.TAG, String.valueOf(response.getJSONObject()));
-                            if (response.getJSONObject() == null) {
-                                return;
-                            }
-
-                            User user = new User();
-                            user.setEmail(response.getJSONObject().getString("email"));
-                            user.setName(response.getJSONObject().getString("name"));
-                            user.setId(response.getJSONObject().getString("id"));
-
-                            if (!App.getUserManager().addUser(user)) {
-                                return;
-                            }
-
-                            App.getUserManager().setCurrentUser(user);
-                            App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_UPDATE_UI));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).executeAsync();
     }
 
     private void initFragments() {
@@ -238,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         userProfilePicture = (ProfilePictureView) toolbarTop.findViewById(R.id.mapUserAvatar);
 
         tvImmunityValue = (TextView) toolbarTop.findViewById(R.id.tvImmunityValue);
-        tvMentalityValue = (TextView) toolbarTop.findViewById(R.id.tvMentalityValue);
+        tvIntelligenceValue = (TextView) toolbarTop.findViewById(R.id.tvIntelligenceValue);
         tvExperienceValue = (TextView) toolbarTop.findViewById(R.id.tvExperienceValue);
         tvLevelValue = (TextView) toolbarTop.findViewById(R.id.tvLevelValue);
 
@@ -492,7 +454,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         }
 
         tvImmunityValue.setText(String.format(getResources().getString(R.string.immunity_value), user.getImmunity()));
-        tvMentalityValue.setText(String.format(getResources().getString(R.string.mentality_value), user.getMentality()));
+        tvIntelligenceValue.setText(String.format(getResources().getString(R.string.intelligence_value), user.getIntelligence()));
         tvExperienceValue.setText(String.format(getResources().getString(R.string.experience_value), user.getExperience()));
         tvLevelValue.setText(String.format(getResources().getString(R.string.level_value), user.getLevel()));
     }

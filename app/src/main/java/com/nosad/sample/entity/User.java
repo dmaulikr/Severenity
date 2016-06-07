@@ -12,13 +12,18 @@ public class User {
     private String id;
     private String name;
     private String email;
-    private int distance = 0;
-    private int immunity = 10;
-    private int mentality = 10;
-    private int experience = 0;
-    private int level = 1;
-    private double mViewRadius   = 100.0; // 50.0 meters for now
-    private double mActionRadius =  25.0; // 25.0 meters for now
+    private int distance;
+    private int immunity;
+    private int intelligence;
+    private int experience;
+    private int level;
+    private double viewRadius;
+    private double actionRadius;
+    private int credits;
+    private int implantHP;
+    private int maxImmunity;
+    private int maxIntelligence;
+    private String createdDate;
 
     public User() {
 
@@ -30,9 +35,9 @@ public class User {
         this.id = id;
     }
 
-    public double getViewRadius() { return mViewRadius; }
+    public double getViewRadius() { return viewRadius; }
 
-    public double getActionRadius() { return  mActionRadius; }
+    public double getActionRadius() { return  actionRadius; }
 
     public String getId() {
         return id;
@@ -67,19 +72,19 @@ public class User {
     }
 
     public int getImmunity() {
-        return immunity + (level + 10); // TODO: This calculation should happen in DB
+        return immunity;
     }
 
     public void setImmunity(int immunity) {
         this.immunity = immunity;
     }
 
-    public int getMentality() {
-        return mentality + (level + 10);
+    public int getIntelligence() {
+        return intelligence;
     }
 
-    public void setMentality(int mentality) {
-        this.mentality = mentality;
+    public void setIntelligence(int intelligence) {
+        this.intelligence = intelligence;
     }
 
     public int getExperience() {
@@ -96,6 +101,54 @@ public class User {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public int getMaxIntelligence() {
+        return maxIntelligence;
+    }
+
+    public void setMaxIntelligence(int maxIntelligence) {
+        this.maxIntelligence = maxIntelligence;
+    }
+
+    public int getMaxImmunity() {
+        return maxImmunity;
+    }
+
+    public void setMaxImmunity(int maxImmunity) {
+        this.maxImmunity = maxImmunity;
+    }
+
+    public int getImplantHP() {
+        return implantHP;
+    }
+
+    public void setImplantHP(int implantHP) {
+        this.implantHP = implantHP;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public void setViewRadius(double viewRadius) {
+        this.viewRadius = viewRadius;
+    }
+
+    public void setActionRadius(double actionRadius) {
+        this.actionRadius = actionRadius;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 
     public String getJSONUserInfo() {

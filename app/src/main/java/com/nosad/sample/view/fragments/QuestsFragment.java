@@ -163,8 +163,8 @@ public class QuestsFragment extends Fragment {
                     c = Constants.Characteristic.Level;
                 } else if (characteristic == Constants.Characteristic.Experience.ordinal()) {
                     c = Constants.Characteristic.Experience;
-                } else if (characteristic == Constants.Characteristic.Mentality.ordinal()) {
-                    c = Constants.Characteristic.Mentality;
+                } else if (characteristic == Constants.Characteristic.Intelligence.ordinal()) {
+                    c = Constants.Characteristic.Intelligence;
                 } else if (characteristic == Constants.Characteristic.Immunity.ordinal()) {
                     c = Constants.Characteristic.Immunity;
                 } else {

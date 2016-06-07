@@ -9,7 +9,7 @@ public class Constants {
     public enum Characteristic {
         Level("level"),
         Immunity("immunity"),
-        Mentality("mentality"),
+        Intelligence("intelligence"),
         Experience("experience"),
         None("none");
 

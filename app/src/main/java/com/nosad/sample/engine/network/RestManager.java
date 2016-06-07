@@ -126,10 +126,19 @@ public class RestManager {
         return imageLoader;
     }
 
+    /**
+     * Getter for network changes receiver.
+     *
+     * @return {@link NetworkReceiver} - receiver of network changes.
+     */
     public NetworkReceiver getNetworkReceiver() {
         return new NetworkReceiver();
     }
 
+    /**
+     * Receives updates for the network changes.
+     * Checks for both mobile / WiFi networks.
+     */
     public class NetworkReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -163,8 +172,10 @@ public class RestManager {
         }
     }
 
-    // Checks the network connection and sets the wifiConnected and mobileConnected
-    // variables accordingly.
+    /**
+     * Checks the network connection and sets the wifiConnected and mobileConnected
+     * variables accordingly.
+     */
     public void updateConnectedFlags() {
         ConnectivityManager connMgr = (ConnectivityManager)
                 context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -253,8 +264,14 @@ public class RestManager {
         }
     }
 
+    /**
+     * Retrieve places from server based on current position and radius.
+     *
+     * @param currentPosition - current location of the user.
+     * @param radius - radius to check places within.
+     * @param callback - callback to execute after places were retrieved.
+     */
     public void getPlacesFromServer (LatLng currentPosition, int radius, RequestCallback callback) {
-
         String request = Constants.REST_API_PLACES + "/?lng=" + Double.toString(currentPosition.longitude) + "&lat=" + Double.toString(currentPosition.latitude) + "&radius=" + Integer.toString(radius);
         App.getRestManager().createRequest(request, Request.Method.GET, null, callback);
     }
@@ -268,7 +285,7 @@ public class RestManager {
     public void createUser(User user, RequestCallback callback) {
         JSONObject userObject = new JSONObject();
         try {
-            userObject.put("id", user.getId());
+            userObject.put("userId", user.getId());
             userObject.put("name", user.getName());
             userObject.put("email", user.getEmail());
 

@@ -76,7 +76,7 @@ public class RegistrationIntentService extends IntentService {
                     intent.putExtra("result", response.getString("result"));
 
                     // TODO: Oleg add user data send in intent
-                    JSONObject user = response.getJSONObject("data").getJSONObject("user");
+                    JSONObject user = response.getJSONObject("data");
                     Log.d(Constants.TAG, "User registered: " + user.toString());
 
                     App.getLocalBroadcastManager().sendBroadcast(intent);

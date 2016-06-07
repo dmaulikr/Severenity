@@ -240,6 +240,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                                 break;
                             case "continue":
+                                isAuthorizing = false;
                                 if (response.getInt("reason") == 1) {
                                     createUser();
                                 } else {
@@ -266,11 +267,15 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Triggers user creation on the server and stores
+     * newly created user in local db.
+     */
     private void createUser() {
         FacebookUtils.getFacebookUserById(AccessToken.getCurrentAccessToken().getUserId(), "id,name,email", new FacebookUtils.Callback() {
             @Override
             public void onResponse(GraphResponse response) {
-                User user = new User();
+                final User user = new User();
                 user.setId(AccessToken.getCurrentAccessToken().getUserId());
                 try {
                     JSONObject data = response.getJSONObject();
@@ -283,6 +288,31 @@ public class LoginActivity extends AppCompatActivity {
                             public void onResponseCallback(JSONObject response) {
                                 if (response != null) {
                                     Log.d(Constants.TAG, response.toString());
+                                    try {
+                                        user.setCreatedDate(response.getString("createdDate"));
+
+                                        JSONObject profileObject = response.getJSONObject("profile");
+                                        user.setDistance(profileObject.getInt("distance"));
+                                        user.setExperience(profileObject.getInt("experience"));
+                                        user.setImmunity(profileObject.getInt("immunity"));
+                                        user.setIntelligence(profileObject.getInt("intelligence"));
+                                        user.setCredits(profileObject.getInt("credits"));
+                                        user.setImplantHP(profileObject.getInt("implantHP"));
+                                        user.setLevel(profileObject.getInt("level"));
+                                        user.setMaxImmunity(profileObject.getInt("maxImmunity"));
+                                        user.setMaxIntelligence(profileObject.getInt("maxIntelligence"));
+                                        user.setViewRadius(profileObject.getInt("viewRadius"));
+                                        user.setActionRadius(profileObject.getInt("actionRadius"));
+
+                                        if (!App.getUserManager().addUser(user)) {
+                                            return;
+                                        }
+
+                                        App.getUserManager().setCurrentUser(user);
+                                        authorizeCurrentUser();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 } else {
                                     Log.e(Constants.TAG, "User create has null response.");
                                 }
@@ -307,6 +337,8 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Starts {@link RegistrationIntentService} to register current device.
+     *
+     * @param userId - id of the user to bind device to.
      */
     private void startDeviceRegistrationService(String userId) {
         Intent intent = new Intent(LoginActivity.this, RegistrationIntentService.class);
@@ -318,6 +350,8 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * Shows the progress UI and hides the login form.
+     *
+     * @param show - if true - show the progress, otherwise hide it.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
@@ -379,9 +413,6 @@ public class LoginActivity extends AppCompatActivity {
                 isAuthorizing = false;
 
                 String result = intent.getStringExtra("result");
-
-                // TODO: Oleg add user receive from intent.
-
                 if (result.equals("success")) {
                     startActivity(mMainActivityIntent);
                 } else {
