@@ -252,38 +252,9 @@ public class RestManager {
         }
     }
 
-    public ArrayList<GamePlace> getPlacesFromServer (LatLng currentPosition, int radius) {
-        JSONObject data = new JSONObject();
-        try {
-            data.put("lat", currentPosition.latitude);
-            data.put("lng", currentPosition.longitude);
-            data.put("radius", radius);
+    public void getPlacesFromServer (LatLng currentPosition, int radius, RequestCallback callback) {
 
-            String request = Constants.REST_API_PLACES + "/?lng=" + Double.toString(currentPosition.longitude) + "&lat=" + Double.toString(currentPosition.latitude) + "&radius=" + Integer.toString(radius);
-
-            App.getRestManager().createRequest(request, Request.Method.GET, null, new RequestCallback() {
-                @Override
-                public void onResponseCallback(JSONObject response) {
-                    if (response != null) {
-                        Log.d(Constants.TAG, response.toString());
-                    } else {
-                        Log.e(Constants.TAG, "Place add has null response.");
-                    }
-                }
-
-                @Override
-                public void onErrorCallback(NetworkResponse response) {
-                    if (response != null) {
-                        Log.e(Constants.TAG, response.toString());
-                    } else {
-                        Log.e(Constants.TAG, "Place add error has null response.");
-                    }
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        String request = Constants.REST_API_PLACES + "/?lng=" + Double.toString(currentPosition.longitude) + "&lat=" + Double.toString(currentPosition.latitude) + "&radius=" + Integer.toString(radius);
+        App.getRestManager().createRequest(request, Request.Method.GET, null, callback);
     }
 }

@@ -94,20 +94,6 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
             mapFragment = SupportMapFragment.newInstance();
         }
         fragmentManager.beginTransaction().replace(R.id.map, mapFragment).commit();
-
-        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
-                .getCurrentPlace(App.getGoogleApiHelper().getGoogleApiClient(), null);
-        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-            @Override
-            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
-                Log.i(Constants.TAG, String.format("Attributions are: %s", likelyPlaces.getAttributions()));
-                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-                    App.getLocationManager().displayPlaceMarker(placeLikelihood.getPlace());
-                }
-                likelyPlaces.release();
-                tvAttributions.setText(likelyPlaces.getAttributions() == null ? "" : likelyPlaces.getAttributions());
-            }
-        });
     }
 
     @Override
@@ -131,6 +117,10 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
                 hidePlaceActions,
                 new IntentFilter(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS)
         );
+
+        App.getLocalBroadcastManager().registerReceiver(
+                requestPlacesFromGoogle,
+                new IntentFilter(Constants.INTENT_FILTER_REQUEST_PLACES));
     }
 
     @Override
@@ -271,17 +261,35 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
         }
     };
 
+    private BroadcastReceiver requestPlacesFromGoogle = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+        com.google.android.gms.common.api.PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
+                .getCurrentPlace(App.getGoogleApiHelper().getGoogleApiClient(), null);
+        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
+            @Override
+            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
+                Log.i(Constants.TAG, String.format("Attributions are: %s", likelyPlaces.getAttributions()));
+                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+                    App.getLocationManager().displayPlaceMarker(placeLikelihood.getPlace());
+                }
+                likelyPlaces.release();
+                tvAttributions.setText(likelyPlaces.getAttributions() == null ? "" : likelyPlaces.getAttributions());
+            }
+        });
+        }
+    };
+
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
             case R.id.captureButton:
 
-                if (/*!mPlaceIDtoCapture.isEmpty()*/true) {
-                    //App.getPlacesManager().addOwnerToPlace(mPlaceIDtoCapture, App.getUserManager().getCurrentUser().getId());
-                    //App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
-
-                    App.getRestManager().getPlacesFromServer(Utils.latLngFromLocation(App.getLocationManager().getCurrentLocation()), 100);
+                if (!mPlaceIDtoCapture.isEmpty()) {
+                    App.getPlacesManager().addOwnerToPlace(mPlaceIDtoCapture, App.getUserManager().getCurrentUser().getId());
+                    App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
 
                     Toast.makeText(getContext(), "Place has been captured", Toast.LENGTH_SHORT).show();
                 }
