@@ -59,7 +59,7 @@ public class LocationManager implements LocationListener {
     private GoogleApiClient googleApiClient;
     private float currentZoom = (Constants.MAX_ZOOM_LEVEL + Constants.MIN_ZOOM_LEVEL) / 2 + 1.0f;
 
-    private Marker currentUserMarker, otherUserMarker, mTempUseresPlaceMarker;
+    private Marker currentUserMarker, otherUserMarker, mTempUsersPlaceMarker;
 
     private GoogleMap googleMap;
     private LocationRequest locationRequest;
@@ -170,8 +170,8 @@ public class LocationManager implements LocationListener {
                         }
 
                         Intent intent = null;
-                        if (/*Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
-                                App.getUserManager().getCurrentUser().getActionRadius()*/ true) {
+                        if (Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
+                                App.getUserManager().getCurrentUser().getActionRadius()) {
 
                             intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS);
                             intent.putExtra(Constants.PLACE_ID, placeID);
@@ -215,8 +215,8 @@ public class LocationManager implements LocationListener {
         fixCameraAtLocation(Utils.latLngFromLocation(currentLocation));
         isCameraFixed = false;
         mIsUpdatingLocationProcessStopped = false;
-        if (mTempUseresPlaceMarker != null) {
-            mTempUseresPlaceMarker.remove();
+        if (mTempUsersPlaceMarker != null) {
+            mTempUsersPlaceMarker.remove();
         }
     }
 
@@ -562,11 +562,70 @@ public class LocationManager implements LocationListener {
                 if (currentLocation != null) {
 
                     mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
-                    displayPlaceMarkerFromDB(true);
+                    App.getRestManager().getPlacesFromServer(Utils.latLngFromLocation(currentLocation), 1000, placesRequestCallback);
                 }
                 previousLocation = currentLocation;
             } else {
                 stopLocationUpdates();
+            }
+        }
+    };
+
+    /**
+     * placesRequestCallback object used to handle response from the server about the places.
+     * When Google API is connected Client sends request to the server to get places in
+     * certain radius. This object will handle the response, parse JSON object and store
+     * in DB.
+     */
+    private RequestCallback placesRequestCallback = new RequestCallback() {
+        @Override
+        public void onResponseCallback(JSONObject response) {
+            if (response == null) {
+                Log.e(Constants.TAG, "Incorrect response data.");
+            } else {
+                try {
+                    String responseStatus = response.getString("result");
+                    if (!responseStatus.equals("success")) {
+                        Log.e(Constants.TAG, "Not success response status.");
+                    } else {
+                        Log.e(Constants.TAG, response.toString());
+                        JSONArray array = response.getJSONArray("data");
+                        for (int i = 0; i < array.length(); ++i) {
+                            JSONObject place = array.getJSONObject(i);
+                            if (!place.has("placeId") || !place.has("name") || !place.has("location") || !place.has("owners")) {
+                                Log.e(Constants.TAG, "Incorrect place info passed from the server.");
+                                continue;
+                            }
+
+                            String placeID   = place.getString("placeId");
+                            String placeName = place.getString("name");
+                            LatLng coordinates = new LatLng(place.getJSONObject("location").getJSONArray("coordinates").getDouble(1),
+                                    place.getJSONObject("location").getJSONArray("coordinates").getDouble(0));
+
+                            GamePlace gamePlace = new GamePlace(placeID, placeName, coordinates);
+                            App.getPlacesManager().addPlace(gamePlace);
+
+                            JSONArray owners = place.getJSONArray("owners");
+                            for (int j = 0; j < owners.length(); ++j) {
+                                App.getPlacesManager().addOwnerToPlace(placeID, owners.getString(j));
+                            }
+                        }
+
+                        displayPlaceMarkerFromDB(true);
+                        App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_REQUEST_PLACES));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void onErrorCallback(NetworkResponse response) {
+            if (response == null) {
+                Log.e(Constants.TAG, "Request Places fails. Error responce is empty");
+            } else {
+                Log.e(Constants.TAG, response.toString());
             }
         }
     };
@@ -683,19 +742,19 @@ public class LocationManager implements LocationListener {
     public void showPlaceAtPosition(String placeID) {
 
         GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
-        if (mTempUseresPlaceMarker != null) {
-            mTempUseresPlaceMarker.remove();
+        if (mTempUsersPlaceMarker != null) {
+            mTempUsersPlaceMarker.remove();
         }
 
-        mTempUseresPlaceMarker = googleMap.addMarker(new MarkerOptions()
+        mTempUsersPlaceMarker = googleMap.addMarker(new MarkerOptions()
                 .position(place.getPlacePos())
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                 .title(String.format("%s", place.getPlaceName()))
                 .snippet(place.getJSONPlaceInfo()));
 
-        mTempUseresPlaceMarker.showInfoWindow();
+        mTempUsersPlaceMarker.showInfoWindow();
 
-        fixCameraAtLocation(mTempUseresPlaceMarker.getPosition());
+        fixCameraAtLocation(mTempUsersPlaceMarker.getPosition());
 
         mIsUpdatingLocationProcessStopped = true;
     }
