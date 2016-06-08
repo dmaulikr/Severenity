@@ -468,4 +468,15 @@ public class PlacesManager extends DataManager {
             return false;
         }
     };
+
+    public void clearPlacesAndOwnersData() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        try {
+            db.delete(TABLE_PLACES_OWNERS, null, null);
+            db.delete(TABLE_PLACES, null, null);
+
+        } catch (SQLException e){
+            Log.e(Constants.TAG, "PlacesManager: error clearing place tables. " + e.getMessage());
+        }
+    }
 }

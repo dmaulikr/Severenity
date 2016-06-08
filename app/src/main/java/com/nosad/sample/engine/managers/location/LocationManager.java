@@ -566,6 +566,7 @@ public class LocationManager implements LocationListener {
                 if (currentLocation != null) {
 
                     mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
+                    App.getPlacesManager().clearPlacesAndOwnersData();
                     App.getRestManager().getPlacesFromServer(Utils.latLngFromLocation(currentLocation), 1000, placesRequestCallback);
                 }
                 previousLocation = currentLocation;
