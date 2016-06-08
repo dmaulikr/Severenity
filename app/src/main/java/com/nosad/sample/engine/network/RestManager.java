@@ -220,20 +220,17 @@ public class RestManager {
     /**
      * Sends API request to add owner to the list of owners for the place
      *
-     * @param userId - user that should be added to owners.
+     * @param action - action to perform.
      * @param placeId - place captured.
+     * @param data - data to pass with action.
      */
-    public void sendPlaceOwnerToServer(String userId, String placeId, RequestCallback callback) {
-        JSONObject data = new JSONObject();
+    public void sendPlaceUpdateToServer(String placeId, Constants.PlaceAction action, JSONObject data, RequestCallback callback) {
+        JSONObject requestData = new JSONObject();
         try {
-            data.put("placeId", placeId);
-            data.put("action", Constants.PlaceAction.Capture.toString());
-
-            JSONObject dataObject = new JSONObject();
-            dataObject.put("userId", userId);
-            data.put("data", dataObject);
-
-            App.getRestManager().createRequest(Constants.REST_API_PLACES, Request.Method.PUT, data, callback);
+            requestData.put("placeId", placeId);
+            requestData.put("action", Constants.PlaceAction.Capture.toString());
+            requestData.put("data", data);
+            App.getRestManager().createRequest(Constants.REST_API_PLACES, Request.Method.PUT, requestData, callback);
         } catch (JSONException e) {
             e.printStackTrace();
         }

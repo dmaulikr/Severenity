@@ -50,10 +50,8 @@ public class PlaceInfoAdapter extends InfoAdapter {
             ImageView delete = (ImageView)listItemView.findViewById(R.id.deleteIcon);
             delete.setVisibility(View.VISIBLE);
             delete.setOnClickListener(new View.OnClickListener() {
-
                 @Override
                 public void onClick(View v) {
-
                     Intent intent = new Intent(Constants.INTENT_FILTER_DELETE_OWNER);
                     intent.putExtra(Constants.USER_ID, placeData.dataID);
                     intent.putExtra(ITEM_INDEX, position);

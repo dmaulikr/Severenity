@@ -499,4 +499,10 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             App.getLocationManager().showPlaceAtPosition(placeID);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

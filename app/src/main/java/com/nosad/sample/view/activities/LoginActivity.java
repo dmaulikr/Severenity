@@ -236,6 +236,12 @@ public class LoginActivity extends AppCompatActivity {
                                     startDeviceRegistrationService(userId);
                                 } else {
                                     isAuthorizing = false;
+
+                                    User newUser = createUserFromJSON(userObject);
+                                    if (newUser != null) {
+                                        App.getUserManager().setCurrentUser(newUser);
+                                    }
+
                                     startActivity(mMainActivityIntent);
                                 }
                                 break;
@@ -288,30 +294,11 @@ public class LoginActivity extends AppCompatActivity {
                             public void onResponseCallback(JSONObject response) {
                                 if (response != null) {
                                     Log.d(Constants.TAG, response.toString());
-                                    try {
-                                        user.setCreatedDate(response.getString("createdDate"));
 
-                                        JSONObject profileObject = response.getJSONObject("profile");
-                                        user.setDistance(profileObject.getInt("distance"));
-                                        user.setExperience(profileObject.getInt("experience"));
-                                        user.setImmunity(profileObject.getInt("immunity"));
-                                        user.setIntelligence(profileObject.getInt("intelligence"));
-                                        user.setCredits(profileObject.getInt("credits"));
-                                        user.setImplantHP(profileObject.getInt("implantHP"));
-                                        user.setLevel(profileObject.getInt("level"));
-                                        user.setMaxImmunity(profileObject.getInt("maxImmunity"));
-                                        user.setMaxIntelligence(profileObject.getInt("maxIntelligence"));
-                                        user.setViewRadius(profileObject.getInt("viewRadius"));
-                                        user.setActionRadius(profileObject.getInt("actionRadius"));
-
-                                        if (!App.getUserManager().addUser(user)) {
-                                            return;
-                                        }
-
-                                        App.getUserManager().setCurrentUser(user);
+                                    User newUser = createUserFromJSON(response);
+                                    if (newUser != null) {
+                                        App.getUserManager().setCurrentUser(newUser);
                                         authorizeCurrentUser();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
                                     }
                                 } else {
                                     Log.e(Constants.TAG, "User create has null response.");
@@ -333,6 +320,40 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /**
+     * Creates user in db
+     *
+     * @param response - JSON response to create user from.
+     */
+    private User createUserFromJSON(JSONObject response) {
+        User user = new User();
+        try {
+            user.setCreatedDate(response.getString("createdDate"));
+            user.setId(response.getString("userId"));
+            user.setName(response.getString("name"));
+            user.setEmail(response.getString("email"));
+
+            JSONObject profileObject = response.getJSONObject("profile");
+            user.setDistance(profileObject.getInt("distance"));
+            user.setExperience(profileObject.getInt("experience"));
+            user.setImmunity(profileObject.getInt("immunity"));
+            user.setIntelligence(profileObject.getInt("intelligence"));
+            user.setCredits(profileObject.getInt("credits"));
+            user.setImplantHP(profileObject.getInt("implantHP"));
+            user.setLevel(profileObject.getInt("level"));
+            user.setMaxImmunity(profileObject.getInt("maxImmunity"));
+            user.setMaxIntelligence(profileObject.getInt("maxIntelligence"));
+            user.setViewRadius(profileObject.getInt("viewRadius") * 1.0);
+            user.setActionRadius(profileObject.getInt("actionRadius") * 1.0);
+
+            return App.getUserManager().addUser(user);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     /**

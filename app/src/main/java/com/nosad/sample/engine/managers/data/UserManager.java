@@ -10,13 +10,22 @@ import com.facebook.AccessToken;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
 
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_ACTION_RADIUS;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_CREATED_DATE;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_CREDITS;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_DISTANCE;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_EMAIL;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_EXPERIENCE;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_ID;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_IMMUNITY;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_IMPLANT_HP;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_INTELLIGENCE;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_LEVEL;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_MAX_IMMUNITY;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_MAX_INTELLIGENCE;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_NAME;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_NULLABLE;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_VIEW_RADIUS;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.TABLE_USERS;
 
 /**
@@ -29,10 +38,10 @@ public class UserManager extends DataManager {
         super(context);
     }
 
-    public boolean addUser(User user) {
+    public User addUser(User user) {
         User u = getUser(user);
         if (u != null) {
-            return false;
+            return u;
         }
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -40,14 +49,27 @@ public class UserManager extends DataManager {
         values.put(COLUMN_ID, user.getId());
         values.put(COLUMN_NAME, user.getName());
         values.put(COLUMN_EMAIL, user.getEmail());
+        values.put(COLUMN_CREATED_DATE, user.getCreatedDate());
         values.put(COLUMN_DISTANCE, user.getDistance());
         values.put(COLUMN_EXPERIENCE, user.getExperience());
         values.put(COLUMN_LEVEL, user.getLevel());
+        values.put(COLUMN_IMMUNITY, user.getImmunity());
+        values.put(COLUMN_INTELLIGENCE, user.getIntelligence());
+        values.put(COLUMN_MAX_IMMUNITY, user.getMaxImmunity());
+        values.put(COLUMN_MAX_INTELLIGENCE, user.getMaxIntelligence());
+        values.put(COLUMN_CREDITS, user.getCredits());
+        values.put(COLUMN_IMPLANT_HP, user.getImplantHP());
+        values.put(COLUMN_ACTION_RADIUS, user.getActionRadius());
+        values.put(COLUMN_VIEW_RADIUS, user.getViewRadius());
 
         long success = db.insert(TABLE_USERS, COLUMN_NULLABLE, values);
         db.close();
 
-        return success != -1;
+        if (success != -1) {
+            return user;
+        } else {
+            return null;
+        }
     }
 
     public User getUserById(String id) {
@@ -60,7 +82,7 @@ public class UserManager extends DataManager {
 
         Cursor cursor = db.query(
                 TABLE_USERS,
-                new String[]{COLUMN_ID, COLUMN_NAME, COLUMN_EMAIL, COLUMN_DISTANCE, COLUMN_EXPERIENCE, COLUMN_LEVEL},
+                null,
                 "id = ?",
                 new String[]{id},
                 null, null, null, null
@@ -71,9 +93,18 @@ public class UserManager extends DataManager {
             user.setId(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
             user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
             user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
+            user.setCreatedDate(cursor.getString(cursor.getColumnIndex(COLUMN_CREATED_DATE)));
             user.setDistance(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_DISTANCE))));
             user.setExperience(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_EXPERIENCE))));
             user.setLevel(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_LEVEL))));
+            user.setImmunity(cursor.getInt(cursor.getColumnIndex(COLUMN_IMMUNITY)));
+            user.setMaxImmunity(cursor.getInt(cursor.getColumnIndex(COLUMN_MAX_IMMUNITY)));
+            user.setIntelligence(cursor.getInt(cursor.getColumnIndex(COLUMN_INTELLIGENCE)));
+            user.setMaxIntelligence(cursor.getInt(cursor.getColumnIndex(COLUMN_MAX_INTELLIGENCE)));
+            user.setCredits(cursor.getInt(cursor.getColumnIndex(COLUMN_CREDITS)));
+            user.setImplantHP(cursor.getInt(cursor.getColumnIndex(COLUMN_IMPLANT_HP)));
+            user.setViewRadius(cursor.getDouble(cursor.getColumnIndex(COLUMN_VIEW_RADIUS)));
+            user.setActionRadius(cursor.getDouble(cursor.getColumnIndex(COLUMN_ACTION_RADIUS)));
 
             cursor.close();
             db.close();
@@ -123,6 +154,12 @@ public class UserManager extends DataManager {
         values.put(COLUMN_DISTANCE, currentUser.getDistance());
         values.put(COLUMN_EXPERIENCE, currentUser.getExperience());
         values.put(COLUMN_LEVEL, currentUser.getLevel());
+        values.put(COLUMN_INTELLIGENCE, currentUser.getIntelligence());
+        values.put(COLUMN_MAX_INTELLIGENCE, currentUser.getMaxIntelligence());
+        values.put(COLUMN_IMMUNITY, currentUser.getImmunity());
+        values.put(COLUMN_MAX_IMMUNITY, currentUser.getMaxImmunity());
+        values.put(COLUMN_IMPLANT_HP, currentUser.getImplantHP());
+        values.put(COLUMN_CREDITS, currentUser.getCredits());
 
         db.update(TABLE_USERS, values, "id = ?", new String[]{currentUser.getId()});
         db.close();

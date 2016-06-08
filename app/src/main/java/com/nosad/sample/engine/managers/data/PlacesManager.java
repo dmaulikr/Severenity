@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.facebook.AccessToken;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.model.LatLng;
 import com.nosad.sample.App;
@@ -224,13 +225,19 @@ public class PlacesManager extends DataManager {
         return true;
     }
 
+    /**
+     * Add owner to the specific place.
+     *
+     * @param placeID - place to update.
+     * @param ownerID - owner to add to the place.
+     * @return update place.
+     */
     public GamePlace addOwnerToPlace(String placeID, String ownerID) {
-
         GamePlace place = findPlaceByID(placeID);
         if (place == null) {
             Log.e(Constants.TAG, "PlacesManager: no place with ID " + placeID + " already exist." );
             return null;
-        };
+        }
 
         if (place.hasOwner(ownerID)) {
             Log.e(Constants.TAG, "PlacesManager: this owner owns this place." );
@@ -238,48 +245,52 @@ public class PlacesManager extends DataManager {
         }
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         db.beginTransaction();
-        try{
+
+        try {
             ContentValues values = new ContentValues();
             values.put(COLUMN_PLACE_ID,         placeID);
             values.put(COLUMN_PLACE_OWNER_ID,   ownerID);
 
             db.insert(TABLE_PLACES_OWNERS, "NULL", values);
             db.setTransactionSuccessful();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             db.close();
             Log.e(Constants.TAG, "PlacesManager: Adding data to DB failed. " + ex.getMessage());
             return null;
-        }
-        finally {
-
+        } finally {
             db.endTransaction();
             db.close();
         }
 
         place.addOwner(ownerID);
 
-        App.getRestManager().sendPlaceOwnerToServer(ownerID, place.getPlaceID(), new RequestCallback() {
-            @Override
-            public void onResponseCallback(JSONObject response) {
-                if (response != null) {
-                    Log.d(Constants.TAG, response.toString());
-                } else {
-                    Log.e(Constants.TAG, "Place owner update has null response.");
-                }
-            }
+        try {
+            JSONObject data = new JSONObject();
+            data.put("userId", ownerID);
 
-            @Override
-            public void onErrorCallback(NetworkResponse response) {
-                if (response != null) {
-                    Log.e(Constants.TAG, response.toString());
-                } else {
-                    Log.e(Constants.TAG, "Place owner update error has null response.");
+            App.getRestManager().sendPlaceUpdateToServer(placeID, Constants.PlaceAction.Capture, data, new RequestCallback() {
+                @Override
+                public void onResponseCallback(JSONObject response) {
+                    if (response != null) {
+                        Log.d(Constants.TAG, response.toString());
+                    } else {
+                        Log.e(Constants.TAG, "Place owner update has null response.");
+                    }
                 }
-            }
-        });
+
+                @Override
+                public void onErrorCallback(NetworkResponse response) {
+                    if (response != null) {
+                        Log.e(Constants.TAG, response.toString());
+                    } else {
+                        Log.e(Constants.TAG, "Place owner update error has null response.");
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return place;
     }
@@ -410,17 +421,49 @@ public class PlacesManager extends DataManager {
         }
     }
 
+    /**
+     * Deletes owner id from the place owners.
+     *
+     * @param placeID - id of the place to update.
+     * @param ownerID - owner to remove
+     * @return true if succeeded.
+     */
     public boolean deleteOwnership(String placeID, String ownerID) {
-
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
         try {
-
             String where = COLUMN_PLACE_OWNER_ID + " = ? and " + COLUMN_PLACE_ID + " = ?";
             String[] conditions = new String[]{ownerID, placeID};
-            return db.delete(TABLE_PLACES_OWNERS, where, conditions) != 0;
 
-        }catch (SQLException e){
+            try {
+                JSONObject data = new JSONObject();
+                data.put("userId", App.getUserManager().getCurrentUser().getId());
+                data.put("otherUserId", ownerID);
+
+                App.getRestManager().sendPlaceUpdateToServer(placeID, Constants.PlaceAction.Remove, data, new RequestCallback() {
+                    @Override
+                    public void onResponseCallback(JSONObject response) {
+                        if (response != null) {
+                            Log.d(Constants.TAG, response.toString());
+                        } else {
+                            Log.e(Constants.TAG, "Place owner update has null response.");
+                        }
+                    }
+
+                    @Override
+                    public void onErrorCallback(NetworkResponse response) {
+                        if (response != null) {
+                            Log.e(Constants.TAG, response.toString());
+                        } else {
+                            Log.e(Constants.TAG, "Place owner update error has null response.");
+                        }
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return db.delete(TABLE_PLACES_OWNERS, where, conditions) != 0;
+        } catch (SQLException e){
             Log.e(Constants.TAG, "PlacesManager: error querying request. " + e.getMessage());
             return false;
         }
