@@ -288,10 +288,15 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
             case R.id.captureButton:
 
                 if (!mPlaceIDtoCapture.isEmpty()) {
-                    App.getPlacesManager().addOwnerToPlace(mPlaceIDtoCapture, App.getUserManager().getCurrentUser().getId());
-                    App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
 
+                    // adds Loged-in user into Place's owners list
+                    App.getPlacesManager().addOwnerToPlace(mPlaceIDtoCapture, App.getUserManager().getCurrentUser().getId());
+                    // Changes Marker on the map to replicate current place state.
+                    App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(mPlaceIDtoCapture, true/*captured*/);
+                    // instruct to hide actions buttons
+                    App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
                     Toast.makeText(getContext(), "Place has been captured", Toast.LENGTH_SHORT).show();
+                    Log.i(Constants.TAG, "Place with ID: " + mPlaceIDtoCapture + " has been caputed.");
                 }
 
                 break;

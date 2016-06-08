@@ -49,6 +49,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Novosad on 3/29/16.
@@ -69,6 +71,7 @@ public class LocationManager implements LocationListener {
     private boolean mIsUpdatingLocationProcessStopped = false;
     private Circle mViewCircle, mActionCircle;
     private LatLng mWestSouthPoint, mNorthEastPoint;
+    private Map<String, Marker> mPlaceMarkers;
 
     private MarkerInfoAdapter mMarkerInfoAdapter = new MarkerInfoAdapter();
 
@@ -346,11 +349,7 @@ public class LocationManager implements LocationListener {
 
             App.getPlacesManager().addPlace(place_inner);
 
-            googleMap.addMarker(new MarkerOptions()
-                    .position(place.getLatLng())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-                    .title(String.format("%s", place.getName()))
-                    .snippet(place_inner.getJSONPlaceInfo()));
+            rememberAndDisplayMarker(place_inner, BitmapDescriptorFactory.HUE_ORANGE);
         }
     }
 
@@ -404,9 +403,14 @@ public class LocationManager implements LocationListener {
             currentUserMarker.remove();
         }
 
-        String title = App.getUserManager().getCurrentUser().getName();
-        String profileId = App.getUserManager().getCurrentUser().getId();
-        String userJSONIdentifier = App.getUserManager().getCurrentUser().getJSONUserInfo();
+        User currentUser = App.getUserManager().getCurrentUser();
+        if (currentUser == null) {
+            return;
+        }
+
+        String title = currentUser.getName();
+        String profileId = currentUser.getId();
+        String userJSONIdentifier = currentUser.getJSONUserInfo();
 
         // TODO: Replace title with user ID or name
         currentUserMarker = googleMap.addMarker(new MarkerOptions()
@@ -585,35 +589,45 @@ public class LocationManager implements LocationListener {
             } else {
                 try {
                     String responseStatus = response.getString("result");
-                    if (!responseStatus.equals("success")) {
-                        Log.e(Constants.TAG, "Not success response status.");
-                    } else {
-                        Log.e(Constants.TAG, response.toString());
-                        JSONArray array = response.getJSONArray("data");
-                        for (int i = 0; i < array.length(); ++i) {
-                            JSONObject place = array.getJSONObject(i);
-                            if (!place.has("placeId") || !place.has("name") || !place.has("location") || !place.has("owners")) {
-                                Log.e(Constants.TAG, "Incorrect place info passed from the server.");
-                                continue;
+                    switch (responseStatus) {
+
+                        case "success": {
+
+                            Log.e(Constants.TAG, response.toString());
+                            JSONArray array = response.getJSONArray("data");
+                            for (int i = 0; i < array.length(); ++i) {
+                                JSONObject place = array.getJSONObject(i);
+                                if (!place.has("placeId") || !place.has("name") || !place.has("location") || !place.has("owners")) {
+                                    Log.e(Constants.TAG, "Incorrect place info passed from the server.");
+                                    continue;
+                                }
+
+                                String placeID   = place.getString("placeId");
+                                String placeName = place.getString("name");
+                                LatLng coordinates = new LatLng(place.getJSONObject("location").getJSONArray("coordinates").getDouble(1),
+                                        place.getJSONObject("location").getJSONArray("coordinates").getDouble(0));
+
+                                GamePlace gamePlace = new GamePlace(placeID, placeName, coordinates);
+                                App.getPlacesManager().addPlace(gamePlace);
+
+                                JSONArray owners = place.getJSONArray("owners");
+                                for (int j = 0; j < owners.length(); ++j) {
+                                    App.getPlacesManager().addOwnerToPlace(placeID, owners.getString(j));
+                                }
                             }
 
-                            String placeID   = place.getString("placeId");
-                            String placeName = place.getString("name");
-                            LatLng coordinates = new LatLng(place.getJSONObject("location").getJSONArray("coordinates").getDouble(1),
-                                    place.getJSONObject("location").getJSONArray("coordinates").getDouble(0));
+                            displayPlaceMarkerFromDB(true);
+                            App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_REQUEST_PLACES));
 
-                            GamePlace gamePlace = new GamePlace(placeID, placeName, coordinates);
-                            App.getPlacesManager().addPlace(gamePlace);
-
-                            JSONArray owners = place.getJSONArray("owners");
-                            for (int j = 0; j < owners.length(); ++j) {
-                                App.getPlacesManager().addOwnerToPlace(placeID, owners.getString(j));
-                            }
+                            break;
                         }
 
-                        displayPlaceMarkerFromDB(true);
-                        App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_REQUEST_PLACES));
+                        default: {
+                            Log.e(Constants.TAG, "Not success response status.");
+                            break;
+                        }
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -674,28 +688,35 @@ public class LocationManager implements LocationListener {
         if (place_inner == null)
             return;
 
+        if (mPlaceMarkers == null) {
+            mPlaceMarkers = new HashMap<>();
+        }
+
+        mPlaceMarkers.clear();
+
         for (GamePlace pl : place_inner) {
 
             String currentUserID = App.getUserManager().getCurrentUser().getId();
             float placeIconColor = pl.hasOwner(currentUserID) == true ? BitmapDescriptorFactory.HUE_YELLOW : BitmapDescriptorFactory.HUE_RED;
 
-            googleMap.addMarker(new MarkerOptions()
-                    .position(pl.getPlacePos())
-                    .icon(BitmapDescriptorFactory.defaultMarker(placeIconColor))
-                    .title(String.format("%s", pl.getPlaceName()))
-                    .snippet(pl.getJSONPlaceInfo()));
+            rememberAndDisplayMarker(pl, placeIconColor);
         }
 
     }
 
     private void displayUserActionAndViewCircles() {
 
+        User currentUser = App.getUserManager().getCurrentUser();
+        if (currentUser == null) {
+            return;
+        }
+
         if (mViewCircle == null) {
 
             CircleOptions viewCircle = new CircleOptions()
                     .fillColor(Constants.VIEW_CIRCLE_SHADE_COLOR)
                     .strokeColor(Constants.VIEW_CIRCLE_STOKE_COLOR)
-                    .radius(App.getUserManager().getCurrentUser().getViewRadius())
+                    .radius(currentUser.getViewRadius())
                     .center(Utils.latLngFromLocation(currentLocation))
                     .strokeWidth(Constants.VIEW_CIRCLE_BORDER_SIZE);
 
@@ -708,7 +729,7 @@ public class LocationManager implements LocationListener {
             CircleOptions actionCircle = new CircleOptions()
                     .fillColor(Constants.ACTION_CIRCLE_SHADE_COLOR)
                     .strokeColor(Constants.ACTION_CIRCLE_STOKE_COLOR)
-                    .radius(App.getUserManager().getCurrentUser().getActionRadius())
+                    .radius(currentUser.getActionRadius())
                     .center(Utils.latLngFromLocation(currentLocation))
                     .strokeWidth(Constants.ACTION_CIRCLE_BORDER_SIZE);
 
@@ -757,5 +778,39 @@ public class LocationManager implements LocationListener {
         fixCameraAtLocation(mTempUsersPlaceMarker.getPosition());
 
         mIsUpdatingLocationProcessStopped = true;
+    }
+
+    /**
+     * Creates Marker for the place and remembers the marker locally. In case
+     * of further changes.
+     *
+     * @param place - place for which marker to be created
+     * @param color - Marker color
+     */
+    private void rememberAndDisplayMarker(GamePlace place, float color) {
+
+        Marker marker = googleMap.addMarker(new MarkerOptions()
+                .position(place.getPlacePos())
+                .icon(BitmapDescriptorFactory.defaultMarker(color))
+                .title(String.format("%s", place.getPlaceName()))
+                .snippet(place.getJSONPlaceInfo()));
+
+        mPlaceMarkers.put(place.getPlaceID(), marker);
+    }
+
+    /**
+     * Changes marker color based on it's state. Red for regular markers; Yellow for captured.
+     *
+     * @param placeID  - place for which marker to be changed
+     * @param captured - indicates if marker becomes captured / uncaptured
+     */
+    public void markPlaceMarkerAsCapturedUncaptured(String placeID, boolean captured) {
+
+        if (mPlaceMarkers.containsKey(placeID)) {
+
+            Marker marker = mPlaceMarkers.get(placeID);
+            marker.setIcon(BitmapDescriptorFactory.defaultMarker(captured ? BitmapDescriptorFactory.HUE_YELLOW : BitmapDescriptorFactory.HUE_RED));
+
+        }
     }
 }

@@ -198,7 +198,10 @@ public class PlacesInfoDialog extends DialogFragment {
             if (itemIndex != -1) {
                 mInfoAdapter.removeItem(itemIndex);
                 mInfoAdapter.notifyDataSetChanged();
+
                 App.getPlacesManager().deleteOwnership(mPlaceID, ownerID);
+                App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(mPlaceID, false/*uncaptured*/);
+                Log.i(Constants.TAG, "Place with ID: " + mPlaceID + " has been uncaptured locally.");
 
                 if (mCaptionView != null) {
                     mCaptionView.setText(getDialogCaption(mInfoAdapter.getCount()));
