@@ -130,7 +130,7 @@ public class PlacesInfoDialog extends DialogFragment {
         LatLng currentPos = Utils.latLngFromLocation(App.getLocationManager().getCurrentLocation());
         boolean isPlaceWithinUsersActionView = (Utils.distanceBetweenLocations(currentPos, place.getPlacePos()) <= currentUser.getActionRadius());
 
-        mInfoAdapter = new PlaceInfoAdapter(getContext(), isPlaceWithinUsersActionView);
+        mInfoAdapter = new PlaceInfoAdapter(getContext(), isPlaceWithinUsersActionView, mPlaceID);
         ListView ownersList = (ListView)view.findViewById(R.id.ownersList);
         ownersList.setAdapter(mInfoAdapter);
 
@@ -192,22 +192,18 @@ public class PlacesInfoDialog extends DialogFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle extra = intent.getExtras();
-            int itemIndex = extra.getInt(PlaceInfoAdapter.ITEM_INDEX, -1);
-            String ownerID = extra.getString(Constants.USER_ID);
+            String ownerId = extra.getString(Constants.USER_ID);
 
-            if (itemIndex != -1) {
-                mInfoAdapter.removeItem(itemIndex);
-                mInfoAdapter.notifyDataSetChanged();
+            mInfoAdapter.removeItemByDataString(ownerId);
+            mInfoAdapter.notifyDataSetChanged();
 
-                App.getPlacesManager().deleteOwnership(mPlaceID, ownerID);
-                if (ownerID.equals(App.getUserManager().getCurrentUser().getId())) {
-                    App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(mPlaceID, false/*uncaptured*/);
-                }
-                Log.i(Constants.TAG, "Place with ID: " + mPlaceID + " has been uncaptured locally.");
+            App.getPlacesManager().deleteOwnership(mPlaceID, ownerId);
+            if (ownerId.equals(App.getUserManager().getCurrentUser().getId())) {
+                App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(mPlaceID, false/*uncaptured*/);
+            }
 
-                if (mCaptionView != null) {
-                    mCaptionView.setText(getDialogCaption(mInfoAdapter.getCount()));
-                }
+            if (mCaptionView != null) {
+                mCaptionView.setText(getDialogCaption(mInfoAdapter.getCount()));
             }
         }
     };

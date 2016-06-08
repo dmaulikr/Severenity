@@ -13,6 +13,9 @@ import com.nosad.sample.R;
 import com.nosad.sample.utils.common.Constants;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Andriy on 6/6/2016.
  */
@@ -21,10 +24,12 @@ public class PlaceInfoAdapter extends InfoAdapter {
     public static final String ITEM_INDEX = "Index";
 
     private boolean mObjectWithinActionView;
+    private String mPlaceId;
 
-    public PlaceInfoAdapter(Context ctx, boolean objectWithinActionView) {
+    public PlaceInfoAdapter(Context ctx, boolean objectWithinActionView, String placeId) {
         super(ctx);
 
+        mPlaceId = placeId;
         mObjectWithinActionView = objectWithinActionView;
     }
 
@@ -52,10 +57,15 @@ public class PlaceInfoAdapter extends InfoAdapter {
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(Constants.INTENT_FILTER_DELETE_OWNER);
-                    intent.putExtra(Constants.USER_ID, placeData.dataID);
-                    intent.putExtra(ITEM_INDEX, position);
-                    App.getLocalBroadcastManager().sendBroadcast(intent);
+                    try {
+                        JSONObject data = new JSONObject();
+                        data.put("userId", App.getUserManager().getCurrentUser().getId());
+                        data.put("otherUserId", placeData.dataID);
+
+                        App.getWebSocketManager().sendPlaceUpdateToServer(mPlaceId, Constants.PlaceAction.Remove, data);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }

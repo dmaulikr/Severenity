@@ -87,7 +87,7 @@ public class Constants {
     public final static Locale LOCALE = Locale.US;
 
     public final static float MIN_ZOOM_LEVEL = 20.0f;
-    public final static float MAX_ZOOM_LEVEL = 19.0f;
+    public final static float MAX_ZOOM_LEVEL = 18.0f;
 
     /**
      * Connection constants

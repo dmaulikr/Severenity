@@ -1,10 +1,12 @@
 package com.nosad.sample.engine.network;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphResponse;
@@ -159,13 +161,63 @@ public class WebSocketManager {
             }
         });
 
-        // subscribe for location events
+        // subscribe for place updates events
         socket.on(Constants.SOCKET_EVENT_UPDATE_PLACE, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 for (Object arg : args) {
-                    JSONObject jsonObject = (JSONObject) arg;
-                    Log.e(Constants.TAG, "Updated place event: " + jsonObject.toString());
+                    JSONObject response = (JSONObject) arg;
+                    Log.e(Constants.TAG, "Updated place event: " + response.toString());
+                    try {
+                        String result = response.getString("result");
+                        if (!result.equalsIgnoreCase("success")) {
+                            return;
+                        }
+
+                        final JSONObject data = response.getJSONObject("data");
+                        String action = data.getString("action");
+                        final String by = data.getString("by");
+                        final String placeId = data.getJSONObject("place").getString("placeId");
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        Runnable runnable = null;
+                        switch (action) {
+                            case "capture": // Constants.PlaceAction
+                                runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        App.getPlacesManager().addOwnerToPlace(placeId, by);
+                                        // Changes Marker on the map to replicate current place state.
+                                        App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(placeId, true/*captured*/);
+                                        // instruct to hide actions buttons
+                                        App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
+                                        Toast.makeText(mContext, "Place has been captured", Toast.LENGTH_SHORT).show();
+                                    }
+                                };
+                                break;
+                            case "remove": // Constants.PlaceAction
+                                runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            String removedOwnerId = data.getString("removed");
+                                            Intent intent = new Intent(Constants.INTENT_FILTER_DELETE_OWNER);
+                                            intent.putExtra(Constants.USER_ID, removedOwnerId);
+                                            App.getLocalBroadcastManager().sendBroadcast(intent);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                };
+                                break;
+                        }
+
+                        if (runnable != null) {
+                            handler.post(runnable);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

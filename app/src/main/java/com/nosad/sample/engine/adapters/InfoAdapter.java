@@ -45,9 +45,22 @@ public abstract class InfoAdapter extends BaseAdapter {
         mData.add(data);
     }
 
-    public void removeItem(int position) {mData.remove(position);};
+    public void removeItem(int position) {
+        mData.remove(position);
+    }
 
-    public void setData(ArrayList<InfoData> data) {mData = data; }
+    public void removeItemByDataString(String dataString) {
+        for (int i = 0; i < mData.size(); i++) {
+            if (mData.get(i).dataString.equals(dataString)) {
+                removeItem(i);
+                break;
+            }
+        }
+    }
+
+    public void setData(ArrayList<InfoData> data) {
+        mData = data;
+    }
 
     @Override
     public abstract View getView(final int position, View convertView, ViewGroup parent);

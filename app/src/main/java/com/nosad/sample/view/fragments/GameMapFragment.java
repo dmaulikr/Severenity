@@ -24,18 +24,11 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.facebook.HttpMethod;
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
@@ -45,18 +38,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.ChipAdapter;
-import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.utils.CustomTypefaceSpan;
-import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
-import com.nosad.sample.view.Dialogs.PlacesInfoDialog;
 import com.nosad.sample.view.activities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import okhttp3.internal.Util;
 
 /**
  * Handles user with map activity (actual game)
@@ -289,14 +277,15 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
 
                 if (!mPlaceIDtoCapture.isEmpty()) {
 
-                    // adds Loged-in user into Place's owners list
-                    App.getPlacesManager().addOwnerToPlace(mPlaceIDtoCapture, App.getUserManager().getCurrentUser().getId());
-                    // Changes Marker on the map to replicate current place state.
-                    App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(mPlaceIDtoCapture, true/*captured*/);
-                    // instruct to hide actions buttons
-                    App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
-                    Toast.makeText(getContext(), "Place has been captured", Toast.LENGTH_SHORT).show();
-                    Log.i(Constants.TAG, "Place with ID: " + mPlaceIDtoCapture + " has been captured.");
+                    // adds Logged-in user into Place's owners list
+                    JSONObject data = new JSONObject();
+                    try {
+                        data.put("userId", App.getUserManager().getCurrentUser().getId());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    App.getWebSocketManager().sendPlaceUpdateToServer(mPlaceIDtoCapture, Constants.PlaceAction.Capture, data);
                 }
 
                 break;

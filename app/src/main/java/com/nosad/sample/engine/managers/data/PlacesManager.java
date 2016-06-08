@@ -265,15 +265,6 @@ public class PlacesManager extends DataManager {
 
         place.addOwner(ownerID);
 
-        try {
-            JSONObject data = new JSONObject();
-            data.put("userId", ownerID);
-
-            App.getWebSocketManager().sendPlaceUpdateToServer(placeID, Constants.PlaceAction.Capture, data);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         return place;
     }
 
@@ -415,16 +406,6 @@ public class PlacesManager extends DataManager {
         try {
             String where = COLUMN_PLACE_OWNER_ID + " = ? and " + COLUMN_PLACE_ID + " = ?";
             String[] conditions = new String[]{ownerID, placeID};
-
-            try {
-                JSONObject data = new JSONObject();
-                data.put("userId", App.getUserManager().getCurrentUser().getId());
-                data.put("otherUserId", ownerID);
-
-                App.getWebSocketManager().sendPlaceUpdateToServer(placeID, Constants.PlaceAction.Remove, data);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
             return db.delete(TABLE_PLACES_OWNERS, where, conditions) != 0;
         } catch (SQLException e){
