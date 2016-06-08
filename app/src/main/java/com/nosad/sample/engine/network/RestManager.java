@@ -228,7 +228,7 @@ public class RestManager {
         JSONObject requestData = new JSONObject();
         try {
             requestData.put("placeId", placeId);
-            requestData.put("action", Constants.PlaceAction.Capture.toString());
+            requestData.put("action", action.toString());
             requestData.put("data", data);
             App.getRestManager().createRequest(Constants.REST_API_PLACES, Request.Method.PUT, requestData, callback);
         } catch (JSONException e) {

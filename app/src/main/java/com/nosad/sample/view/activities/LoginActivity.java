@@ -285,8 +285,11 @@ public class LoginActivity extends AppCompatActivity {
                 user.setId(AccessToken.getCurrentAccessToken().getUserId());
                 try {
                     JSONObject data = response.getJSONObject();
-                    if (data.has("name") && data.has("id") && data.has("email")) {
-                        user.setEmail(data.getString("email"));
+                    if (data.has("name") && data.has("id")) {
+                        if (data.has("email")) {
+                            user.setEmail(data.getString("email"));
+                        }
+
                         user.setName(data.getString("name"));
 
                         App.getRestManager().createUser(user, new RequestCallback() {

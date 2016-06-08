@@ -129,13 +129,15 @@ public class WebSocketManager {
                         };
 
                         if (App.getUserManager().getUserById(id) == null) {
-                            FacebookUtils.getFacebookUserById(id, "id,public_profile,name,email", new FacebookUtils.Callback() {
+                            FacebookUtils.getFacebookUserById(id, "id, name, email", new FacebookUtils.Callback() {
                                 @Override
                                 public void onResponse(GraphResponse response) {
                                     try {
                                         JSONObject data = response.getJSONObject();
-                                        if (data.has("name") && data.has("id") && data.has("email")) {
-                                            user.setEmail(data.getString("email"));
+                                        if (data.has("name") && data.has("id")) {
+                                            if (data.has("email")) {
+                                                user.setEmail(data.getString("email"));
+                                            }
                                             user.setName(data.getString("name"));
 
                                             App.getUserManager().addUser(user);
