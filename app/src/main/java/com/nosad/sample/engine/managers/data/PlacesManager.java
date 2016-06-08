@@ -269,25 +269,7 @@ public class PlacesManager extends DataManager {
             JSONObject data = new JSONObject();
             data.put("userId", ownerID);
 
-            App.getRestManager().sendPlaceUpdateToServer(placeID, Constants.PlaceAction.Capture, data, new RequestCallback() {
-                @Override
-                public void onResponseCallback(JSONObject response) {
-                    if (response != null) {
-                        Log.d(Constants.TAG, response.toString());
-                    } else {
-                        Log.e(Constants.TAG, "Place owner update has null response.");
-                    }
-                }
-
-                @Override
-                public void onErrorCallback(NetworkResponse response) {
-                    if (response != null) {
-                        Log.e(Constants.TAG, response.toString());
-                    } else {
-                        Log.e(Constants.TAG, "Place owner update error has null response.");
-                    }
-                }
-            });
+            App.getWebSocketManager().sendPlaceUpdateToServer(placeID, Constants.PlaceAction.Capture, data);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -439,25 +421,7 @@ public class PlacesManager extends DataManager {
                 data.put("userId", App.getUserManager().getCurrentUser().getId());
                 data.put("otherUserId", ownerID);
 
-                App.getRestManager().sendPlaceUpdateToServer(placeID, Constants.PlaceAction.Remove, data, new RequestCallback() {
-                    @Override
-                    public void onResponseCallback(JSONObject response) {
-                        if (response != null) {
-                            Log.d(Constants.TAG, response.toString());
-                        } else {
-                            Log.e(Constants.TAG, "Place owner update has null response.");
-                        }
-                    }
-
-                    @Override
-                    public void onErrorCallback(NetworkResponse response) {
-                        if (response != null) {
-                            Log.e(Constants.TAG, response.toString());
-                        } else {
-                            Log.e(Constants.TAG, "Place owner update error has null response.");
-                        }
-                    }
-                });
+                App.getWebSocketManager().sendPlaceUpdateToServer(placeID, Constants.PlaceAction.Remove, data);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

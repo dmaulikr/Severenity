@@ -40,6 +40,7 @@ import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.engine.managers.messaging.RegistrationIntentService;
 import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.engine.network.RestManager;
+import com.nosad.sample.engine.network.WebSocketManager;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.FacebookUtils;
 import com.nosad.sample.utils.Utils;
@@ -242,6 +243,7 @@ public class LoginActivity extends AppCompatActivity {
                                         App.getUserManager().setCurrentUser(newUser);
                                     }
 
+                                    App.getWebSocketManager().sendAuthenticatedToServer();
                                     startActivity(mMainActivityIntent);
                                 }
                                 break;
@@ -438,9 +440,10 @@ public class LoginActivity extends AppCompatActivity {
 
                 String result = intent.getStringExtra("result");
                 if (result.equals("success")) {
+                    App.getWebSocketManager().sendAuthenticatedToServer();
                     startActivity(mMainActivityIntent);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Something went wrong :-(", Toast.LENGTH_SHORT).show();
+                    Log.wtf(Constants.TAG, "Critical error on the server.");
                 }
             }
         }

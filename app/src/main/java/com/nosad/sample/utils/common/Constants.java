@@ -101,6 +101,8 @@ public class Constants {
 
     public final static String SOCKET_EVENT_LOCATION = "location";
     public final static String SOCKET_EVENT_MESSAGE = "chat message";
+    public final static String SOCKET_EVENT_UPDATE_PLACE = "update place";
+    public final static String SOCKET_EVENT_AUTHENTICATE = "authenticate";
 
     /**
      * RESTful APIs constants

@@ -296,7 +296,7 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
                     // instruct to hide actions buttons
                     App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
                     Toast.makeText(getContext(), "Place has been captured", Toast.LENGTH_SHORT).show();
-                    Log.i(Constants.TAG, "Place with ID: " + mPlaceIDtoCapture + " has been caputed.");
+                    Log.i(Constants.TAG, "Place with ID: " + mPlaceIDtoCapture + " has been captured.");
                 }
 
                 break;

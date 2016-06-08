@@ -419,8 +419,6 @@ public class LocationManager implements LocationListener {
                 .title(title)
                 .snippet(userJSONIdentifier));
 
-        Log.d(Constants.TAG, "Current location: " + Utils.latLngFromLocation(location));
-
         if (!isCameraFixed) {
             googleMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), currentZoom)
@@ -503,7 +501,8 @@ public class LocationManager implements LocationListener {
                             }
                         }
 
-                        if (metersPassed >= Constants.AVERAGE_WALKING_SPEED && metersPassed <= Constants.AVERAGE_RUNNING_SPEED) {
+                        // Use very fast or average walking speed.
+                        if (metersPassed >= Constants.AVERAGE_WALKING_SPEED && metersPassed <= Constants.MIN_RUNNING_SPEED / 2) {
                             updateUserInfo(Double.valueOf(metersPassed).intValue());
                         }
                     } catch (JSONException e) {

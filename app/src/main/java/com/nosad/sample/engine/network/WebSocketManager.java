@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Location;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphResponse;
@@ -157,6 +158,17 @@ public class WebSocketManager {
                 }
             }
         });
+
+        // subscribe for location events
+        socket.on(Constants.SOCKET_EVENT_UPDATE_PLACE, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                for (Object arg : args) {
+                    JSONObject jsonObject = (JSONObject) arg;
+                    Log.e(Constants.TAG, "Updated place event: " + jsonObject.toString());
+                }
+            }
+        });
     }
 
     /**
@@ -176,7 +188,7 @@ public class WebSocketManager {
      * Sends location specified via mSocket if mSocket is connected.
      * Message structure is:
      *
-     * @param location
+     * @param location - current location of the user
      */
     public void sendLocationToServer(Location location) {
         if (!mSocket.connected()) {
@@ -189,6 +201,46 @@ public class WebSocketManager {
             jsonObject.put("lat", location.getLatitude());
             jsonObject.put("lng", location.getLongitude());
             mSocket.emit("location", jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends API request to add owner to the list of owners for the place
+     *
+     * @param action - action to perform.
+     * @param placeId - place captured.
+     * @param data - data to pass with action.
+     */
+    public void sendPlaceUpdateToServer(String placeId, Constants.PlaceAction action, JSONObject data) {
+        if (!mSocket.connected()) {
+            return;
+        }
+
+        JSONObject requestData = new JSONObject();
+        try {
+            requestData.put("placeId", placeId);
+            requestData.put("action", action.toString());
+            requestData.put("data", data);
+            mSocket.emit(Constants.SOCKET_EVENT_UPDATE_PLACE, requestData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends authenticated event to the server so new session record is registered.
+     */
+    public void sendAuthenticatedToServer() {
+        if (!mSocket.connected()) {
+            return;
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("userId", AccessToken.getCurrentAccessToken().getUserId());
+            mSocket.emit(Constants.SOCKET_EVENT_AUTHENTICATE, jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }
