@@ -344,7 +344,7 @@ public class LocationManager implements LocationListener {
                     place.getName().toString(),
                     place.getLatLng());
 
-            App.getPlacesManager().addPlace(place_inner);
+            App.getPlacesManager().addPlace(place_inner, true /*send to the server*/);
 
             rememberAndDisplayMarker(place_inner, BitmapDescriptorFactory.HUE_ORANGE);
         }
@@ -605,7 +605,7 @@ public class LocationManager implements LocationListener {
                                         place.getJSONObject("location").getJSONArray("coordinates").getDouble(0));
 
                                 GamePlace gamePlace = new GamePlace(placeID, placeName, coordinates);
-                                App.getPlacesManager().addPlace(gamePlace);
+                                App.getPlacesManager().addPlace(gamePlace, false /*do not send to the server*/);
 
                                 JSONArray owners = place.getJSONArray("owners");
                                 for (int j = 0; j < owners.length(); ++j) {

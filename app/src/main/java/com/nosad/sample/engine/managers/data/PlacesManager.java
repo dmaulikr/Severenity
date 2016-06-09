@@ -174,7 +174,14 @@ public class PlacesManager extends DataManager {
         }
     }
 
-    public boolean addPlace(GamePlace place) {
+    /**
+     * Adds places into local DB and sends the data to the server.
+     *
+     * @param place         - indicates the place to be stored
+     * @param storeOnServer - indicates if this place should be also stored in the server.
+     * @return  true is success, false otherwise
+     */
+    public boolean addPlace(GamePlace place, boolean storeOnServer) {
 
         if (findPlaceByID(place.getPlaceID()) != null) {
             Log.e(Constants.TAG, "PlacesManager: place with ID " + place.getPlaceID() + " already exists." );
@@ -203,25 +210,28 @@ public class PlacesManager extends DataManager {
             db.close();
         }
 
-        App.getRestManager().sendPlaceToServer(place, new RequestCallback() {
-            @Override
-            public void onResponseCallback(JSONObject response) {
-                if (response != null) {
-                    Log.d(Constants.TAG, response.toString());
-                } else {
-                    Log.e(Constants.TAG, "Place add has null response.");
-                }
-            }
+        if (storeOnServer) {
 
-            @Override
-            public void onErrorCallback(NetworkResponse response) {
-                if (response != null) {
-                    Log.e(Constants.TAG, response.toString());
-                } else {
-                    Log.e(Constants.TAG, "Place add error has null response.");
+            App.getRestManager().sendPlaceToServer(place, new RequestCallback() {
+                @Override
+                public void onResponseCallback(JSONObject response) {
+                    if (response != null) {
+                        Log.d(Constants.TAG, response.toString());
+                    } else {
+                        Log.e(Constants.TAG, "Place add has null response.");
+                    }
                 }
-            }
-        });
+
+                @Override
+                public void onErrorCallback(NetworkResponse response) {
+                    if (response != null) {
+                        Log.e(Constants.TAG, response.toString());
+                    } else {
+                        Log.e(Constants.TAG, "Place add error has null response.");
+                    }
+                }
+            });
+        }
         return true;
     }
 
