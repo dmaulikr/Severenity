@@ -41,7 +41,8 @@ public class GCMListener extends GcmListenerService {
                 Utils.sendNotification(message, this, messageIntent, 0);
                 break;
             case "quest":
-                Intent questIntent = new Intent(GCMManager.QUEST_RECEIVED);
+                Intent questIntent = new Intent(this, MainActivity.class);
+                questIntent.setAction(GCMManager.QUEST_RECEIVED);
                 String quest = data.getString("quest");
 
                 if (quest == null) {
