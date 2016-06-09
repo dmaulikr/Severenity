@@ -51,7 +51,7 @@ public abstract class InfoAdapter extends BaseAdapter {
 
     public void removeItemByDataString(String dataString) {
         for (int i = 0; i < mData.size(); i++) {
-            if (mData.get(i).dataString.equals(dataString)) {
+            if (mData.get(i).dataID.equals(dataString)) {
                 removeItem(i);
                 break;
             }
