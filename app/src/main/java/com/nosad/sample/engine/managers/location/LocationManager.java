@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -61,7 +60,7 @@ public class LocationManager implements LocationListener {
     private GoogleApiClient googleApiClient;
     private float currentZoom = (Constants.MAX_ZOOM_LEVEL + Constants.MIN_ZOOM_LEVEL) / 2 + 1.0f;
 
-    private Marker currentUserMarker, otherUserMarker, mTempUsersPlaceMarker;
+    private Marker currentUserMarker, mTempUsersPlaceMarker;
 
     private GoogleMap googleMap;
     private LocationRequest locationRequest;
@@ -71,7 +70,8 @@ public class LocationManager implements LocationListener {
     private boolean mIsUpdatingLocationProcessStopped = false;
     private Circle mViewCircle, mActionCircle;
     private LatLng mWestSouthPoint, mNorthEastPoint;
-    private Map<String, Marker> mPlaceMarkers;
+    private Map<String, Marker> mPlaceMarkersList;
+    private Map<String, Marker> mOtherUsersList;
 
     private MarkerInfoAdapter mMarkerInfoAdapter = new MarkerInfoAdapter();
 
@@ -250,16 +250,24 @@ public class LocationManager implements LocationListener {
      * @param latLng - location to display user at
      */
     public void displayUserAt(User user, LatLng latLng) {
-        if (otherUserMarker != null) {
-            otherUserMarker.remove();
+        if (mOtherUsersList == null) {
+            mOtherUsersList = new HashMap<>();
         }
 
-        otherUserMarker = googleMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
-                .title(user.getName())
-                .snippet(user.getJSONUserInfo()));
+        if (!mOtherUsersList.containsKey(user.getId())) {
 
+            mOtherUsersList.put(user.getId(),
+                    googleMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
+                    .title(user.getName())
+                    .snippet(user.getJSONUserInfo())));
+        }
+        else {
+            Marker marker = mOtherUsersList.get(user.getId());
+            marker.setPosition(latLng);
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())));
+        }
     }
 
     public void displayPlaceMarker(Place place) {
@@ -437,14 +445,11 @@ public class LocationManager implements LocationListener {
 
         if (mIsUpdatingLocationProcessStopped) {
             currentLocation = location;
-            Toast.makeText(App.getInstance(), "Updating process paused.", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (mLocationOfLastSquareUpdate != null &&
                 location.distanceTo(mLocationOfLastSquareUpdate) >= Constants.DISTANCE_TO_UPDATE_POSITIONS_CONSTS) {
-
-            Toast.makeText(App.getInstance(), "Going to update square", Toast.LENGTH_SHORT).show();
 
             googleMap.clear();
             mViewCircle = null;
@@ -685,11 +690,11 @@ public class LocationManager implements LocationListener {
         if (place_inner == null)
             return;
 
-        if (mPlaceMarkers == null) {
-            mPlaceMarkers = new HashMap<>();
+        if (mPlaceMarkersList == null) {
+            mPlaceMarkersList = new HashMap<>();
         }
 
-        mPlaceMarkers.clear();
+        mPlaceMarkersList.clear();
 
         for (GamePlace pl : place_inner) {
 
@@ -786,13 +791,12 @@ public class LocationManager implements LocationListener {
      */
     private void rememberAndDisplayMarker(GamePlace place, float color) {
 
-        Marker marker = googleMap.addMarker(new MarkerOptions()
-                .position(place.getPlacePos())
-                .icon(BitmapDescriptorFactory.defaultMarker(color))
-                .title(String.format("%s", place.getPlaceName()))
-                .snippet(place.getJSONPlaceInfo()));
-
-        mPlaceMarkers.put(place.getPlaceID(), marker);
+        mPlaceMarkersList.put(place.getPlaceID(),
+                googleMap.addMarker(new MarkerOptions()
+                        .position(place.getPlacePos())
+                        .icon(BitmapDescriptorFactory.defaultMarker(color))
+                        .title(String.format("%s", place.getPlaceName()))
+                        .snippet(place.getJSONPlaceInfo())));
     }
 
     /**
@@ -803,9 +807,9 @@ public class LocationManager implements LocationListener {
      */
     public void markPlaceMarkerAsCapturedUncaptured(String placeID, boolean captured) {
 
-        if (mPlaceMarkers.containsKey(placeID)) {
+        if (mPlaceMarkersList.containsKey(placeID)) {
 
-            Marker marker = mPlaceMarkers.get(placeID);
+            Marker marker = mPlaceMarkersList.get(placeID);
             marker.setIcon(BitmapDescriptorFactory.defaultMarker(captured ? BitmapDescriptorFactory.HUE_YELLOW : BitmapDescriptorFactory.HUE_RED));
 
         }
