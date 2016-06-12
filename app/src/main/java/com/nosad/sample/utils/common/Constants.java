@@ -174,4 +174,5 @@ public class Constants {
     public static final int WS_DIRECTION    = 7;
 
     public static final int DISTANCE_TO_UPDATE_POSITIONS_CONSTS = 5;
+    public static final int DISTANCE_TO_REQUEST_NEW_PLACES_FROM_THE_SERVER = 100;
 }

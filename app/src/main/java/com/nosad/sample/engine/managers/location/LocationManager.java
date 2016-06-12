@@ -38,6 +38,7 @@ import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.User;
+import com.nosad.sample.entity.UserMarkerInfo;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
@@ -49,6 +50,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -71,7 +73,7 @@ public class LocationManager implements LocationListener {
     private Circle mViewCircle, mActionCircle;
     private LatLng mWestSouthPoint, mNorthEastPoint;
     private Map<String, Marker> mPlaceMarkersList;
-    private Map<String, Marker> mOtherUsersList;
+    private Map<String, UserMarkerInfo> mOtherUsersList;
 
     private MarkerInfoAdapter mMarkerInfoAdapter = new MarkerInfoAdapter();
 
@@ -254,19 +256,39 @@ public class LocationManager implements LocationListener {
             mOtherUsersList = new HashMap<>();
         }
 
+        // remove all markers that has not been updated within 10 seconds
+        Iterator<UserMarkerInfo> it = mOtherUsersList.values().iterator();
+        while (it.hasNext())
+        {
+            Long currentTime = System.currentTimeMillis();
+            it.next();
+            if ((currentTime - ((UserMarkerInfo)it).getLastUpdate()) > 10000/*10 seconds*/);
+                it.remove();
+        }
+
         if (!mOtherUsersList.containsKey(user.getId())) {
 
-            mOtherUsersList.put(user.getId(),
-                    googleMap.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
-                    .title(user.getName())
-                    .snippet(user.getJSONUserInfo())));
+            Location userLocation = new Location("user");
+            userLocation.setLatitude(latLng.latitude);
+            userLocation.setLongitude(latLng.longitude);
+
+            if (currentLocation.distanceTo(userLocation) <= App.getUserManager().getCurrentUser().getViewRadius()) {
+
+                UserMarkerInfo markerInfo = new UserMarkerInfo(googleMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
+                        .title(user.getName())
+                        .snippet(user.getJSONUserInfo())));
+
+                mOtherUsersList.put(user.getId(), markerInfo);
+            }
         }
         else {
-            Marker marker = mOtherUsersList.get(user.getId());
-            marker.setPosition(latLng);
-            marker.setIcon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())));
+             // Check if user is within current user's ViewCircle
+             UserMarkerInfo markerInfo = mOtherUsersList.get(user.getId());
+             markerInfo.getMarker().setPosition(latLng);
+             markerInfo.getMarker().setIcon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())));
+             markerInfo.setUpdateTime(System.currentTimeMillis());
         }
     }
 
