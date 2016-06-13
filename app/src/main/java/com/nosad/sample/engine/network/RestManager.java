@@ -255,6 +255,17 @@ public class RestManager {
     }
 
     /**
+     * Retrieve quests from server based on user id.
+     *
+     * @param userId - quests of this users will be retrieved.
+     * @param callback - callback to execute after places were retrieved.
+     */
+    public void getQuestsFromServer(String userId, RequestCallback callback) {
+        String request = Constants.REST_API_USERS + "/" + userId + Constants.REST_API_QUESTS;
+        App.getRestManager().createRequest(request, Request.Method.GET, null, callback);
+    }
+
+    /**
      * Sends a request to create a speicified {@link User} on the server.
      *
      * @param user - user to create on the server.

@@ -66,6 +66,11 @@ public class QuestsAdapter extends RecyclerView.Adapter<QuestsAdapter.QuestViewH
         return index;
     }
 
+    public void addAll(ArrayList<Quest> quests) {
+        this.quests.addAll(quests);
+        notifyDataSetChanged();
+    }
+
     public void add(Quest object) {
         if (object != null) {
             quests.add(object);

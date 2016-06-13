@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 import com.nosad.sample.App;
 import com.nosad.sample.entity.quest.Quest;
 import com.nosad.sample.utils.Utils;
@@ -14,16 +16,20 @@ import com.nosad.sample.view.activities.MainActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 /**
  * Class is responsible for handling GCM messages from application server.
  * Posts local notification if message was received.
  *
  * Created by Novosad on 5/4/16.
  */
-public class GCMListener extends GcmListenerService {
+public class FCMListener extends FirebaseMessagingService {
     @Override
-    public void onMessageReceived(String from, Bundle data) {
-        String type = data.getString("type");
+    public void onMessageReceived(RemoteMessage message) {
+        String from = message.getFrom();
+        Map<String, String> data = message.getData();
+        String type = data.get("type");
         if (type == null) {
             Log.e(Constants.TAG, "'type' is missing in GCM message.");
             return;
@@ -31,19 +37,19 @@ public class GCMListener extends GcmListenerService {
 
         switch (type) {
             case "message":
-                String message = data.getString("message");
+                String m = data.get("message");
 
                 Intent messageIntent = new Intent(this, MainActivity.class);
                 messageIntent.setAction(GCMManager.MESSAGE_RECEIVED);
-                messageIntent.putExtra("message", message);
+                messageIntent.putExtra("message", m);
 
                 App.getLocalBroadcastManager().sendBroadcast(messageIntent);
-                Utils.sendNotification(message, this, messageIntent, 0);
+                Utils.sendNotification(m, this, messageIntent, 0);
                 break;
             case "quest":
                 Intent questIntent = new Intent(this, MainActivity.class);
                 questIntent.setAction(GCMManager.QUEST_RECEIVED);
-                String quest = data.getString("quest");
+                String quest = data.get("quest");
 
                 if (quest == null) {
                     Log.e(Constants.TAG, "'quest' object is missing in GCM message");
@@ -51,7 +57,7 @@ public class GCMListener extends GcmListenerService {
                 }
 
                 try {
-                    JSONObject questObj = new JSONObject(quest);
+                    JSONObject questObj = new JSONObject();
                     String questType = questObj.getString("type");
                     long id = questObj.getLong("id");
 
@@ -63,8 +69,8 @@ public class GCMListener extends GcmListenerService {
                     questIntent.putExtra("title", questObj.getString("title"));
                     questIntent.putExtra("credits", questObj.getLong("credits"));
                     questIntent.putExtra("experience", questObj.getLong("experience"));
-                    questIntent.putExtra("expirationTime", questObj.getString("expirationTime"));
-                    questIntent.putExtra("status", Quest.QuestStatus.New.ordinal());
+                    questIntent.putExtra("expirationTime", questObj.getString("expirationDate"));
+                    questIntent.putExtra("status", Quest.QuestStatus.Created.ordinal());
 
                     if (questType.equals(Quest.QuestType.Distance.toString())) {
                         questIntent.putExtra("type", Quest.QuestType.Distance.ordinal());

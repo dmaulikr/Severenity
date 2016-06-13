@@ -9,7 +9,7 @@
         android:id="@+id/placeImage"
         android:layout_alignParentTop="false"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="2dp"
+        android:layout_marginStart="2dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         android:src="@drawable/place_marker" />
@@ -18,21 +18,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
         android:id="@+id/placeName"
-        android:layout_toRightOf="@+id/placeImage"
+        android:layout_toEndOf="@+id/placeImage"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="false"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@+id/infoImage" />
+        android:layout_toStartOf="@+id/infoImage" />
 
     <ImageView
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:id="@+id/infoImage"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
         android:layout_centerVertical="true"
         android:src="@drawable/info" />
 

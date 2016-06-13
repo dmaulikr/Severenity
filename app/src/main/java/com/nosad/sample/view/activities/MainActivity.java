@@ -20,13 +20,16 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.android.volley.NetworkResponse;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
+import com.nosad.sample.engine.managers.messaging.FCMListener;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
+import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.entity.quest.CaptureQuest;
 import com.nosad.sample.entity.quest.CollectQuest;
@@ -42,6 +45,7 @@ import com.nosad.sample.view.fragments.PlayerFragment;
 import com.nosad.sample.view.fragments.QuestsFragment;
 import com.nosad.sample.view.fragments.ShopFragment;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -386,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     }
 
     /**
-     * GCM receiver for the message sent from {@link com.nosad.sample.engine.managers.messaging.GCMListener}
+     * GCM receiver for the message sent from {@link FCMListener}
      * Reacts to registration and messages.
      */
     private BroadcastReceiver gcmMessageReceiver = new BroadcastReceiver() {
@@ -404,6 +408,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         }
     };
 
+    /**
+     * Handles intent when the new quest arrives. Shows prompt with accept / decline for the user.
+     *
+     * @param intent - specific new quest intent with quest in extras.
+     */
     private void handleQuestIntent(Intent intent) {
         final Quest q = getQuestFromIntent(intent);
         final NotificationManager notificationManager =
@@ -415,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        App.getQuestManager().onQuestReceived(q);
+                        App.getQuestManager().onQuestAccepted(q);
                     }
                 });
                 notificationManager.cancel((int) q.getId());
@@ -447,6 +456,9 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         }
     };
 
+    /**
+     * Updates user profile characteristics info in the toolbar.
+     */
     private void updateUIInfo() {
         User user = App.getUserManager().getCurrentUser();
         if (user == null) {

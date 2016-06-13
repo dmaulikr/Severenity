@@ -11,7 +11,8 @@ import com.nosad.sample.utils.common.Constants;
  */
 public class Quest extends BaseObservable {
     public enum QuestStatus {
-        New,
+        Created,
+        Accepted,
         InProgress,
         Finished
     }

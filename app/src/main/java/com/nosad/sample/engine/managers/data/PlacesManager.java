@@ -53,18 +53,10 @@ public class PlacesManager extends DataManager {
     }
 
     private boolean findPlaceOwners(GamePlace place) {
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor;
-
-        // find if place has owners
-        try {
-            cursor = db.query(
-                    TABLE_PLACES_OWNERS,
-                    new String[]{COLUMN_PLACE_OWNER_ID, COLUMN_PLACE_ID},
-                    COLUMN_PLACE_ID + " = ?",
-                    new String[] { place.getPlaceID() },
-                    null, null, null, null);
+        try (SQLiteDatabase db = dbHelper.getReadableDatabase();
+             Cursor cursor = db.query(
+                 TABLE_PLACES_OWNERS, new String[]{COLUMN_PLACE_OWNER_ID, COLUMN_PLACE_ID},
+                 COLUMN_PLACE_ID + " = ?", new String[] { place.getPlaceID() }, null, null, null, null)) {
 
             if (cursor.moveToFirst()) {
                 do {
@@ -72,44 +64,29 @@ public class PlacesManager extends DataManager {
                 } while (cursor.moveToNext());
             }
 
-            cursor.close();
-            db.close();
             return true;
-
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.e(Constants.TAG, "PlacesManager: error querying request. " + e.getMessage());
-            db.close();
             return false;
         }
     }
 
     public GamePlace findPlaceByID(String placeID) {
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor;
-        try {
-            cursor = db.query(
-                    TABLE_PLACES,
-                    new String[]{COLUMN_PLACE_ID, COLUMN_PLACE_NAME, COLUMN_PLACE_LAT, COLUMN_PLACE_LNG},
-                    COLUMN_PLACE_ID + " = ?",
-                    new String[] {placeID},
-                    null, null, null, null);
+        try (SQLiteDatabase db = dbHelper.getReadableDatabase();
+             Cursor cursor = db.query(
+                 TABLE_PLACES, new String[]{COLUMN_PLACE_ID, COLUMN_PLACE_NAME, COLUMN_PLACE_LAT, COLUMN_PLACE_LNG},
+                 COLUMN_PLACE_ID + " = ?", new String[] {placeID}, null, null, null, null)) {
 
             if (cursor == null) {
                 return null;
             }
 
             if (cursor.getCount() == 0) {
-                cursor.close();
-                db.close();
                 return null;
             }
 
             if (cursor.getCount() > 1) {
                 Log.e(Constants.TAG, "PlacesManager: there are more then one with same ID. " + placeID);
-                cursor.close();
-                db.close();
                 return null;
             }
 
@@ -118,9 +95,6 @@ public class PlacesManager extends DataManager {
                 place = placeFromCursor(cursor);
             }
 
-            cursor.close();
-            db.close();
-
             if (place == null) {
                 return null;
             }
@@ -128,26 +102,19 @@ public class PlacesManager extends DataManager {
             findPlaceOwners(place);
 
             return place;
-
-        }catch (SQLException e){
+        } catch (SQLException e){
             Log.e(Constants.TAG, "PlacesManager: error querying request. " + e.getMessage());
             return null;
         }
     }
 
     public ArrayList<GamePlace> findPlacesByOwner(String ownerID) {
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor;
-
         // find if place has owners
-        try {
-            cursor = db.query(
-                    TABLE_PLACES_OWNERS,
-                    new String[]{COLUMN_PLACE_ID},
-                    COLUMN_PLACE_OWNER_ID + " = ?",
-                    new String[] { ownerID },
-                    null, null, null, null);
+        try (SQLiteDatabase db = dbHelper.getReadableDatabase();
+             Cursor cursor = db.query(
+                 TABLE_PLACES_OWNERS, new String[]{ COLUMN_PLACE_ID },
+                 COLUMN_PLACE_OWNER_ID + " = ?",
+                 new String[] { ownerID }, null, null, null, null)) {
 
             ArrayList<GamePlace> places = new ArrayList<>(cursor.getCount());
 
@@ -163,13 +130,9 @@ public class PlacesManager extends DataManager {
                 while (cursor.moveToNext());
             }
 
-            cursor.close();
-            db.close();
             return places;
-
-        }catch (SQLException e){
+        } catch (SQLException e) {
             Log.e(Constants.TAG, "PlacesManager: error querying request. " + e.getMessage());
-            db.close();
             return null;
         }
     }
@@ -188,9 +151,7 @@ public class PlacesManager extends DataManager {
             return false;
         }
 
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.beginTransaction();
-        try {
+        try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_PLACE_ID,   place.getPlaceID());
             values.put(COLUMN_PLACE_NAME, place.getPlaceName());
@@ -198,16 +159,9 @@ public class PlacesManager extends DataManager {
             values.put(COLUMN_PLACE_LNG,  place.getPlacePos().longitude);
 
             db.insert(TABLE_PLACES, "NULL", values);
-            db.setTransactionSuccessful();
-        }
-        catch (Exception ex) {
-            db.close();
+        } catch (Exception ex) {
             Log.e(Constants.TAG, "PlacesManager: Adding data to DB failed. " + ex.getMessage());
             return false;
-        }
-        finally {
-            db.endTransaction();
-            db.close();
         }
 
         if (storeOnServer) {
@@ -254,23 +208,15 @@ public class PlacesManager extends DataManager {
             return null;
         }
 
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.beginTransaction();
-
-        try {
+        try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_PLACE_ID,         placeID);
             values.put(COLUMN_PLACE_OWNER_ID,   ownerID);
 
             db.insert(TABLE_PLACES_OWNERS, "NULL", values);
-            db.setTransactionSuccessful();
         } catch (Exception ex) {
-            db.close();
             Log.e(Constants.TAG, "PlacesManager: Adding data to DB failed. " + ex.getMessage());
             return null;
-        } finally {
-            db.endTransaction();
-            db.close();
         }
 
         place.addOwner(ownerID);
@@ -289,25 +235,14 @@ public class PlacesManager extends DataManager {
      * @return the list of places that met requirements
      */
     public ArrayList<GamePlace> getLimitedPlaces(LatLng currentLocation, LatLng westSouth, LatLng northEast, double distance) {
+        String condition = "((" + COLUMN_PLACE_LAT + " > ? AND " + COLUMN_PLACE_LAT + " < ? ) AND ( " +
+                COLUMN_PLACE_LNG + " > ? AND " + COLUMN_PLACE_LNG + " < ? ))";
 
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String[] compare = new String[]{Double.toString(westSouth.latitude), Double.toString(northEast.latitude),
+                Double.toString(westSouth.longitude), Double.toString(northEast.longitude)};
 
-        Cursor cursor;
-        try {
-
-            String condition = "((" + COLUMN_PLACE_LAT + " > ? AND " + COLUMN_PLACE_LAT + " < ? ) AND ( " +
-                                    COLUMN_PLACE_LNG + " > ? AND " + COLUMN_PLACE_LNG + " < ? ))";
-
-            String[] compare = new String[]{Double.toString(westSouth.latitude), Double.toString(northEast.latitude),
-                                Double.toString(westSouth.longitude), Double.toString(northEast.longitude)};
-
-            cursor = db.query(TABLE_PLACES,
-                    null,
-                    condition,
-                    compare,
-                    null,
-                    null,
-                    null);
+        try (SQLiteDatabase db = dbHelper.getReadableDatabase();
+             Cursor cursor = db.query(TABLE_PLACES, null, condition, compare, null, null, null)) {
 
             ArrayList<GamePlace> places = new ArrayList<>(cursor.getCount());
 
@@ -323,11 +258,7 @@ public class PlacesManager extends DataManager {
                 } while (cursor.moveToNext());
             }
 
-            cursor.close();
-            db.close();
-
             return places;
-
         } catch (SQLException e) {
             Log.e(Constants.TAG, "PlacesManager: error querying request. " + e.getMessage());
             return null;
@@ -335,19 +266,8 @@ public class PlacesManager extends DataManager {
     }
 
     public ArrayList<GamePlace> getPlaces() {
-
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor;
-        try {
-
-            cursor = db.query(TABLE_PLACES,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null);
+        try (SQLiteDatabase db = dbHelper.getReadableDatabase();
+             Cursor cursor = db.query(TABLE_PLACES,null, null, null, null, null, null)) {
 
             ArrayList<GamePlace> places = new ArrayList<>(cursor.getCount());
 
@@ -371,39 +291,6 @@ public class PlacesManager extends DataManager {
         }
     }
 
-    public void dumpPlaces() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor;
-        try {
-
-            String table = TABLE_PLACES_OWNERS+ " left join " + TABLE_PLACES  + " on " + TABLE_PLACES + "." + COLUMN_PLACE_ID + " = " + TABLE_PLACES_OWNERS + "." + COLUMN_PLACE_ID;
-            cursor = db.query(table, null, null, null, null, null, null);
-
-            Log.d(Constants.TAG, "Records: " + Integer.toString(cursor.getCount()));
-
-            Toast.makeText(App.getInstance().getApplicationContext(), Integer.toString(cursor.getCount()), Toast.LENGTH_SHORT).show();
-
-            String str;
-            if (cursor.moveToFirst()) {
-                do {
-                    str = "";
-                    for (String cn : cursor.getColumnNames()) {
-                        str = str.concat(cn + " = " + cursor.getString(cursor.getColumnIndex(cn)) + "; ");
-                    }
-                    Log.d(Constants.TAG, str);
-                } while (cursor.moveToNext());
-            }
-
-            cursor.close();
-            db.close();
-
-        } catch (SQLException e) {
-            Log.e(Constants.TAG, "PlacesManager: error querying request. " + e.getMessage());
-            return;
-        }
-    }
-
     /**
      * Deletes owner id from the place owners.
      *
@@ -412,8 +299,7 @@ public class PlacesManager extends DataManager {
      * @return true if succeeded.
      */
     public boolean deleteOwnership(String placeID, String ownerID) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        try {
+        try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
             String where = COLUMN_PLACE_OWNER_ID + " = ? and " + COLUMN_PLACE_ID + " = ?";
             String[] conditions = new String[]{ownerID, placeID};
 
@@ -422,14 +308,12 @@ public class PlacesManager extends DataManager {
             Log.e(Constants.TAG, "PlacesManager: error querying request. " + e.getMessage());
             return false;
         }
-    };
+    }
 
     public void clearPlacesAndOwnersData() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        try {
+        try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
             db.delete(TABLE_PLACES_OWNERS, null, null);
             db.delete(TABLE_PLACES, null, null);
-
         } catch (SQLException e){
             Log.e(Constants.TAG, "PlacesManager: error clearing place tables. " + e.getMessage());
         }

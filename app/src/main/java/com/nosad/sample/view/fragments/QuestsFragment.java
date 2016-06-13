@@ -11,19 +11,18 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.NetworkResponse;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.QuestsAdapter;
+import com.nosad.sample.engine.managers.messaging.FCMListener;
+import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.entity.quest.CaptureQuest;
 import com.nosad.sample.entity.quest.CollectQuest;
 import com.nosad.sample.entity.quest.DistanceQuest;
@@ -31,6 +30,10 @@ import com.nosad.sample.entity.quest.Quest;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
 import com.nosad.sample.view.custom.DividerItemDecoration;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -112,6 +115,9 @@ public class QuestsFragment extends Fragment {
         }
     }
 
+    /**
+     * Checks whether adapter with items is empty. If so - display appropriate message.
+     */
     private void checkEmptyList() {
         if (questsAdapter.getItemCount() > 0) {
             emptyList.setVisibility(View.GONE);
@@ -121,61 +127,68 @@ public class QuestsFragment extends Fragment {
     }
 
     /**
-     * GCM receiver for the message sent from {@link com.nosad.sample.engine.managers.messaging.GCMListener}
+     * GCM receiver for the message sent from {@link FCMListener}
      * Reacts to registration and messages.
      */
     private BroadcastReceiver questReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle questObj = intent.getExtras();
-            int questType = questObj.getInt("type");
+            if (questObj.getBoolean(Constants.INTENT_EXTRA_SINGLE_QUEST)) {
+                int questType = questObj.getInt("type");
 
-            Quest q = new Quest();
-            q.setId(questObj.getLong("id"));
-            q.setTitle(questObj.getString("title"));
-            q.setCredits(questObj.getLong("credits"));
-            q.setExperience(questObj.getLong("experience"));
+                Quest q = new Quest();
+                q.setId(questObj.getLong("id"));
+                q.setTitle(questObj.getString("title"));
+                q.setCredits(questObj.getLong("credits"));
+                q.setExperience(questObj.getLong("experience"));
 
-            String expirationTime = questObj.getString("expirationTime");
-            if (expirationTime != null && !expirationTime.equals("null")) {
-                q.setExpirationTime(expirationTime);
-            }
-
-            q.setStatus(Quest.QuestStatus.New);
-
-            if (questType == Quest.QuestType.Distance.ordinal()) {
-                q.setType(Quest.QuestType.Distance);
-
-                int distance = questObj.getInt("distance");
-                q = new DistanceQuest(q, distance);
-            } else if (questType == Quest.QuestType.Capture.ordinal()) {
-                q.setType(Quest.QuestType.Capture);
-
-                String placeType = questObj.getString("placeType");
-                int placeTypeValue = questObj.getInt("placeTypeValue");
-                q = new CaptureQuest(q, placeType, placeTypeValue);
-            } else if (questType == Quest.QuestType.Collect.ordinal()) {
-                q.setType(Quest.QuestType.Collect);
-                int characteristic = questObj.getInt("characteristic");
-                int characteristicAmount = questObj.getInt("characteristicAmount");
-                Constants.Characteristic c;
-                if (characteristic == Constants.Characteristic.Level.ordinal()) {
-                    c = Constants.Characteristic.Level;
-                } else if (characteristic == Constants.Characteristic.Experience.ordinal()) {
-                    c = Constants.Characteristic.Experience;
-                } else if (characteristic == Constants.Characteristic.Intelligence.ordinal()) {
-                    c = Constants.Characteristic.Intelligence;
-                } else if (characteristic == Constants.Characteristic.Immunity.ordinal()) {
-                    c = Constants.Characteristic.Immunity;
-                } else {
-                    Log.e(Constants.TAG, "Unknown characteristic " + characteristic + " received.");
-                    return;
+                String expirationTime = questObj.getString("expirationTime");
+                if (expirationTime != null && !expirationTime.equals("null")) {
+                    q.setExpirationTime(expirationTime);
                 }
 
-                q = new CollectQuest(q, c, characteristicAmount);
+                q.setStatus(Quest.QuestStatus.Accepted);
+
+                if (questType == Quest.QuestType.Distance.ordinal()) {
+                    q.setType(Quest.QuestType.Distance);
+
+                    int distance = questObj.getInt("distance");
+                    q = new DistanceQuest(q, distance);
+                } else if (questType == Quest.QuestType.Capture.ordinal()) {
+                    q.setType(Quest.QuestType.Capture);
+
+                    String placeType = questObj.getString("placeType");
+                    int placeTypeValue = questObj.getInt("placeTypeValue");
+                    q = new CaptureQuest(q, placeType, placeTypeValue);
+                } else if (questType == Quest.QuestType.Collect.ordinal()) {
+                    q.setType(Quest.QuestType.Collect);
+                    int characteristic = questObj.getInt("characteristic");
+                    int characteristicAmount = questObj.getInt("characteristicAmount");
+                    Constants.Characteristic c;
+                    if (characteristic == Constants.Characteristic.Level.ordinal()) {
+                        c = Constants.Characteristic.Level;
+                    } else if (characteristic == Constants.Characteristic.Experience.ordinal()) {
+                        c = Constants.Characteristic.Experience;
+                    } else if (characteristic == Constants.Characteristic.Intelligence.ordinal()) {
+                        c = Constants.Characteristic.Intelligence;
+                    } else if (characteristic == Constants.Characteristic.Immunity.ordinal()) {
+                        c = Constants.Characteristic.Immunity;
+                    } else {
+                        Log.e(Constants.TAG, "Unknown characteristic " + characteristic + " received.");
+                        return;
+                    }
+
+                    q = new CollectQuest(q, c, characteristicAmount);
+                }
+                questsAdapter.add(q);
+                checkEmptyList();
+            } else {
+                ArrayList<Quest> dbQuests = App.getQuestManager().getQuests();
+                if (dbQuests != null) {
+                    quests.addAll(dbQuests);
+                }
             }
-            questsAdapter.add(q);
-            checkEmptyList();
         }
     };
 }

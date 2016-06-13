@@ -34,6 +34,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
@@ -371,6 +372,7 @@ public class LoginActivity extends AppCompatActivity {
         intent.putExtra(Constants.INTENT_EXTRA_DEVICE_ID, Utils.getDeviceId(this));
         intent.putExtra(Constants.INTENT_EXTRA_DEVICE_NAME, Utils.getDeviceName());
         intent.putExtra(Constants.INTENT_EXTRA_USER_ID, userId);
+        intent.putExtra(Constants.INTENT_EXTRA_REGISTRATION_ID, App.getCurrentFCMToken());
         startService(intent);
     }
 

@@ -62,6 +62,8 @@ public class Constants {
     public static final String INTENT_EXTRA_USER_ID = "USER_ID";
     public static final String INTENT_EXTRA_DEVICE_ID = "DEVICE_ID";
     public static final String INTENT_EXTRA_DEVICE_NAME = "DEVICE_NAME";
+    public static final String INTENT_EXTRA_REGISTRATION_ID = "REGISTRATION_ID";
+    public static final String INTENT_EXTRA_SINGLE_QUEST = "SINGLE_QUEST";
 
     public static final String EXTRA_GAC_CONNECTED = "isConnected";
 
@@ -103,6 +105,7 @@ public class Constants {
     public final static String SOCKET_EVENT_MESSAGE = "chat message";
     public final static String SOCKET_EVENT_UPDATE_PLACE = "update place";
     public final static String SOCKET_EVENT_AUTHENTICATE = "authenticate";
+    public final static String SOCKET_EVENT_UPDATE_QUEST = "update quest";
 
     /**
      * RESTful APIs constants
@@ -112,6 +115,7 @@ public class Constants {
     public static String REST_API_DEVICES = "/devices";
     public static String REST_API_SEND = HOST + "/send";
     public static String REST_API_PLACES = HOST + "/places";
+    public static String REST_API_QUESTS = "/quests";
     public static String REST_API_PLACES_ALL = HOST + "/places/all";
 
     /**

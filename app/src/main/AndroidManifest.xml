@@ -2,7 +2,6 @@
 package="com.nosad.sample">
 
 <permission android:name="com.nosad.sample.permission.MAPS_RECEIVE" android:protectionLevel="signature" />
-<permission android:name="com.nosad.sample.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 
     <!--AIzaSyAtYDGnClTps2D4mIKw8Z8pWQ_Rd1JEpv0-->
 
@@ -13,9 +12,6 @@ package="com.nosad.sample">
 <!-- To auto-complete the email text field in the login form with the user's emails -->
 <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
-<!--Cloud messaging-->
-<uses-permission android:name="com.nosad.sample.permission.C2D_MESSAGE" />
 
 <!-- Location related permissions -->
 <uses-permission android:name="com.nosad.sample.permission.MAPS_RECEIVE" />
@@ -30,29 +26,19 @@ package="com.nosad.sample">
 <application android:largeHeap="true" android:allowBackup="true" android:fullBackupContent="true" android:name=".App" android:icon="@mipmap/ic_launcher" android:label="@string/app_name"
     android:supportsRtl="true" android:theme="@style/AppTheme" android:hardwareAccelerated="false">
 
-    <receiver
-        android:name="com.google.android.gms.gcm.GcmReceiver" android:exported="true"
-        android:permission="com.google.android.c2dm.permission.SEND" >
+    <service android:name=".engine.managers.messaging.FCMListener">
         <intent-filter>
-            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            <!--<action android:name="com.google.android.c2dm.intent.REGISTRATION" />-->
-            <category android:name="com.nosad.sample" />
-        </intent-filter>
-    </receiver>
-
-    <service android:name=".engine.managers.messaging.GCMListener" android:exported="false">
-        <intent-filter>
-            <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            <action android:name="com.google.firebase.MESSAGING_EVENT" />
         </intent-filter>
     </service>
 
-    <service android:name=".engine.managers.messaging.GCMInstanceIDListener" android:exported="false">
+    <service android:name=".engine.managers.messaging.FCMInstanceIDListener">
         <intent-filter>
-            <action android:name="com.google.android.gms.iid.InstanceID"/>
+            <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
         </intent-filter>
     </service>
 
-    <service android:name=".engine.managers.messaging.RegistrationIntentService" android:exported="false">
+    <service android:name=".engine.managers.messaging.RegistrationIntentService">
 
     </service>
 

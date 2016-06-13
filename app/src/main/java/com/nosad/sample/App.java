@@ -64,6 +64,7 @@ public class App extends Application {
         gcmManager = new GCMManager(mContext);
         if (webSocketManager.createSocket(Constants.HOST, true)) {
             webSocketManager.subscribeForMessageEvent();
+            webSocketManager.subscribeForQuestEvents();
         }
         msgManager = new MessageManager(mContext);
 
@@ -77,6 +78,14 @@ public class App extends Application {
 
     public static SharedPreferences getSharedPreferences() {
         return getInstance().getSharedPreferencesInstance();
+    }
+
+    public static void setCurrentFCMToken(String token) {
+        getSharedPreferences().edit().putString(Constants.INTENT_EXTRA_REGISTRATION_ID, token).apply();
+    }
+
+    public static String getCurrentFCMToken() {
+        return getSharedPreferences().getString(Constants.INTENT_EXTRA_REGISTRATION_ID, null);
     }
 
     public void logOut() {

@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "967925944048",
-    "project_id": "sample-game-777"
+    "firebase_url": "https://sample-game-777.firebaseio.com",
+    "project_id": "sample-game-777",
+    "storage_bucket": "sample-game-777.appspot.com"
   },
   "client": [
     {
@@ -21,6 +23,10 @@
           }
         },
         {
+          "client_id": "967925944048-5n9jns6l2q28dl0chufetu64cndbeq0g.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
           "client_id": "967925944048-isdt8fjb37rn7g2qmrcnbudj9im49be0.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -35,11 +41,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "967925944048-5n9jns6l2q28dl0chufetu64cndbeq0g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

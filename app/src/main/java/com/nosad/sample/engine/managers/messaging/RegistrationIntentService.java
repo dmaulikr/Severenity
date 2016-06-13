@@ -37,14 +37,9 @@ public class RegistrationIntentService extends IntentService {
         String deviceId = intent.getStringExtra(Constants.INTENT_EXTRA_DEVICE_ID);
         String deviceName = intent.getStringExtra(Constants.INTENT_EXTRA_DEVICE_NAME);
         String userId = intent.getStringExtra(Constants.INTENT_EXTRA_USER_ID);
+        String registrationId = intent.getStringExtra(Constants.INTENT_EXTRA_REGISTRATION_ID);
 
-        try {
-            InstanceID instanceID = InstanceID.getInstance(this);
-            String registrationId = instanceID.getToken(getString(R.string.gcm_defaultSenderId), GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-            registerDevice(userId, deviceName, deviceId, registrationId);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        registerDevice(userId, deviceName, deviceId, registrationId);
     }
 
     /**

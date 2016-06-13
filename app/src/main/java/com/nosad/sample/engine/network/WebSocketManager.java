@@ -84,6 +84,7 @@ public class WebSocketManager {
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
+            unSubscribeFromQuestEvents();
             unSubscribeFromMessageEvents();
             unSubscribeFromLocationEvents();
             mSocket.close();
@@ -99,18 +100,40 @@ public class WebSocketManager {
         return mSocket;
     }
 
+    public void subscribeForQuestEvents() {
+        if (mSocket == null) {
+            return;
+        }
+
+        mSocket.on(Constants.SOCKET_EVENT_UPDATE_QUEST, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                for (Object arg : args) {
+                    JSONObject quest = (JSONObject) arg;
+                    try {
+                        int status = quest.getInt("status");
+                        long questId = quest.getLong("questId");
+
+                        App.getQuestManager().updateQuestStatusAndPopulate(questId, status);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
     /**
      * Subscribes to location events from the server.
      *
      */
     public void subscribeForLocationEvent() {
-
-        Socket socket = getSocket();
-        if (socket == null)
+        if (mSocket == null) {
             return;
+        }
 
         // subscribe for location events
-        socket.on(Constants.SOCKET_EVENT_LOCATION, new Emitter.Listener() {
+        mSocket.on(Constants.SOCKET_EVENT_LOCATION, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 for (Object arg : args) {
@@ -162,7 +185,7 @@ public class WebSocketManager {
         });
 
         // subscribe for place updates events
-        socket.on(Constants.SOCKET_EVENT_UPDATE_PLACE, new Emitter.Listener() {
+        mSocket.on(Constants.SOCKET_EVENT_UPDATE_PLACE, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 for (Object arg : args) {
@@ -234,6 +257,17 @@ public class WebSocketManager {
             return;
 
         socket.off(Constants.SOCKET_EVENT_LOCATION);
+    }
+
+    /**
+     * Unsubscribe from quest events from the server.
+     *
+     */
+    public void unSubscribeFromQuestEvents() {
+        if (mSocket == null)
+            return;
+
+        mSocket.off(Constants.SOCKET_EVENT_UPDATE_QUEST);
     }
 
     /**
@@ -352,7 +386,7 @@ public class WebSocketManager {
      * Sends message via mSocket if mSocket is connected.
      * Message structure is:
      *
-     * @param message
+     * @param message - chat message to be sent
      */
     public void sendMessageToServer(Message message) {
         if (!mSocket.connected()) {
@@ -365,7 +399,28 @@ public class WebSocketManager {
             jsonObject.put("text", message.getMessage());
             jsonObject.put("name", message.getUserName());
             jsonObject.put("timestamp", message.getTimestamp());
-            mSocket.emit("chat message", jsonObject);
+            mSocket.emit(Constants.SOCKET_EVENT_MESSAGE, jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends quest accepted event to the server, so quest can be attached to the player.
+     *
+     * @param id - id of the quest that was accepted.
+     */
+    public void sendQuestAccepted(String userId, long id) {
+        if (!mSocket.connected()) {
+            return;
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("questId", id);
+            jsonObject.put("accepted", true);
+            jsonObject.put("userId", userId);
+            mSocket.emit(Constants.SOCKET_EVENT_UPDATE_QUEST, jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }
