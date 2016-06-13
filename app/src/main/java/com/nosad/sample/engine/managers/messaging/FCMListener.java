@@ -57,8 +57,8 @@ public class FCMListener extends FirebaseMessagingService {
                 }
 
                 try {
-                    JSONObject questObj = new JSONObject();
-                    String questType = questObj.getString("type");
+                    JSONObject questObj = new JSONObject(quest);
+                    int questType = questObj.getInt("type");
                     long id = questObj.getLong("id");
 
                     if (App.getQuestManager().getQuestById(id) != null) {
@@ -72,14 +72,14 @@ public class FCMListener extends FirebaseMessagingService {
                     questIntent.putExtra("expirationTime", questObj.getString("expirationDate"));
                     questIntent.putExtra("status", Quest.QuestStatus.Created.ordinal());
 
-                    if (questType.equals(Quest.QuestType.Distance.toString())) {
+                    if (questType == Quest.QuestType.Distance.ordinal()) {
                         questIntent.putExtra("type", Quest.QuestType.Distance.ordinal());
                         questIntent.putExtra("distance", questObj.getInt("distance"));
-                    } else if (questType.equals(Quest.QuestType.Capture.toString())) {
+                    } else if (questType == Quest.QuestType.Capture.ordinal()) {
                         questIntent.putExtra("type", Quest.QuestType.Capture.ordinal());
                         questIntent.putExtra("placeType", questObj.getString("placeType"));
                         questIntent.putExtra("placeTypeValue", questObj.getInt("placeTypeValue"));
-                    } else if (questType.equals(Quest.QuestType.Collect.toString())) {
+                    } else if (questType == Quest.QuestType.Collect.ordinal()) {
                         questIntent.putExtra("type", Quest.QuestType.Collect.ordinal());
                         questIntent.putExtra("characteristic", questObj.getString("characteristic"));
                         questIntent.putExtra("characteristicAmount", questObj.getInt("characteristicAmount"));
