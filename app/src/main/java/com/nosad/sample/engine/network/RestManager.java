@@ -266,6 +266,69 @@ public class RestManager {
     }
 
     /**
+     * Updates quest(s) data on the server according to data specified and user that
+     * has requested to update the quest(s).
+     *
+     * @param userId - id of the user which quest should be updated.
+     * @param data - data to be sent together with quest update request for user.
+     */
+    public void updateQuestWithData(String userId, JSONObject data) {
+        String request = Constants.REST_API_USERS + "/" + userId + Constants.REST_API_QUESTS_UPDATE;
+        createRequest(request, Request.Method.POST, data, new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
+                if (response == null) {
+                    Log.e(Constants.TAG, "Quest update response is null.");
+                    return;
+                }
+
+                try {
+                    if (!response.getString("result").equalsIgnoreCase("success")) {
+                        Log.e(Constants.TAG, "Quest update result is error.");
+                        return;
+                    }
+
+                    String reason = response.getString("reason");
+                    JSONObject data = response.getJSONObject("data");
+                    switch (reason) {
+                        case "accepted": {
+                            int status = data.getInt("status");
+                            long questId = data.getLong("questId");
+
+                            App.getQuestManager().updateQuestStatusAndPopulate(questId, status);
+                        } break;
+                        case "progress": {
+                            JSONArray quests = response.getJSONArray("quests");
+                            for (int i = 0; i < quests.length(); i++) {
+                                JSONObject quest = quests.getJSONObject(i);
+                                JSONObject progress = quest.getJSONObject("progress");
+                                int value = progress.getInt("progress");
+                                long questId = quest.getLong("questId");
+
+                                App.getQuestManager().updateQuestProgressLocally(questId, value);
+                            }
+                        } break;
+                        default:
+                            Log.e(Constants.TAG, "Unknown quest update reason: " + reason);
+                            break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+                if (response != null) {
+                    Log.e(Constants.TAG, "Update quest error response is: " + response.toString());
+                } else {
+                    Log.e(Constants.TAG, "Update quest error response is null");
+                }
+            }
+        });
+    }
+
+    /**
      * Sends a request to create a speicified {@link User} on the server.
      *
      * @param user - user to create on the server.

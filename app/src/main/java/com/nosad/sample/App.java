@@ -64,7 +64,6 @@ public class App extends Application {
         gcmManager = new GCMManager(mContext);
         if (webSocketManager.createSocket(Constants.HOST, true)) {
             webSocketManager.subscribeForMessageEvent();
-            webSocketManager.subscribeForQuestEvents();
         }
         msgManager = new MessageManager(mContext);
 

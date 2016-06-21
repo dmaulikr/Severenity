@@ -52,6 +52,7 @@ public class Constants {
     public static final String INTENT_FILTER_UPDATE_UI = "com.nosad.sample.updateui";
     public static final String INTENT_FILTER_NEW_MESSAGE = "com.nosad.sample.newmessage";
     public static final String INTENT_FILTER_NEW_QUEST = "com.nosad.sample.newquest";
+    public static final String INTENT_FILTER_QUEST_UPDATE = "com.nosad.sample.questupdate";
     public static final String INTENT_FILTER_SHOW_PLACE_INFO_DIALOG = "com.nosad.sample.showplaceinfodialog";
     public static final String INTENT_FILTER_SHOW_PLACE_ACTIONS = "com.nosad.sample.showplaceactions";
     public static final String INTENT_FILTER_HIDE_PLACE_ACTIONS = "com.nosad.sample.hideplaceactions";
@@ -105,7 +106,6 @@ public class Constants {
     public final static String SOCKET_EVENT_MESSAGE = "chat message";
     public final static String SOCKET_EVENT_UPDATE_PLACE = "update place";
     public final static String SOCKET_EVENT_AUTHENTICATE = "authenticate";
-    public final static String SOCKET_EVENT_UPDATE_QUEST = "update quest";
 
     /**
      * RESTful APIs constants
@@ -116,6 +116,7 @@ public class Constants {
     public static String REST_API_SEND = HOST + "/send";
     public static String REST_API_PLACES = HOST + "/places";
     public static String REST_API_QUESTS = "/quests";
+    public static String REST_API_QUESTS_UPDATE = "/quests/update";
     public static String REST_API_PLACES_ALL = HOST + "/places/all";
 
     /**

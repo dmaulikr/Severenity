@@ -22,7 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_CHARACTERISTIC;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_CHARACTERISTIC_AMOUNT;
@@ -34,6 +33,7 @@ import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_EXP
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_ID;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_PLACE_TYPE;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_PLACE_TYPE_VALUE;
+import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_PROGRESS;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_STATUS;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_TITLE;
 import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.COLUMN_TYPE;
@@ -45,12 +45,11 @@ import static com.nosad.sample.entity.contracts.QuestContract.DBQuest.TABLE_QUES
  * Created by Novosad on 5/9/16.
  */
 public class QuestManager extends DataManager {
-
     public QuestManager(Context context) {
         super(context);
     }
 
-    public void addQuests(List<Quest> quests) {
+    public void addQuests(ArrayList<Quest> quests) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
 
@@ -75,7 +74,7 @@ public class QuestManager extends DataManager {
 
     public void deleteQuestById(long id) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(TABLE_QUESTS, "id = ?", new String[]{ String.valueOf(id) });
+        db.delete(TABLE_QUESTS, "id = ?", new String[]{String.valueOf(id)});
         db.close();
     }
 
@@ -123,7 +122,7 @@ public class QuestManager extends DataManager {
 
         Cursor cursor = db.query(
                 TABLE_QUESTS,
-                new String[] {
+                new String[]{
                         COLUMN_ID, COLUMN_TITLE, COLUMN_DESCRIPTION,
                         COLUMN_EXP_AMOUNT, COLUMN_CREDITS_AMOUNT, COLUMN_EXPIRATION_TIME,
                         COLUMN_STATUS, COLUMN_TYPE, COLUMN_DISTANCE,
@@ -141,8 +140,8 @@ public class QuestManager extends DataManager {
                 quest = new DistanceQuest(quest, cursor.getInt(cursor.getColumnIndex(COLUMN_DISTANCE)));
             } else if (quest.getType() == Quest.QuestType.Capture) {
                 quest = new CaptureQuest(quest,
-                    cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_TYPE)),
-                    cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE_VALUE))
+                        cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_TYPE)),
+                        cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE_VALUE))
                 );
             } else if (quest.getType() == Quest.QuestType.Collect) {
                 Constants.Characteristic characteristic = Constants.Characteristic.values()[
@@ -263,14 +262,22 @@ public class QuestManager extends DataManager {
             return;
         }
 
-        App.getWebSocketManager().sendQuestAccepted(App.getUserManager().getCurrentUser().getId(), quest.getId());
+        try {
+            JSONObject data = new JSONObject();
+            data.put("questId", quest.getId());
+            data.put("reason", "accepted");
+
+            App.getRestManager().updateQuestWithData(App.getUserManager().getCurrentUser().getId(), data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Updates status of quest if found and populates it to UI via intent.
      *
      * @param questId - quest to update
-     * @param status - new {@link com.nosad.sample.entity.quest.Quest.QuestStatus}. None < New < Progress < Finished.
+     * @param status  - new {@link com.nosad.sample.entity.quest.Quest.QuestStatus}. None < New < Progress < Finished.
      */
     public void updateQuestStatusAndPopulate(long questId, int status) {
         Quest quest = getQuestById(questId);
@@ -387,7 +394,8 @@ public class QuestManager extends DataManager {
                     case "intelligence":
                         characteristic = Constants.Characteristic.Intelligence;
                         break;
-                    default: characteristic = Constants.Characteristic.None;
+                    default:
+                        characteristic = Constants.Characteristic.None;
                 }
 
                 quest = new CollectQuest(quest, characteristic, questObj.getInt("characteristicAmount"));
@@ -406,7 +414,7 @@ public class QuestManager extends DataManager {
     private void deleteQuests() {
         try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
             db.delete(TABLE_QUESTS, null, null);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             Log.e(Constants.TAG, "QuestsManager: error clearing quests tables. " + e.getMessage());
         }
     }
@@ -450,5 +458,56 @@ public class QuestManager extends DataManager {
                 }
             }
         });
+    }
+
+    /**
+     * Used to update quests progress whenever user action has happened.
+     */
+    public void updateQuestProgress(Quest.QuestType questType, String... newValues) {
+        JSONObject request = new JSONObject();
+        JSONObject data = new JSONObject();
+        try {
+            request.put("questType", questType.ordinal());
+            switch (questType) {
+                case Distance:
+                    int distancePassed = Integer.valueOf(newValues[0]);
+                    data.put("distance", distancePassed);
+                    break;
+                case Capture:
+                    int placeType = Integer.valueOf(newValues[0]);
+                    int value = Integer.valueOf(newValues[1]);
+                    data.put("placeType", placeType);
+                    data.put("placeValue", value);
+                    break;
+                case Collect:
+                    int characteristic = Integer.valueOf(newValues[0]);
+                    int amount = Integer.valueOf(newValues[1]);
+                    data.put("characteristic", characteristic);
+                    data.put("characteristicAmount", amount);
+                    break;
+            }
+
+            request.put("data", data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        App.getRestManager().updateQuestWithData(App.getUserManager().getCurrentUser().getId(), request);
+    }
+
+    /**
+     * Updates quest entry in local DB with new progress value.
+     *
+     * @param questId - quest to update.
+     * @param value - new progress value to set.
+     */
+    public void updateQuestProgressLocally(long questId, int value) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PROGRESS, value);
+        db.update(TABLE_QUESTS, values, "id = " + questId, null);
+        db.close();
+
+        Intent intent = new Intent(Constants.INTENT_FILTER_QUEST_UPDATE);
+        App.getLocalBroadcastManager().sendBroadcast(intent);
     }
 }

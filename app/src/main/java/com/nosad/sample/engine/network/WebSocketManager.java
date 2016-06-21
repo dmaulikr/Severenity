@@ -17,6 +17,7 @@ import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.FacebookUtils;
 import com.nosad.sample.utils.common.Constants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -84,7 +85,6 @@ public class WebSocketManager {
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
-            unSubscribeFromQuestEvents();
             unSubscribeFromMessageEvents();
             unSubscribeFromLocationEvents();
             mSocket.close();
@@ -98,29 +98,6 @@ public class WebSocketManager {
      */
     public Socket getSocket() {
         return mSocket;
-    }
-
-    public void subscribeForQuestEvents() {
-        if (mSocket == null) {
-            return;
-        }
-
-        mSocket.on(Constants.SOCKET_EVENT_UPDATE_QUEST, new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                for (Object arg : args) {
-                    JSONObject quest = (JSONObject) arg;
-                    try {
-                        int status = quest.getInt("status");
-                        long questId = quest.getLong("questId");
-
-                        App.getQuestManager().updateQuestStatusAndPopulate(questId, status);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
     }
 
     /**
@@ -260,17 +237,6 @@ public class WebSocketManager {
     }
 
     /**
-     * Unsubscribe from quest events from the server.
-     *
-     */
-    public void unSubscribeFromQuestEvents() {
-        if (mSocket == null)
-            return;
-
-        mSocket.off(Constants.SOCKET_EVENT_UPDATE_QUEST);
-    }
-
-    /**
      * Sends location specified via mSocket if mSocket is connected.
      * Message structure is:
      *
@@ -400,27 +366,6 @@ public class WebSocketManager {
             jsonObject.put("name", message.getUserName());
             jsonObject.put("timestamp", message.getTimestamp());
             mSocket.emit(Constants.SOCKET_EVENT_MESSAGE, jsonObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Sends quest accepted event to the server, so quest can be attached to the player.
-     *
-     * @param id - id of the quest that was accepted.
-     */
-    public void sendQuestAccepted(String userId, long id) {
-        if (!mSocket.connected()) {
-            return;
-        }
-
-        try {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("questId", id);
-            jsonObject.put("accepted", true);
-            jsonObject.put("userId", userId);
-            mSocket.emit(Constants.SOCKET_EVENT_UPDATE_QUEST, jsonObject);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -26,6 +26,7 @@ public class QuestContract {
         public static final String COLUMN_PLACE_TYPE_VALUE = "placeTypeValue";
         public static final String COLUMN_CHARACTERISTIC = "characteristic";
         public static final String COLUMN_CHARACTERISTIC_AMOUNT = "characteristicAmount";
+        public static final String COLUMN_PROGRESS = "progress";
         public static final String COLUMN_NULLABLE = "NULL";
     }
 }
