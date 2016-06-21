@@ -261,8 +261,8 @@ public class LocationManager implements LocationListener {
         while (it.hasNext())
         {
             Long currentTime = System.currentTimeMillis();
-            it.next();
-            if ((currentTime - ((UserMarkerInfo)it).getLastUpdate()) > 10000/*10 seconds*/);
+            UserMarkerInfo markerInfo = it.next();
+            if ((currentTime - (markerInfo.getLastUpdate()) > 10000/*10 seconds*/))
                 it.remove();
         }
 
