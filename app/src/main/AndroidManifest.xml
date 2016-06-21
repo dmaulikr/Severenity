@@ -1,80 +1,107 @@
-<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android"
-package="com.nosad.sample">
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nosad.sample" >
 
-<permission android:name="com.nosad.sample.permission.MAPS_RECEIVE" android:protectionLevel="signature" />
+    <permission
+        android:name="com.nosad.sample.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
 
-    <!--AIzaSyAtYDGnClTps2D4mIKw8Z8pWQ_Rd1JEpv0-->
+    <!-- AIzaSyAtYDGnClTps2D4mIKw8Z8pWQ_Rd1JEpv0 -->
 
-<uses-feature android:glEsVersion="0x00020000" android:required="true" />
-<uses-feature android:name="android.hardware.sensor.stepcounter" />
-<uses-feature android:name="android.hardware.sensor.stepdetector" />
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    <uses-feature android:name="android.hardware.sensor.stepcounter" />
+    <uses-feature android:name="android.hardware.sensor.stepdetector" />
 
-<!-- To auto-complete the email text field in the login form with the user's emails -->
-<uses-permission android:name="android.permission.GET_ACCOUNTS" />
-<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
-<!-- Location related permissions -->
-<uses-permission android:name="com.nosad.sample.permission.MAPS_RECEIVE" />
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Location related permissions -->
+    <uses-permission android:name="com.nosad.sample.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-<!-- Network permissions -->
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Network permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-<application android:largeHeap="true" android:allowBackup="true" android:fullBackupContent="true" android:name=".App" android:icon="@mipmap/ic_launcher" android:label="@string/app_name"
-    android:supportsRtl="true" android:theme="@style/AppTheme" android:hardwareAccelerated="false">
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:fullBackupContent="true"
+        android:hardwareAccelerated="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <service android:name=".engine.managers.messaging.FCMListener" >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".engine.managers.messaging.FCMInstanceIDListener" >
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".engine.managers.messaging.RegistrationIntentService" >
+        </service>
 
-    <service android:name=".engine.managers.messaging.FCMListener">
-        <intent-filter>
-            <action android:name="com.google.firebase.MESSAGING_EVENT" />
-        </intent-filter>
-    </service>
+        <activity
+            android:name=".view.activities.LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-    <service android:name=".engine.managers.messaging.FCMInstanceIDListener">
-        <intent-filter>
-            <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-        </intent-filter>
-    </service>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.activities.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-    <service android:name=".engine.managers.messaging.RegistrationIntentService">
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".view.activities.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
 
-    </service>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
-    <activity android:screenOrientation="portrait" android:name=".view.activities.LoginActivity"
-        android:label="@string/app_name">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider912233188857453"
+            android:exported="true" />
 
-    <activity android:screenOrientation="portrait" android:name=".view.activities.MainActivity"
-        android:label="@string/app_name">
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW" />
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
-    </activity>
-
-    <activity android:screenOrientation="portrait" android:name="com.facebook.FacebookActivity" android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-        android:theme="@android:style/Theme.Translucent.NoTitleBar" android:label="@string/app_name" />
-
-    <activity android:screenOrientation="portrait" android:name=".view.activities.SettingsActivity"
-        android:label="@string/title_activity_settings">
-        <intent-filter>
-            <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
-    </activity>
-
-    <provider android:authorities="com.facebook.app.FacebookContentProvider912233188857453"
-        android:name="com.facebook.FacebookContentProvider" android:exported="true" />
-
-    <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBV7mP-X-1mLUoY4dPBYOuRKnAJJdWrZuo" />
-    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" />
-</application>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBV7mP-X-1mLUoY4dPBYOuRKnAJJdWrZuo" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+    </application>
 
 </manifest>

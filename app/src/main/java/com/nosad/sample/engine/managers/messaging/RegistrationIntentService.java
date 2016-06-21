@@ -14,6 +14,8 @@ import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.engine.network.RestManager;
+import com.nosad.sample.entity.User;
+import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 
 import org.json.JSONException;
@@ -71,8 +73,9 @@ public class RegistrationIntentService extends IntentService {
                     intent.putExtra("result", response.getString("result"));
 
                     // TODO: Oleg add user data send in intent
-                    JSONObject user = response.getJSONObject("data");
-                    Log.d(Constants.TAG, "User registered: " + user.toString());
+                    JSONObject userObject = response.getJSONObject("data");
+                    User user = Utils.createUserFromJSON(userObject);
+                    App.getUserManager().setCurrentUser(user);
 
                     App.getLocalBroadcastManager().sendBroadcast(intent);
                 } catch (JSONException e) {

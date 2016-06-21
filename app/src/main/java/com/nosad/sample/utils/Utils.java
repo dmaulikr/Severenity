@@ -19,10 +19,15 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
+import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -88,6 +93,40 @@ public class Utils {
     public static String getDeviceId(Context context) {
         TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getDeviceId();
+    }
+
+    /**
+     * Creates user in db
+     *
+     * @param response - JSON response to create user from.
+     */
+    public static User createUserFromJSON(JSONObject response) {
+        User user = new User();
+        try {
+            user.setCreatedDate(response.getString("createdDate"));
+            user.setId(response.getString("userId"));
+            user.setName(response.getString("name"));
+            user.setEmail(response.getString("email"));
+
+            JSONObject profileObject = response.getJSONObject("profile");
+            user.setDistance(profileObject.getInt("distance"));
+            user.setExperience(profileObject.getInt("experience"));
+            user.setImmunity(profileObject.getInt("immunity"));
+            user.setIntelligence(profileObject.getInt("intelligence"));
+            user.setCredits(profileObject.getInt("credits"));
+            user.setImplantHP(profileObject.getInt("implantHP"));
+            user.setLevel(profileObject.getInt("level"));
+            user.setMaxImmunity(profileObject.getInt("maxImmunity"));
+            user.setMaxIntelligence(profileObject.getInt("maxIntelligence"));
+            user.setViewRadius(profileObject.getInt("viewRadius") * 1.0);
+            user.setActionRadius(profileObject.getInt("actionRadius") * 1.0);
+
+            return App.getUserManager().addUser(user);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     /**

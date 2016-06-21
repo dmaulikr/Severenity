@@ -42,6 +42,7 @@ public class Quest extends BaseObservable {
     private long experience;
     private long credits;
     private QuestStatus status;
+
     /**
      * In format of {@link Constants}: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
      */

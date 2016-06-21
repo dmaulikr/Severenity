@@ -298,7 +298,8 @@ public class RestManager {
                             App.getQuestManager().updateQuestStatusAndPopulate(questId, status);
                         } break;
                         case "progress": {
-                            JSONArray quests = response.getJSONArray("quests");
+                            Log.d(Constants.TAG, response.toString());
+                            JSONArray quests = response.getJSONObject("data").getJSONArray("quests");
                             for (int i = 0; i < quests.length(); i++) {
                                 JSONObject quest = quests.getJSONObject(i);
                                 JSONObject progress = quest.getJSONObject("progress");

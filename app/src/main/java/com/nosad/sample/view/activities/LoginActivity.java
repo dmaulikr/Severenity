@@ -239,7 +239,7 @@ public class LoginActivity extends AppCompatActivity {
                                 } else {
                                     isAuthorizing = false;
 
-                                    User newUser = createUserFromJSON(userObject);
+                                    User newUser = Utils.createUserFromJSON(userObject);
                                     if (newUser != null) {
                                         App.getUserManager().setCurrentUser(newUser);
                                     }
@@ -301,7 +301,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if (response != null) {
                                     Log.d(Constants.TAG, response.toString());
 
-                                    User newUser = createUserFromJSON(response);
+                                    User newUser = Utils.createUserFromJSON(response);
                                     if (newUser != null) {
                                         App.getUserManager().setCurrentUser(newUser);
                                         authorizeCurrentUser();
@@ -326,40 +326,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    /**
-     * Creates user in db
-     *
-     * @param response - JSON response to create user from.
-     */
-    private User createUserFromJSON(JSONObject response) {
-        User user = new User();
-        try {
-            user.setCreatedDate(response.getString("createdDate"));
-            user.setId(response.getString("userId"));
-            user.setName(response.getString("name"));
-            user.setEmail(response.getString("email"));
-
-            JSONObject profileObject = response.getJSONObject("profile");
-            user.setDistance(profileObject.getInt("distance"));
-            user.setExperience(profileObject.getInt("experience"));
-            user.setImmunity(profileObject.getInt("immunity"));
-            user.setIntelligence(profileObject.getInt("intelligence"));
-            user.setCredits(profileObject.getInt("credits"));
-            user.setImplantHP(profileObject.getInt("implantHP"));
-            user.setLevel(profileObject.getInt("level"));
-            user.setMaxImmunity(profileObject.getInt("maxImmunity"));
-            user.setMaxIntelligence(profileObject.getInt("maxIntelligence"));
-            user.setViewRadius(profileObject.getInt("viewRadius") * 1.0);
-            user.setActionRadius(profileObject.getInt("actionRadius") * 1.0);
-
-            return App.getUserManager().addUser(user);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     /**

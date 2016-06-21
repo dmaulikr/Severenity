@@ -263,11 +263,11 @@ public class QuestManager extends DataManager {
         }
 
         try {
-            JSONObject data = new JSONObject();
-            data.put("questId", quest.getId());
-            data.put("reason", "accepted");
+            JSONObject request = new JSONObject();
+            request.put("questId", quest.getId());
+            request.put("reason", "accepted");
 
-            App.getRestManager().updateQuestWithData(App.getUserManager().getCurrentUser().getId(), data);
+            App.getRestManager().updateQuestWithData(App.getUserManager().getCurrentUser().getId(), request);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -463,35 +463,21 @@ public class QuestManager extends DataManager {
     /**
      * Used to update quests progress whenever user action has happened.
      */
-    public void updateQuestProgress(Quest.QuestType questType, String... newValues) {
-        JSONObject request = new JSONObject();
-        JSONObject data = new JSONObject();
+    public void updateQuestProgress(String... newValues) {
         try {
-            request.put("questType", questType.ordinal());
-            switch (questType) {
-                case Distance:
-                    int distancePassed = Integer.valueOf(newValues[0]);
-                    data.put("distance", distancePassed);
-                    break;
-                case Capture:
-                    int placeType = Integer.valueOf(newValues[0]);
-                    int value = Integer.valueOf(newValues[1]);
-                    data.put("placeType", placeType);
-                    data.put("placeValue", value);
-                    break;
-                case Collect:
-                    int characteristic = Integer.valueOf(newValues[0]);
-                    int amount = Integer.valueOf(newValues[1]);
-                    data.put("characteristic", characteristic);
-                    data.put("characteristicAmount", amount);
-                    break;
-            }
+            JSONObject request = new JSONObject();
+            JSONObject data = new JSONObject();
 
+            data.put("objective", newValues[0]);
+            data.put("value", Integer.valueOf(newValues[1]));
+
+            request.put("reason", "progress");
             request.put("data", data);
+
+            App.getRestManager().updateQuestWithData(App.getUserManager().getCurrentUser().getId(), request);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        App.getRestManager().updateQuestWithData(App.getUserManager().getCurrentUser().getId(), request);
     }
 
     /**
@@ -501,11 +487,13 @@ public class QuestManager extends DataManager {
      * @param value - new progress value to set.
      */
     public void updateQuestProgressLocally(long questId, int value) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_PROGRESS, value);
-        db.update(TABLE_QUESTS, values, "id = " + questId, null);
-        db.close();
+        try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_PROGRESS, value);
+            db.update(TABLE_QUESTS, values, "id = " + questId, null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         Intent intent = new Intent(Constants.INTENT_FILTER_QUEST_UPDATE);
         App.getLocalBroadcastManager().sendBroadcast(intent);

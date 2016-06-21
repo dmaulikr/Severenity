@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.NetworkResponse;
@@ -65,7 +66,14 @@ public class QuestsFragment extends Fragment {
                 questReceiver,
                 new IntentFilter(Constants.INTENT_FILTER_NEW_QUEST)
         );
-        questsAdapter.refreshWith(App.getQuestManager().getQuests());
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            App.getQuestManager().refreshWithQuestsFromServer();
+        }
     }
 
     @Override
@@ -96,6 +104,14 @@ public class QuestsFragment extends Fragment {
 
         emptyList = (TextView) view.findViewById(R.id.tvEmptyList);
         checkEmptyList();
+
+        Button btnUpdateQuest = (Button) view.findViewById(R.id.btnUpdateProgress);
+        btnUpdateQuest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                App.getQuestManager().updateQuestProgress("distance", "100");
+            }
+        });
 
         return view;
     }
@@ -184,10 +200,7 @@ public class QuestsFragment extends Fragment {
                 questsAdapter.add(q);
                 checkEmptyList();
             } else {
-                ArrayList<Quest> dbQuests = App.getQuestManager().getQuests();
-                if (dbQuests != null) {
-                    quests.addAll(dbQuests);
-                }
+                questsAdapter.refreshWith(App.getQuestManager().getQuests());
             }
         }
     };
