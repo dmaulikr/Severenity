@@ -186,12 +186,11 @@ public class WebSocketManager {
                                 runnable = new Runnable() {
                                     @Override
                                     public void run() {
-                                        App.getPlacesManager().addOwnerToPlace(placeId, by);
                                         // Changes Marker on the map to replicate current place state.
                                         App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(placeId, true/*captured*/);
+                                        App.getPlacesManager().addOwnerToPlace(placeId, by);
                                         // instruct to hide actions buttons
                                         App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
-                                        Toast.makeText(mContext, "Place has been captured", Toast.LENGTH_SHORT).show();
                                     }
                                 };
                                 break;

@@ -7,10 +7,12 @@ import java.util.Locale;
  */
 public class Constants {
     public enum Characteristic {
-        Level("level"),
-        Immunity("immunity"),
-        Intelligence("intelligence"),
         Experience("experience"),
+        Level("level"),
+        Credits("credits"),
+        Intelligence("intelligence"),
+        Immunity("immunity"),
+        ImplantHealthPoints("implantHP"),
         None("none");
 
         final String value;
