@@ -23,6 +23,7 @@ import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.User;
+import com.nosad.sample.entity.quest.Quest;
 import com.nosad.sample.utils.common.Constants;
 
 import org.json.JSONArray;
@@ -258,11 +259,44 @@ public class RestManager {
      * Retrieve quests from server based on user id.
      *
      * @param userId - quests of this users will be retrieved.
-     * @param callback - callback to execute after places were retrieved.
      */
-    public void getQuestsFromServer(String userId, RequestCallback callback) {
+    public void getQuestsFromServer(String userId) {
+        App.getQuestManager().deleteQuests();
         String request = Constants.REST_API_USERS + "/" + userId + Constants.REST_API_QUESTS;
-        App.getRestManager().createRequest(request, Request.Method.GET, null, callback);
+        App.getRestManager().createRequest(request, Request.Method.GET, null, new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
+                try {
+                    if (!response.getString("result").equalsIgnoreCase("success")) {
+                        return;
+                    }
+
+                    JSONArray quests = response.getJSONArray("data");
+                    ArrayList<Quest> questsList = new ArrayList<>();
+                    for (int i = 0; i < quests.length(); i++) {
+                        JSONObject questObject = quests.getJSONObject(i);
+                        questsList.add(App.getQuestManager().getQuestFromJSON(questObject));
+                    }
+
+                    App.getQuestManager().addQuests(questsList);
+
+                    Intent intent = new Intent(Constants.INTENT_FILTER_NEW_QUEST);
+                    intent.putExtra(Constants.INTENT_EXTRA_SINGLE_QUEST, false);
+                    App.getLocalBroadcastManager().sendBroadcast(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+                if (response != null) {
+                    Log.e(Constants.TAG, "Error response for quests retrieve: " + response.toString());
+                } else {
+                    Log.e(Constants.TAG, "Error response for quests retrieve is null.");
+                }
+            }
+        });
     }
 
     /**
@@ -305,8 +339,9 @@ public class RestManager {
                                 JSONObject progress = quest.getJSONObject("progress");
                                 int value = progress.getInt("progress");
                                 long questId = quest.getLong("questId");
+                                int status = quest.getInt("status");
 
-                                App.getQuestManager().updateQuestProgressLocally(questId, value);
+                                App.getQuestManager().updateQuestProgressLocally(questId, value, status);
                             }
                         } break;
                         default:

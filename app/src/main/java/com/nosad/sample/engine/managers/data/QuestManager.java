@@ -411,7 +411,7 @@ public class QuestManager extends DataManager {
     /**
      * Deletes all quests from the local database.
      */
-    private void deleteQuests() {
+    public void deleteQuests() {
         try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
             db.delete(TABLE_QUESTS, null, null);
         } catch (SQLException e) {
@@ -423,41 +423,7 @@ public class QuestManager extends DataManager {
      * Renew quests list with quests received from the server.
      */
     public void refreshWithQuestsFromServer() {
-        deleteQuests();
-        App.getRestManager().getQuestsFromServer(App.getUserManager().getCurrentUser().getId(), new RequestCallback() {
-            @Override
-            public void onResponseCallback(JSONObject response) {
-                try {
-                    if (!response.getString("result").equalsIgnoreCase("success")) {
-                        return;
-                    }
-
-                    JSONArray quests = response.getJSONArray("data");
-                    ArrayList<Quest> questsList = new ArrayList<>();
-                    for (int i = 0; i < quests.length(); i++) {
-                        JSONObject questObject = quests.getJSONObject(i);
-                        questsList.add(App.getQuestManager().getQuestFromJSON(questObject));
-                    }
-
-                    addQuests(questsList);
-
-                    Intent intent = new Intent(Constants.INTENT_FILTER_NEW_QUEST);
-                    intent.putExtra(Constants.INTENT_EXTRA_SINGLE_QUEST, false);
-                    App.getLocalBroadcastManager().sendBroadcast(intent);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onErrorCallback(NetworkResponse response) {
-                if (response != null) {
-                    Log.e(Constants.TAG, "Error response for quests retrieve: " + response.toString());
-                } else {
-                    Log.e(Constants.TAG, "Error response for quests retrieve is null.");
-                }
-            }
-        });
+        App.getRestManager().getQuestsFromServer(App.getUserManager().getCurrentUser().getId());
     }
 
     /**
@@ -486,16 +452,20 @@ public class QuestManager extends DataManager {
      * @param questId - quest to update.
      * @param value - new progress value to set.
      */
-    public void updateQuestProgressLocally(long questId, int value) {
+    public void updateQuestProgressLocally(long questId, int value, int status) {
         try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_PROGRESS, value);
+            values.put(COLUMN_STATUS, status);
             db.update(TABLE_QUESTS, values, "id = " + questId, null);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         Intent intent = new Intent(Constants.INTENT_FILTER_QUEST_UPDATE);
+        intent.putExtra("questId", questId);
+        intent.putExtra("progress", value);
+        intent.putExtra("status", status);
         App.getLocalBroadcastManager().sendBroadcast(intent);
     }
 }

@@ -35,29 +35,42 @@ public class Quest extends BaseObservable {
         }
     }
 
+    @Bindable
     private boolean isFinished;
+
     private long id;
+
+    @Bindable
     private String title;
+
+    @Bindable
     private String description;
+
+    @Bindable
     private long experience;
+
+    @Bindable
     private long credits;
+
+    @Bindable
     private QuestStatus status;
 
     /**
      * In format of {@link Constants}: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
      */
+    @Bindable
     private String expirationTime;
     protected QuestType type = QuestType.None;
 
     public Quest() {}
 
     public Quest(long id, String title, String expirationTime, long experience, long credits, QuestStatus status) {
-        this.id = id;
-        this.title = title;
-        this.experience = experience;
-        this.credits = credits;
-        this.status = status;
-        this.expirationTime = expirationTime;
+        setId(id);
+        setTitle(title);
+        setExperience(experience);
+        setCredits(credits);
+        setStatus(status);
+        setExpirationTime(expirationTime);
     }
 
     public String getExpirationTime() {
@@ -81,7 +94,6 @@ public class Quest extends BaseObservable {
         this.id = id;
     }
 
-    @Bindable
     public String getTitle() {
         return title;
     }
@@ -91,7 +103,6 @@ public class Quest extends BaseObservable {
         notifyPropertyChanged(BR.title);
     }
 
-    @Bindable
     public String getDescription() {
         return description;
     }
@@ -101,7 +112,6 @@ public class Quest extends BaseObservable {
         notifyPropertyChanged(BR.description);
     }
 
-    @Bindable
     public long getExperience() {
         return experience;
     }
@@ -111,7 +121,6 @@ public class Quest extends BaseObservable {
         notifyPropertyChanged(BR.experience);
     }
 
-    @Bindable
     public long getCredits() {
         return credits;
     }
@@ -121,16 +130,14 @@ public class Quest extends BaseObservable {
         notifyPropertyChanged(BR.credits);
     }
 
-    @Bindable
     public QuestStatus getStatus() {
         return status;
     }
 
     public void setStatus(QuestStatus status) {
         this.status = status;
-        isFinished = status == QuestStatus.Finished;
         notifyPropertyChanged(BR.status);
-        notifyPropertyChanged(BR.isFinished);
+        setIsFinished(status == QuestStatus.Finished);
     }
 
     public QuestType getType() {
@@ -141,7 +148,11 @@ public class Quest extends BaseObservable {
         this.type = type;
     }
 
-    @Bindable
+    public void setIsFinished(boolean isFinished) {
+        this.isFinished = isFinished;
+        notifyPropertyChanged(BR.isFinished);
+    }
+
     public boolean getIsFinished() {
         return isFinished;
     }

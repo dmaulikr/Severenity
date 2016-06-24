@@ -36,7 +36,7 @@ public class QuestsAdapter extends RecyclerView.Adapter<QuestsAdapter.QuestViewH
 
     public QuestsAdapter(MainActivity context, List<Quest> objects) {
         this.context = context;
-        this.quests.addAll(objects);
+        addAll(objects);
     }
 
     public class QuestViewHolder extends RecyclerView.ViewHolder {
@@ -64,11 +64,6 @@ public class QuestsAdapter extends RecyclerView.Adapter<QuestsAdapter.QuestViewH
         }
 
         return index;
-    }
-
-    public void addAll(ArrayList<Quest> quests) {
-        this.quests.addAll(quests);
-        notifyDataSetChanged();
     }
 
     public void add(Quest object) {
@@ -109,8 +104,7 @@ public class QuestsAdapter extends RecyclerView.Adapter<QuestsAdapter.QuestViewH
 
     @Override
     public void onBindViewHolder(final QuestViewHolder holder, int position) {
-        Quest quest = quests.get(position);
-        holder.questItemBinding.setQuest(quest);
+        holder.questItemBinding.setQuest(quests.get(position));
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
