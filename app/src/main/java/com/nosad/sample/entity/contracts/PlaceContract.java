@@ -19,6 +19,7 @@ public class PlaceContract {
         public static final String COLUMN_PLACE_NAME = "place_name";
         public static final String COLUMN_PLACE_LAT = "place_latitude";
         public static final String COLUMN_PLACE_LNG = "place_longitude";
+        public static final String COLUMN_PLACE_TYPE = "place_type";
     }
 
     public static abstract class DBPlacesOwners {

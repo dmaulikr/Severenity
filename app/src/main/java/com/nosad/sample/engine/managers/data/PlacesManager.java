@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.nosad.sample.entity.contracts.PlaceContract.DBPlaces.COLUMN_PLACE_TYPE;
 import static com.nosad.sample.entity.contracts.PlaceContract.DBPlaces.TABLE_PLACES;
 import static com.nosad.sample.entity.contracts.PlaceContract.DBPlaces.COLUMN_PLACE_ID;
 import static com.nosad.sample.entity.contracts.PlaceContract.DBPlaces.COLUMN_PLACE_NAME;
@@ -43,15 +44,28 @@ public class PlacesManager extends DataManager {
         super(context);
     }
 
+    /**
+     * Returns {@link GamePlace} object from the cursor in DB.
+     *
+     * @param cursor - cursor of the row in db.
+     * @return {@link GamePlace} object instance.
+     */
     private GamePlace placeFromCursor(Cursor cursor) {
+        String id = cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_ID));
+        String name = cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_NAME));
+        LatLng location = new LatLng(cursor.getDouble(cursor.getColumnIndex(COLUMN_PLACE_LAT)), cursor.getDouble(cursor.getColumnIndex(COLUMN_PLACE_LNG)));
+        GamePlace.PlaceType placeType = GamePlace.PlaceType.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE))];
 
-        String strID       = cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_ID));
-        String placeName   = cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_NAME));
-        LatLng pos         = new LatLng(cursor.getDouble(cursor.getColumnIndex(COLUMN_PLACE_LAT)), cursor.getDouble(cursor.getColumnIndex(COLUMN_PLACE_LNG)));
-
-        return new GamePlace(strID, placeName, pos);
+        return new GamePlace(id, name, location, placeType);
     }
 
+    /**
+     * Looks for the owners for the {@link GamePlace} object.
+     * Adds if found to the place object passed in.
+     *
+     * @param place - place to find owners of.
+     * @return true if found, false otherwise.
+     */
     private boolean findPlaceOwners(GamePlace place) {
         try (SQLiteDatabase db = dbHelper.getReadableDatabase();
              Cursor cursor = db.query(
@@ -71,10 +85,16 @@ public class PlacesManager extends DataManager {
         }
     }
 
+    /**
+     * Looks for the place in db specified with the id.
+     *
+     * @param placeID - id of the place to find.
+     * @return {@link GamePlace} object if found, null otherwise.
+     */
     public GamePlace findPlaceByID(String placeID) {
         try (SQLiteDatabase db = dbHelper.getReadableDatabase();
              Cursor cursor = db.query(
-                 TABLE_PLACES, new String[]{COLUMN_PLACE_ID, COLUMN_PLACE_NAME, COLUMN_PLACE_LAT, COLUMN_PLACE_LNG},
+                 TABLE_PLACES, null,
                  COLUMN_PLACE_ID + " = ?", new String[] {placeID}, null, null, null, null)) {
 
             if (cursor == null) {
@@ -108,6 +128,13 @@ public class PlacesManager extends DataManager {
         }
     }
 
+    /**
+     * Searches through all entries of owners to find all {@link GamePlace}'s that
+     * have this owner.
+     *
+     * @param ownerID - user id to look-up for.
+     * @return list of the places if found, null if error occurred.
+     */
     public ArrayList<GamePlace> findPlacesByOwner(String ownerID) {
         // find if place has owners
         try (SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -157,6 +184,7 @@ public class PlacesManager extends DataManager {
             values.put(COLUMN_PLACE_NAME, place.getPlaceName());
             values.put(COLUMN_PLACE_LAT,  place.getPlacePos().latitude);
             values.put(COLUMN_PLACE_LNG,  place.getPlacePos().longitude);
+            values.put(COLUMN_PLACE_TYPE, place.getPlaceType().ordinal());
 
             db.insert(TABLE_PLACES, "NULL", values);
         } catch (Exception ex) {
@@ -166,7 +194,7 @@ public class PlacesManager extends DataManager {
 
         if (storeOnServer) {
 
-            App.getRestManager().sendPlaceToServer(place, new RequestCallback() {
+            sendPlaceToServer(place, new RequestCallback() {
                 @Override
                 public void onResponseCallback(JSONObject response) {
                     if (response != null) {
@@ -265,6 +293,11 @@ public class PlacesManager extends DataManager {
         }
     }
 
+    /**
+     * Retrieves all places from the local DB.
+     *
+     * @return list of the places in local DB, null if error.
+     */
     public ArrayList<GamePlace> getPlaces() {
         try (SQLiteDatabase db = dbHelper.getReadableDatabase();
              Cursor cursor = db.query(TABLE_PLACES,null, null, null, null, null, null)) {
@@ -310,12 +343,47 @@ public class PlacesManager extends DataManager {
         }
     }
 
+    /**
+     * Clears all places and owners in the local DB.
+     */
     public void clearPlacesAndOwnersData() {
         try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
             db.delete(TABLE_PLACES_OWNERS, null, null);
             db.delete(TABLE_PLACES, null, null);
         } catch (SQLException e){
             Log.e(Constants.TAG, "PlacesManager: error clearing place tables. " + e.getMessage());
+        }
+    }
+
+    /**
+     * Retrieve places from server based on current position and radius.
+     *
+     * @param currentPosition - current location of the user.
+     * @param radius - radius to check places within.
+     * @param callback - callback to execute after places were retrieved.
+     */
+    public void getPlacesFromServer(LatLng currentPosition, int radius, RequestCallback callback) {
+        String request = Constants.REST_API_PLACES + "/?lng=" + Double.toString(currentPosition.longitude) + "&lat=" + Double.toString(currentPosition.latitude) + "&radius=" + Integer.toString(radius);
+        App.getRestManager().createRequest(request, Request.Method.GET, null, callback);
+    }
+
+    /**
+     * Sends API request to store place on the server DB.
+     *
+     * @param place - place to store on the server.
+     */
+    public void sendPlaceToServer(GamePlace place, RequestCallback callback) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("placeId", place.getPlaceID());
+            data.put("name", place.getPlaceName());
+            data.put("lng", String.valueOf(place.getPlacePos().longitude));
+            data.put("lat", String.valueOf(place.getPlacePos().latitude));
+            data.put("type", place.getPlaceType().ordinal());
+
+            App.getRestManager().createRequest(Constants.REST_API_PLACES, Request.Method.POST, data, callback);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -13,17 +13,27 @@ import java.util.HashMap;
  * Created by Andriy on 5/15/2016.
  */
 public class GamePlace {
+    public enum PlaceType {
+        Default,
+        Money,
+        ImplantRecovery,
+        ImplantRepair,
+        ImplantIncrease,
+        EnergyIncrease,
+        ImmunityIncrease
+    }
 
     private String mPlaceID;
     private String mPlaceName;
     private HashMap<Integer, String> mPlaceOwnerIDs;
     private LatLng mPlacePos;
+    private PlaceType mPlaceType; // TODO: Add dependency on the place type in all places.
 
-    public GamePlace(String placeID, String placeName, LatLng latlng) {
-
-        this.mPlaceID = placeID;
-        this.mPlaceName = placeName;
-        this.mPlacePos = latlng;
+    public GamePlace(String placeID, String placeName, LatLng latlng, PlaceType placeType) {
+        mPlaceID = placeID;
+        mPlaceName = placeName;
+        mPlacePos = latlng;
+        mPlaceType = placeType;
         mPlaceOwnerIDs = new HashMap<>();
     }
 
@@ -64,10 +74,18 @@ public class GamePlace {
         return owners;
     }
 
-    public String getPlaceID() { return this.mPlaceID; };
-    public String getPlaceName() { return this.mPlaceName; };
+    public String getPlaceID() { return this.mPlaceID; }
+    public String getPlaceName() { return this.mPlaceName; }
 
-    public LatLng getPlacePos() { return this.mPlacePos; };
+    public LatLng getPlacePos() { return this.mPlacePos; }
+
+    public PlaceType getPlaceType() {
+        return mPlaceType;
+    }
+
+    public void setPlaceType(PlaceType placeType) {
+        this.mPlaceType = placeType;
+    }
 
     public String getJSONPlaceInfo() {
 

@@ -16,13 +16,7 @@ public class DistanceQuest extends Quest {
     private int distance; // in km
 
     public DistanceQuest(Quest quest, int distance) {
-        super(quest.getId(), quest.getTitle(), quest.getExpirationTime(), quest.getExperience(), quest.getCredits(), quest.getStatus());
-
-        fillData(distance);
-    }
-
-    public DistanceQuest(long id, String title, String expirationTime, long experience, long credits, Quest.QuestStatus status, int distance) {
-        super(id, title, expirationTime, experience, credits, status);
+        super(quest.getId(), quest.getTitle(), quest.getExpirationTime(), quest.getExperience(), quest.getCredits(), quest.getStatus(), quest.getProgress());
 
         fillData(distance);
     }
@@ -35,7 +29,7 @@ public class DistanceQuest extends Quest {
         } else {
             setExpirationTime(getExpirationTime());
             try {
-                setDescription("Pass " + distance + " km in " + Utils.dateDifference(
+                setDescription("Pass " + distance + " meters in " + Utils.dateDifference(
                         new Date(),
                         new SimpleDateFormat(Constants.TIME_FORMAT, Locale.US).parse(getExpirationTime())
                 ));

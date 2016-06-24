@@ -297,6 +297,8 @@ public class LocationManager implements LocationListener {
             Log.i(Constants.TAG, "Place type for " + place.getName() + " is: " + placeType);
         }
 
+        GamePlace.PlaceType placeType;
+
         if (place.getPlaceTypes().contains(Place.TYPE_BUS_STATION)
                 || place.getPlaceTypes().contains(Place.TYPE_TRANSIT_STATION)
                 || place.getPlaceTypes().contains(Place.TYPE_SUBWAY_STATION)
@@ -331,6 +333,7 @@ public class LocationManager implements LocationListener {
                 || place.getPlaceTypes().contains(Place.TYPE_GROCERY_OR_SUPERMARKET)
                 || place.getPlaceTypes().contains(Place.TYPE_ACCOUNTING)) {
             // display money
+            placeType = GamePlace.PlaceType.Money;
         } else if (place.getPlaceTypes().contains(Place.TYPE_MEAL_DELIVERY)
                 || place.getPlaceTypes().contains(Place.TYPE_MEAL_TAKEAWAY)
                 || place.getPlaceTypes().contains(Place.TYPE_BAKERY)
@@ -342,6 +345,7 @@ public class LocationManager implements LocationListener {
                 || place.getPlaceTypes().contains(Place.TYPE_DOCTOR)
                 || place.getPlaceTypes().contains(Place.TYPE_PHARMACY)) {
             // display HP recovery
+            placeType = GamePlace.PlaceType.ImplantRecovery;
         } else if (place.getPlaceTypes().contains(Place.TYPE_ART_GALLERY)
                 || place.getPlaceTypes().contains(Place.TYPE_BOOK_STORE)
                 || place.getPlaceTypes().contains(Place.TYPE_LIBRARY)
@@ -349,10 +353,12 @@ public class LocationManager implements LocationListener {
                 || place.getPlaceTypes().contains(Place.TYPE_MUSEUM)
                 || place.getPlaceTypes().contains(Place.TYPE_UNIVERSITY)) {
             // display intelligence amount rise
+            placeType = GamePlace.PlaceType.EnergyIncrease;
         } else if (place.getPlaceTypes().contains(Place.TYPE_ELECTRICIAN)
                 || place.getPlaceTypes().contains(Place.TYPE_ELECTRONICS_STORE)
                 || place.getPlaceTypes().contains(Place.TYPE_HARDWARE_STORE)) {
             // display implant repair
+            placeType = GamePlace.PlaceType.ImplantRepair;
         } else if (place.getPlaceTypes().contains(Place.TYPE_CEMETERY)
                 || place.getPlaceTypes().contains(Place.TYPE_CHURCH)
                 || place.getPlaceTypes().contains(Place.TYPE_INSURANCE_AGENCY)
@@ -360,11 +366,14 @@ public class LocationManager implements LocationListener {
                 || place.getPlaceTypes().contains(Place.TYPE_MOSQUE)
                 || place.getPlaceTypes().contains(Place.TYPE_SYNAGOGUE)) {
             // display immunity amount rise
+            placeType = GamePlace.PlaceType.ImmunityIncrease;
         } else if (place.getPlaceTypes().contains(Place.TYPE_GYM)
                 || place.getPlaceTypes().contains(Place.TYPE_STADIUM)) {
             // display HP rise
+            placeType = GamePlace.PlaceType.ImplantIncrease;
         } else {
             // display only experience got
+            placeType = GamePlace.PlaceType.Default;
         }
 
         if (App.getPlacesManager().findPlaceByID(place.getId()) == null) {
@@ -372,7 +381,8 @@ public class LocationManager implements LocationListener {
             GamePlace place_inner = new GamePlace(
                     place.getId(),
                     place.getName().toString(),
-                    place.getLatLng());
+                    place.getLatLng(),
+                    placeType);
 
             App.getPlacesManager().addPlace(place_inner, true /*send to the server*/);
 
@@ -550,6 +560,7 @@ public class LocationManager implements LocationListener {
 
     private void updateUserInfo(int metersPassed) {
         User currentUser = App.getUserManager().getCurrentUser();
+        App.getQuestManager().updateQuestProgress("distance", String.valueOf(metersPassed));
         if (currentUser != null) {
             currentUser.setDistance(
                     App.getUserManager().getCurrentUser().getDistance() + metersPassed);
@@ -590,7 +601,7 @@ public class LocationManager implements LocationListener {
 
                     mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
                     App.getPlacesManager().clearPlacesAndOwnersData();
-                    App.getRestManager().getPlacesFromServer(Utils.latLngFromLocation(currentLocation), 1000, placesRequestCallback);
+                    App.getPlacesManager().getPlacesFromServer(Utils.latLngFromLocation(currentLocation), 1000, placesRequestCallback);
                 }
                 previousLocation = currentLocation;
             } else {
@@ -614,14 +625,14 @@ public class LocationManager implements LocationListener {
                 try {
                     String responseStatus = response.getString("result");
                     switch (responseStatus) {
-
                         case "success": {
-
                             Log.e(Constants.TAG, response.toString());
                             JSONArray array = response.getJSONArray("data");
                             for (int i = 0; i < array.length(); ++i) {
                                 JSONObject place = array.getJSONObject(i);
-                                if (!place.has("placeId") || !place.has("name") || !place.has("location") || !place.has("owners")) {
+                                if (!place.has("placeId") || !place.has("name")
+                                    || !place.has("location") || !place.has("owners")
+                                    || !place.has("type")) {
                                     Log.e(Constants.TAG, "Incorrect place info passed from the server.");
                                     continue;
                                 }
@@ -630,8 +641,9 @@ public class LocationManager implements LocationListener {
                                 String placeName = place.getString("name");
                                 LatLng coordinates = new LatLng(place.getJSONObject("location").getJSONArray("coordinates").getDouble(1),
                                         place.getJSONObject("location").getJSONArray("coordinates").getDouble(0));
+                                GamePlace.PlaceType placeType = GamePlace.PlaceType.values()[place.getInt("type")];
 
-                                GamePlace gamePlace = new GamePlace(placeID, placeName, coordinates);
+                                GamePlace gamePlace = new GamePlace(placeID, placeName, coordinates, placeType);
                                 App.getPlacesManager().addPlace(gamePlace, false /*do not send to the server*/);
 
                                 JSONArray owners = place.getJSONArray("owners");

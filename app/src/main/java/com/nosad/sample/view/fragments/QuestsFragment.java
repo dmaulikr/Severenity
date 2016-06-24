@@ -97,14 +97,6 @@ public class QuestsFragment extends Fragment {
         emptyList = (TextView) view.findViewById(R.id.tvEmptyList);
         checkEmptyList();
 
-        Button btnUpdateQuest = (Button) view.findViewById(R.id.btnUpdateProgress);
-        btnUpdateQuest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                App.getQuestManager().updateQuestProgress("distance", "100");
-            }
-        });
-
         return view;
     }
 
@@ -195,7 +187,11 @@ public class QuestsFragment extends Fragment {
                     questsAdapter.refreshWith(App.getQuestManager().getQuests());
                 }
             } else if (intent.getAction().equalsIgnoreCase(Constants.INTENT_FILTER_QUEST_UPDATE)) {
-                questsAdapter.notifyDataSetChanged();
+                Quest q = new Quest();
+                q.setProgress(questObj.getInt("progress"));
+                q.setStatus(Quest.QuestStatus.values()[questObj.getInt("status")]);
+                q.setId(questObj.getLong("questId"));
+                questsAdapter.update(q);
             }
             checkEmptyList();
         }

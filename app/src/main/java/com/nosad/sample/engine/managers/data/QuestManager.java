@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.nosad.sample.App;
 import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.entity.quest.CaptureQuest;
@@ -88,6 +89,7 @@ public class QuestManager extends DataManager {
         values.put(COLUMN_STATUS, quest.getStatus().ordinal());
         values.put(COLUMN_TYPE, quest.getType().ordinal());
         values.put(COLUMN_EXPIRATION_TIME, quest.getExpirationTime());
+        values.put(COLUMN_PROGRESS, quest.getProgress());
 
         if (quest.getType() == Quest.QuestType.Distance) {
             values.put(COLUMN_DISTANCE, ((DistanceQuest) quest).getDistance());
@@ -122,13 +124,7 @@ public class QuestManager extends DataManager {
 
         Cursor cursor = db.query(
                 TABLE_QUESTS,
-                new String[]{
-                        COLUMN_ID, COLUMN_TITLE, COLUMN_DESCRIPTION,
-                        COLUMN_EXP_AMOUNT, COLUMN_CREDITS_AMOUNT, COLUMN_EXPIRATION_TIME,
-                        COLUMN_STATUS, COLUMN_TYPE, COLUMN_DISTANCE,
-                        COLUMN_PLACE_TYPE, COLUMN_PLACE_TYPE_VALUE,
-                        COLUMN_CHARACTERISTIC, COLUMN_CHARACTERISTIC_AMOUNT
-                },
+                null,
                 "id = " + id,
                 null, null, null, null, null
         );
@@ -172,6 +168,7 @@ public class QuestManager extends DataManager {
         quest.setStatus(Quest.QuestStatus.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS))]);
         quest.setExperience(cursor.getLong(cursor.getColumnIndex(COLUMN_EXP_AMOUNT)));
         quest.setCredits(cursor.getLong(cursor.getColumnIndex(COLUMN_CREDITS_AMOUNT)));
+        quest.setProgress(cursor.getInt(cursor.getColumnIndex(COLUMN_PROGRESS)));
 
         String expirationTime = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRATION_TIME));
         if (!expirationTime.equals("null")) {
@@ -267,7 +264,7 @@ public class QuestManager extends DataManager {
             request.put("questId", quest.getId());
             request.put("reason", "accepted");
 
-            App.getRestManager().updateQuestWithData(App.getUserManager().getCurrentUser().getId(), request);
+            updateQuestWithData(App.getUserManager().getCurrentUser().getId(), request);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -291,6 +288,9 @@ public class QuestManager extends DataManager {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(COLUMN_STATUS, status);
+            if (status == 1 || status == 2) {
+                values.put(COLUMN_PROGRESS, 0);
+            }
             db.update(TABLE_QUESTS, values, "id = " + questId, null);
             db.close();
         } else {
@@ -317,6 +317,7 @@ public class QuestManager extends DataManager {
         intent.putExtra(COLUMN_STATUS, quest.getStatus().ordinal());
         intent.putExtra(COLUMN_TYPE, quest.getType().ordinal());
         intent.putExtra(COLUMN_EXPIRATION_TIME, quest.getExpirationTime());
+        intent.putExtra(COLUMN_PROGRESS, quest.getProgress());
 
         if (quest.getType() == Quest.QuestType.Distance) {
             intent.putExtra(COLUMN_TYPE, Quest.QuestType.Distance.ordinal());
@@ -371,6 +372,7 @@ public class QuestManager extends DataManager {
             quest.setExperience(questObj.getLong("experience"));
             quest.setExpirationTime(questObj.getString("expirationDate"));
             quest.setStatus(Quest.QuestStatus.values()[questObj.getInt("status")]);
+            quest.setProgress(questObj.getJSONObject("progress").getInt("progress"));
 
             if (questType == Quest.QuestType.Distance.ordinal()) {
                 quest.setType(Quest.QuestType.Distance);
@@ -423,7 +425,7 @@ public class QuestManager extends DataManager {
      * Renew quests list with quests received from the server.
      */
     public void refreshWithQuestsFromServer() {
-        App.getRestManager().getQuestsFromServer(App.getUserManager().getCurrentUser().getId());
+        getQuestsFromServer(App.getUserManager().getCurrentUser().getId());
     }
 
     /**
@@ -440,7 +442,7 @@ public class QuestManager extends DataManager {
             request.put("reason", "progress");
             request.put("data", data);
 
-            App.getRestManager().updateQuestWithData(App.getUserManager().getCurrentUser().getId(), request);
+            updateQuestWithData(App.getUserManager().getCurrentUser().getId(), request);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -467,5 +469,114 @@ public class QuestManager extends DataManager {
         intent.putExtra("progress", value);
         intent.putExtra("status", status);
         App.getLocalBroadcastManager().sendBroadcast(intent);
+    }
+
+    /**
+     * Retrieve quests from server based on user id.
+     *
+     * @param userId - quests of this users will be retrieved.
+     */
+    public void getQuestsFromServer(String userId) {
+        App.getQuestManager().deleteQuests();
+        String request = Constants.REST_API_USERS + "/" + userId + Constants.REST_API_QUESTS;
+        App.getRestManager().createRequest(request, Request.Method.GET, null, new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
+                try {
+                    if (!response.getString("result").equalsIgnoreCase("success")) {
+                        return;
+                    }
+
+                    JSONArray quests = response.getJSONArray("data");
+                    ArrayList<Quest> questsList = new ArrayList<>();
+                    for (int i = 0; i < quests.length(); i++) {
+                        JSONObject questObject = quests.getJSONObject(i);
+                        questsList.add(App.getQuestManager().getQuestFromJSON(questObject));
+                    }
+
+                    App.getQuestManager().addQuests(questsList);
+
+                    Intent intent = new Intent(Constants.INTENT_FILTER_NEW_QUEST);
+                    intent.putExtra(Constants.INTENT_EXTRA_SINGLE_QUEST, false);
+                    App.getLocalBroadcastManager().sendBroadcast(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+                if (response != null) {
+                    Log.e(Constants.TAG, "Error response for quests retrieve: " + response.toString());
+                } else {
+                    Log.e(Constants.TAG, "Error response for quests retrieve is null.");
+                }
+            }
+        });
+    }
+
+    /**
+     * Updates quest(s) data on the server according to data specified and user that
+     * has requested to update the quest(s).
+     *
+     * @param userId - id of the user which quest should be updated.
+     * @param data - data to be sent together with quest update request for user.
+     */
+    public void updateQuestWithData(String userId, JSONObject data) {
+        String request = Constants.REST_API_USERS + "/" + userId + Constants.REST_API_QUESTS_UPDATE;
+        App.getRestManager().createRequest(request, Request.Method.POST, data, new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
+                if (response == null) {
+                    Log.e(Constants.TAG, "Quest update response is null.");
+                    return;
+                }
+
+                try {
+                    if (!response.getString("result").equalsIgnoreCase("success")) {
+                        Log.e(Constants.TAG, "Quest update result is error.");
+                        return;
+                    }
+
+                    String reason = response.getString("reason");
+                    JSONObject data = response.getJSONObject("data");
+                    switch (reason) {
+                        case "accepted": {
+                            int status = data.getInt("status");
+                            long questId = data.getLong("questId");
+
+                            updateQuestStatusAndPopulate(questId, status);
+                        } break;
+                        case "progress": {
+                            Log.d(Constants.TAG, response.toString());
+                            JSONArray quests = response.getJSONObject("data").getJSONArray("quests");
+                            for (int i = 0; i < quests.length(); i++) {
+                                JSONObject quest = quests.getJSONObject(i);
+                                JSONObject progress = quest.getJSONObject("progress");
+                                int value = progress.getInt("progress");
+                                long questId = quest.getLong("questId");
+                                int status = quest.getInt("status");
+
+                                updateQuestProgressLocally(questId, value, status);
+                            }
+                        } break;
+                        default:
+                            Log.e(Constants.TAG, "Unknown quest update reason: " + reason);
+                            break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+                if (response != null) {
+                    Log.e(Constants.TAG, "Update quest error response is: " + response.toString());
+                } else {
+                    Log.e(Constants.TAG, "Update quest error response is null");
+                }
+            }
+        });
     }
 }

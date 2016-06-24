@@ -6,9 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.android.volley.Request;
 import com.facebook.AccessToken;
+import com.nosad.sample.App;
+import com.nosad.sample.engine.network.RequestCallback;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.common.Constants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_ACTION_RADIUS;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_CREATED_DATE;
@@ -185,5 +191,49 @@ public class UserManager extends DataManager {
 
     public void setCurrentUser(User user) {
         currentUser = user;
+    }
+
+    /**
+     * Retrieves user from the server.
+     *
+     * @param userId - id of the user to retrieve
+     */
+    public void getUser(String userId, RequestCallback callback) {
+        App.getRestManager().createRequest(Constants.REST_API_USERS + "/" + userId, Request.Method.GET, null, callback);
+    }
+
+    /**
+     * Authorize user against the server.
+     * If user does not exist - server will create a new one with Facebook ID provided.
+     *
+     * @param userId - id of the user to authorize or create.
+     */
+    public void authorizeUser(String userId, RequestCallback callback) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("userId", userId);
+            App.getRestManager().createRequest(Constants.REST_API_USERS, Request.Method.POST, data, callback);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends a request to create a speicified {@link User} on the server.
+     *
+     * @param user - user to create on the server.
+     * @param callback - callback to execute with response.
+     */
+    public void createUser(User user, RequestCallback callback) {
+        JSONObject userObject = new JSONObject();
+        try {
+            userObject.put("userId", user.getId());
+            userObject.put("name", user.getName());
+            userObject.put("email", user.getEmail());
+
+            App.getRestManager().createRequest(Constants.REST_API_CREATE_USER, Request.Method.POST, userObject, callback);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

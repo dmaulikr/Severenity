@@ -221,7 +221,7 @@ public class LoginActivity extends AppCompatActivity {
         if (checkPermission() && AccessToken.getCurrentAccessToken() != null && !isAuthorizing) {
             isAuthorizing = true;
             showProgress(true);
-            App.getRestManager().authorizeUser(AccessToken.getCurrentAccessToken().getUserId(), new RequestCallback() {
+            App.getUserManager().authorizeUser(AccessToken.getCurrentAccessToken().getUserId(), new RequestCallback() {
                 @Override
                 public void onResponseCallback(JSONObject response) {
                     try {
@@ -295,7 +295,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         user.setName(data.getString("name"));
 
-                        App.getRestManager().createUser(user, new RequestCallback() {
+                        App.getUserManager().createUser(user, new RequestCallback() {
                             @Override
                             public void onResponseCallback(JSONObject response) {
                                 if (response != null) {

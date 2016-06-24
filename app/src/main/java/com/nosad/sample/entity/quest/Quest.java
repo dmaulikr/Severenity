@@ -55,6 +55,9 @@ public class Quest extends BaseObservable {
     @Bindable
     private QuestStatus status;
 
+    @Bindable
+    private int progress;
+
     /**
      * In format of {@link Constants}: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
      */
@@ -64,13 +67,14 @@ public class Quest extends BaseObservable {
 
     public Quest() {}
 
-    public Quest(long id, String title, String expirationTime, long experience, long credits, QuestStatus status) {
+    public Quest(long id, String title, String expirationTime, long experience, long credits, QuestStatus status, int progress) {
         setId(id);
         setTitle(title);
         setExperience(experience);
         setCredits(credits);
         setStatus(status);
         setExpirationTime(expirationTime);
+        setProgress(progress);
     }
 
     public String getExpirationTime() {
@@ -155,5 +159,14 @@ public class Quest extends BaseObservable {
 
     public boolean getIsFinished() {
         return isFinished;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+        notifyPropertyChanged(BR.progress);
     }
 }

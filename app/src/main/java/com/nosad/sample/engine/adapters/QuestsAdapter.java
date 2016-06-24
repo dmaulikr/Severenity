@@ -73,6 +73,17 @@ public class QuestsAdapter extends RecyclerView.Adapter<QuestsAdapter.QuestViewH
         notifyDataSetChanged();
     }
 
+    public void update(Quest newQuestValues) {
+        for (Quest quest : quests) {
+            if (quest.getId() == newQuestValues.getId()) {
+                quest.setProgress(newQuestValues.getProgress());
+                quest.setStatus(newQuestValues.getStatus());
+                break;
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     public void remove(Quest object) {
         for (Quest quest : quests) {
             if (quest.getId() == object.getId()) {

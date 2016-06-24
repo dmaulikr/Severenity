@@ -91,7 +91,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     PlaceContract.DBPlaces.COLUMN_PLACE_ID   + TEXT_TYPE + COMMA_SEP +
                     PlaceContract.DBPlaces.COLUMN_PLACE_NAME + TEXT_TYPE + COMMA_SEP +
                     PlaceContract.DBPlaces.COLUMN_PLACE_LNG  + REAL_TYPE + COMMA_SEP +
-                    PlaceContract.DBPlaces.COLUMN_PLACE_LAT  + REAL_TYPE + " )";
+                    PlaceContract.DBPlaces.COLUMN_PLACE_LAT  + REAL_TYPE + COMMA_SEP +
+                    PlaceContract.DBPlaces.COLUMN_PLACE_TYPE + INT_TYPE + " )";
 
     // !!! DO NOT CALL THIS STATEMENT DIRECTLY. Use createPlaces method instead
     // should be used in pare with DB_SQL_CREATE_PLACES
