@@ -35,11 +35,11 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile project(':volley')
     compile('io.socket:socket.io-client:0.7.0') {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
+    compile 'com.android.volley:volley:1.0.0'
     compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'com.android.support:design:24.0.0'
     compile 'com.android.support:support-v4:24.0.0'
@@ -59,12 +59,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-ads:9.0.2'
     compile 'com.google.android.gms:play-services-gcm:9.0.2'
 }
-
-
-
-
-
-
-
 
 apply plugin: 'com.google.gms.google-services'
