@@ -1,12 +1,12 @@
 package com.nosad.sample;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.LocalBroadcastManager;
-import com.facebook.FacebookSdk;
 
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.nosad.sample.engine.managers.data.MessageManager;
 import com.nosad.sample.engine.managers.data.PlacesManager;
@@ -25,7 +25,7 @@ import com.nosad.sample.view.activities.LoginActivity;
 /**
  * Created by Novosad on 3/24/16.
  */
-public class App extends Application {
+public class App extends MultiDexApplication {
     private GoogleApiHelper googleApiHelper;
     private LocationManager locationManager;
     private LocalBroadcastManager localBroadcastManager;

@@ -160,13 +160,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void requestPermissions() {
-        requestPermissions(
-            new String[] {
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.READ_PHONE_STATE
-            },
-            PERMISSION_REQUEST_CODE
-        );
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.READ_PHONE_STATE
+                    },
+                    PERMISSION_REQUEST_CODE
+            );
+        }
     }
 
     private boolean checkPermission() {

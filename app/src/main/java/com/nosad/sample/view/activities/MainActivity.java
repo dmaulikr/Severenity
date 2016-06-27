@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -30,6 +31,7 @@ import com.nosad.sample.R;
 import com.nosad.sample.engine.managers.messaging.FCMListener;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.engine.network.RequestCallback;
+import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.entity.quest.CaptureQuest;
 import com.nosad.sample.entity.quest.CollectQuest;
@@ -143,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         if (type == Quest.QuestType.Distance) {
             quest = new DistanceQuest(quest, intent.getIntExtra("distance", 1));
         } else if (type == Quest.QuestType.Capture) {
-            quest = new CaptureQuest(quest, intent.getStringExtra("placeType"), intent.getIntExtra("placeTypeValue", 0));
+            quest = new CaptureQuest(quest, GamePlace.PlaceType.values()[intent.getIntExtra("placeType", 0)], intent.getIntExtra("placeTypeValue", 0));
         } else if (type == Quest.QuestType.Collect) {
             String characteristic = intent.getStringExtra("characteristic");
             Constants.Characteristic c = Constants.Characteristic.None;
@@ -221,7 +223,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.shop_new, getTheme()));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    item.setIcon(getResources().getDrawable(R.drawable.shop_new, getTheme()));
+                                } else {
+                                    item.setIcon(getResources().getDrawable(R.drawable.shop_new));
+                                }
                             }
                         });
                         showShop();
@@ -230,7 +236,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.profile_new, getTheme()));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    item.setIcon(getResources().getDrawable(R.drawable.profile_new, getTheme()));
+                                } else {
+                                    item.setIcon(getResources().getDrawable(R.drawable.profile_new));
+                                }
                             }
                         });
                         showProfile();
@@ -239,7 +249,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.map_new, getTheme()));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    item.setIcon(getResources().getDrawable(R.drawable.map_new, getTheme()));
+                                } else {
+                                    item.setIcon(getResources().getDrawable(R.drawable.map_new));
+                                }
                             }
                         });
                         showMap();
@@ -248,7 +262,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.chat_new, getTheme()));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    item.setIcon(getResources().getDrawable(R.drawable.chat_new, getTheme()));
+                                } else {
+                                    item.setIcon(getResources().getDrawable(R.drawable.chat_new));
+                                }
                             }
                         });
                         showTeams();
@@ -257,7 +275,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.quests_new, getTheme()));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    item.setIcon(getResources().getDrawable(R.drawable.quests_new, getTheme()));
+                                } else {
+                                    item.setIcon(getResources().getDrawable(R.drawable.quests_new));
+                                }
                             }
                         });
                         showBattles();
@@ -276,19 +298,39 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             MenuItem item = toolbarBottom.getMenu().getItem(i);
             switch (item.getItemId()) {
                 case R.id.menu_shop:
-                    item.setIcon(getResources().getDrawable(R.drawable.shop, getTheme()));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        item.setIcon(getResources().getDrawable(R.drawable.shop, getTheme()));
+                    } else {
+                        item.setIcon(getResources().getDrawable(R.drawable.shop));
+                    }
                     break;
                 case R.id.menu_profile:
-                    item.setIcon(getResources().getDrawable(R.drawable.profile, getTheme()));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        item.setIcon(getResources().getDrawable(R.drawable.profile, getTheme()));
+                    } else {
+                        item.setIcon(getResources().getDrawable(R.drawable.profile));
+                    }
                     break;
                 case R.id.menu_map:
-                    item.setIcon(getResources().getDrawable(R.drawable.map, getTheme()));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        item.setIcon(getResources().getDrawable(R.drawable.map, getTheme()));
+                    } else {
+                        item.setIcon(getResources().getDrawable(R.drawable.map));
+                    }
                     break;
                 case R.id.menu_chat:
-                    item.setIcon(getResources().getDrawable(R.drawable.chat, getTheme()));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        item.setIcon(getResources().getDrawable(R.drawable.chat, getTheme()));
+                    } else {
+                        item.setIcon(getResources().getDrawable(R.drawable.chat));
+                    }
                     break;
                 case R.id.menu_quests:
-                    item.setIcon(getResources().getDrawable(R.drawable.quests, getTheme()));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        item.setIcon(getResources().getDrawable(R.drawable.quests, getTheme()));
+                    } else {
+                        item.setIcon(getResources().getDrawable(R.drawable.quests));
+                    }
                     break;
                 default: break;
             }
