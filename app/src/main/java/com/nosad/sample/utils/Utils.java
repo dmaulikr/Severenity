@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Novosad on 8/29/2015.
@@ -245,7 +246,7 @@ public class Utils {
 
         long elapsedSeconds = difference / secondsInMilli;
 
-        return String.format("%d days, %d hours, %d minutes, %d seconds%n", elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
+        return String.format(Locale.US, "%d days, %d hours, %d minutes, %d seconds%n", elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
     }
 
     /**

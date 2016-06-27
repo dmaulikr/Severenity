@@ -69,11 +69,6 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         FragmentManager fragmentManager = getChildFragmentManager();
@@ -139,7 +134,9 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
                 SpannableString s = new SpannableString(getResources().getString(R.string.title));
                 Typeface prometheus = Typeface.createFromAsset(activity.getAssets(), "fonts/zekton.ttf");
                 s.setSpan(new CustomTypefaceSpan("", prometheus), 0, s.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                activity.getSupportActionBar().setTitle(s);
+                if (activity.getSupportActionBar() != null) {
+                    activity.getSupportActionBar().setTitle(s);
+                }
                 activity.invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
@@ -149,7 +146,9 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
                 SpannableString s = new SpannableString(getResources().getString(R.string.title));
                 Typeface prometheus = Typeface.createFromAsset(activity.getAssets(), "fonts/zekton.ttf");
                 s.setSpan(new CustomTypefaceSpan("", prometheus), 0, s.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                activity.getSupportActionBar().setTitle(s);
+                if (activity.getSupportActionBar() != null) {
+                    activity.getSupportActionBar().setTitle(s);
+                }
                 activity.invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };

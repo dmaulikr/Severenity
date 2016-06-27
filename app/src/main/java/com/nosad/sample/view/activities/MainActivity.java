@@ -401,11 +401,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
 

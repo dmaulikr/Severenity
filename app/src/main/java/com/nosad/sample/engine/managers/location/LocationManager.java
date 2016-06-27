@@ -174,7 +174,7 @@ public class LocationManager implements LocationListener {
                             return false;
                         }
 
-                        Intent intent = null;
+                        Intent intent;
                         if (Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
                                 App.getUserManager().getCurrentUser().getActionRadius()) {
                             intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS);
@@ -710,7 +710,7 @@ public class LocationManager implements LocationListener {
 
     public void displayPlaceMarkerFromDB(boolean squareLimited) {
 
-        ArrayList<GamePlace> place_inner = null;
+        ArrayList<GamePlace> place_inner;
         if (squareLimited) {
             place_inner = App.getPlacesManager().getLimitedPlaces(Utils.latLngFromLocation(currentLocation),
                     mWestSouthPoint,
@@ -733,7 +733,7 @@ public class LocationManager implements LocationListener {
         for (GamePlace pl : place_inner) {
 
             String currentUserID = App.getUserManager().getCurrentUser().getId();
-            float placeIconColor = pl.hasOwner(currentUserID) == true ? BitmapDescriptorFactory.HUE_YELLOW : BitmapDescriptorFactory.HUE_RED;
+            float placeIconColor = pl.hasOwner(currentUserID) ? BitmapDescriptorFactory.HUE_YELLOW : BitmapDescriptorFactory.HUE_RED;
 
             rememberAndDisplayMarker(pl, placeIconColor);
         }
