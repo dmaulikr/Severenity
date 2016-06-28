@@ -709,15 +709,18 @@ public class LocationManager implements LocationListener {
     }
 
     public void displayPlaceMarkerFromDB(boolean squareLimited) {
+        if (App.getUserManager().getCurrentUser() == null) {
+            return;
+        }
 
         ArrayList<GamePlace> place_inner;
+
         if (squareLimited) {
             place_inner = App.getPlacesManager().getLimitedPlaces(Utils.latLngFromLocation(currentLocation),
                     mWestSouthPoint,
                     mNorthEastPoint,
                     App.getUserManager().getCurrentUser().getViewRadius());
-        }
-        else {
+        } else {
             place_inner = App.getPlacesManager().getPlaces();
         }
 
