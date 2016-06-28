@@ -113,12 +113,12 @@ public class Utils {
             user.setDistance(profileObject.getInt("distance"));
             user.setExperience(profileObject.getInt("experience"));
             user.setImmunity(profileObject.getInt("immunity"));
-            user.setIntelligence(profileObject.getInt("intelligence"));
+            user.setEnergy(profileObject.getInt("energy"));
             user.setCredits(profileObject.getInt("credits"));
             user.setImplantHP(profileObject.getInt("implantHP"));
             user.setLevel(profileObject.getInt("level"));
             user.setMaxImmunity(profileObject.getInt("maxImmunity"));
-            user.setMaxIntelligence(profileObject.getInt("maxIntelligence"));
+            user.setMaxEnergy(profileObject.getInt("maxEnergy"));
             user.setViewRadius(profileObject.getInt("viewRadius") * 1.0);
             user.setActionRadius(profileObject.getInt("actionRadius") * 1.0);
 

@@ -20,9 +20,9 @@ public final class UserContract {
         public static final String COLUMN_DISTANCE = "distance";
         public static final String COLUMN_EXPERIENCE = "experience";
         public static final String COLUMN_IMMUNITY = "immunity";
-        public static final String COLUMN_INTELLIGENCE = "intelligence";
+        public static final String COLUMN_ENERGY = "energy";
         public static final String COLUMN_MAX_IMMUNITY = "maxImmunity";
-        public static final String COLUMN_MAX_INTELLIGENCE = "maxIntelligence";
+        public static final String COLUMN_MAX_ENERGY = "maxEnergy";
         public static final String COLUMN_CREDITS = "credits";
         public static final String COLUMN_IMPLANT_HP = "implantHP";
         public static final String COLUMN_VIEW_RADIUS = "viewRadius";

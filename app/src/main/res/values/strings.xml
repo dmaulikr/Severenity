@@ -85,7 +85,7 @@
     <string name="drawerOpened">Spells</string>
     <string name="drawerClosed">Sample</string>
     <string name="immunity_value">Immunity: %d</string>
-    <string name="intelligence_value">Intelligence: %d</string>
+    <string name="energy_value">Energy: %d</string>
     <string name="spell_selected">Spell selected: %s</string>
     <string name="experience_value">Experience: %d</string>
     <string name="level_value">Level: %d</string>

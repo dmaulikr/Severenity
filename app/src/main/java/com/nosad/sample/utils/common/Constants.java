@@ -10,7 +10,7 @@ public class Constants {
         Experience("experience"),
         Level("level"),
         Credits("credits"),
-        Intelligence("intelligence"),
+        Energy("energy"),
         Immunity("immunity"),
         ImplantHealthPoints("implantHP"),
         None("none");

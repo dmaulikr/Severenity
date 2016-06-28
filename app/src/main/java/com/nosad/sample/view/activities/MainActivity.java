@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private Toolbar toolbarTop;
 
     private ProfilePictureView userProfilePicture;
-    private TextView tvIntelligenceValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
+    private TextView tvEnergyValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
 
     private FragmentManager fragmentManager;
 
@@ -153,8 +153,8 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 c = Constants.Characteristic.Level;
             } else if (characteristic.equals(Constants.Characteristic.Experience.toString())) {
                 c = Constants.Characteristic.Experience;
-            } else if (characteristic.equals(Constants.Characteristic.Intelligence.toString())) {
-                c = Constants.Characteristic.Intelligence;
+            } else if (characteristic.equals(Constants.Characteristic.Energy.toString())) {
+                c = Constants.Characteristic.Energy;
             } else if (characteristic.equals(Constants.Characteristic.Immunity.toString())) {
                 c = Constants.Characteristic.Immunity;
             }
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         userProfilePicture = (ProfilePictureView) toolbarTop.findViewById(R.id.mapUserAvatar);
 
         tvImmunityValue = (TextView) toolbarTop.findViewById(R.id.tvImmunityValue);
-        tvIntelligenceValue = (TextView) toolbarTop.findViewById(R.id.tvIntelligenceValue);
+        tvEnergyValue = (TextView) toolbarTop.findViewById(R.id.tvEnergyValue);
         tvExperienceValue = (TextView) toolbarTop.findViewById(R.id.tvExperienceValue);
         tvLevelValue = (TextView) toolbarTop.findViewById(R.id.tvLevelValue);
 
@@ -503,7 +503,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         }
 
         tvImmunityValue.setText(String.format(getResources().getString(R.string.immunity_value), user.getImmunity()));
-        tvIntelligenceValue.setText(String.format(getResources().getString(R.string.intelligence_value), user.getIntelligence()));
+        tvEnergyValue.setText(String.format(getResources().getString(R.string.energy_value), user.getEnergy()));
         tvExperienceValue.setText(String.format(getResources().getString(R.string.experience_value), user.getExperience()));
         tvLevelValue.setText(String.format(getResources().getString(R.string.level_value), user.getLevel()));
     }

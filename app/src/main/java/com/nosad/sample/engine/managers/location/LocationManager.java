@@ -352,7 +352,7 @@ public class LocationManager implements LocationListener {
                 || place.getPlaceTypes().contains(Place.TYPE_SCHOOL)
                 || place.getPlaceTypes().contains(Place.TYPE_MUSEUM)
                 || place.getPlaceTypes().contains(Place.TYPE_UNIVERSITY)) {
-            // display intelligence amount rise
+            // display energy amount rise
             placeType = GamePlace.PlaceType.EnergyIncrease;
         } else if (place.getPlaceTypes().contains(Place.TYPE_ELECTRICIAN)
                 || place.getPlaceTypes().contains(Place.TYPE_ELECTRONICS_STORE)
