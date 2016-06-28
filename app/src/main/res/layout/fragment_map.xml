@@ -31,7 +31,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:visibility="invisible"
-            android:id="@+id/placeActions"
+            android:id="@+id/userActions"
             android:background="@drawable/right_rounded_layout"
             android:layout_marginTop="5dp"
             android:padding="1dp">
@@ -41,6 +41,13 @@
                 android:layout_height="wrap_content"
                 android:text="CAPTURE"
                 android:id="@+id/captureButton"
+                android:layout_marginRight="2dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ATTACK"
+                android:id="@+id/attackButton"
                 android:layout_marginRight="2dp" />
 
         </LinearLayout>

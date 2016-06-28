@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.ChipAdapter;
 import com.nosad.sample.entity.GamePlace;
+import com.nosad.sample.entity.UsersActions;
 import com.nosad.sample.utils.CustomTypefaceSpan;
 import com.nosad.sample.utils.common.Constants;
 import com.nosad.sample.view.activities.MainActivity;
@@ -49,14 +51,14 @@ import org.json.JSONObject;
 /**
  * Handles user with map activity (actual game)
  */
-public class GameMapFragment extends Fragment implements View.OnClickListener {
+public class GameMapFragment extends Fragment {
     private SupportMapFragment mapFragment;
     private MainActivity activity;
     private TextView tvAttributions;
 
     private DrawerLayout drawerLayout;
     private ListView drawerList;
-    private LinearLayout mPlaceActions;
+    private UsersActions mUserActions;
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
     private ActionMode spellMode;
@@ -92,13 +94,13 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
         });
 
         App.getLocalBroadcastManager().registerReceiver(
-                showPlaceActions,
-                new IntentFilter(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS)
+                showUserActions,
+                new IntentFilter(Constants.INTENT_FILTER_SHOW_USER_ACTIONS)
         );
 
         App.getLocalBroadcastManager().registerReceiver(
-                hidePlaceActions,
-                new IntentFilter(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS)
+                hideUserActions,
+                new IntentFilter(Constants.INTENT_FILTER_HIDE_USER_ACTIONS)
         );
 
         App.getLocalBroadcastManager().registerReceiver(
@@ -120,8 +122,7 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
     private void initDrawer(View view) {
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerMap);
 
-        mPlaceActions = (LinearLayout)view.findViewById(R.id.placeActions);
-        mPlaceActions.findViewById(R.id.captureButton).setOnClickListener(this);
+        mUserActions = new UsersActions(view);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(
                 activity, drawerLayout, activity.getToolbarTop(),
@@ -204,47 +205,53 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
         Log.v(Constants.TAG, this.toString() + " onPause()");
         super.onPause();
 
-        App.getLocalBroadcastManager().unregisterReceiver(showPlaceActions);
-        App.getLocalBroadcastManager().unregisterReceiver(hidePlaceActions);
+        App.getLocalBroadcastManager().unregisterReceiver(showUserActions);
+        App.getLocalBroadcastManager().unregisterReceiver(hideUserActions);
     }
 
-    private BroadcastReceiver showPlaceActions = new BroadcastReceiver() {
+    private BroadcastReceiver showUserActions = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
             Bundle intentData = intent.getExtras();
-            mPlaceIDtoCapture = intentData.getString(Constants.PLACE_ID);
 
-            // TODO: AF: for now do not show action if user owns this place
-            GamePlace place = App.getPlacesManager().findPlaceByID(mPlaceIDtoCapture);
-            if (place.hasOwner(App.getUserManager().getCurrentUser().getId())) {
+            switch (intentData.getInt(Constants.OBJECT_TYPE_IDENTIFIER)) {
+                case Constants.TYPE_PLACE: {
 
-                if (mPlaceActions.getVisibility() == View.VISIBLE) {
-                    App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
+                    mPlaceIDtoCapture = intentData.getString(Constants.PLACE_ID);
+                    // TODO: AF: for now do not show action if user owns this place
+                    GamePlace place = App.getPlacesManager().findPlaceByID(mPlaceIDtoCapture);
+                    if (place.hasOwner(App.getUserManager().getCurrentUser().getId())) {
+
+                        if (mUserActions.isActionsDisplaying()) {
+                            App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
+                        }
+                        return;
+                    }
+
+                    mUserActions.setCapturedItemID(mPlaceIDtoCapture);
+                    mUserActions.showActionPanel(UsersActions.ActionsType.ActionsOnPlace, context);
+                    break;
                 }
 
-                return;
-            }
+                case Constants.TYPE_USER: {
 
-            if (mPlaceActions.getVisibility() == View.INVISIBLE) {
+                    mUserActions.showActionPanel(UsersActions.ActionsType.ActionsOnUser, context);
+                    break;
+                }
 
-                mPlaceActions.setVisibility(View.VISIBLE);
-                Animation anim = AnimationUtils.loadAnimation(context, R.anim.place_actions_slide_in);
-                mPlaceActions.startAnimation(anim);
+                default:
+                    Log.d(Constants.TAG, "Unknown object type: " + intentData.getInt(Constants.OBJECT_TYPE_IDENTIFIER));
+
             }
         }
     };
 
-    private BroadcastReceiver hidePlaceActions = new BroadcastReceiver() {
+    private BroadcastReceiver hideUserActions = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if (mPlaceActions.getVisibility() == View.VISIBLE) {
-
-                Animation anim = AnimationUtils.loadAnimation(context, R.anim.place_actions_slide_out);
-                mPlaceActions.startAnimation(anim);
-                mPlaceActions.setVisibility(View.INVISIBLE);
-            }
+            mUserActions.hideActionPanel(context);
         }
     };
 
@@ -267,29 +274,6 @@ public class GameMapFragment extends Fragment implements View.OnClickListener {
         });
         }
     };
-
-    @Override
-    public void onClick(View v) {
-
-        switch (v.getId()) {
-            case R.id.captureButton:
-
-                if (!mPlaceIDtoCapture.isEmpty()) {
-
-                    // adds Logged-in user into Place's owners list
-                    JSONObject data = new JSONObject();
-                    try {
-                        data.put("userId", App.getUserManager().getCurrentUser().getId());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    App.getWebSocketManager().sendPlaceUpdateToServer(mPlaceIDtoCapture, Constants.PlaceAction.Capture, data);
-                }
-
-                break;
-        }
-    }
 
     private class ActionBarSpell implements ActionMode.Callback {
         @Override
