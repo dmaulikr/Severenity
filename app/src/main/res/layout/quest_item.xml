@@ -19,7 +19,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:id="@+id/ivQuestIcon"
-                android:src="@{quest.isFinished ? @drawable/menu_check : @drawable/chat}"
+                android:src="@{quest.isFinished ? @drawable/ic_launcher : @drawable/quests}"
                 android:layout_width="48dp"
                 android:layout_height="48dp" />
 

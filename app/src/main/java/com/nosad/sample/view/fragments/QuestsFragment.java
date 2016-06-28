@@ -22,6 +22,7 @@ import com.nosad.sample.App;
 import com.nosad.sample.R;
 import com.nosad.sample.engine.adapters.QuestsAdapter;
 import com.nosad.sample.engine.managers.messaging.FCMListener;
+import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.quest.CaptureQuest;
 import com.nosad.sample.entity.quest.CollectQuest;
 import com.nosad.sample.entity.quest.DistanceQuest;
@@ -159,28 +160,14 @@ public class QuestsFragment extends Fragment {
                     } else if (questType == Quest.QuestType.Capture.ordinal()) {
                         q.setType(Quest.QuestType.Capture);
 
-                        String placeType = questObj.getString("placeType");
+                        GamePlace.PlaceType placeType = GamePlace.PlaceType.values()[questObj.getInt("placeType")];
                         int placeTypeValue = questObj.getInt("placeTypeValue");
                         q = new CaptureQuest(q, placeType, placeTypeValue);
                     } else if (questType == Quest.QuestType.Collect.ordinal()) {
                         q.setType(Quest.QuestType.Collect);
-                        int characteristic = questObj.getInt("characteristic");
+                        Constants.Characteristic characteristic = Constants.Characteristic.values()[questObj.getInt("characteristic")];
                         int characteristicAmount = questObj.getInt("characteristicAmount");
-                        Constants.Characteristic c;
-                        if (characteristic == Constants.Characteristic.Level.ordinal()) {
-                            c = Constants.Characteristic.Level;
-                        } else if (characteristic == Constants.Characteristic.Experience.ordinal()) {
-                            c = Constants.Characteristic.Experience;
-                        } else if (characteristic == Constants.Characteristic.Intelligence.ordinal()) {
-                            c = Constants.Characteristic.Intelligence;
-                        } else if (characteristic == Constants.Characteristic.Immunity.ordinal()) {
-                            c = Constants.Characteristic.Immunity;
-                        } else {
-                            Log.e(Constants.TAG, "Unknown characteristic " + characteristic + " received.");
-                            return;
-                        }
-
-                        q = new CollectQuest(q, c, characteristicAmount);
+                        q = new CollectQuest(q, characteristic, characteristicAmount);
                     }
                     questsAdapter.add(q);
                 } else {

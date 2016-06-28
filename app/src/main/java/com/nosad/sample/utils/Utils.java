@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Novosad on 8/29/2015.
@@ -112,12 +113,12 @@ public class Utils {
             user.setDistance(profileObject.getInt("distance"));
             user.setExperience(profileObject.getInt("experience"));
             user.setImmunity(profileObject.getInt("immunity"));
-            user.setIntelligence(profileObject.getInt("intelligence"));
+            user.setEnergy(profileObject.getInt("energy"));
             user.setCredits(profileObject.getInt("credits"));
             user.setImplantHP(profileObject.getInt("implantHP"));
             user.setLevel(profileObject.getInt("level"));
             user.setMaxImmunity(profileObject.getInt("maxImmunity"));
-            user.setMaxIntelligence(profileObject.getInt("maxIntelligence"));
+            user.setMaxEnergy(profileObject.getInt("maxEnergy"));
             user.setViewRadius(profileObject.getInt("viewRadius") * 1.0);
             user.setActionRadius(profileObject.getInt("actionRadius") * 1.0);
 
@@ -245,7 +246,7 @@ public class Utils {
 
         long elapsedSeconds = difference / secondsInMilli;
 
-        return String.format("%d days, %d hours, %d minutes, %d seconds%n", elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
+        return String.format(Locale.US, "%d days, %d hours, %d minutes, %d seconds%n", elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
     }
 
     /**

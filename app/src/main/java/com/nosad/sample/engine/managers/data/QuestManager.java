@@ -12,6 +12,7 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.nosad.sample.App;
 import com.nosad.sample.engine.network.RequestCallback;
+import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.quest.CaptureQuest;
 import com.nosad.sample.entity.quest.CollectQuest;
 import com.nosad.sample.entity.quest.DistanceQuest;
@@ -94,7 +95,7 @@ public class QuestManager extends DataManager {
         if (quest.getType() == Quest.QuestType.Distance) {
             values.put(COLUMN_DISTANCE, ((DistanceQuest) quest).getDistance());
         } else if (quest.getType() == Quest.QuestType.Capture) {
-            values.put(COLUMN_PLACE_TYPE, ((CaptureQuest) quest).getPlaceType());
+            values.put(COLUMN_PLACE_TYPE, ((CaptureQuest) quest).getPlaceType().ordinal());
             values.put(COLUMN_PLACE_TYPE_VALUE, ((CaptureQuest) quest).getPlaceTypeValue());
         } else if (quest.getType() == Quest.QuestType.Collect) {
             values.put(COLUMN_CHARACTERISTIC, ((CollectQuest) quest).getCharacteristic().ordinal());
@@ -136,7 +137,7 @@ public class QuestManager extends DataManager {
                 quest = new DistanceQuest(quest, cursor.getInt(cursor.getColumnIndex(COLUMN_DISTANCE)));
             } else if (quest.getType() == Quest.QuestType.Capture) {
                 quest = new CaptureQuest(quest,
-                        cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_TYPE)),
+                        GamePlace.PlaceType.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE))],
                         cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE_VALUE))
                 );
             } else if (quest.getType() == Quest.QuestType.Collect) {
@@ -217,7 +218,7 @@ public class QuestManager extends DataManager {
                         questsList.add(distanceQuest);
                     } else if (quest.getType() == Quest.QuestType.Capture) {
                         CaptureQuest captureQuest = new CaptureQuest(quest,
-                                cursor.getString(cursor.getColumnIndex(COLUMN_PLACE_TYPE)),
+                                GamePlace.PlaceType.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE))],
                                 cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE_VALUE))
                         );
 
@@ -379,28 +380,10 @@ public class QuestManager extends DataManager {
                 quest = new DistanceQuest(quest, questObj.getInt("distance"));
             } else if (questType == Quest.QuestType.Capture.ordinal()) {
                 quest.setType(Quest.QuestType.Capture);
-                quest = new CaptureQuest(quest, questObj.getString("placeType"), questObj.getInt("placeTypeValue"));
+                quest = new CaptureQuest(quest, GamePlace.PlaceType.values()[questObj.getInt("placeType")], questObj.getInt("placeTypeValue"));
             } else if (questType == Quest.QuestType.Collect.ordinal()) {
                 quest.setType(Quest.QuestType.Collect);
-                Constants.Characteristic characteristic;
-                switch (questObj.getString("characteristic").toLowerCase()) {
-                    case "experience":
-                        characteristic = Constants.Characteristic.Experience;
-                        break;
-                    case "immunity":
-                        characteristic = Constants.Characteristic.Immunity;
-                        break;
-                    case "level":
-                        characteristic = Constants.Characteristic.Level;
-                        break;
-                    case "intelligence":
-                        characteristic = Constants.Characteristic.Intelligence;
-                        break;
-                    default:
-                        characteristic = Constants.Characteristic.None;
-                }
-
-                quest = new CollectQuest(quest, characteristic, questObj.getInt("characteristicAmount"));
+                quest = new CollectQuest(quest, Constants.Characteristic.values()[questObj.getInt("characteristic")], questObj.getInt("characteristicAmount"));
             }
 
         } catch (JSONException e) {
@@ -425,7 +408,9 @@ public class QuestManager extends DataManager {
      * Renew quests list with quests received from the server.
      */
     public void refreshWithQuestsFromServer() {
-        getQuestsFromServer(App.getUserManager().getCurrentUser().getId());
+        if (App.getUserManager().getCurrentUser() != null) {
+            getQuestsFromServer(App.getUserManager().getCurrentUser().getId());
+        }
     }
 
     /**

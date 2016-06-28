@@ -27,7 +27,6 @@ import java.util.Map;
 public class FCMListener extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage message) {
-        String from = message.getFrom();
         Map<String, String> data = message.getData();
         String type = data.get("type");
         if (type == null) {

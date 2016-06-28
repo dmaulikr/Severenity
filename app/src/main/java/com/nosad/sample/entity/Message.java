@@ -12,22 +12,22 @@ public class Message {
     private String mUserName;
 
     /*timestamp should be in format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ"*/
-    public Message(){};
+    public Message() {}
 
-    public int getMessageID() {return this.mMessageID; };
-    public void setMessageID(int messageID) {this.mMessageID = messageID; };
+    public int getMessageID() {return this.mMessageID; }
+    public void setMessageID(int messageID) {this.mMessageID = messageID; }
 
-    public String getMessage() {return this.mMessage; };
-    public void   setMessage(String message) {this.mMessage = message; };
+    public String getMessage() {return this.mMessage; }
+    public void   setMessage(String message) {this.mMessage = message; }
 
-    public String getUserID() {return this.mUserId; };
-    public void   setUserID(String userID) {this.mUserId = userID;};
+    public String getUserID() {return this.mUserId; }
+    public void   setUserID(String userID) {this.mUserId = userID;}
 
-    public String getTimestamp() {return this.mTimestamp; };
-    public void   setTimestamp(String timestamp) {this.mTimestamp = timestamp;};
+    public String getTimestamp() {return this.mTimestamp; }
+    public void   setTimestamp(String timestamp) {this.mTimestamp = timestamp;}
 
-    public String getUserName() {return this.mUserName; };
-    public void   setUserName(String username) {this.mUserName = username;};
+    public String getUserName() {return this.mUserName; }
+    public void   setUserName(String username) {this.mUserName = username;}
 
     public int getMessageHASH() {
         String str = mUserId + mMessage + mTimestamp + mUserName;

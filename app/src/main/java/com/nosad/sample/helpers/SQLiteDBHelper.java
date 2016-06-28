@@ -48,8 +48,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     UserContract.DBUser.COLUMN_EXPERIENCE + INT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_IMMUNITY + INT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_MAX_IMMUNITY + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_INTELLIGENCE + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_MAX_INTELLIGENCE + INT_TYPE + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_ENERGY + INT_TYPE + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_MAX_ENERGY + INT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_IMPLANT_HP + INT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_CREATED_DATE + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_CREDITS + INT_TYPE + COMMA_SEP +

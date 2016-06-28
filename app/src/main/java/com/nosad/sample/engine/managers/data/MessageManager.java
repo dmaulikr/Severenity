@@ -43,14 +43,14 @@ public class MessageManager extends DataManager {
         long success = db.insert(TABLE_MESSAGE, "NULL", values);
         db.close();
 
-        return success == -1 ? false : true;
-    };
+        return success != -1;
+    }
 
     public ArrayList<Message> getMessages() {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = null;
+        Cursor cursor;
         try {
             cursor = db.query(
                     TABLE_MESSAGE,
@@ -59,9 +59,9 @@ public class MessageManager extends DataManager {
                     null,
                     null, null, null, null
             );
-        }catch (SQLException e){
+        } catch (SQLException e){
             return null;
-        };
+        }
 
         if (cursor.getCount() == 0) return null;
 

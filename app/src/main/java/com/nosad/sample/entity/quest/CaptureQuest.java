@@ -1,5 +1,6 @@
 package com.nosad.sample.entity.quest;
 
+import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.utils.Utils;
 import com.nosad.sample.utils.common.Constants;
 
@@ -13,16 +14,16 @@ import java.util.Locale;
  */
 public class CaptureQuest extends Quest {
     protected Quest.QuestType type = QuestType.Capture;
-    private String placeType;
+    private GamePlace.PlaceType placeType;
     private int placeTypeValue;
 
-    public CaptureQuest(Quest quest, String placeType, int placeTypeValue) {
+    public CaptureQuest(Quest quest, GamePlace.PlaceType placeType, int placeTypeValue) {
         super(quest.getId(), quest.getTitle(), quest.getExpirationTime(), quest.getExperience(), quest.getCredits(), quest.getStatus(), quest.getProgress());
 
         fillData(placeType, placeTypeValue);
     }
 
-    private void fillData(String placeType, int placeTypeValue) {
+    private void fillData(GamePlace.PlaceType placeType, int placeTypeValue) {
         this.placeType = placeType;
         this.placeTypeValue = placeTypeValue;
 
@@ -43,11 +44,11 @@ public class CaptureQuest extends Quest {
         }
     }
 
-    public String getPlaceType() {
+    public GamePlace.PlaceType getPlaceType() {
         return placeType;
     }
 
-    public void setPlaceType(String placeType) {
+    public void setPlaceType(GamePlace.PlaceType placeType) {
         this.placeType = placeType;
     }
 

@@ -40,7 +40,7 @@ public class GamePlace {
     public void addOwner(String owner) {
 
         this.mPlaceOwnerIDs.put(owner.hashCode(), owner);
-    };
+    }
 
     public boolean hasOwner(String ownerID) {
 
@@ -49,7 +49,7 @@ public class GamePlace {
         }
 
         return mPlaceOwnerIDs.containsKey(ownerID.hashCode());
-    };
+    }
 
     public ArrayList<String> getOwners(String exceptUserID) {
 

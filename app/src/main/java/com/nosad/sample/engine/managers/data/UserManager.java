@@ -25,10 +25,10 @@ import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_EXPER
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_ID;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_IMMUNITY;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_IMPLANT_HP;
-import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_INTELLIGENCE;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_ENERGY;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_LEVEL;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_MAX_IMMUNITY;
-import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_MAX_INTELLIGENCE;
+import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_MAX_ENERGY;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_NAME;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_NULLABLE;
 import static com.nosad.sample.entity.contracts.UserContract.DBUser.COLUMN_VIEW_RADIUS;
@@ -60,9 +60,9 @@ public class UserManager extends DataManager {
         values.put(COLUMN_EXPERIENCE, user.getExperience());
         values.put(COLUMN_LEVEL, user.getLevel());
         values.put(COLUMN_IMMUNITY, user.getImmunity());
-        values.put(COLUMN_INTELLIGENCE, user.getIntelligence());
+        values.put(COLUMN_ENERGY, user.getEnergy());
         values.put(COLUMN_MAX_IMMUNITY, user.getMaxImmunity());
-        values.put(COLUMN_MAX_INTELLIGENCE, user.getMaxIntelligence());
+        values.put(COLUMN_MAX_ENERGY, user.getMaxEnergy());
         values.put(COLUMN_CREDITS, user.getCredits());
         values.put(COLUMN_IMPLANT_HP, user.getImplantHP());
         values.put(COLUMN_ACTION_RADIUS, user.getActionRadius());
@@ -105,8 +105,8 @@ public class UserManager extends DataManager {
             user.setLevel(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_LEVEL))));
             user.setImmunity(cursor.getInt(cursor.getColumnIndex(COLUMN_IMMUNITY)));
             user.setMaxImmunity(cursor.getInt(cursor.getColumnIndex(COLUMN_MAX_IMMUNITY)));
-            user.setIntelligence(cursor.getInt(cursor.getColumnIndex(COLUMN_INTELLIGENCE)));
-            user.setMaxIntelligence(cursor.getInt(cursor.getColumnIndex(COLUMN_MAX_INTELLIGENCE)));
+            user.setEnergy(cursor.getInt(cursor.getColumnIndex(COLUMN_ENERGY)));
+            user.setMaxEnergy(cursor.getInt(cursor.getColumnIndex(COLUMN_MAX_ENERGY)));
             user.setCredits(cursor.getInt(cursor.getColumnIndex(COLUMN_CREDITS)));
             user.setImplantHP(cursor.getInt(cursor.getColumnIndex(COLUMN_IMPLANT_HP)));
             user.setViewRadius(cursor.getDouble(cursor.getColumnIndex(COLUMN_VIEW_RADIUS)));
@@ -160,8 +160,8 @@ public class UserManager extends DataManager {
         values.put(COLUMN_DISTANCE, currentUser.getDistance());
         values.put(COLUMN_EXPERIENCE, currentUser.getExperience());
         values.put(COLUMN_LEVEL, currentUser.getLevel());
-        values.put(COLUMN_INTELLIGENCE, currentUser.getIntelligence());
-        values.put(COLUMN_MAX_INTELLIGENCE, currentUser.getMaxIntelligence());
+        values.put(COLUMN_ENERGY, currentUser.getEnergy());
+        values.put(COLUMN_MAX_ENERGY, currentUser.getMaxEnergy());
         values.put(COLUMN_IMMUNITY, currentUser.getImmunity());
         values.put(COLUMN_MAX_IMMUNITY, currentUser.getMaxImmunity());
         values.put(COLUMN_IMPLANT_HP, currentUser.getImplantHP());

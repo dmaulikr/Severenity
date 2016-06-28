@@ -5,6 +5,7 @@ import com.nosad.sample.utils.common.Constants;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Andriy on 4/30/2016.
@@ -12,7 +13,7 @@ import java.util.Date;
 public class DateUtils {
 
     private static Calendar _calendar = Calendar.getInstance(Constants.LOCALE);
-    private static SimpleDateFormat _dataFormat = new SimpleDateFormat(Constants.TIME_FORMAT);
+    private static SimpleDateFormat _dataFormat = new SimpleDateFormat(Constants.TIME_FORMAT, Locale.US);
 
     public static int getDayFromTimestamp(String timestamp){
 

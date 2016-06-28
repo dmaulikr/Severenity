@@ -14,7 +14,7 @@ public class User {
     private String email;
     private int distance;
     private int immunity;
-    private int intelligence;
+    private int energy;
     private int experience;
     private int level;
     private double viewRadius;
@@ -22,7 +22,7 @@ public class User {
     private int credits;
     private int implantHP;
     private int maxImmunity;
-    private int maxIntelligence;
+    private int maxEnergy;
     private String createdDate;
 
     public User() {
@@ -79,12 +79,12 @@ public class User {
         this.immunity = immunity;
     }
 
-    public int getIntelligence() {
-        return intelligence;
+    public int getEnergy() {
+        return energy;
     }
 
-    public void setIntelligence(int intelligence) {
-        this.intelligence = intelligence;
+    public void setEnergy(int energy) {
+        this.energy = energy;
     }
 
     public int getExperience() {
@@ -103,12 +103,12 @@ public class User {
         this.level = level;
     }
 
-    public int getMaxIntelligence() {
-        return maxIntelligence;
+    public int getMaxEnergy() {
+        return maxEnergy;
     }
 
-    public void setMaxIntelligence(int maxIntelligence) {
-        this.maxIntelligence = maxIntelligence;
+    public void setMaxEnergy(int maxEnergy) {
+        this.maxEnergy = maxEnergy;
     }
 
     public int getMaxImmunity() {

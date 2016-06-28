@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -30,6 +31,7 @@ import com.nosad.sample.R;
 import com.nosad.sample.engine.managers.messaging.FCMListener;
 import com.nosad.sample.engine.managers.messaging.GCMManager;
 import com.nosad.sample.engine.network.RequestCallback;
+import com.nosad.sample.entity.GamePlace;
 import com.nosad.sample.entity.User;
 import com.nosad.sample.entity.quest.CaptureQuest;
 import com.nosad.sample.entity.quest.CollectQuest;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private Toolbar toolbarTop;
 
     private ProfilePictureView userProfilePicture;
-    private TextView tvIntelligenceValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
+    private TextView tvEnergyValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
 
     private FragmentManager fragmentManager;
 
@@ -143,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         if (type == Quest.QuestType.Distance) {
             quest = new DistanceQuest(quest, intent.getIntExtra("distance", 1));
         } else if (type == Quest.QuestType.Capture) {
-            quest = new CaptureQuest(quest, intent.getStringExtra("placeType"), intent.getIntExtra("placeTypeValue", 0));
+            quest = new CaptureQuest(quest, GamePlace.PlaceType.values()[intent.getIntExtra("placeType", 0)], intent.getIntExtra("placeTypeValue", 0));
         } else if (type == Quest.QuestType.Collect) {
             String characteristic = intent.getStringExtra("characteristic");
             Constants.Characteristic c = Constants.Characteristic.None;
@@ -151,8 +153,8 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 c = Constants.Characteristic.Level;
             } else if (characteristic.equals(Constants.Characteristic.Experience.toString())) {
                 c = Constants.Characteristic.Experience;
-            } else if (characteristic.equals(Constants.Characteristic.Intelligence.toString())) {
-                c = Constants.Characteristic.Intelligence;
+            } else if (characteristic.equals(Constants.Characteristic.Energy.toString())) {
+                c = Constants.Characteristic.Energy;
             } else if (characteristic.equals(Constants.Characteristic.Immunity.toString())) {
                 c = Constants.Characteristic.Immunity;
             }
@@ -204,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         userProfilePicture = (ProfilePictureView) toolbarTop.findViewById(R.id.mapUserAvatar);
 
         tvImmunityValue = (TextView) toolbarTop.findViewById(R.id.tvImmunityValue);
-        tvIntelligenceValue = (TextView) toolbarTop.findViewById(R.id.tvIntelligenceValue);
+        tvEnergyValue = (TextView) toolbarTop.findViewById(R.id.tvEnergyValue);
         tvExperienceValue = (TextView) toolbarTop.findViewById(R.id.tvExperienceValue);
         tvLevelValue = (TextView) toolbarTop.findViewById(R.id.tvLevelValue);
 
@@ -221,7 +223,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.shop_new, getTheme()));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    item.setIcon(getResources().getDrawable(R.drawable.shop_new, getTheme()));
+                                } else {
+                                    item.setIcon(getResources().getDrawable(R.drawable.shop_new));
+                                }
                             }
                         });
                         showShop();
@@ -230,7 +236,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.profile_new, getTheme()));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    item.setIcon(getResources().getDrawable(R.drawable.profile_new, getTheme()));
+                                } else {
+                                    item.setIcon(getResources().getDrawable(R.drawable.profile_new));
+                                }
                             }
                         });
                         showProfile();
@@ -239,7 +249,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.map_new, getTheme()));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    item.setIcon(getResources().getDrawable(R.drawable.map_new, getTheme()));
+                                } else {
+                                    item.setIcon(getResources().getDrawable(R.drawable.map_new));
+                                }
                             }
                         });
                         showMap();
@@ -248,7 +262,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.chat_new, getTheme()));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    item.setIcon(getResources().getDrawable(R.drawable.chat_new, getTheme()));
+                                } else {
+                                    item.setIcon(getResources().getDrawable(R.drawable.chat_new));
+                                }
                             }
                         });
                         showTeams();
@@ -257,7 +275,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                item.setIcon(getResources().getDrawable(R.drawable.quests_new, getTheme()));
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    item.setIcon(getResources().getDrawable(R.drawable.quests_new, getTheme()));
+                                } else {
+                                    item.setIcon(getResources().getDrawable(R.drawable.quests_new));
+                                }
                             }
                         });
                         showBattles();
@@ -276,19 +298,39 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             MenuItem item = toolbarBottom.getMenu().getItem(i);
             switch (item.getItemId()) {
                 case R.id.menu_shop:
-                    item.setIcon(getResources().getDrawable(R.drawable.shop, getTheme()));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        item.setIcon(getResources().getDrawable(R.drawable.shop, getTheme()));
+                    } else {
+                        item.setIcon(getResources().getDrawable(R.drawable.shop));
+                    }
                     break;
                 case R.id.menu_profile:
-                    item.setIcon(getResources().getDrawable(R.drawable.profile, getTheme()));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        item.setIcon(getResources().getDrawable(R.drawable.profile, getTheme()));
+                    } else {
+                        item.setIcon(getResources().getDrawable(R.drawable.profile));
+                    }
                     break;
                 case R.id.menu_map:
-                    item.setIcon(getResources().getDrawable(R.drawable.map, getTheme()));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        item.setIcon(getResources().getDrawable(R.drawable.map, getTheme()));
+                    } else {
+                        item.setIcon(getResources().getDrawable(R.drawable.map));
+                    }
                     break;
                 case R.id.menu_chat:
-                    item.setIcon(getResources().getDrawable(R.drawable.chat, getTheme()));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        item.setIcon(getResources().getDrawable(R.drawable.chat, getTheme()));
+                    } else {
+                        item.setIcon(getResources().getDrawable(R.drawable.chat));
+                    }
                     break;
                 case R.id.menu_quests:
-                    item.setIcon(getResources().getDrawable(R.drawable.quests, getTheme()));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        item.setIcon(getResources().getDrawable(R.drawable.quests, getTheme()));
+                    } else {
+                        item.setIcon(getResources().getDrawable(R.drawable.quests));
+                    }
                     break;
                 default: break;
             }
@@ -356,11 +398,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         );
 
         App.getLocalBroadcastManager().unregisterReceiver(showPlaceInfoDialog);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -466,7 +503,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         }
 
         tvImmunityValue.setText(String.format(getResources().getString(R.string.immunity_value), user.getImmunity()));
-        tvIntelligenceValue.setText(String.format(getResources().getString(R.string.intelligence_value), user.getIntelligence()));
+        tvEnergyValue.setText(String.format(getResources().getString(R.string.energy_value), user.getEnergy()));
         tvExperienceValue.setText(String.format(getResources().getString(R.string.experience_value), user.getExperience()));
         tvLevelValue.setText(String.format(getResources().getString(R.string.level_value), user.getLevel()));
     }

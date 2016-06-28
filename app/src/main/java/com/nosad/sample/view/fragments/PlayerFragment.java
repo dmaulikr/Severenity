@@ -58,14 +58,4 @@ public class PlayerFragment extends Fragment {
 
         return view;
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
 }

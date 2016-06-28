@@ -70,15 +70,14 @@ public class PlacesInfoDialog extends DialogFragment {
         App.getLocalBroadcastManager().unregisterReceiver(onDeleteOwner);
     }
 
-
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            this.mListener = (OnRelocateMapListener)activity;
+            this.mListener = (OnRelocateMapListener) context;
         }
         catch (final ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement OnRelocateMapListener");
+            throw new ClassCastException(context.toString() + " must implement OnRelocateMapListener");
         }
     }
 
@@ -193,17 +192,20 @@ public class PlacesInfoDialog extends DialogFragment {
         public void onReceive(Context context, Intent intent) {
             Bundle extra = intent.getExtras();
             String ownerId = extra.getString(Constants.USER_ID);
+            User currentUser = App.getUserManager().getCurrentUser();
 
             mInfoAdapter.removeItemByDataString(ownerId);
             mInfoAdapter.notifyDataSetChanged();
 
             App.getPlacesManager().deleteOwnership(mPlaceID, ownerId);
-            if (ownerId.equals(App.getUserManager().getCurrentUser().getId())) {
-                App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(mPlaceID, false/*uncaptured*/);
-            }
+            if (currentUser != null && ownerId != null) {
+                if (ownerId.equals(currentUser.getId())){
+                    App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(mPlaceID, false/*uncaptured*/);
+                }
 
-            if (mCaptionView != null) {
-                mCaptionView.setText(getDialogCaption(mInfoAdapter.getCount()));
+                if (mCaptionView != null) {
+                    mCaptionView.setText(getDialogCaption(mInfoAdapter.getCount()));
+                }
             }
         }
     };
