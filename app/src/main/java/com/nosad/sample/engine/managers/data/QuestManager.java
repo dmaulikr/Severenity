@@ -408,7 +408,9 @@ public class QuestManager extends DataManager {
      * Renew quests list with quests received from the server.
      */
     public void refreshWithQuestsFromServer() {
-        getQuestsFromServer(App.getUserManager().getCurrentUser().getId());
+        if (App.getUserManager().getCurrentUser() != null) {
+            getQuestsFromServer(App.getUserManager().getCurrentUser().getId());
+        }
     }
 
     /**
