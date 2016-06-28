@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "967925944048-uade8l1mnurk1927ukss4dhsd1b78hh9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nosad.sample",
+            "certificate_hash": "5370D5F58EDDF5FA815E3F7CEA1299C896CF6608"
+          }
+        },
+        {
           "client_id": "967925944048-ifcqc735ma2gskga98kovt4val6icc66.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
