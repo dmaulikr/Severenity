@@ -17,7 +17,6 @@ import com.nosad.sample.entity.User;
 import com.nosad.sample.utils.FacebookUtils;
 import com.nosad.sample.utils.common.Constants;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -190,7 +189,7 @@ public class WebSocketManager {
                                         App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(placeId, true/*captured*/);
                                         App.getPlacesManager().addOwnerToPlace(placeId, by);
                                         // instruct to hide actions buttons
-                                        App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
+                                        App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
                                     }
                                 };
                                 break;

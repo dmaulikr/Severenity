@@ -56,8 +56,8 @@ public class Constants {
     public static final String INTENT_FILTER_NEW_QUEST = "com.nosad.sample.newquest";
     public static final String INTENT_FILTER_QUEST_UPDATE = "com.nosad.sample.questupdate";
     public static final String INTENT_FILTER_SHOW_PLACE_INFO_DIALOG = "com.nosad.sample.showplaceinfodialog";
-    public static final String INTENT_FILTER_SHOW_PLACE_ACTIONS = "com.nosad.sample.showplaceactions";
-    public static final String INTENT_FILTER_HIDE_PLACE_ACTIONS = "com.nosad.sample.hideplaceactions";
+    public static final String INTENT_FILTER_SHOW_USER_ACTIONS = "com.nosad.sample.showplaceactions";
+    public static final String INTENT_FILTER_HIDE_USER_ACTIONS = "com.nosad.sample.hideplaceactions";
     public static final String INTENT_FILTER_DELETE_OWNER = "com.nosad.sample.deleteowner";
     public static final String INTENT_FILTER_REQUEST_PLACES = "com.nosad.sample.requestplaces";
 

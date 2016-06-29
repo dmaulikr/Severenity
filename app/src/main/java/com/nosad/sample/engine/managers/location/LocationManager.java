@@ -139,7 +139,7 @@ public class LocationManager implements LocationListener {
                     resetCameraLocation();
                 }
 
-                App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
+                App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
             }
         });
 
@@ -166,26 +166,60 @@ public class LocationManager implements LocationListener {
                 try {
                     JSONObject markerType = new JSONObject(marker.getSnippet());
 
-                    if (markerType.getInt(Constants.OBJECT_TYPE_IDENTIFIER) == Constants.TYPE_PLACE) {
+                    Intent intent = null;
+                    switch (markerType.getInt(Constants.OBJECT_TYPE_IDENTIFIER)) {
+                        case Constants.TYPE_PLACE: {
+                            String placeID = markerType.getString(Constants.PLACE_ID);
+                            GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
+                            if (place == null) {
+                                Log.d(Constants.TAG, "Was not able to find place with provided ID: " + placeID);
+                                return false;
+                            }
 
-                        String placeID = markerType.getString(Constants.PLACE_ID);
-                        GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
-                        if (place == null) {
-                            Log.d(Constants.TAG, "Was not able to find place with provided ID: " + placeID);
-                            return false;
+                            if (Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
+                                    App.getUserManager().getCurrentUser().getActionRadius()) {
+                                intent = new Intent(Constants.INTENT_FILTER_SHOW_USER_ACTIONS);
+                                intent.putExtra(Constants.OBJECT_TYPE_IDENTIFIER, Constants.TYPE_PLACE);
+                                intent.putExtra(Constants.PLACE_ID, placeID);
+                            } else {
+                                intent = new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS);
+                            }
+
+                            break;
                         }
 
-                        Intent intent;
-                        if (Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
-                                App.getUserManager().getCurrentUser().getActionRadius()) {
-                            intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_ACTIONS);
-                            intent.putExtra(Constants.PLACE_ID, placeID);
-                        } else {
-                            intent = new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS);
+                        case Constants.TYPE_USER: {
+
+                            String userID = markerType.getString(Constants.USER_ID);
+                            UserMarkerInfo userMarkerinfo = mOtherUsersList.get(userID);
+                            if (userMarkerinfo == null) {
+                                Log.e(Constants.TAG, "Was not able to find user with ID: " + userID);
+                                break;
+                            }
+
+                            if (Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), userMarkerinfo.getMarker().getPosition()) <=
+                                    App.getUserManager().getCurrentUser().getActionRadius()) {
+                                intent = new Intent(Constants.INTENT_FILTER_SHOW_USER_ACTIONS);
+                                intent.putExtra(Constants.OBJECT_TYPE_IDENTIFIER, Constants.TYPE_USER);
+                                intent.putExtra(Constants.USER_ID, userID);
+                            } else {
+                                intent = new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS);
+                            }
+
+                            break;
                         }
 
+                        default:
+                            Log.d(Constants.TAG, "Unknown marker type: " + markerType.getInt(Constants.OBJECT_TYPE_IDENTIFIER));
+                    }
+
+                    if (intent != null) {
                         App.getLocalBroadcastManager().sendBroadcast(intent);
                     }
+                    else {
+                        Log.e(Constants.TAG, "message intent is null");
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -203,7 +237,7 @@ public class LocationManager implements LocationListener {
                 intent.putExtra(Constants.OBJECT_INFO_AS_JSON, marker.getSnippet());
 
                 App.getLocalBroadcastManager().sendBroadcast(intent);
-                App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_PLACE_ACTIONS));
+                App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
             }
         });
 
@@ -457,11 +491,55 @@ public class LocationManager implements LocationListener {
                 .title(title)
                 .snippet(userJSONIdentifier));
 
+
         if (!isCameraFixed) {
             googleMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), currentZoom)
             );
         }
+
+
+//        // TODO: Temporary add user to tes Attach actions
+//        User tempUser = new User("test@tes.com", "Test user", "6876876");
+//
+//        if (mOtherUsersList != null) {
+//            mOtherUsersList = null;
+//        }
+//
+//        if (mPlaceMarkersList != null) {
+//            mPlaceMarkersList = null;
+//        }
+//
+//        mPlaceMarkersList = new HashMap<>();
+//
+//
+//        mOtherUsersList = new HashMap<>();
+//
+//            Location tempLocation = location;
+//            tempLocation.setLongitude(tempLocation.getLongitude() - 0.0002);
+//            tempLocation.setLatitude(tempLocation.getLatitude()/* + 0.0001*/);
+//
+//            UserMarkerInfo markerInfo = new UserMarkerInfo(googleMap.addMarker(new MarkerOptions()
+//                    .position(Utils.latLngFromLocation(tempLocation))
+//                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+//                    .title(tempUser.getName())
+//                    .snippet(tempUser.getJSONUserInfo())));
+//
+//            mOtherUsersList.put(tempUser.getId(), markerInfo);
+//
+//        tempLocation.setLongitude(tempLocation.getLongitude() - 0.0004);
+//
+//        GamePlace place_inner = new GamePlace(
+//                "123456789",
+//                "temp place",
+//                Utils.latLngFromLocation(tempLocation),
+//                GamePlace.PlaceType.Default);
+//
+//        rememberAndDisplayMarker(place_inner, BitmapDescriptorFactory.HUE_CYAN);
+//
+//        App.getPlacesManager().addPlace(place_inner, false);
+//
+//        /****************************************************************************/
     }
 
     /**
