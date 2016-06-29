@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -94,6 +95,9 @@ public class MessagesAdapter extends BaseAdapter {
 
         TextView tvMessage = (TextView) messageView.findViewById(R.id.messageMessage);
         tvMessage.setText(message.getMessage());
+
+        ImageView ivAvatar = (ImageView) messageView.findViewById(R.id.messageAvatar);
+
 
         return messageView;
     }

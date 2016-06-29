@@ -3,41 +3,61 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#909090"
+    android:background="@color/background"
     android:weightSum="10"
     android:baselineAligned="false">
 
-    <LinearLayout
+    <GridLayout
         android:orientation="horizontal"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="8.5"
-        android:background="#909090"
+        android:background="@color/background"
         android:padding="2dp">
 
-        <TextView
-            android:layout_width="60dp"
-            android:layout_height="23dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/messageDate"
-            android:background="#000000"
-            android:layout_marginRight="1dp" />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/messageAvatar"
+            android:src="@drawable/ic_launcher"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_rowSpan="2"/>
 
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:layout_height="23dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/messageUsername"
             android:layout_marginRight="1dp"
-            android:background="#000000" />
+            android:textColor="@color/black"
+            android:text="Alexander"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:textSize="16dp" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/messageMessage"
             android:layout_weight="100"
-            android:background="#000000" />
-    </LinearLayout>
+            android:textColor="@color/black"
+            android:text="Test"
+            android:layout_row="1"
+            android:layout_column="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/messageDate"
+            android:layout_marginRight="1dp"
+            android:textColor="@color/darkgray"
+            android:layout_row="2"
+            android:layout_column="1"
+            android:textSize="15dp"
+/>
+    </GridLayout>
 
 </LinearLayout>

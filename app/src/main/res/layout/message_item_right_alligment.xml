@@ -3,46 +3,85 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#909090"
+    android:background="@color/background"
     android:weightSum="10"
     android:gravity="right"
     android:baselineAligned="false">
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="8.5"
-        android:background="#909090"
-        android:padding="2dp">
+        android:padding="2dp"
+        android:background="@color/background"
+        android:columnCount="2">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/messageMessage"
-            android:textAlignment="viewEnd"
             android:layout_weight="100"
-            android:background="#000000"
-            android:layout_marginRight="1dp" />
+            android:layout_marginRight="1dp"
+            android:textColor="@color/black"
+            android:gravity="end"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:text="БЛА БЛА БЛА БЛА БЛА БЛА БЛА БЛА"
+            android:layout_below="@+id/messageUsername"
+            android:layout_alignParentEnd="true" />
 
         <TextView
-            android:layout_width="70dp"
-            android:layout_height="23dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/messageUsername"
             android:layout_marginRight="1dp"
-            android:textAlignment="viewEnd"
-            android:background="#000000" />
+            android:textColor="@color/black"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:text="Александр Горынь"
+            android:textSize="16dp"
+            android:textAlignment="viewStart"
+            android:layout_alignParentTop="true"
+            android:layout_alignEnd="@+id/messageMessage"
+            android:visibility="gone" />
+            <!---->
+
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/messageAvatar"
+            android:src="@drawable/ic_launcher"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_rowSpan="2"
+            android:layout_gravity="end"
+            android:layout_alignBottom="@+id/messageMessage"
+            android:layout_toStartOf="@+id/messageUsername"
+            android:visibility="gone" />
 
         <TextView
-            android:layout_width="60dp"
-            android:layout_height="23dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="viewEnd"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/messageDate"
-            android:textAlignment="viewEnd"
-            android:background="#000000"
-            android:autoText="true" />
-    </LinearLayout>
+            android:gravity="end"
+            android:autoText="true"
+            android:textColor="@color/darkgray"
+            android:layout_row="2"
+            android:layout_column="0"
+
+            android:text="Date"
+            android:textSize="15dp"
+            android:visibility="visible"
+            android:layout_below="@+id/messageMessage"
+            android:layout_alignEnd="@+id/messageMessage" />
+
+
+    </RelativeLayout>
 
 </LinearLayout>
