@@ -1,6 +1,7 @@
 package com.nosad.sample.engine.adapters;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,9 +77,13 @@ public class ChipAdapter extends ArrayAdapter<Chip> {
         tvTitle.setText(chip.getTitle());
 
         ImageView ivIcon = (ImageView) convertView.findViewById(R.id.ivSpellIcon);
-        ivIcon.setImageDrawable(
-            context.getResources().getDrawable(chip.getChipIconResource(), context.getTheme())
-        );
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ivIcon.setImageDrawable(
+                    context.getResources().getDrawable(chip.getChipIconResource(), context.getTheme())
+            );
+        } else {
+            ivIcon.setImageDrawable(context.getResources().getDrawable(chip.getChipIconResource()));
+        }
 
         return convertView;
     }
