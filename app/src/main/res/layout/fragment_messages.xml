@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.fragments.MessagesFragment"
+    tools:context="com.severenity.view.fragments.MessagesFragment"
     android:background="@color/background">
 
     <ListView

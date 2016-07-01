@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nosad.sample" >
+    package="com.severenity.sample" >
 
     <permission
-        android:name="com.nosad.sample.permission.MAPS_RECEIVE"
+        android:name="com.severenity.sample.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
     <!-- AIzaSyAtYDGnClTps2D4mIKw8Z8pWQ_Rd1JEpv0 -->
@@ -27,7 +27,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".App"
+        android:name="com.severenity.App"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:hardwareAccelerated="false"
@@ -36,21 +36,21 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
-        <service android:name=".engine.managers.messaging.FCMListener" >
+        <service android:name="com.severenity.engine.managers.messaging.FCMListener" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".engine.managers.messaging.FCMInstanceIDListener" >
+        <service android:name="com.severenity.engine.managers.messaging.FCMInstanceIDListener" >
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".engine.managers.messaging.RegistrationIntentService" >
+        <service android:name="com.severenity.engine.managers.messaging.RegistrationIntentService" >
         </service>
 
         <activity
-            android:name=".view.activities.LoginActivity"
+            android:name="com.severenity.view.activities.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -60,7 +60,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activities.MainActivity"
+            android:name="com.severenity.view.activities.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -76,7 +76,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".view.activities.SettingsActivity"
+            android:name="com.severenity.view.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:screenOrientation="portrait" >
             <intent-filter>

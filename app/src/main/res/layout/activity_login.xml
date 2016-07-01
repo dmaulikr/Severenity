@@ -6,7 +6,7 @@
     android:paddingTop="32dp"
     android:paddingBottom="32dp"
     android:background="@drawable/starting_background"
-    tools:context=".view.activities.LoginActivity">
+    tools:context="com.severenity.view.activities.LoginActivity">
 
     <RelativeLayout
 

@@ -1,8 +1,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.nosad.sample.view.Dialogs.ChipInfoFragment">
+    tools:context="com.severenity.view.Dialogs.ChipInfoFragment">
     <data>
-        <variable name="chip" type="com.nosad.sample.entity.chip.Chip" />
+        <variable name="chip" type="com.severenity.sample.entity.chip.Chip" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
