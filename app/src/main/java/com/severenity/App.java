@@ -59,12 +59,10 @@ public class App extends MultiDexApplication {
         userManager = new UserManager(mContext);
         chipManager = new ChipManager(mContext);
         webSocketManager = new WebSocketManager(mContext);
+        App.getWebSocketManager().createSocket(Constants.HOST, true);
         restManager = new RestManager(mContext);
         questManager = new QuestManager(mContext);
         gcmManager = new GCMManager(mContext);
-        if (webSocketManager.createSocket(Constants.HOST, true)) {
-            webSocketManager.subscribeForMessageEvent();
-        }
         msgManager = new MessageManager(mContext);
 
         sharedPrefereces = getSharedPreferences("Severenity", MODE_PRIVATE);

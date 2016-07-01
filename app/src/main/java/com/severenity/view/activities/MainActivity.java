@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
         initToolbars();
         initFragments();
+        initSocketSubscriptions();
 
         toolbarBottom.findViewById(R.id.menu_map).performClick();
 
@@ -94,6 +95,12 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
         processNewIntent(getIntent());
         App.getWebSocketManager().subscribeForUsersActionsEvent();
+    }
+
+    private void initSocketSubscriptions() {
+        if (App.getWebSocketManager().isConnected()) {
+            App.getWebSocketManager().subscribeForEvents();
+        }
     }
 
     @Override

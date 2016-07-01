@@ -26,7 +26,7 @@ public class CollectQuest extends Quest {
         this.characteristic = characteristic;
         this.amount = amount;
 
-        if (getExpirationTime() == null) {
+        if (getExpirationTime() == null || getExpirationTime().equalsIgnoreCase("null")) {
             setDescription("Get " + characteristic.toString() + " " + amount);
         } else {
             setExpirationTime(getExpirationTime());

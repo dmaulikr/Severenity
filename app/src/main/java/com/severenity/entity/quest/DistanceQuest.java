@@ -24,7 +24,7 @@ public class DistanceQuest extends Quest {
     private void fillData(int distance) {
         this.distance = distance;
 
-        if (getExpirationTime() == null) {
+        if (getExpirationTime() == null || getExpirationTime().equalsIgnoreCase("null")) {
             setDescription("Pass " + distance + " m");
         } else {
             setExpirationTime(getExpirationTime());

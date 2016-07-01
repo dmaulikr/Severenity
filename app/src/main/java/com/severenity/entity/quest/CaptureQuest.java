@@ -27,7 +27,7 @@ public class CaptureQuest extends Quest {
         this.placeType = placeType;
         this.placeTypeValue = placeTypeValue;
 
-        if (getExpirationTime() == null) {
+        if (getExpirationTime() == null || getExpirationTime().equalsIgnoreCase("null")) {
             setDescription("Capture " + placeType);
         } else {
             setExpirationTime(getExpirationTime());

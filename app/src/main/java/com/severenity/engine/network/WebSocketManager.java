@@ -83,19 +83,57 @@ public class WebSocketManager {
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
-            unSubscribeFromMessageEvents();
-            unSubscribeFromLocationEvents();
+            unSubscribeFromEvents();
             mSocket.close();
         }
     }
 
     /**
-     * Returns current mSocket.
+     * Shows whether current socket connection is opened.
      *
-     * @return mSocket - current mSocket
+     * @return state of the connection of current socket.
      */
-    public Socket getSocket() {
-        return mSocket;
+    public boolean isConnected() {
+        if (mSocket == null) {
+            return false;
+        }
+
+        return mSocket.connected();
+    }
+
+    /**
+     * Subscription for user, place and other entity updates sent from server in order
+     * to update local database.
+     */
+    public void subscribeForEntityUpdateEvents() {
+        if (mSocket == null) {
+            return;
+        }
+
+        mSocket.on(Constants.SOCKET_EVENT_UPDATE_USER, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                for (Object arg : args) {
+                    JSONObject response = (JSONObject) arg;
+
+                    if (arg != null) {
+                        Log.e(Constants.TAG, "User update event: " + response.toString());
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Unsubscription from user, place and other entity updates sent from server in order
+     * to stop updating local database.
+     */
+    public void unSubscribeFromEntityUpdateEvents() {
+        if (mSocket == null) {
+            return;
+        }
+
+        mSocket.off(Constants.SOCKET_EVENT_UPDATE_USER);
     }
 
     /**
@@ -165,12 +203,11 @@ public class WebSocketManager {
      *
      */
     public void unSubscribeFromLocationEvents() {
-
-        Socket socket = getSocket();
-        if (socket == null)
+        if (mSocket == null) {
             return;
+        }
 
-        socket.off(Constants.SOCKET_EVENT_LOCATION);
+        mSocket.off(Constants.SOCKET_EVENT_LOCATION);
     }
 
     /**
@@ -239,13 +276,12 @@ public class WebSocketManager {
      * Subscribes to messages events from the server.
      */
     public void subscribeForMessageEvent() {
-        Socket socket = getSocket();
-        if (socket == null) {
+        if (mSocket == null) {
             return;
         }
 
         // subscribe for message event
-        socket.on(Constants.SOCKET_EVENT_MESSAGE, new Emitter.Listener() {
+        mSocket.on(Constants.SOCKET_EVENT_MESSAGE, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 for (Object arg : args) {
@@ -277,12 +313,11 @@ public class WebSocketManager {
      *
      */
     public void unSubscribeFromMessageEvents() {
-        Socket socket = getSocket();
-        if (socket == null) {
+        if (mSocket == null) {
             return;
         }
 
-        socket.off(Constants.SOCKET_EVENT_MESSAGE);
+        mSocket.off(Constants.SOCKET_EVENT_MESSAGE);
     }
 
     /**
@@ -312,13 +347,12 @@ public class WebSocketManager {
      * Subscribes to user actions event.
      */
     public void subscribeForUsersActionsEvent() {
-        Socket socket = getSocket();
-        if (socket == null) {
+        if (mSocket == null) {
             return;
         }
 
         // subscribe for message event
-        socket.on(Constants.SOCKET_EVENT_ACTION_ON_USER, new Emitter.Listener() {
+        mSocket.on(Constants.SOCKET_EVENT_ACTION_ON_USER, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 for (Object arg : args) {
@@ -427,13 +461,12 @@ public class WebSocketManager {
      *
      */
     public void unSubscribeFromUsersActionsEvent() {
-        Socket socket = getSocket();
-        if (socket == null) {
+        if (mSocket == null) {
             return;
         }
 
-        socket.off(Constants.SOCKET_EVENT_ACTION_ON_PLACE);
-        socket.off(Constants.SOCKET_EVENT_ACTION_ON_USER);
+        mSocket.off(Constants.SOCKET_EVENT_ACTION_ON_PLACE);
+        mSocket.off(Constants.SOCKET_EVENT_ACTION_ON_USER);
     }
 
     /**
@@ -456,5 +489,19 @@ public class WebSocketManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Subscribes for events from server via web sockets.
+     */
+    public void subscribeForEvents() {
+        subscribeForMessageEvent();
+        subscribeForEntityUpdateEvents();
+    }
+
+    private void unSubscribeFromEvents() {
+        unSubscribeFromEntityUpdateEvents();
+        unSubscribeFromLocationEvents();
+        unSubscribeFromMessageEvents();
     }
 }
