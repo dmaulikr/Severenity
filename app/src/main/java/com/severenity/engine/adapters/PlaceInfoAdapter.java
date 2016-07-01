@@ -61,7 +61,7 @@ public class PlaceInfoAdapter extends InfoAdapter {
                         data.put("userId", App.getUserManager().getCurrentUser().getId());
                         data.put("otherUserId", placeData.dataID);
 
-                        App.getWebSocketManager().sendPlaceUpdateToServer(mPlaceId, Constants.PlaceAction.Remove, data);
+                        App.getWebSocketManager().sendPlaceUpdateToServer(mPlaceId, Constants.UsersActions.REMOVE, data);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

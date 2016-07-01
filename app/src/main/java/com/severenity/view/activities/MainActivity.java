@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         App.getLocalBroadcastManager().registerReceiver(gcmMessageReceiver, intentFilter);
 
         processNewIntent(getIntent());
+        App.getWebSocketManager().subscribeForUsersActionsEvent();
     }
 
     @Override

@@ -27,19 +27,36 @@ public class Constants {
         }
     }
 
-    public enum PlaceAction {
-        Capture("capture"),
-        Remove("remove");
+    public enum UsersActions {
+        CAPTURE("capture"),     // user captures the building
+        ATTACK("attack"),       // user attacks other user
+        REMOVE("remove"),       // user removes other user from owning place
+        ATTACKED("attacked"),   // user was attached by other user
+        RECOVERY("recovery");   // recovery user energy due to time/distance passed
 
-        final String value;
+        private final String action;
 
-        PlaceAction(final String value) {
-            this.value = value;
+        UsersActions(String action) {
+            this.action = action;
         }
 
-        @Override
-        public String toString() {
-            return value;
+        public String getAction() {
+            return this.action;
+        }
+    }
+
+    public enum ObjectTypes {
+        USER("user"),
+        PLACE("place");
+
+        private final String type;
+
+        ObjectTypes(String type) {
+            this.type = type;
+        }
+
+        public String getType() {
+            return this.type;
         }
     }
 
@@ -106,8 +123,9 @@ public class Constants {
 
     public final static String SOCKET_EVENT_LOCATION = "location";
     public final static String SOCKET_EVENT_MESSAGE = "chat message";
-    public final static String SOCKET_EVENT_UPDATE_PLACE = "update place";
+    public final static String SOCKET_EVENT_ACTION_ON_PLACE = "update place";
     public final static String SOCKET_EVENT_AUTHENTICATE = "authenticate";
+    public final static String SOCKET_EVENT_ACTION_ON_USER  = "user action";
 
     /**
      * RESTful APIs constants

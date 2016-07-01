@@ -120,7 +120,13 @@ public class UsersActions implements View.OnClickListener {
                     e.printStackTrace();
                 }
 
-                App.getWebSocketManager().sendPlaceUpdateToServer(mDataID, Constants.PlaceAction.Capture, data);
+                App.getWebSocketManager().sendPlaceUpdateToServer(mDataID, Constants.UsersActions.CAPTURE, data);
+                mDataID = "";
+                break;
+            }
+
+            case R.id.attackButton: {
+                App.getWebSocketManager().sendUserActionToServer(mDataID, Constants.UsersActions.ATTACK);
                 mDataID = "";
                 break;
             }

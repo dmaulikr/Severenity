@@ -158,66 +158,6 @@ public class WebSocketManager {
                 }
             }
         });
-
-        // subscribe for place updates events
-        mSocket.on(Constants.SOCKET_EVENT_UPDATE_PLACE, new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                for (Object arg : args) {
-                    JSONObject response = (JSONObject) arg;
-                    Log.e(Constants.TAG, "Updated place event: " + response.toString());
-                    try {
-                        String result = response.getString("result");
-                        if (!result.equalsIgnoreCase("success")) {
-                            return;
-                        }
-
-                        final JSONObject data = response.getJSONObject("data");
-                        String action = data.getString("action");
-                        final String by = data.getString("by");
-                        final String placeId = data.getJSONObject("place").getString("placeId");
-
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        Runnable runnable = null;
-                        switch (action) {
-                            case "capture": // Constants.PlaceAction
-                                runnable = new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // Changes Marker on the map to replicate current place state.
-                                        App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(placeId, true/*captured*/);
-                                        App.getPlacesManager().addOwnerToPlace(placeId, by);
-                                        // instruct to hide actions buttons
-                                        App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
-                                    }
-                                };
-                                break;
-                            case "remove": // Constants.PlaceAction
-                                runnable = new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            String removedOwnerId = data.getString("removed");
-                                            Intent intent = new Intent(Constants.INTENT_FILTER_DELETE_OWNER);
-                                            intent.putExtra(Constants.USER_ID, removedOwnerId);
-                                            App.getLocalBroadcastManager().sendBroadcast(intent);
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                };
-                                break;
-                        }
-
-                        if (runnable != null) {
-                            handler.post(runnable);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
     }
 
     /**
@@ -262,7 +202,7 @@ public class WebSocketManager {
      * @param placeId - place captured.
      * @param data - data to pass with action.
      */
-    public void sendPlaceUpdateToServer(String placeId, Constants.PlaceAction action, JSONObject data) {
+    public void sendPlaceUpdateToServer(String placeId, Constants.UsersActions action, JSONObject data) {
         if (!mSocket.connected()) {
             return;
         }
@@ -272,7 +212,7 @@ public class WebSocketManager {
             requestData.put("placeId", placeId);
             requestData.put("action", action.toString());
             requestData.put("data", data);
-            mSocket.emit(Constants.SOCKET_EVENT_UPDATE_PLACE, requestData);
+            mSocket.emit(Constants.SOCKET_EVENT_ACTION_ON_PLACE, requestData);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -296,7 +236,7 @@ public class WebSocketManager {
     }
 
     /**
-     * Subscribes to location events from the server.
+     * Subscribes to messages events from the server.
      */
     public void subscribeForMessageEvent() {
         Socket socket = getSocket();
@@ -363,6 +303,156 @@ public class WebSocketManager {
             jsonObject.put("name", message.getUserName());
             jsonObject.put("timestamp", message.getTimestamp());
             mSocket.emit(Constants.SOCKET_EVENT_MESSAGE, jsonObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Subscribes to user actions event.
+     */
+    public void subscribeForUsersActionsEvent() {
+        Socket socket = getSocket();
+        if (socket == null) {
+            return;
+        }
+
+        // subscribe for message event
+        socket.on(Constants.SOCKET_EVENT_ACTION_ON_USER, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                for (Object arg : args) {
+                    try {
+                        // TODO: AF: Imitates handling server response here.
+                        // After server logic will be added to correctly handle USER_ACTION message.
+                        // Right now every action will initiate clients to update user info. After server
+                        // code will be added then this handler should be invoked.
+                        // @request message structure:
+                        // "user action" :[ {"action":"", "userID":"", "destObjType":"", "destObjID":""}]
+                        // @response structure:
+                        // "data"        :[ {"action":"", "characteristic":"", "value":""}, ... ]
+
+                        String strData = "{\"data\":[" +
+                                "{" +
+                                "\"action\":\"0\"," +
+                                "\"characteristic\":\"3\"," +
+                                "\"value\":\"-5\"" +
+                                "}" +
+                                "{" +
+                                "\"action\":\"1\"," +
+                                "\"characteristic\":\"3\"," +
+                                "\"value\":\"-2\"" +
+                                "}" +
+                                "]}";
+
+                        JSONObject jsonObject = new JSONObject(strData);
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //App.getMessageManager().onMessageRetrieved(message);
+                            }
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        // subscribe for place updates events
+        mSocket.on(Constants.SOCKET_EVENT_ACTION_ON_PLACE, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                for (Object arg : args) {
+                    JSONObject response = (JSONObject) arg;
+                    Log.e(Constants.TAG, "Updated place event: " + response.toString());
+                    try {
+                        String result = response.getString("result");
+                        if (!result.equalsIgnoreCase("success")) {
+                            return;
+                        }
+
+                        final JSONObject data = response.getJSONObject("data");
+                        String action = data.getString("action");
+                        final String by = data.getString("by");
+                        final String placeId = data.getJSONObject("place").getString("placeId");
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        Runnable runnable = null;
+                        switch (action) {
+                            case "capture": // Constants.PlaceAction
+                                runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Changes Marker on the map to replicate current place state.
+                                        App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(placeId, true/*captured*/);
+                                        App.getPlacesManager().addOwnerToPlace(placeId, by);
+                                        // instruct to hide actions buttons
+                                        App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
+                                    }
+                                };
+                                break;
+                            case "remove": // Constants.PlaceAction
+                                runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            String removedOwnerId = data.getString("removed");
+                                            Intent intent = new Intent(Constants.INTENT_FILTER_DELETE_OWNER);
+                                            intent.putExtra(Constants.USER_ID, removedOwnerId);
+                                            App.getLocalBroadcastManager().sendBroadcast(intent);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                };
+                                break;
+                        }
+
+                        if (runnable != null) {
+                            handler.post(runnable);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    /**
+     * Unsubscribe from location events from the server.
+     *
+     */
+    public void unSubscribeFromUsersActionsEvent() {
+        Socket socket = getSocket();
+        if (socket == null) {
+            return;
+        }
+
+        socket.off(Constants.SOCKET_EVENT_ACTION_ON_PLACE);
+        socket.off(Constants.SOCKET_EVENT_ACTION_ON_USER);
+    }
+
+    /**
+     * Sends users action to the server. For now sedns this call sends actions thet are done
+     * on the user. Attack/defend/
+     *
+     * @param userID - ID of the user on which action was performed.
+     * @param action - identifies action that was performed.
+     */
+    public void sendUserActionToServer(String userID, Constants.UsersActions action) {
+        if (!mSocket.connected()) {
+            return;
+        }
+
+        JSONObject requestData = new JSONObject();
+        try {
+            requestData.put("placeId", userID);
+            requestData.put("action", action.toString());
+            mSocket.emit(Constants.SOCKET_EVENT_ACTION_ON_USER, requestData);
         } catch (JSONException e) {
             e.printStackTrace();
         }
