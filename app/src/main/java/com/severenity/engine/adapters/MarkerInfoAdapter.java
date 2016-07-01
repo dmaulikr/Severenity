@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 
 /**
  * Created by Andriy on 5/12/2016.

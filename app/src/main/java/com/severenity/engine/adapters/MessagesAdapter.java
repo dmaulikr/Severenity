@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.entity.Message;
 import com.severenity.utils.DateUtils;
 

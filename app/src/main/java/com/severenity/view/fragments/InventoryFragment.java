@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.entity.chip.Chip;
 import com.severenity.view.activities.MainActivity;
 import com.severenity.view.custom.ChipRecycleViewAdapter;

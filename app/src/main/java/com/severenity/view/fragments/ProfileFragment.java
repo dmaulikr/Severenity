@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.engine.adapters.InfoAdapter;
 import com.severenity.engine.adapters.UserInfoAdapter;
 import com.severenity.entity.GamePlace;

@@ -3,7 +3,7 @@ package com.severenity.entity.quest;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
-import com.severenity.sample.BR;
+import com.severenity.BR;
 import com.severenity.utils.common.Constants;
 
 /**

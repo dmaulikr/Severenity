@@ -8,7 +8,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.utils.common.Constants;
 
 import org.json.JSONException;

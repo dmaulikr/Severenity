@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.graphics.Color" />
-        <variable name="quest" type="com.severenity.sample.entity.quest.Quest" />
+        <variable name="quest" type="com.severenity.entity.quest.Quest" />
     </data>
 
     <android.support.v7.widget.CardView

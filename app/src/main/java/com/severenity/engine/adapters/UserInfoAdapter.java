@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.Dialogs.PlacesInfoDialog;
 

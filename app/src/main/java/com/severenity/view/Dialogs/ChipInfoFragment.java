@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.severenity.sample.R;
-import com.severenity.sample.databinding.ChipGridItemBinding;
-import com.severenity.sample.databinding.FragmentChipInfoBinding;
+import com.severenity.R;
+import com.severenity.databinding.ChipGridItemBinding;
+import com.severenity.databinding.FragmentChipInfoBinding;
 import com.severenity.entity.chip.Chip;
 
 /**

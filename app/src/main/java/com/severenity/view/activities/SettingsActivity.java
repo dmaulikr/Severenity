@@ -20,7 +20,7 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
-import com.severenity.sample.R;
+import com.severenity.R;
 
 import java.util.List;
 

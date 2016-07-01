@@ -33,7 +33,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.engine.adapters.ChipAdapter;
 import com.severenity.entity.GamePlace;
 import com.severenity.entity.UsersActions;

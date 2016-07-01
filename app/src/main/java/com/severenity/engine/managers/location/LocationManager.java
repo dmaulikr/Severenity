@@ -32,7 +32,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.engine.adapters.MarkerInfoAdapter;
 import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.engine.network.RequestCallback;

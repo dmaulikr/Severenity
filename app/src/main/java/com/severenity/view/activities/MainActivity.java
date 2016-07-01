@@ -26,7 +26,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.engine.managers.messaging.FCMListener;
 import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.entity.GamePlace;

@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.facebook.GraphResponse;
 import com.google.android.gms.maps.model.LatLng;
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.engine.adapters.InfoAdapter;
 import com.severenity.engine.adapters.PlaceInfoAdapter;
 import com.severenity.entity.GamePlace;

@@ -5,8 +5,8 @@ import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.severenity.sample.BR;
-import com.severenity.sample.R;
+import com.severenity.BR;
+import com.severenity.R;
 
 /**
  * Created by Novosad on 4/4/16.

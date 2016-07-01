@@ -1,4 +1,4 @@
-package com.severenity.sample;
+package com.severenity;
 
 import org.junit.Test;
 

@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.engine.adapters.QuestsAdapter;
 import com.severenity.engine.managers.messaging.FCMListener;
 import com.severenity.entity.GamePlace;

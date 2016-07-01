@@ -34,7 +34,7 @@ import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.engine.managers.messaging.RegistrationIntentService;
 import com.severenity.engine.network.RequestCallback;

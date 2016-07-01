@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.engine.adapters.MessagesAdapter;
 import com.severenity.entity.Message;
 import com.severenity.entity.User;

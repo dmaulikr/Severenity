@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.severenity.sample" >
+    package="com.severenity" >
 
     <permission
-        android:name="com.severenity.sample.permission.MAPS_RECEIVE"
+        android:name="com.severenity.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
 
     <!-- AIzaSyAtYDGnClTps2D4mIKw8Z8pWQ_Rd1JEpv0 -->
@@ -17,7 +17,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <!-- Location related permissions -->
-    <uses-permission android:name="com.nosad.sample.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.severenity.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 

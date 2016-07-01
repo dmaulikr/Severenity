@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.severenity.sample.databinding.QuestItemBinding;
+import com.severenity.databinding.QuestItemBinding;
 import com.severenity.entity.quest.Quest;
 import com.severenity.view.activities.MainActivity;
 

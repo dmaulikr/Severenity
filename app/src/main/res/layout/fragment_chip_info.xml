@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.severenity.view.Dialogs.ChipInfoFragment">
     <data>
-        <variable name="chip" type="com.severenity.sample.entity.chip.Chip" />
+        <variable name="chip" type="com.severenity.entity.chip.Chip" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"

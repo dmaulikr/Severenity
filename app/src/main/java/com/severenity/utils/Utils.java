@@ -20,7 +20,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.severenity.App;
-import com.severenity.sample.R;
+import com.severenity.R;
 import com.severenity.entity.User;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.activities.MainActivity;
