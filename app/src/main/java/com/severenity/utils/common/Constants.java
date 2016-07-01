@@ -201,4 +201,6 @@ public class Constants {
 
     public static final int DISTANCE_TO_UPDATE_POSITIONS_CONSTS = 5;
     public static final int DISTANCE_TO_REQUEST_NEW_PLACES_FROM_THE_SERVER = 100;
+
+    public static final int DISTANCE_TO_PASS_FOR_RECOVERY = 100;
 }

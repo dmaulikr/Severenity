@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.severenity.entity.contracts.MsgContract;
 import com.severenity.entity.contracts.PlaceContract;
 import com.severenity.entity.contracts.QuestContract;
+import com.severenity.entity.contracts.RecoveryContract;
 import com.severenity.entity.contracts.UserContract;
 
 /**
@@ -18,7 +19,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     // 2 - added Message table
     // 3 - added Quests table
     // 4 - added place/owners tables
-    private static final int DB_VERSION = 4;
+    // 5 - added recovery info table
+    private static final int DB_VERSION = 5;
     private static final String DB_NAME = "Filter.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -89,6 +91,11 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     PlaceContract.DBPlaces.COLUMN_PLACE_ID             + TEXT_TYPE + COMMA_SEP +
                     PlaceContract.DBPlacesOwners.COLUMN_PLACE_OWNER_ID + TEXT_TYPE + " )";
 
+    private static final String DB_SQL_CREATE_RECOVERY =
+            "CREATE TABLE " + RecoveryContract.DBRecovery.TABLE_RECOVERY + " ( " +
+                    RecoveryContract.DBRecovery.COLUMN_RECOVERY_TIMESTAMP + TEXT_TYPE + COMMA_SEP +
+                    RecoveryContract.DBRecovery.COLUMN_RECOVERY_DISTANCE + INT_TYPE + " )";
+
 
     private static final String DB_SQL_DELETE_USERS = "DROP TABLE IF EXISTS " + UserContract.DBUser.TABLE_USERS;
 
@@ -103,6 +110,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     // !!! DO NOT CALL THIS STATEMENT DIRECTLY. Use deletePlaces method instead
     // should be used in pare with DB_SQL_DELETE_PLACES
     private static final String DB_SQL_DELETE_PLACES_OWNERS = "DROP TABLE IF EXISTS " + PlaceContract.DBPlacesOwners.TABLE_PLACES_OWNERS;
+
+    private static final String DB_SQL_DELETE_RECOVERY = "DROP TABLE IF EXISTS " + RecoveryContract.DBRecovery.TABLE_RECOVERY;
 
     private void createPlace(SQLiteDatabase db) {
         db.execSQL(DB_SQL_CREATE_PLACES);
@@ -129,6 +138,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         db.execSQL(DB_SQL_CREATE_MESSAGES);
         db.execSQL(DB_SQL_CREATE_QUESTS);
         createPlace(db);
+        db.execSQL(DB_SQL_CREATE_RECOVERY);
     }
 
     @Override
@@ -145,6 +155,10 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
         if (oldVersion == 3 && newVersion == DB_VERSION) {
             createPlace(db);
+        }
+
+        if (oldVersion == 4 && newVersion == DB_VERSION) {
+            db.execSQL(DB_SQL_DELETE_RECOVERY);
         }
     }
 

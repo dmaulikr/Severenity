@@ -27,6 +27,7 @@ import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
 import com.severenity.App;
 import com.severenity.R;
+import com.severenity.engine.managers.data.EnergyRecoveryManager;
 import com.severenity.engine.managers.messaging.FCMListener;
 import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.entity.GamePlace;
@@ -77,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
     private boolean activityActive = false;
 
+    private EnergyRecoveryManager mRecoveryManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +98,15 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
         processNewIntent(getIntent());
         App.getWebSocketManager().subscribeForUsersActionsEvent();
+
+        mRecoveryManager = new EnergyRecoveryManager(getApplicationContext());
+        mRecoveryManager.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRecoveryManager.stop();
     }
 
     private void initSocketSubscriptions() {

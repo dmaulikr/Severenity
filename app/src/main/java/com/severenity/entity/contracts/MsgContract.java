@@ -9,7 +9,7 @@ public class MsgContract {
 
     // To prevent someone from accidentally instantiating the contract class,
     // give it an empty constructor.
-    public MsgContract() {}
+    private MsgContract() {}
 
     /* Inner class that defines the table contents */
     public static abstract class DBMsg implements BaseColumns {
