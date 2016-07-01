@@ -25,7 +25,7 @@ public class DistanceQuest extends Quest {
         this.distance = distance;
 
         if (getExpirationTime() == null) {
-            setDescription("Pass " + distance + " km");
+            setDescription("Pass " + distance + " m");
         } else {
             setExpirationTime(getExpirationTime());
             try {

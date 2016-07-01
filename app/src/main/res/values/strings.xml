@@ -77,7 +77,7 @@
     <string name="menu_battles">Battles</string>
 
     <!-- Titles -->
-    <string name="title_shop">Shop</string>
+    <string name="title_shop">Shop is coming soon.</string>
     <string name="title_profile">Profile</string>
     <string name="title_inventory">Inventory</string>
     <string name="totalDistancePassed">Total distance passed:\n%d meters</string>

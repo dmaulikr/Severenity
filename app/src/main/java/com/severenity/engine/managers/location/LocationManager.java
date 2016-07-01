@@ -73,7 +73,7 @@ public class LocationManager implements LocationListener {
     private Circle mViewCircle, mActionCircle;
     private LatLng mWestSouthPoint, mNorthEastPoint;
     private Map<String, Marker> mPlaceMarkersList;
-    private Map<String, UserMarkerInfo> mOtherUsersList;
+    private Map<String, UserMarkerInfo> mOtherUsersList = new HashMap<>();
 
     private MarkerInfoAdapter mMarkerInfoAdapter = new MarkerInfoAdapter();
 
@@ -286,10 +286,6 @@ public class LocationManager implements LocationListener {
      * @param latLng - location to display user at
      */
     public void displayUserAt(User user, LatLng latLng) {
-        if (mOtherUsersList == null) {
-            mOtherUsersList = new HashMap<>();
-        }
-
         // remove all markers that has not been updated within 10 seconds
         Iterator<UserMarkerInfo> it = mOtherUsersList.values().iterator();
         while (it.hasNext())
