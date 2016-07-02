@@ -2,6 +2,7 @@ package com.severenity.engine.managers.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -9,9 +10,12 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.facebook.AccessToken;
 import com.severenity.App;
+import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.User;
+import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
+import com.severenity.view.activities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -154,7 +158,7 @@ public class UserManager extends DataManager {
         db.close();
     }
 
-    public void updateCurrentUserInDB() {
+    public void updateCurrentUserLocally() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_DISTANCE, currentUser.getDistance());
@@ -168,6 +172,34 @@ public class UserManager extends DataManager {
         values.put(COLUMN_CREDITS, currentUser.getCredits());
 
         db.update(TABLE_USERS, values, "id = ?", new String[]{currentUser.getId()});
+        db.close();
+
+        retrieveCurrentUser();
+    }
+
+    public void updateCurrentUserLocallyWithUser(User user) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_DISTANCE, user.getDistance());
+        values.put(COLUMN_EXPERIENCE, user.getExperience());
+        values.put(COLUMN_LEVEL, user.getLevel());
+        values.put(COLUMN_ENERGY, user.getEnergy());
+        values.put(COLUMN_MAX_ENERGY, user.getMaxEnergy());
+        values.put(COLUMN_IMMUNITY, user.getImmunity());
+        values.put(COLUMN_MAX_IMMUNITY, user.getMaxImmunity());
+        values.put(COLUMN_IMPLANT_HP, user.getImplantHP());
+        values.put(COLUMN_CREDITS, user.getCredits());
+
+        if (currentUser != null && user.getLevel() > currentUser.getLevel()) {
+            Intent levelUpIntent = new Intent(context, MainActivity.class);
+            levelUpIntent.setAction(GCMManager.MESSAGE_RECEIVED);
+            levelUpIntent.putExtra("level", String.valueOf(user.getLevel()));
+
+            App.getLocalBroadcastManager().sendBroadcast(levelUpIntent);
+            Utils.sendNotification(Constants.NOTIFICATION_MSG_LEVEL_UP + user.getLevel(), context, levelUpIntent, 0);
+        }
+
+        db.update(TABLE_USERS, values, "id = ?", new String[]{ user.getId() == null ? currentUser.getId() : user.getId() });
         db.close();
 
         retrieveCurrentUser();
@@ -232,6 +264,25 @@ public class UserManager extends DataManager {
             userObject.put("email", user.getEmail());
 
             App.getRestManager().createRequest(Constants.REST_API_CREATE_USER, Request.Method.POST, userObject, callback);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends distance passed update to the server in order to update experience,
+     * distance and level.
+     *
+     * @param userId - id of the user which has to be updated.
+     * @param metersPassed - last meters passed update.
+     */
+    public void updateCurrentUserProgress(String userId, int metersPassed) {
+        try {
+            JSONObject data = new JSONObject("data");
+            data.put("userId", userId);
+            data.put("field", "distance");
+            data.put("amount", metersPassed);
+            App.getWebSocketManager().sendUserUpdateToServer(data);
         } catch (JSONException e) {
             e.printStackTrace();
         }

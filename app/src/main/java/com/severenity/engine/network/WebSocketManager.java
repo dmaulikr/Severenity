@@ -11,10 +11,13 @@ import com.facebook.AccessToken;
 import com.facebook.GraphResponse;
 import com.google.android.gms.maps.model.LatLng;
 import com.severenity.App;
+import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.entity.Message;
 import com.severenity.entity.User;
 import com.severenity.utils.FacebookUtils;
+import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
+import com.severenity.view.activities.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -114,10 +117,27 @@ public class WebSocketManager {
             @Override
             public void call(Object... args) {
                 for (Object arg : args) {
-                    JSONObject response = (JSONObject) arg;
-
                     if (arg != null) {
-                        Log.e(Constants.TAG, "User update event: " + response.toString());
+                        try {
+                            JSONObject response = (JSONObject) arg;
+                            User user = new User();
+                            user.setActionRadius(response.getInt("actionRadius"));
+                            user.setViewRadius(response.getInt("viewRadius"));
+                            user.setImplantHP(response.getInt("implantHP"));
+                            user.setCredits(response.getInt("credits"));
+                            user.setMaxEnergy(response.getInt("maxEnergy"));
+                            user.setMaxImmunity(response.getInt("maxImmunity"));
+                            user.setEnergy(response.getInt("energy"));
+                            user.setImmunity(response.getInt("immunity"));
+                            user.setExperience(response.getInt("experience"));
+                            user.setDistance(response.getInt("distance"));
+                            user.setLevel(response.getInt("level"));
+
+                            App.getUserManager().updateCurrentUserLocallyWithUser(user);
+                            App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_UPDATE_UI));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -253,6 +273,19 @@ public class WebSocketManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Send user updates to the server (commonly distance passed update).
+     *
+     * @param requestData - object with data for the server.
+     */
+    public void sendUserUpdateToServer(JSONObject requestData) {
+        if (!mSocket.connected()) {
+            return;
+        }
+
+        mSocket.emit(Constants.SOCKET_EVENT_UPDATE_USER, requestData);
     }
 
     /**

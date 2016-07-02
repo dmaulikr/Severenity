@@ -121,7 +121,7 @@ public class Utils {
             user.setViewRadius(profileObject.getInt("viewRadius") * 1.0);
             user.setActionRadius(profileObject.getInt("actionRadius") * 1.0);
 
-            return App.getUserManager().addUser(user);
+            return user;
         } catch (JSONException e) {
             e.printStackTrace();
         }

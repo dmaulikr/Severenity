@@ -238,9 +238,11 @@ public class LoginActivity extends AppCompatActivity {
                                 } else {
                                     isAuthorizing = false;
 
-                                    User newUser = Utils.createUserFromJSON(userObject);
-                                    if (newUser != null) {
-                                        App.getUserManager().setCurrentUser(newUser);
+                                    User userFromJson = Utils.createUserFromJSON(userObject);
+                                    if (App.getUserManager().getUser(userFromJson) != null) {
+                                        App.getUserManager().updateCurrentUserLocallyWithUser(userFromJson);
+                                    } else {
+                                        App.getUserManager().setCurrentUser(App.getUserManager().addUser(userFromJson));
                                     }
 
                                     App.getWebSocketManager().sendAuthenticatedToServer();

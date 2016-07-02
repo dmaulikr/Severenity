@@ -405,15 +405,12 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
         activityActive = false;
 
-        App.getUserManager().updateCurrentUserInDB();
+        App.getUserManager().updateCurrentUserLocally();
         App.getLocationManager().stopLocationUpdates();
         App.getGoogleApiHelper().disconnect();
 
         App.getLocalBroadcastManager().unregisterReceiver(updateUIReceiver);
-        App.getLocalBroadcastManager().unregisterReceiver(
-                App.getLocationManager().getGoogleApiClientReceiver()
-        );
-
+        App.getLocalBroadcastManager().unregisterReceiver(App.getLocationManager().getGoogleApiClientReceiver());
         App.getLocalBroadcastManager().unregisterReceiver(showPlaceInfoDialog);
     }
 
