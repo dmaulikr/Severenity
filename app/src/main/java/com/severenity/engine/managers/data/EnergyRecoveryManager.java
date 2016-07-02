@@ -74,7 +74,7 @@ public class EnergyRecoveryManager extends DataManager {
             updateLastRecoveryInfo(distance);
             return true;
         }
-        else if (DateUtils.getDayDifference(timeStamp, currentTimeStamp) > 1) {
+        else if (DateUtils.getDayDifference(timeStamp, currentTimeStamp) > Constants.DAYS_TO_PASS_FOR_RECOVERY) {
             Log.i(Constants.TAG, "Do recovery due to time passed: " +
                     "last rec timestamp: " + timeStamp + ";" +
                     "current timestamp: " + currentTimeStamp);

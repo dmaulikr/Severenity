@@ -203,4 +203,5 @@ public class Constants {
     public static final int DISTANCE_TO_REQUEST_NEW_PLACES_FROM_THE_SERVER = 100;
 
     public static final int DISTANCE_TO_PASS_FOR_RECOVERY = 100;
+    public static final int DAYS_TO_PASS_FOR_RECOVERY     = 1;
 }
