@@ -55,7 +55,7 @@ public class EnergyRecoveryManager extends DataManager {
 
         Cursor cursor = getDBCursor();
         if (cursor == null) {
-            updateLastRecoveryInfo(currentUser.getDistance(), true);
+            updateLastRecoveryInfo(currentUser.getDistance());
             return false;
         }
 
@@ -64,13 +64,14 @@ public class EnergyRecoveryManager extends DataManager {
         int distance = cursor.getInt(cursor.getColumnIndex(COLUMN_RECOVERY_DISTANCE));
         String timeStamp = cursor.getString(cursor.getColumnIndex(COLUMN_RECOVERY_TIMESTAMP));
         String currentTimeStamp = DateUtils.getTimestamp();
+        cursor.close();
 
         if ((distance - currentUser.getDistance()) > Constants.DISTANCE_TO_PASS_FOR_RECOVERY) {
-            Log.i(Constants.TAG, "Required distance passed for recovery: " +
+            Log.i(Constants.TAG, "\"Do recovery due to distance passed: " +
                     "last rec distance: " + distance + ";" +
                     "current passed distance: " + currentUser.getDistance());
 
-            updateLastRecoveryInfo(distance, false);
+            updateLastRecoveryInfo(distance);
             return true;
         }
         else if (DateUtils.getDayDifference(timeStamp, currentTimeStamp) > 1) {
@@ -78,19 +79,17 @@ public class EnergyRecoveryManager extends DataManager {
                     "last rec timestamp: " + timeStamp + ";" +
                     "current timestamp: " + currentTimeStamp);
 
-            updateLastRecoveryInfo(distance, false);
+            updateLastRecoveryInfo(distance);
             return true;
         }
 
         return false;
     }
 
-    private void updateLastRecoveryInfo(int distance, boolean noData) {
+    private void updateLastRecoveryInfo(int distance) {
         try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
-            if (!noData) {
-                db.delete(TABLE_RECOVERY, null, null);
-            }
 
+            db.delete(TABLE_RECOVERY, null, null);
             ContentValues values = new ContentValues();
             values.put(COLUMN_RECOVERY_DISTANCE, distance);
             values.put(COLUMN_RECOVERY_TIMESTAMP, DateUtils.getTimestamp());
