@@ -276,8 +276,9 @@ public class WebSocketManager {
     }
 
     /**
+     * Send user updates to the server (commonly distance passed update).
      *
-     * @param requestData
+     * @param requestData - object with data for the server.
      */
     public void sendUserUpdateToServer(JSONObject requestData) {
         if (!mSocket.connected()) {

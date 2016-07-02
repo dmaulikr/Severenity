@@ -280,7 +280,7 @@ public class UserManager extends DataManager {
         try {
             JSONObject data = new JSONObject("data");
             data.put("userId", userId);
-            data.put("field", metersPassed);
+            data.put("field", "distance");
             data.put("amount", metersPassed);
             App.getWebSocketManager().sendUserUpdateToServer(data);
         } catch (JSONException e) {
