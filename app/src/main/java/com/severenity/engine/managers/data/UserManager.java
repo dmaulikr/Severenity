@@ -278,7 +278,7 @@ public class UserManager extends DataManager {
      */
     public void updateCurrentUserProgress(String userId, int metersPassed) {
         try {
-            JSONObject data = new JSONObject("data");
+            JSONObject data = new JSONObject();
             data.put("userId", userId);
             data.put("field", "distance");
             data.put("amount", metersPassed);
