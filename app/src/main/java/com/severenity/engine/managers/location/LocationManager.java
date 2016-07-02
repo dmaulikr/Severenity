@@ -633,31 +633,8 @@ public class LocationManager implements LocationListener {
     }
 
     private void updateUserInfo(int metersPassed) {
-        User currentUser = App.getUserManager().getCurrentUser();
         App.getQuestManager().updateQuestProgress("distance", String.valueOf(metersPassed));
-        if (currentUser != null) {
-            currentUser.setDistance(
-                    App.getUserManager().getCurrentUser().getDistance() + metersPassed);
-
-            currentUser.setExperience(
-                    currentUser.getExperience() +
-                            metersPassed / Constants.EXPERIENCE_MULTIPLIER);
-
-            int calculatedLevel = currentUser.getExperience() / Constants.LEVEL_MULTIPLIER;
-            if (calculatedLevel > currentUser.getLevel()) {
-                currentUser.setLevel(calculatedLevel);
-
-                Intent levelUpIntent = new Intent(context, MainActivity.class);
-                levelUpIntent.setAction(GCMManager.MESSAGE_RECEIVED);
-                levelUpIntent.putExtra("level", String.valueOf(calculatedLevel));
-
-                App.getLocalBroadcastManager().sendBroadcast(levelUpIntent);
-                Utils.sendNotification(Constants.NOTIFICATION_MSG_LEVEL_UP + calculatedLevel, context, levelUpIntent, 0);
-            }
-        }
-
-        App.getUserManager().updateCurrentUserInDB();
-        App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_UPDATE_UI));
+        App.getUserManager().updateCurrentUserProgress(App.getUserManager().getCurrentUser().getId(), metersPassed);
     }
 
     /**
