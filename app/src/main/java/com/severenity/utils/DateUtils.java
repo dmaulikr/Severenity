@@ -96,4 +96,32 @@ public class DateUtils {
                 month == _calendar.get(Calendar.MONTH) &&
                 year  == _calendar.get(Calendar.YEAR);
     }
+
+    public static long getDayDifference(String timestampFrom, String timestampTo) {
+
+        try{
+            _calendar.setTime(_dataFormat.parse(timestampTo));
+        }
+        catch (Exception e) {
+            return 0;
+        }
+
+        Date start = _calendar.getTime();
+
+        try{
+            _calendar.setTime(_dataFormat.parse(timestampFrom));
+        }
+        catch (Exception e) {
+            return 0;
+        }
+
+        Date end = _calendar.getTime();
+
+        long startTime = start.getTime();
+        long endTime = end.getTime();
+        long diffTime = startTime - endTime;
+        long diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+        return diffDays;
+    }
 }
