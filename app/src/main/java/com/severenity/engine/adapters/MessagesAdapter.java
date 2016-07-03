@@ -9,10 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.entity.Message;
 import com.severenity.utils.DateUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -95,7 +97,8 @@ public class MessagesAdapter extends BaseAdapter {
         TextView tvMessage = (TextView) messageView.findViewById(R.id.messageMessage);
         tvMessage.setText(message.getMessage());
 
-        ImageView ivAvatar = (ImageView) messageView.findViewById(R.id.messageAvatar);
+        ImageView ivProfileImage = (ImageView) messageView.findViewById(R.id.messageAvatar);
+        Picasso.with(messageView.getContext()).load("https://graph.facebook.com/" + message.getUserID() + "/picture?type=normal").into(ivProfileImage);
 
 
         return messageView;
