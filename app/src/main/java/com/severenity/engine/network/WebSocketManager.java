@@ -454,8 +454,8 @@ public class WebSocketManager {
                                     @Override
                                     public void run() {
                                         // Changes Marker on the map to replicate current place state.
-                                        App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(placeId, true/*captured*/);
                                         App.getPlacesManager().addOwnerToPlace(placeId, by);
+                                        App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(placeId);
                                         // instruct to hide actions buttons
                                         App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
                                     }

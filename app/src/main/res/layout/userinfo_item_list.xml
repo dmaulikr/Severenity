@@ -12,7 +12,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
-        android:src="@drawable/place_marker" />
+        android:src="@drawable/icon_place_marker" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="5dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/info" />
+        android:src="@drawable/icon_info" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -50,6 +50,10 @@
                 android:id="@+id/attackButton"
                 android:layout_marginEnd="2dp" />
         </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/overlay" />
     </RelativeLayout>
 
     <!-- The navigation drawer -->

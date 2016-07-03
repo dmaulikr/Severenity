@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -188,6 +191,18 @@ public class Utils {
         builder.show();
     }
 
+    public static Bitmap getScaledMarker(int resourceId, Context context) {
+        int height = 192;
+        int width = 192;
+        BitmapDrawable bitmapDrawable;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            bitmapDrawable = (BitmapDrawable) context.getResources().getDrawable(resourceId, context.getTheme());
+        } else {
+            bitmapDrawable = (BitmapDrawable) context.getResources().getDrawable(resourceId);
+        }
+        return Bitmap.createScaledBitmap(bitmapDrawable.getBitmap(), width, height, false);
+    }
+
     public interface PromptCallback {
         void onAccept();
         void onDecline();
@@ -333,5 +348,20 @@ public class Utils {
         locationDest.setLongitude(endPos.longitude);
 
         return locationStart.distanceTo(locationDest);
+    }
+
+    /**
+     * Converts drawable to bitmap.
+     *
+     * @param drawable {@link Drawable} to convert
+     * @return new {@link Bitmap} object
+     */
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 }

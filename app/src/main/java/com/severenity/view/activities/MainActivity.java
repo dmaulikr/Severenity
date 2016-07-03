@@ -241,9 +241,9 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                             @Override
                             public void run() {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    item.setIcon(getResources().getDrawable(R.drawable.shop_new, getTheme()));
+                                    item.setIcon(getResources().getDrawable(R.drawable.menu_shop_selected, getTheme()));
                                 } else {
-                                    item.setIcon(getResources().getDrawable(R.drawable.shop_new));
+                                    item.setIcon(getResources().getDrawable(R.drawable.menu_shop_selected));
                                 }
                             }
                         });
@@ -254,9 +254,9 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                             @Override
                             public void run() {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    item.setIcon(getResources().getDrawable(R.drawable.profile_new, getTheme()));
+                                    item.setIcon(getResources().getDrawable(R.drawable.menu_profile_selected, getTheme()));
                                 } else {
-                                    item.setIcon(getResources().getDrawable(R.drawable.profile_new));
+                                    item.setIcon(getResources().getDrawable(R.drawable.menu_profile_selected));
                                 }
                             }
                         });
@@ -267,9 +267,9 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                             @Override
                             public void run() {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    item.setIcon(getResources().getDrawable(R.drawable.map_new, getTheme()));
+                                    item.setIcon(getResources().getDrawable(R.drawable.menu_map_selected, getTheme()));
                                 } else {
-                                    item.setIcon(getResources().getDrawable(R.drawable.map_new));
+                                    item.setIcon(getResources().getDrawable(R.drawable.menu_map_selected));
                                 }
                             }
                         });
@@ -280,9 +280,9 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                             @Override
                             public void run() {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    item.setIcon(getResources().getDrawable(R.drawable.chat_new, getTheme()));
+                                    item.setIcon(getResources().getDrawable(R.drawable.menu_chat_selected, getTheme()));
                                 } else {
-                                    item.setIcon(getResources().getDrawable(R.drawable.chat_new));
+                                    item.setIcon(getResources().getDrawable(R.drawable.menu_chat_selected));
                                 }
                             }
                         });
@@ -293,9 +293,9 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                             @Override
                             public void run() {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    item.setIcon(getResources().getDrawable(R.drawable.quests_new, getTheme()));
+                                    item.setIcon(getResources().getDrawable(R.drawable.menu_quests_selected, getTheme()));
                                 } else {
-                                    item.setIcon(getResources().getDrawable(R.drawable.quests_new));
+                                    item.setIcon(getResources().getDrawable(R.drawable.menu_quests_selected));
                                 }
                             }
                         });
@@ -316,37 +316,37 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             switch (item.getItemId()) {
                 case R.id.menu_shop:
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        item.setIcon(getResources().getDrawable(R.drawable.shop, getTheme()));
+                        item.setIcon(getResources().getDrawable(R.drawable.menu_shop, getTheme()));
                     } else {
-                        item.setIcon(getResources().getDrawable(R.drawable.shop));
+                        item.setIcon(getResources().getDrawable(R.drawable.menu_shop));
                     }
                     break;
                 case R.id.menu_profile:
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        item.setIcon(getResources().getDrawable(R.drawable.profile, getTheme()));
+                        item.setIcon(getResources().getDrawable(R.drawable.menu_profile, getTheme()));
                     } else {
-                        item.setIcon(getResources().getDrawable(R.drawable.profile));
+                        item.setIcon(getResources().getDrawable(R.drawable.menu_profile));
                     }
                     break;
                 case R.id.menu_map:
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        item.setIcon(getResources().getDrawable(R.drawable.map, getTheme()));
+                        item.setIcon(getResources().getDrawable(R.drawable.menu_map, getTheme()));
                     } else {
-                        item.setIcon(getResources().getDrawable(R.drawable.map));
+                        item.setIcon(getResources().getDrawable(R.drawable.menu_map));
                     }
                     break;
                 case R.id.menu_chat:
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        item.setIcon(getResources().getDrawable(R.drawable.chat, getTheme()));
+                        item.setIcon(getResources().getDrawable(R.drawable.menu_chat, getTheme()));
                     } else {
-                        item.setIcon(getResources().getDrawable(R.drawable.chat));
+                        item.setIcon(getResources().getDrawable(R.drawable.menu_chat));
                     }
                     break;
                 case R.id.menu_quests:
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        item.setIcon(getResources().getDrawable(R.drawable.quests, getTheme()));
+                        item.setIcon(getResources().getDrawable(R.drawable.menu_quests, getTheme()));
                     } else {
-                        item.setIcon(getResources().getDrawable(R.drawable.quests));
+                        item.setIcon(getResources().getDrawable(R.drawable.menu_quests));
                     }
                     break;
                 default: break;

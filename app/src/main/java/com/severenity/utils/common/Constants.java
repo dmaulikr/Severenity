@@ -178,12 +178,12 @@ public class Constants {
     /**
      * User action and view circles parameters
      */
-    public static final int VIEW_CIRCLE_STOKE_COLOR = 0xffff0000;
-    public static final int VIEW_CIRCLE_SHADE_COLOR = 0x44ff0000;
+    public static final int VIEW_CIRCLE_STOKE_COLOR = 0xeecccccc;
+    public static final int VIEW_CIRCLE_SHADE_COLOR = 0x22cccccc;
     public static final int VIEW_CIRCLE_BORDER_SIZE = 2;
 
-    public static final int ACTION_CIRCLE_STOKE_COLOR = 0xff0000ff;
-    public static final int ACTION_CIRCLE_SHADE_COLOR = 0x440000ff;
+    public static final int ACTION_CIRCLE_STOKE_COLOR = 0xff333333;
+    public static final int ACTION_CIRCLE_SHADE_COLOR = 0x22333333;
     public static final int ACTION_CIRCLE_BORDER_SIZE = 2;
 
     /**

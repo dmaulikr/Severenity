@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,14 +37,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.adapters.MarkerInfoAdapter;
-import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.GamePlace;
 import com.severenity.entity.User;
 import com.severenity.entity.UserMarkerInfo;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.activities.MainActivity;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -408,15 +409,14 @@ public class LocationManager implements LocationListener {
 
         if (App.getPlacesManager().findPlaceByID(place.getId()) == null) {
 
-            GamePlace place_inner = new GamePlace(
+            GamePlace placeInner = new GamePlace(
                     place.getId(),
                     place.getName().toString(),
                     place.getLatLng(),
                     placeType);
 
-            App.getPlacesManager().addPlace(place_inner, true /*send to the server*/);
-
-            rememberAndDisplayMarker(place_inner, BitmapDescriptorFactory.HUE_ORANGE);
+            App.getPlacesManager().addPlace(placeInner, true /*send to the server*/);
+            rememberAndDisplayMarker(placeInner);
         }
     }
 
@@ -785,11 +785,7 @@ public class LocationManager implements LocationListener {
         mPlaceMarkersList.clear();
 
         for (GamePlace pl : place_inner) {
-
-            String currentUserID = App.getUserManager().getCurrentUser().getId();
-            float placeIconColor = pl.hasOwner(currentUserID) ? BitmapDescriptorFactory.HUE_YELLOW : BitmapDescriptorFactory.HUE_RED;
-
-            rememberAndDisplayMarker(pl, placeIconColor);
+            rememberAndDisplayMarker(pl);
         }
 
     }
@@ -875,30 +871,87 @@ public class LocationManager implements LocationListener {
      * of further changes.
      *
      * @param place - place for which marker to be created
-     * @param color - Marker color
      */
-    private void rememberAndDisplayMarker(GamePlace place, float color) {
+    private void rememberAndDisplayMarker(GamePlace place) {
+        int resourceId = getPlaceResourceImage(place);
 
         mPlaceMarkersList.put(place.getPlaceID(),
                 googleMap.addMarker(new MarkerOptions()
                         .position(place.getPlacePos())
-                        .icon(BitmapDescriptorFactory.defaultMarker(color))
+                        .icon(BitmapDescriptorFactory.fromBitmap(Utils.getScaledMarker(resourceId, context)))
                         .title(String.format("%s", place.getPlaceName()))
                         .snippet(place.getJSONPlaceInfo())));
+    }
+
+    private int getPlaceResourceImage(GamePlace place) {
+        int resourceId = R.drawable.place_experience_violet;
+        boolean hasOwner = place.hasOwner(App.getUserManager().getCurrentUser().getId());
+        switch (place.getPlaceType()) {
+            case Default:
+                if (hasOwner) {
+                    resourceId = R.drawable.place_experience_blue;
+                } else {
+                    resourceId = R.drawable.place_experience_violet;
+                }
+                break;
+            case Money:
+                if (hasOwner) {
+                    resourceId = R.drawable.place_money_blue;
+                } else {
+                    resourceId = R.drawable.place_money_violet;
+                }
+                break;
+            case ImplantRecovery:
+                if (hasOwner) {
+                    resourceId = R.drawable.place_implant_recovery_blue;
+                } else {
+                    resourceId = R.drawable.place_implant_recovery_violet;
+                }
+                break;
+            case ImplantRepair:
+                if (hasOwner) {
+                    resourceId = R.drawable.place_implant_repair_blue;
+                } else {
+                    resourceId = R.drawable.place_implant_repair_violet;
+                }
+                break;
+            case ImplantIncrease:
+                if (hasOwner) {
+                    resourceId = R.drawable.place_implant_increase_blue;
+                } else {
+                    resourceId = R.drawable.place_implant_increase_violet;
+                }
+                break;
+            case ImmunityIncrease:
+                if (hasOwner) {
+                    resourceId = R.drawable.place_immunity_increase_blue;
+                } else {
+                    resourceId = R.drawable.place_immunity_increase_violet;
+                }
+                break;
+            case EnergyIncrease:
+                if (hasOwner) {
+                    resourceId = R.drawable.place_energy_increase_blue;
+                } else {
+                    resourceId = R.drawable.place_energy_increase_violet;
+                }
+                break;
+        }
+
+        return resourceId;
     }
 
     /**
      * Changes marker color based on it's state. Red for regular markers; Yellow for captured.
      *
      * @param placeID  - place for which marker to be changed
-     * @param captured - indicates if marker becomes captured / uncaptured
      */
-    public void markPlaceMarkerAsCapturedUncaptured(String placeID, boolean captured) {
-
+    public void markPlaceMarkerAsCapturedUncaptured(String placeID) {
         if (mPlaceMarkersList.containsKey(placeID)) {
-
             Marker marker = mPlaceMarkersList.get(placeID);
-            marker.setIcon(BitmapDescriptorFactory.defaultMarker(captured ? BitmapDescriptorFactory.HUE_YELLOW : BitmapDescriptorFactory.HUE_RED));
+            GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
+            int resourceId = getPlaceResourceImage(place);
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(Utils.getScaledMarker(resourceId, context)));
 
         }
     }

@@ -48,9 +48,11 @@ public class Chip extends BaseObservable implements Parcelable {
 
     public enum ChipType {
         Capture,
+        Control,
         Dispel,
         Shield,
-        Attack
+        Attack,
+        Invisibility
     }
 
     public enum Rarity {
@@ -73,16 +75,22 @@ public class Chip extends BaseObservable implements Parcelable {
 
         switch (chipType) {
             case Capture:
-                setChipIconResource(R.drawable.menu_marker);
+                setChipIconResource(R.drawable.sig_capture_place);
+                break;
+            case Control:
+                setChipIconResource(R.drawable.sig_capture_player);
                 break;
             case Dispel:
-                setChipIconResource(R.drawable.chip_wave);
+                setChipIconResource(R.drawable.sig_remove);
                 break;
             case Shield:
-                setChipIconResource(R.drawable.chip_ward);
+                setChipIconResource(R.drawable.sig_defend);
                 break;
             case Attack:
-                setChipIconResource(R.drawable.menu_arrow_right);
+                setChipIconResource(R.drawable.sig_attack);
+                break;
+            case Invisibility:
+                setChipIconResource(R.drawable.sig_invisibility);
                 break;
         }
     }

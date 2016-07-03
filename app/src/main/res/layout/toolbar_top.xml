@@ -64,5 +64,14 @@
             android:layout_marginBottom="0dp"
             android:textSize="12sp"
             android:text="@string/level_value" />
+
+        <!-- TODO: Artem add id for this button and handler (tutorial task) -->
+        <ImageView
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/icon_question" />
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

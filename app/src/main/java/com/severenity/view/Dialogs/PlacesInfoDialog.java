@@ -199,7 +199,7 @@ public class PlacesInfoDialog extends DialogFragment {
             App.getPlacesManager().deleteOwnership(mPlaceID, ownerId);
             if (currentUser != null && ownerId != null) {
                 if (ownerId.equals(currentUser.getId())){
-                    App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(mPlaceID, false/*uncaptured*/);
+                    App.getLocationManager().markPlaceMarkerAsCapturedUncaptured(mPlaceID);
                 }
 
                 if (mCaptionView != null) {

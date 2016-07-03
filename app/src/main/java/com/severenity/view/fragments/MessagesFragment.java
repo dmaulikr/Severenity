@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.severenity.App;
@@ -38,7 +41,7 @@ import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_USER_NAME
 public class MessagesFragment extends Fragment implements View.OnClickListener {
 
     private ListView mMessagesList;
-    private Button mSendButton;
+    private ImageView mSendButton;
     private EditText mMessageEdit;
     private User mCurrentUser;
     private MessagesAdapter mMessageAdapter;
@@ -116,7 +119,8 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
 
     private void configureInnerObjects(View view) {
 
-        mSendButton = (Button) view.findViewById(R.id.sendMessage);
+        mSendButton = (ImageView) view.findViewById(R.id.sendMessage);
+        mSendButton.setColorFilter(0xFF000000, PorterDuff.Mode.MULTIPLY);
         mSendButton.setOnClickListener(this);
 
         mMessageEdit = (EditText) view.findViewById(R.id.messageText);
@@ -134,10 +138,10 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
                 if (mSendButton != null) {
                     if (s.length() > 0) {
                         mSendButton.setEnabled(true);
-                        mSendButton.setTextColor(0xFF000000);
+                        mSendButton.setColorFilter(0xFF5A007D, PorterDuff.Mode.MULTIPLY);
                     } else {
                         mSendButton.setEnabled(false);
-                        mSendButton.setTextColor(0xFF8B8B8B);
+                        mSendButton.setColorFilter(0xFF000000, PorterDuff.Mode.MULTIPLY);
                     }
                 }
             }
