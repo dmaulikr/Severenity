@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.severenity.App;
 import com.severenity.R;
@@ -30,8 +31,11 @@ public class UsersActions implements View.OnClickListener {
 
     public UsersActions(View view) {
         mUserActions = (LinearLayout)view.findViewById(R.id.userActions);
-        mUserActions.findViewById(R.id.captureButton).setOnClickListener(this);
-        mUserActions.findViewById(R.id.attackButton).setOnClickListener(this);
+        mUserActions.findViewById(R.id.btnCapturePlace).setOnClickListener(this);
+        mUserActions.findViewById(R.id.btnCapturePlayer).setOnClickListener(this);
+        mUserActions.findViewById(R.id.btnAttack).setOnClickListener(this);
+        mUserActions.findViewById(R.id.btnDefend).setOnClickListener(this);
+        mUserActions.findViewById(R.id.btnInvisibility).setOnClickListener(this);
         mActionsType = ActionsType.ActionsTypeUnknown;
         mDataID = "";
     }
@@ -49,9 +53,11 @@ public class UsersActions implements View.OnClickListener {
         switch (type) {
             case ActionsOnUser: {
                 if (mUserActions.getVisibility() == View.INVISIBLE) {
-
-                    (mUserActions.findViewById(R.id.attackButton)).setVisibility(View.VISIBLE);
-                    (mUserActions.findViewById(R.id.captureButton)).setVisibility(View.GONE);
+                    (mUserActions.findViewById(R.id.btnCapturePlayer)).setVisibility(View.VISIBLE);
+                    (mUserActions.findViewById(R.id.btnDefend)).setVisibility(View.VISIBLE);
+                    (mUserActions.findViewById(R.id.btnInvisibility)).setVisibility(View.VISIBLE);
+                    (mUserActions.findViewById(R.id.btnAttack)).setVisibility(View.VISIBLE);
+                    (mUserActions.findViewById(R.id.btnCapturePlace)).setVisibility(View.GONE);
                     mUserActions.setVisibility(View.VISIBLE);
                     Animation anim = AnimationUtils.loadAnimation(context, R.anim.user_actions_slide_in);
                     mUserActions.startAnimation(anim);
@@ -60,9 +66,11 @@ public class UsersActions implements View.OnClickListener {
             }
             case ActionsOnPlace: {
                 if (mUserActions.getVisibility() == View.INVISIBLE) {
-
-                    (mUserActions.findViewById(R.id.attackButton)).setVisibility(View.GONE);
-                    (mUserActions.findViewById(R.id.captureButton)).setVisibility(View.VISIBLE);
+                    (mUserActions.findViewById(R.id.btnAttack)).setVisibility(View.VISIBLE);
+                    (mUserActions.findViewById(R.id.btnDefend)).setVisibility(View.VISIBLE);
+                    (mUserActions.findViewById(R.id.btnInvisibility)).setVisibility(View.VISIBLE);
+                    (mUserActions.findViewById(R.id.btnCapturePlace)).setVisibility(View.VISIBLE);
+                    (mUserActions.findViewById(R.id.btnCapturePlayer)).setVisibility(View.GONE);
                     mUserActions.setVisibility(View.VISIBLE);
                     Animation anim = AnimationUtils.loadAnimation(context, R.anim.user_actions_slide_in);
                     mUserActions.startAnimation(anim);
@@ -111,7 +119,7 @@ public class UsersActions implements View.OnClickListener {
         }
 
         switch (view.getId()) {
-            case R.id.captureButton: {
+            case R.id.btnCapturePlace: {
                 // adds Logged-in user into Place's owners list
                 JSONObject data = new JSONObject();
                 try {
@@ -125,11 +133,17 @@ public class UsersActions implements View.OnClickListener {
                 break;
             }
 
-            case R.id.attackButton: {
+            case R.id.btnAttack: {
                 App.getWebSocketManager().sendUserActionToServer(mDataID, Constants.UsersActions.ATTACK);
                 mDataID = "";
                 break;
             }
+
+            case R.id.btnCapturePlayer:
+            case R.id.btnDefend:
+            case R.id.btnInvisibility:
+                Toast.makeText(mUserActions.getContext(), "This signal is under development. Stay tuned!", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }

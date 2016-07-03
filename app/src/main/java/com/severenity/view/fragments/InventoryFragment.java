@@ -23,10 +23,12 @@ import java.util.Arrays;
 public class InventoryFragment extends Fragment {
     private RecyclerView rvInventory;
     private ArrayList<Chip> chips = new ArrayList<>(Arrays.asList(
-            new Chip(Chip.ChipType.Capture, "Captures place to collect data that improves your implant.", 0, Chip.Rarity.Common),
-            new Chip(Chip.ChipType.Dispel, "Shorts the selected chip, so it stops working.", 1, Chip.Rarity.Uncommon),
-            new Chip(Chip.ChipType.Shield, "Defends your implant from incoming attacking signals", 0, Chip.Rarity.Rare),
-            new Chip(Chip.ChipType.Attack, "Deals damage to selected implant.", 2, Chip.Rarity.Common)
+            new Chip(Chip.ChipType.CapturePlace, "Captures place to collect data that improves your implant.", 0, Chip.Rarity.Common),
+            new Chip(Chip.ChipType.CapturePlayer, "Captures player to steal data that improves your implant.", 0, Chip.Rarity.Rare),
+            new Chip(Chip.ChipType.Remove, "Removes player who has captured from captured object.", 1, Chip.Rarity.Uncommon),
+            new Chip(Chip.ChipType.Defend, "Defends your implant from next incoming attacking signals.", 0, Chip.Rarity.Common),
+            new Chip(Chip.ChipType.Attack, "Deals damage to the selected implant.", 2, Chip.Rarity.Common),
+            new Chip(Chip.ChipType.Invisibility, "Puts invisibility over the object so it disappears from the map.", 0, Chip.Rarity.Rare)
     ));
 
     public InventoryFragment() {
