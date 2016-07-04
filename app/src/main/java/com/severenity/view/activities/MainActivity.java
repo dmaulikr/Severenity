@@ -3,15 +3,20 @@ package com.severenity.view.activities;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -74,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private String gameMapFragmentTag = GameMapFragment.class.getSimpleName();
     private PlacesInfoDialog mPlaceInfoDialog;
 
+    private LocationManager locationManager;
+
     private ArrayList<Fragment> allFragments = new ArrayList<>();
 
     private boolean activityActive = false;
@@ -89,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         initFragments();
         initSocketSubscriptions();
 
+
         toolbarBottom.findViewById(R.id.menu_map).performClick();
 
         IntentFilter intentFilter = new IntentFilter();
@@ -101,6 +110,32 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
         mRecoveryManager = new EnergyRecoveryManager(getApplicationContext());
         mRecoveryManager.start();
+
+        checkGPSConnection();
+    }
+
+    private void checkGPSConnection() {
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder agBuilder = new AlertDialog.Builder(this);
+            agBuilder.setMessage("Your GPS seems to be turned off, do you want to enable it?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Toast.makeText(getApplicationContext(), "Sorry, but you need a GPS to play this game", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            final AlertDialog ad = agBuilder.create();
+            ad.show();
+        }
     }
 
     @Override
