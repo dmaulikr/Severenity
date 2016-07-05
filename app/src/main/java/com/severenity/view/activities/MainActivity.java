@@ -127,10 +127,10 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                             startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         }
                     })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("Later", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            Toast.makeText(getApplicationContext(), "Sorry, but you need a GPS to play this game", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
                     });
             final AlertDialog ad = agBuilder.create();
