@@ -133,13 +133,15 @@ public class LocationManager implements LocationListener {
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                if (App.getSpellManager().isChipMode()) {
-                    // Handle spells here if needed
-                } else {
-                    resetCameraLocation();
-                }
+                if (latLng != null) {
+                    if (App.getSpellManager().isChipMode()) {
+                        // Handle spells here if needed
+                    } else {
+                        resetCameraLocation();
+                    }
 
-                App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
+                    App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
+                }
             }
         });
 
