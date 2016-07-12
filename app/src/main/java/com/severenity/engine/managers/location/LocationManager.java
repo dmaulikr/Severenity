@@ -267,7 +267,9 @@ public class LocationManager implements LocationListener {
      */
     public void fixCameraAtLocation(LatLng latLng) {
         isCameraFixed = true;
-        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        if (googleMap != null) {
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        }
     }
 
     public boolean isRequestingLocationUpdates() {
@@ -291,12 +293,12 @@ public class LocationManager implements LocationListener {
     public void displayUserAt(User user, LatLng latLng) {
         // remove all markers that has not been updated within 10 seconds
         Iterator<UserMarkerInfo> it = mOtherUsersList.values().iterator();
-        while (it.hasNext())
-        {
+        while (it.hasNext()) {
             Long currentTime = System.currentTimeMillis();
             UserMarkerInfo markerInfo = it.next();
-            if ((currentTime - (markerInfo.getLastUpdate()) > 10000/*10 seconds*/))
+            if ((currentTime - (markerInfo.getLastUpdate()) > 10000/*10 seconds*/)) {
                 it.remove();
+            }
         }
 
         if (!mOtherUsersList.containsKey(user.getId())) {
@@ -305,7 +307,7 @@ public class LocationManager implements LocationListener {
             userLocation.setLatitude(latLng.latitude);
             userLocation.setLongitude(latLng.longitude);
 
-            if (currentLocation.distanceTo(userLocation) <= App.getUserManager().getCurrentUser().getViewRadius()) {
+            if (currentLocation != null && currentLocation.distanceTo(userLocation) <= App.getUserManager().getCurrentUser().getViewRadius()) {
 
                 UserMarkerInfo markerInfo = new UserMarkerInfo(googleMap.addMarker(new MarkerOptions()
                         .position(latLng)

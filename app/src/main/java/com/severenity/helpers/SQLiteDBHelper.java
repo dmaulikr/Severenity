@@ -20,7 +20,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     // 3 - added Quests table
     // 4 - added place/owners tables
     // 5 - added recovery info table
-    private static final int DB_VERSION = 5;
+    // 6 - added max implant hp column
+    private static final int DB_VERSION = 6;
     private static final String DB_NAME = "Filter.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -41,6 +42,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     UserContract.DBUser.COLUMN_ENERGY + INT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_MAX_ENERGY + INT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_IMPLANT_HP + INT_TYPE + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_MAX_IMPLANT_HP + INT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_CREATED_DATE + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_CREDITS + INT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_VIEW_RADIUS + REAL_TYPE + COMMA_SEP +
@@ -113,6 +115,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     private static final String DB_SQL_DELETE_RECOVERY = "DROP TABLE IF EXISTS " + RecoveryContract.DBRecovery.TABLE_RECOVERY;
 
+    private static final String DB_SQL_ADD_MAX_IMPLANT_HP_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_MAX_IMPLANT_HP + INT_TYPE + ";";
+
     private void createPlace(SQLiteDatabase db) {
         db.execSQL(DB_SQL_CREATE_PLACES);
         db.execSQL(DB_SQL_CREATE_PLACES_OWNERS);
@@ -145,7 +149,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        if (oldVersion == 1 && newVersion == 2) {
+        if (oldVersion == 1 && newVersion == DB_VERSION) {
             db.execSQL(DB_SQL_CREATE_MESSAGES);
         }
 
@@ -158,7 +162,11 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         }
 
         if (oldVersion == 4 && newVersion == DB_VERSION) {
-            db.execSQL(DB_SQL_DELETE_RECOVERY);
+            db.execSQL(DB_SQL_CREATE_RECOVERY);
+        }
+
+        if (oldVersion == 5 && newVersion == DB_VERSION) {
+            db.execSQL(DB_SQL_ADD_MAX_IMPLANT_HP_COLUMN);
         }
     }
 

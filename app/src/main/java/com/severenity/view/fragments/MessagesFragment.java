@@ -29,6 +29,7 @@ import com.severenity.utils.DateUtils;
 import com.severenity.utils.common.Constants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_MESSAGE;
 import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_TIMESTAMP;
@@ -81,7 +82,6 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.sendMessage:
 
@@ -98,12 +98,10 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
                     mMessageEdit.setText("");
 
                     if (mMessageAdapter == null) {
-
                         ArrayList<Message> messages = new ArrayList<>(1);
                         messages.add(msg);
                         setMessageAdapter(messages);
-                    }
-                    else {
+                    } else {
                         mMessageAdapter.addItem(msg);
                     }
 
@@ -156,12 +154,16 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
     }
 
     private void setMessageAdapter(ArrayList<Message> messages) {
-
-        if (mMessageAdapter == null)
+        if (mMessageAdapter == null) {
             mMessageAdapter = new MessagesAdapter(getContext(), messages);
+        }
 
         mMessagesList.setAdapter(mMessageAdapter);
-        mMessagesList.setSelection(mMessageAdapter.getCount() - 1);
+
+        if (mMessageAdapter.getCount() > 0) {
+            mMessageAdapter.notifyDataSetChanged();
+            mMessagesList.setSelection(mMessageAdapter.getCount() - 1);
+        }
     }
 
     private BroadcastReceiver newMessageReceiver = new BroadcastReceiver() {
@@ -175,9 +177,15 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
             msg.setUserName(extra.getString(COLUMN_USER_NAME));
             msg.setUserID(extra.getString(COLUMN_USER_ID));
 
-            mMessageAdapter.addItem(msg);
-            mMessageAdapter.notifyDataSetChanged();
-            mMessagesList.setSelection(mMessageAdapter.getCount() - 1);
+            if (mMessageAdapter != null) {
+                mMessageAdapter.addItem(msg);
+                mMessageAdapter.notifyDataSetChanged();
+                mMessagesList.setSelection(mMessageAdapter.getCount() - 1);
+            } else {
+                ArrayList<Message> messages = new ArrayList<>();
+                messages.add(msg);
+                setMessageAdapter(messages);
+            }
         }
     };
 }

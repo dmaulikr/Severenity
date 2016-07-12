@@ -19,12 +19,12 @@ public class DataManager {
         dbHelper = new SQLiteDBHelper(context);
     }
 
-    protected Object checkIfNull(Object object) {
+    protected boolean checkIfNull(Object object) {
         if (object == null) {
             Log.e(Constants.TAG, "DataManager: object specified in query is null.");
-            return null;
+            return false;
         }
 
-        return object;
+        return true;
     }
 }

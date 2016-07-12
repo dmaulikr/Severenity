@@ -33,6 +33,7 @@ import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_ENERGY;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_LEVEL;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_MAX_IMMUNITY;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_MAX_ENERGY;
+import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_MAX_IMPLANT_HP;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_NAME;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_NULLABLE;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_VIEW_RADIUS;
@@ -69,6 +70,7 @@ public class UserManager extends DataManager {
         values.put(COLUMN_MAX_ENERGY, user.getMaxEnergy());
         values.put(COLUMN_CREDITS, user.getCredits());
         values.put(COLUMN_IMPLANT_HP, user.getImplantHP());
+        values.put(COLUMN_MAX_IMPLANT_HP, user.getMaxImplantHP());
         values.put(COLUMN_ACTION_RADIUS, user.getActionRadius());
         values.put(COLUMN_VIEW_RADIUS, user.getViewRadius());
 
@@ -113,6 +115,7 @@ public class UserManager extends DataManager {
             user.setMaxEnergy(cursor.getInt(cursor.getColumnIndex(COLUMN_MAX_ENERGY)));
             user.setCredits(cursor.getInt(cursor.getColumnIndex(COLUMN_CREDITS)));
             user.setImplantHP(cursor.getInt(cursor.getColumnIndex(COLUMN_IMPLANT_HP)));
+            user.setMaxImplantHP(cursor.getInt(cursor.getColumnIndex(COLUMN_MAX_IMPLANT_HP)));
             user.setViewRadius(cursor.getDouble(cursor.getColumnIndex(COLUMN_VIEW_RADIUS)));
             user.setActionRadius(cursor.getDouble(cursor.getColumnIndex(COLUMN_ACTION_RADIUS)));
 
@@ -130,32 +133,11 @@ public class UserManager extends DataManager {
     }
 
     public User getUser(User user) {
-        checkIfNull(user);
-
-        return getUserById(user.getId());
-    }
-
-    public void deleteUser(User user) {
-        checkIfNull(user);
-
-        deleteUserById(user.getId());
-    }
-
-    public void deleteUserById(String id) {
-        if (id == null || id.isEmpty()) {
-            Log.e(Constants.TAG, "UserManager: user id specified in query must not be empty.");
-            return;
+        if (checkIfNull(user)) {
+            return getUserById(user.getId());
+        } else {
+            return null;
         }
-
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(TABLE_USERS, "id = ?", new String[]{id});
-        db.close();
-    }
-
-    public void deleteAllUsers() {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(TABLE_USERS, null, null);
-        db.close();
     }
 
     public void updateCurrentUserLocally() {
@@ -169,6 +151,7 @@ public class UserManager extends DataManager {
         values.put(COLUMN_IMMUNITY, currentUser.getImmunity());
         values.put(COLUMN_MAX_IMMUNITY, currentUser.getMaxImmunity());
         values.put(COLUMN_IMPLANT_HP, currentUser.getImplantHP());
+        values.put(COLUMN_MAX_IMPLANT_HP, currentUser.getMaxImplantHP());
         values.put(COLUMN_CREDITS, currentUser.getCredits());
 
         db.update(TABLE_USERS, values, "id = ?", new String[]{currentUser.getId()});
@@ -188,6 +171,7 @@ public class UserManager extends DataManager {
         values.put(COLUMN_IMMUNITY, user.getImmunity());
         values.put(COLUMN_MAX_IMMUNITY, user.getMaxImmunity());
         values.put(COLUMN_IMPLANT_HP, user.getImplantHP());
+        values.put(COLUMN_MAX_IMPLANT_HP, user.getMaxImplantHP());
         values.put(COLUMN_CREDITS, user.getCredits());
 
         if (currentUser != null && user.getLevel() > currentUser.getLevel()) {

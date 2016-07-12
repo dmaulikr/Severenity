@@ -275,7 +275,8 @@ public class PlacesManager extends DataManager {
                 do {
                     GamePlace place = placeFromCursor(cursor);
 
-                    if (Utils.distanceBetweenLocations(currentLocation, place.getPlacePos()) < distance) {
+                    if (currentLocation != null && place.getPlacePos() != null &&
+                            Utils.distanceBetweenLocations(currentLocation, place.getPlacePos()) < distance) {
                         findPlaceOwners(place);
                         places.add(place);
                     }

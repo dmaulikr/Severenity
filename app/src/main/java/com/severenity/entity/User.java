@@ -21,6 +21,7 @@ public class User {
     private double actionRadius;
     private int credits;
     private int implantHP;
+    private int maxImplantHP;
     private int maxImmunity;
     private int maxEnergy;
     private String createdDate;
@@ -149,6 +150,14 @@ public class User {
 
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public int getMaxImplantHP() {
+        return maxImplantHP;
+    }
+
+    public void setMaxImplantHP(int maxImplantHP) {
+        this.maxImplantHP = maxImplantHP;
     }
 
     public String getJSONUserInfo() {

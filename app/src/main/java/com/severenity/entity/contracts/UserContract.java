@@ -25,6 +25,7 @@ public final class UserContract {
         public static final String COLUMN_MAX_ENERGY = "maxEnergy";
         public static final String COLUMN_CREDITS = "credits";
         public static final String COLUMN_IMPLANT_HP = "implantHP";
+        public static final String COLUMN_MAX_IMPLANT_HP = "maxImplantHP";
         public static final String COLUMN_VIEW_RADIUS = "viewRadius";
         public static final String COLUMN_ACTION_RADIUS = "actionRadius";
         public static final String COLUMN_LEVEL = "level";

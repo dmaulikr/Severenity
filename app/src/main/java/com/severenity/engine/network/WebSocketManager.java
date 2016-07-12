@@ -124,6 +124,7 @@ public class WebSocketManager {
                             user.setActionRadius(response.getInt("actionRadius"));
                             user.setViewRadius(response.getInt("viewRadius"));
                             user.setImplantHP(response.getInt("implantHP"));
+                            user.setMaxImplantHP(response.getInt("maxImplantHP"));
                             user.setCredits(response.getInt("credits"));
                             user.setMaxEnergy(response.getInt("maxEnergy"));
                             user.setMaxImmunity(response.getInt("maxImmunity"));
