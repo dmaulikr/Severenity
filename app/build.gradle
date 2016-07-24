@@ -10,8 +10,8 @@ android {
         applicationId "com.severenity"
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 3
-        versionName "0.7"
+        versionCode 4
+        versionName "0.7.1"
         multiDexEnabled true
     }
     buildTypes {
