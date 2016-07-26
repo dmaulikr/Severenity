@@ -116,8 +116,16 @@ public class MessagesFragment extends Fragment implements View.OnClickListener {
     }
 
     private void configureInnerObjects(View view) {
+        if (view == null) {
+            return;
+        }
 
         mSendButton = (ImageView) view.findViewById(R.id.sendMessage);
+
+        if (mSendButton == null) {
+            return;
+        }
+
         mSendButton.setColorFilter(0xFF000000, PorterDuff.Mode.MULTIPLY);
         mSendButton.setOnClickListener(this);
 

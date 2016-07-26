@@ -317,13 +317,16 @@ public class LocationManager implements LocationListener {
 
                 mOtherUsersList.put(user.getId(), markerInfo);
             }
-        }
-        else {
-             // Check if user is within current user's ViewCircle
-             UserMarkerInfo markerInfo = mOtherUsersList.get(user.getId());
-             markerInfo.getMarker().setPosition(latLng);
-             markerInfo.getMarker().setIcon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())));
-             markerInfo.setUpdateTime(System.currentTimeMillis());
+        } else {
+            // Check if user is within current user's ViewCircle
+            UserMarkerInfo markerInfo = mOtherUsersList.get(user.getId());
+            markerInfo.getMarker().remove();
+            markerInfo.setMarker(googleMap.addMarker(
+                    new MarkerOptions()
+                    .position(latLng)
+                    .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
+            ));
+            markerInfo.setUpdateTime(System.currentTimeMillis());
         }
     }
 

@@ -6,7 +6,6 @@ import com.google.android.gms.maps.model.Marker;
  * Created by Andriy on 6/10/2016.
  */
 public class UserMarkerInfo {
-
     private Marker mMarker;
     private long   mLastUpdateTime;
 
@@ -25,5 +24,9 @@ public class UserMarkerInfo {
 
     public Marker getMarker() {
         return mMarker;
+    }
+
+    public void setMarker(Marker marker) {
+        mMarker = marker;
     }
 }

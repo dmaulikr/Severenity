@@ -1,6 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file("severenity.jks")
+            storePassword "jd9ab359"
+            keyAlias "severenity"
+            keyPassword "jd9ab359"
+        }
+    }
+
     compileSdkVersion 24
     buildToolsVersion '24.0.0'
     dataBinding {
@@ -18,6 +27,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     lintOptions {
