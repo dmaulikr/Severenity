@@ -1,43 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.severenity.view.fragments.MessagesFragment"
-    android:background="@color/background">
+    android:id="@+id/rlMessagesLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.severenity.view.fragments.MessagesFragment">
 
-    <ListView
-        android:layout_width="wrap_content"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tlTabs"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/messagesList"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/messageText"
-        android:divider="#00000000"/>
+        android:background="?attr/colorPrimary"
+        android:elevation="6dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:id="@+id/sendMessage"
-        android:enabled="false"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/icon_send_message_violet" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:id="@+id/messageText"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/sendMessage"
-        android:inputType="textCapSentences|textMultiLine"
-        android:maxLength="2000"
-        android:maxLines="2"
-        android:minLines="1"
-        android:fadeScrollbars="false"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:hint="Enter your text" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpPager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/tlTabs"/>
 
 </RelativeLayout>
