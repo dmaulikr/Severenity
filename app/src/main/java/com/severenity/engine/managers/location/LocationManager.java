@@ -6,12 +6,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -313,7 +310,7 @@ public class LocationManager implements LocationListener {
                         .position(latLng)
                         .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
                         .title(user.getName())
-                        .snippet(user.getJSONUserInfo())));
+                        .snippet(user.getJSONUserInfo())), user);
 
                 mOtherUsersList.put(user.getId(), markerInfo);
             }
@@ -325,6 +322,8 @@ public class LocationManager implements LocationListener {
                     new MarkerOptions()
                     .position(latLng)
                     .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
+                    .snippet(markerInfo.getUser().getJSONUserInfo())
+                    .title(markerInfo.getUser().getName())
             ));
             markerInfo.setUpdateTime(System.currentTimeMillis());
         }
@@ -499,49 +498,6 @@ public class LocationManager implements LocationListener {
                     CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), currentZoom)
             );
         }
-
-
-//        // TODO: Temporary add user to tes Attach actions
-//        User tempUser = new User("test@tes.com", "Test user", "6876876");
-//
-//        if (mOtherUsersList != null) {
-//            mOtherUsersList = null;
-//        }
-//
-//        if (mPlaceMarkersList != null) {
-//            mPlaceMarkersList = null;
-//        }
-//
-//        mPlaceMarkersList = new HashMap<>();
-//
-//
-//        mOtherUsersList = new HashMap<>();
-//
-//            Location tempLocation = location;
-//            tempLocation.setLongitude(tempLocation.getLongitude() - 0.0002);
-//            tempLocation.setLatitude(tempLocation.getLatitude()/* + 0.0001*/);
-//
-//            UserMarkerInfo markerInfo = new UserMarkerInfo(googleMap.addMarker(new MarkerOptions()
-//                    .position(Utils.latLngFromLocation(tempLocation))
-//                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
-//                    .title(tempUser.getName())
-//                    .snippet(tempUser.getJSONUserInfo())));
-//
-//            mOtherUsersList.put(tempUser.getId(), markerInfo);
-//
-//        tempLocation.setLongitude(tempLocation.getLongitude() - 0.0004);
-//
-//        GamePlace place_inner = new GamePlace(
-//                "123456789",
-//                "temp place",
-//                Utils.latLngFromLocation(tempLocation),
-//                GamePlace.PlaceType.Default);
-//
-//        rememberAndDisplayMarker(place_inner, BitmapDescriptorFactory.HUE_CYAN);
-//
-//        App.getPlacesManager().addPlace(place_inner, false);
-//
-//        /****************************************************************************/
     }
 
     /**
