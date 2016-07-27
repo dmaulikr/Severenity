@@ -67,6 +67,7 @@
 
         <!-- TODO: Artem add id for this button and handler (tutorial task) -->
         <ImageView
+            android:id="@+id/ivTutorialBtn"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
