@@ -7,63 +7,6 @@
     <!-- Project number from google developers console -->
     <!--<string name="google_app_id">967925944048</string>-->
 
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
     <string name="wifi_connected">WiFi Connected</string>
     <string name="lost_connection">Connection lost</string>
     <string name="mobile_connected">Mobile Connected</string>
@@ -110,5 +53,9 @@
     <!--<string name="owners_string">&d &s own this place:</string>-->
 
     <!-- Buttons -->
-    <string name="button_send">Send </string>
+    <string name="button_send">Send</string>
+
+    <string name="mapbox_public_access_token">pk.eyJ1Ijoibm92b3NhZCIsImEiOiJjaXI0cjV4Y3AwMDRtaHptYzNqZmdydGZrIn0.teueJe39m2vBVk3l0yx7Yg</string>
+    <string name="mapbox_access_token">sk.eyJ1Ijoibm92b3NhZCIsImEiOiJjaXI0cTNyMGMwMDN1aHRtY2c2NDNrZnR1In0.tFOwxODJUnJBSW2kfMmK2Q</string>
+    <string name="mapbox_style_url_dark">mapbox://styles/novosad/cir4q2c2c000occm0d3zadmz6</string>
 </resources>

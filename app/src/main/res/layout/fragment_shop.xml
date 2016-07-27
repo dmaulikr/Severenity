@@ -2,13 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     tools:context="com.severenity.view.fragments.ShopFragment">
 
-    <TextView
-        android:layout_centerInParent="true"
-        android:textSize="20sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_shop" />
+    <!--<TextView-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:textSize="20sp"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/title_shop" />-->
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        mapbox:style_url="@string/mapbox_style_url_dark"
+        mapbox:access_token="@string/mapbox_public_access_token" />
 
 </RelativeLayout>

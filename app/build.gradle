@@ -12,9 +12,11 @@ android {
 
     compileSdkVersion 24
     buildToolsVersion '24.0.0'
+
     dataBinding {
         enabled = true
     }
+
     defaultConfig {
         applicationId "com.severenity"
         minSdkVersion 19
@@ -23,6 +25,7 @@ android {
         versionName "0.7.1"
         multiDexEnabled true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -30,6 +33,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
     lintOptions {
         // set to true to turn off analysis progress reporting by lint
         quiet true
@@ -38,11 +42,15 @@ android {
         // if true, only report errors
         ignoreWarnings true
     }
-    productFlavors {
-    }
+
     dexOptions {
         incremental true
         javaMaxHeapSize "4g"
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
     }
 }
 
@@ -70,6 +78,12 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'joda-time:joda-time:2.9.3'
     compile 'com.google.android.gms:play-services-gcm:9.0.2'
+    compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:4.1.1@aar'){
+        transitive=true
+    }
+    compile ('com.mapbox.mapboxsdk:mapbox-android-services:1.2.1@aar'){
+        transitive=true
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'
