@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -58,7 +57,6 @@ public class GameMapFragment extends Fragment {
     private ActionMode spellMode;
 
     private ChipAdapter chipAdapter;
-    private String mPlaceIDtoCapture;
 
     public GameMapFragment() {
         // Required empty public constructor
@@ -116,7 +114,7 @@ public class GameMapFragment extends Fragment {
     private void initDrawer(View view) {
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerMap);
 
-        mUserActions = new UsersActions(view);
+        mUserActions = new UsersActions(view, getActivity().getApplicationContext());
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(
                 activity, drawerLayout, activity.getToolbarTop(),
@@ -211,10 +209,9 @@ public class GameMapFragment extends Fragment {
 
             switch (intentData.getInt(Constants.OBJECT_TYPE_IDENTIFIER)) {
                 case Constants.TYPE_PLACE: {
-
-                    mPlaceIDtoCapture = intentData.getString(Constants.PLACE_ID);
+                    String placeId = intentData.getString(Constants.PLACE_ID);
                     // TODO: AF: for now do not show action if user owns this place
-                    GamePlace place = App.getPlacesManager().findPlaceByID(mPlaceIDtoCapture);
+                    GamePlace place = App.getPlacesManager().findPlaceByID(placeId);
                     if (place.hasOwner(App.getUserManager().getCurrentUser().getId())) {
 
                         if (mUserActions.isActionsDisplaying()) {
@@ -223,14 +220,15 @@ public class GameMapFragment extends Fragment {
                         return;
                     }
 
-                    mUserActions.setCapturedItemID(mPlaceIDtoCapture);
-                    mUserActions.showActionPanel(UsersActions.ActionsType.ActionsOnPlace, context);
+                    mUserActions.setSelectedItemId(placeId);
+                    mUserActions.showActionPanel(UsersActions.ActionsType.ActionsOnPlace);
                     break;
                 }
 
                 case Constants.TYPE_USER: {
-
-                    mUserActions.showActionPanel(UsersActions.ActionsType.ActionsOnUser, context);
+                    String userId = intentData.getString(Constants.USER_ID);
+                    mUserActions.setSelectedItemId(userId);
+                    mUserActions.showActionPanel(UsersActions.ActionsType.ActionsOnUser);
                     break;
                 }
 

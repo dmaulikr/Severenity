@@ -28,8 +28,9 @@ public class UsersActions implements View.OnClickListener {
     private LinearLayout mUserActions;
     private ActionsType  mActionsType;
     private String       mDataID;
+    private Context mContext;
 
-    public UsersActions(View view) {
+    public UsersActions(View view, Context context) {
         mUserActions = (LinearLayout)view.findViewById(R.id.userActions);
         mUserActions.findViewById(R.id.btnCapturePlace).setOnClickListener(this);
         mUserActions.findViewById(R.id.btnCapturePlayer).setOnClickListener(this);
@@ -38,13 +39,14 @@ public class UsersActions implements View.OnClickListener {
         mUserActions.findViewById(R.id.btnInvisibility).setOnClickListener(this);
         mActionsType = ActionsType.ActionsTypeUnknown;
         mDataID = "";
+        mContext = context;
     }
 
-    public void showActionPanel(ActionsType type, Context context) {
+    public void showActionPanel(ActionsType type) {
 
         if (mActionsType != ActionsType.ActionsTypeUnknown) {
             if (mActionsType != type) {
-                hideActionPanel(context);
+                hideActionPanel(mContext);
             }
         }
 
@@ -59,7 +61,7 @@ public class UsersActions implements View.OnClickListener {
                     (mUserActions.findViewById(R.id.btnAttack)).setVisibility(View.VISIBLE);
                     (mUserActions.findViewById(R.id.btnCapturePlace)).setVisibility(View.GONE);
                     mUserActions.setVisibility(View.VISIBLE);
-                    Animation anim = AnimationUtils.loadAnimation(context, R.anim.user_actions_slide_in);
+                    Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.user_actions_slide_in);
                     mUserActions.startAnimation(anim);
                 }
                 break;
@@ -72,7 +74,7 @@ public class UsersActions implements View.OnClickListener {
                     (mUserActions.findViewById(R.id.btnCapturePlace)).setVisibility(View.VISIBLE);
                     (mUserActions.findViewById(R.id.btnCapturePlayer)).setVisibility(View.GONE);
                     mUserActions.setVisibility(View.VISIBLE);
-                    Animation anim = AnimationUtils.loadAnimation(context, R.anim.user_actions_slide_in);
+                    Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.user_actions_slide_in);
                     mUserActions.startAnimation(anim);
                 }
                 break;
@@ -106,13 +108,12 @@ public class UsersActions implements View.OnClickListener {
         return (mUserActions.getVisibility() == View.VISIBLE);
     }
 
-    public void setCapturedItemID(String id) {
+    public void setSelectedItemId(String id) {
         mDataID = id;
     }
 
     @Override
     public void onClick(View view) {
-
         if (mDataID.isEmpty()) {
             Log.e(Constants.TAG, "Unknown destination object ID.");
             return;
@@ -142,7 +143,7 @@ public class UsersActions implements View.OnClickListener {
             case R.id.btnCapturePlayer:
             case R.id.btnDefend:
             case R.id.btnInvisibility:
-                Toast.makeText(mUserActions.getContext(), "This signal is under development. Stay tuned!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "This signal is under development. Stay tuned!", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
