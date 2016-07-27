@@ -124,18 +124,33 @@ public class UsersActions implements View.OnClickListener {
                 // adds Logged-in user into Place's owners list
                 JSONObject data = new JSONObject();
                 try {
-                    data.put("userId", App.getUserManager().getCurrentUser().getId());
+                    data.put("placeId", mDataID);
+                    data.put("by", App.getUserManager().getCurrentUser().getId());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                App.getWebSocketManager().sendPlaceUpdateToServer(mDataID, Constants.UsersActions.CAPTURE, data);
+                App.getWebSocketManager().sendUserActionToServer(data, Constants.UsersActions.CAPTURE);
                 mDataID = "";
                 break;
             }
 
             case R.id.btnAttack: {
-                App.getWebSocketManager().sendUserActionToServer(mDataID, Constants.UsersActions.ATTACK);
+                if (getType() == ActionsType.ActionsOnPlace) {
+                    Toast.makeText(mContext, "This signal cannot be performed on place yet as it is under development. Stay tuned!", Toast.LENGTH_SHORT).show();
+                    mDataID = "";
+                    return;
+                }
+
+                JSONObject data = new JSONObject();
+                try {
+                    data.put("userId", mDataID);
+                    data.put("by", App.getUserManager().getCurrentUser().getId());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                App.getWebSocketManager().sendUserActionToServer(data, Constants.UsersActions.ATTACK);
                 mDataID = "";
                 break;
             }

@@ -58,10 +58,11 @@ public class PlaceInfoAdapter extends InfoAdapter {
                 public void onClick(View v) {
                     try {
                         JSONObject data = new JSONObject();
-                        data.put("userId", App.getUserManager().getCurrentUser().getId());
+                        data.put("placeId", mPlaceId);
                         data.put("otherUserId", placeData.dataID);
+                        data.put("by", App.getUserManager().getCurrentUser().getId());
 
-                        App.getWebSocketManager().sendPlaceUpdateToServer(mPlaceId, Constants.UsersActions.REMOVE, data);
+                        App.getWebSocketManager().sendUserActionToServer(data, Constants.UsersActions.REMOVE);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

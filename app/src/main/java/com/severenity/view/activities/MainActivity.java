@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         initFragments();
         initSocketSubscriptions();
 
-
         toolbarBottom.findViewById(R.id.menu_map).performClick();
 
         IntentFilter intentFilter = new IntentFilter();
@@ -106,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         App.getLocalBroadcastManager().registerReceiver(gcmMessageReceiver, intentFilter);
 
         processNewIntent(getIntent());
-        App.getWebSocketManager().subscribeForUsersActionsEvent();
 
         mRecoveryManager = new EnergyRecoveryManager(getApplicationContext());
         mRecoveryManager.start();

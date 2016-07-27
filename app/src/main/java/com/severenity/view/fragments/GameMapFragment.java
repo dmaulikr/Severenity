@@ -75,7 +75,6 @@ public class GameMapFragment extends Fragment {
 
     @Override
     public void onResume() {
-        Log.v(Constants.TAG, this.toString() + " onResume()");
         super.onResume();
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -194,7 +193,6 @@ public class GameMapFragment extends Fragment {
 
     @Override
     public void onPause() {
-        Log.v(Constants.TAG, this.toString() + " onPause()");
         super.onPause();
 
         App.getLocalBroadcastManager().unregisterReceiver(showUserActions);
@@ -204,7 +202,6 @@ public class GameMapFragment extends Fragment {
     private BroadcastReceiver showUserActions = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             Bundle intentData = intent.getExtras();
 
             switch (intentData.getInt(Constants.OBJECT_TYPE_IDENTIFIER)) {
@@ -213,7 +210,6 @@ public class GameMapFragment extends Fragment {
                     // TODO: AF: for now do not show action if user owns this place
                     GamePlace place = App.getPlacesManager().findPlaceByID(placeId);
                     if (place.hasOwner(App.getUserManager().getCurrentUser().getId())) {
-
                         if (mUserActions.isActionsDisplaying()) {
                             App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
                         }
@@ -233,8 +229,7 @@ public class GameMapFragment extends Fragment {
                 }
 
                 default:
-                    Log.d(Constants.TAG, "Unknown object type: " + intentData.getInt(Constants.OBJECT_TYPE_IDENTIFIER));
-
+                    Log.e(Constants.TAG, "Unknown object type: " + intentData.getInt(Constants.OBJECT_TYPE_IDENTIFIER));
             }
         }
     };
@@ -242,7 +237,6 @@ public class GameMapFragment extends Fragment {
     private BroadcastReceiver hideUserActions = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             mUserActions.hideActionPanel(context);
         }
     };
