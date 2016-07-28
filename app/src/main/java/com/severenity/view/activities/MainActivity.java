@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -24,6 +25,7 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
     private ProfilePictureView userProfilePicture;
     private TextView tvEnergyValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
+    private ImageView ivTutorialBtn;
 
     private FragmentManager fragmentManager;
 
@@ -110,6 +113,18 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         mRecoveryManager.start();
 
         checkGPSConnection();
+
+        showTutorial(false);
+    }
+
+    private void showTutorial(boolean isOnButtonClicked) {
+        SharedPreferences sPref = getPreferences(MODE_PRIVATE);
+        if (sPref.getBoolean("isTutorialOn", true) || isOnButtonClicked) {
+            SharedPreferences.Editor ed = sPref.edit();
+            ed.putBoolean("isTutorialOn", false);
+            ed.apply();
+            Toast.makeText(getApplicationContext(),"Future Tutorial", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void checkGPSConnection() {
@@ -259,7 +274,13 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         tvEnergyValue = (TextView) toolbarTop.findViewById(R.id.tvEnergyValue);
         tvExperienceValue = (TextView) toolbarTop.findViewById(R.id.tvExperienceValue);
         tvLevelValue = (TextView) toolbarTop.findViewById(R.id.tvLevelValue);
-
+        ivTutorialBtn = (ImageView) toolbarTop.findViewById(R.id.ivTutorialBtn);
+        ivTutorialBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTutorial(true);
+            }
+        });
         setSupportActionBar(toolbarTop);
 
         toolbarBottom = (SplitToolbar) findViewById(R.id.toolbarBottom);
