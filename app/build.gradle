@@ -2,21 +2,18 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        release {
-            storeFile file("severenity.jks")
-            storePassword "jd9ab359"
-            keyAlias "severenity"
-            keyPassword "jd9ab359"
+        config {
+            keyAlias 'severenity'
+            keyPassword 'jd9ab359'
+            storeFile file('/Users/Novosad/AndroidStudioProjects/Sample/severenity.jks')
+            storePassword 'jd9ab359'
         }
     }
-
     compileSdkVersion 24
     buildToolsVersion '24.0.0'
-
     dataBinding {
         enabled = true
     }
-
     defaultConfig {
         applicationId "com.severenity"
         minSdkVersion 19
@@ -24,16 +21,17 @@ android {
         versionCode 4
         versionName "0.7.1"
         multiDexEnabled true
+        signingConfig signingConfigs.config
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.config
+        }
+        debug {
         }
     }
-
     lintOptions {
         // set to true to turn off analysis progress reporting by lint
         quiet true
@@ -42,15 +40,15 @@ android {
         // if true, only report errors
         ignoreWarnings true
     }
-
     dexOptions {
         incremental true
         javaMaxHeapSize "4g"
     }
-
     repositories {
         mavenCentral()
         maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
+    }
+    productFlavors {
     }
 }
 
@@ -78,9 +76,22 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'joda-time:joda-time:2.9.3'
     compile 'com.google.android.gms:play-services-gcm:9.2.0'
-    compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:4.1.1@aar'){
-        transitive=true
+    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:4.1.1@aar') {
+        transitive = true
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 apply plugin: 'com.google.gms.google-services'
