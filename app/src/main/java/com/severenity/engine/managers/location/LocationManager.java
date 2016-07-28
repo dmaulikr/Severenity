@@ -612,7 +612,6 @@ public class LocationManager implements LocationListener {
                 startLocationUpdates();
                 currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
                 if (currentLocation != null) {
-
                     mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
                     App.getPlacesManager().clearPlacesAndOwnersData();
                     App.getPlacesManager().getPlacesFromServer(Utils.latLngFromLocation(currentLocation), 1000, placesRequestCallback);
@@ -668,7 +667,6 @@ public class LocationManager implements LocationListener {
 
                             displayPlaceMarkerFromDB(true);
                             App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_REQUEST_PLACES));
-
                             break;
                         }
 

@@ -244,7 +244,6 @@ public class GameMapFragment extends Fragment {
     private BroadcastReceiver requestPlacesFromGoogle = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
         com.google.android.gms.common.api.PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
                 .getCurrentPlace(App.getGoogleApiHelper().getGoogleApiClient(), null);
         result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
