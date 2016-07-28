@@ -172,7 +172,7 @@ public class QuestManager extends DataManager {
         quest.setProgress(cursor.getInt(cursor.getColumnIndex(COLUMN_PROGRESS)));
 
         String expirationTime = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRATION_TIME));
-        if (!expirationTime.equals("null")) {
+        if (expirationTime != null && !expirationTime.equals("null")) {
             quest.setExpirationTime(expirationTime);
         }
 

@@ -33,6 +33,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.managers.data.EnergyRecoveryManager;
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MapsInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
 
         initToolbars();
