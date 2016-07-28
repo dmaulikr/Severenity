@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     signingConfigs {
@@ -80,18 +81,3 @@ dependencies {
         transitive = true
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-apply plugin: 'com.google.gms.google-services'
