@@ -373,7 +373,7 @@ public class QuestManager extends DataManager {
             quest.setExperience(questObj.getLong("experience"));
             quest.setStatus(Quest.QuestStatus.values()[questObj.getInt("status")]);
 
-            if (quest.getStatus() == Quest.QuestStatus.Finished) {
+            if (quest.getStatus() == Quest.QuestStatus.Finished || quest.getStatus() == Quest.QuestStatus.Closed) {
                 quest.setExpirationTime("null");
             } else {
                 quest.setExpirationTime(questObj.getString("expirationDate"));
@@ -450,7 +450,8 @@ public class QuestManager extends DataManager {
             ContentValues values = new ContentValues();
             values.put(COLUMN_PROGRESS, value);
             values.put(COLUMN_STATUS, status);
-            if (status == Quest.QuestStatus.Finished.ordinal()) {
+            if (status == Quest.QuestStatus.Finished.ordinal() ||
+                    status == Quest.QuestStatus.Closed.ordinal()) {
                 values.put(COLUMN_EXPIRATION_TIME, "null");
             }
             db.update(TABLE_QUESTS, values, "id = " + questId, null);

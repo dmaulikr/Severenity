@@ -14,7 +14,8 @@ public class Quest extends BaseObservable {
         Created,
         Accepted,
         InProgress,
-        Finished
+        Finished,
+        Closed // identifies if user received bonuses
     }
 
     public enum QuestType {
@@ -141,7 +142,7 @@ public class Quest extends BaseObservable {
     public void setStatus(QuestStatus status) {
         this.status = status;
         notifyPropertyChanged(BR.status);
-        setIsFinished(status == QuestStatus.Finished);
+        setIsFinished(status == QuestStatus.Finished || status == QuestStatus.Closed);
     }
 
     public QuestType getType() {
