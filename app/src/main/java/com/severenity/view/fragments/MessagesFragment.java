@@ -30,8 +30,8 @@ public class MessagesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_messages, container, false);
 
         tabLayout = (TabLayout) view.findViewById(R.id.tlTabs);
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.title_chat));
-        tabLayout.addTab(tabLayout.newTab().setText("temp"));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.title_world));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.title_team));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) view.findViewById(R.id.vpPager);

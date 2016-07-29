@@ -50,6 +50,8 @@
     <string name="title_activity_settings">Settings</string>
 
     <string name="title_chat">Chat</string>
+    <string name="title_team">Team</string>
+    <string name="title_world">World</string>
     <!--<string name="owners_string">&d &s own this place:</string>-->
 
     <!-- Buttons -->
