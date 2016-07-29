@@ -21,8 +21,7 @@ import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.severenity.App;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.severenity.R;
 import com.severenity.entity.User;
 import com.severenity.utils.common.Constants;
@@ -274,54 +273,54 @@ public class Utils {
     public static LatLng getPositionInMeter(LatLng currentPos, double meters, int direction) {
 
         double verticalShift   = 360 * ( meters / 1000) / Constants.EARTH_CIRCUMFERENCE;
-        double horizontalShift = verticalShift / Math.cos(currentPos.latitude * Math.PI/180);
+        double horizontalShift = verticalShift / Math.cos(currentPos.getLatitude() * Math.PI/180);
 
         switch (direction) {
 
             case Constants.SOUTH_DIRECTION: {
-                double shift = currentPos.latitude - verticalShift;
-                return new LatLng(shift, currentPos.longitude);
+                double shift = currentPos.getLatitude() - verticalShift;
+                return new LatLng(shift, currentPos.getLongitude());
             }
 
             case Constants.NORTH_DIRECTION: {
-                double shift = currentPos.latitude + verticalShift;
-                return new LatLng(shift, currentPos.longitude);
+                double shift = currentPos.getLatitude() + verticalShift;
+                return new LatLng(shift, currentPos.getLongitude());
             }
 
             case Constants.WEST_DIRECTION: {
-                double shift = currentPos.longitude - horizontalShift;
-                return new LatLng(currentPos.latitude, shift);
+                double shift = currentPos.getLongitude() - horizontalShift;
+                return new LatLng(currentPos.getLatitude(), shift);
             }
 
             case Constants.EAST_DIRECTION: {
-                double shift = currentPos.longitude + horizontalShift;
-                return new LatLng(currentPos.latitude, shift);
+                double shift = currentPos.getLongitude() + horizontalShift;
+                return new LatLng(currentPos.getLatitude(), shift);
             }
 
             case Constants.WS_DIRECTION: {
-                double shiftV = currentPos.latitude - verticalShift;
-                double shiftH = currentPos.longitude - horizontalShift;
+                double shiftV = currentPos.getLatitude() - verticalShift;
+                double shiftH = currentPos.getLongitude() - horizontalShift;
 
                 return new LatLng(shiftV, shiftH);
             }
 
             case Constants.WN_DIRECTION: {
-                double shiftV = currentPos.latitude + verticalShift;
-                double shiftH = currentPos.longitude - horizontalShift;
+                double shiftV = currentPos.getLatitude() + verticalShift;
+                double shiftH = currentPos.getLongitude() - horizontalShift;
 
                 return new LatLng(shiftV, shiftH);
             }
 
             case Constants.EN_DIRECTION: {
-                double shiftV = currentPos.latitude  + verticalShift;
-                double shiftH = currentPos.longitude + horizontalShift;
+                double shiftV = currentPos.getLatitude()  + verticalShift;
+                double shiftH = currentPos.getLongitude() + horizontalShift;
 
                 return new LatLng(shiftV, shiftH);
             }
 
             case Constants.ES_DIRECTION: {
-                double shiftV = currentPos.latitude  - verticalShift;
-                double shiftH = currentPos.longitude + horizontalShift;
+                double shiftV = currentPos.getLatitude()  - verticalShift;
+                double shiftH = currentPos.getLongitude() + horizontalShift;
 
                 return new LatLng(shiftV, shiftH);
             }
@@ -341,12 +340,12 @@ public class Utils {
     public static float distanceBetweenLocations(LatLng startPos, LatLng endPos) {
 
         Location locationStart = new Location("Start location");
-        locationStart.setLatitude(startPos.latitude);
-        locationStart.setLongitude(startPos.longitude);
+        locationStart.setLatitude(startPos.getLatitude());
+        locationStart.setLongitude(startPos.getLongitude());
 
         Location locationDest = new Location("Dest location");
-        locationDest.setLatitude(endPos.latitude);
-        locationDest.setLongitude(endPos.longitude);
+        locationDest.setLatitude(endPos.getLatitude());
+        locationDest.setLongitude(endPos.getLongitude());
 
         return locationStart.distanceTo(locationDest);
     }

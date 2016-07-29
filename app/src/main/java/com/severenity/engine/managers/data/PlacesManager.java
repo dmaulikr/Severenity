@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.google.android.gms.maps.model.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.severenity.App;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.GamePlace;
@@ -179,8 +179,8 @@ public class PlacesManager extends DataManager {
             ContentValues values = new ContentValues();
             values.put(COLUMN_PLACE_ID,   place.getPlaceID());
             values.put(COLUMN_PLACE_NAME, place.getPlaceName());
-            values.put(COLUMN_PLACE_LAT,  place.getPlacePos().latitude);
-            values.put(COLUMN_PLACE_LNG,  place.getPlacePos().longitude);
+            values.put(COLUMN_PLACE_LAT,  place.getPlacePos().getLatitude());
+            values.put(COLUMN_PLACE_LNG,  place.getPlacePos().getLongitude());
             values.put(COLUMN_PLACE_TYPE, place.getPlaceType().ordinal());
 
             db.insert(TABLE_PLACES, "NULL", values);
@@ -263,8 +263,8 @@ public class PlacesManager extends DataManager {
         String condition = "((" + COLUMN_PLACE_LAT + " > ? AND " + COLUMN_PLACE_LAT + " < ? ) AND ( " +
                 COLUMN_PLACE_LNG + " > ? AND " + COLUMN_PLACE_LNG + " < ? ))";
 
-        String[] compare = new String[]{Double.toString(westSouth.latitude), Double.toString(northEast.latitude),
-                Double.toString(westSouth.longitude), Double.toString(northEast.longitude)};
+        String[] compare = new String[]{Double.toString(westSouth.getLatitude()), Double.toString(northEast.getLatitude()),
+                Double.toString(westSouth.getLongitude()), Double.toString(northEast.getLongitude())};
 
         try (SQLiteDatabase db = dbHelper.getReadableDatabase();
              Cursor cursor = db.query(TABLE_PLACES, null, condition, compare, null, null, null)) {
@@ -361,7 +361,7 @@ public class PlacesManager extends DataManager {
      * @param callback - callback to execute after places were retrieved.
      */
     public void getPlacesFromServer(LatLng currentPosition, int radius, RequestCallback callback) {
-        String request = Constants.REST_API_PLACES + "/?lng=" + Double.toString(currentPosition.longitude) + "&lat=" + Double.toString(currentPosition.latitude) + "&radius=" + Integer.toString(radius);
+        String request = Constants.REST_API_PLACES + "/?lng=" + Double.toString(currentPosition.getLongitude()) + "&lat=" + Double.toString(currentPosition.getLatitude()) + "&radius=" + Integer.toString(radius);
         App.getRestManager().createRequest(request, Request.Method.GET, null, callback);
     }
 
@@ -375,8 +375,8 @@ public class PlacesManager extends DataManager {
         try {
             data.put("placeId", place.getPlaceID());
             data.put("name", place.getPlaceName());
-            data.put("lng", String.valueOf(place.getPlacePos().longitude));
-            data.put("lat", String.valueOf(place.getPlacePos().latitude));
+            data.put("lng", String.valueOf(place.getPlacePos().getLongitude()));
+            data.put("lat", String.valueOf(place.getPlacePos().getLatitude()));
             data.put("type", place.getPlaceType().ordinal());
 
             App.getRestManager().createRequest(Constants.REST_API_PLACES, Request.Method.POST, data, callback);

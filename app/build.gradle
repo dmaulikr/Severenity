@@ -44,12 +44,13 @@ android {
         incremental true
         javaMaxHeapSize "4g"
     }
-    repositories {
-        mavenCentral()
-        maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
-    }
     productFlavors {
     }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 dependencies {

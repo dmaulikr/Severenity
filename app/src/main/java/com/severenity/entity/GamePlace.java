@@ -1,6 +1,6 @@
 package com.severenity.entity;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.severenity.utils.common.Constants;
 
 import org.json.JSONException;

@@ -3,8 +3,6 @@
 buildscript {
     repositories {
         jcenter()
-        mavenCentral()
-        maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
@@ -18,8 +16,6 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        mavenCentral()
-        maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
     }
 }
 

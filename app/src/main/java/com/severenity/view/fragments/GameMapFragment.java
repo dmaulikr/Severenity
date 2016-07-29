@@ -7,8 +7,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -29,9 +29,9 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.adapters.ChipAdapter;
@@ -45,7 +45,7 @@ import com.severenity.view.activities.MainActivity;
  * Handles user with map activity (actual game)
  */
 public class GameMapFragment extends Fragment {
-    private SupportMapFragment mapFragment;
+//    private SupportMapFragment mapFragment;
     private MainActivity activity;
     private TextView tvAttributions;
 
@@ -58,6 +58,8 @@ public class GameMapFragment extends Fragment {
 
     private ChipAdapter chipAdapter;
 
+    private MapView mapView;
+
     public GameMapFragment() {
         // Required empty public constructor
     }
@@ -65,22 +67,23 @@ public class GameMapFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        FragmentManager fragmentManager = getChildFragmentManager();
-        mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
-        if (mapFragment == null) {
-            mapFragment = SupportMapFragment.newInstance();
-        }
-        fragmentManager.beginTransaction().replace(R.id.map, mapFragment).commit();
+//        FragmentManager fragmentManager = getChildFragmentManager();
+//        mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
+//        if (mapFragment == null) {
+//            mapFragment = SupportMapFragment.newInstance();
+//        }
+//        fragmentManager.beginTransaction().replace(R.id.map, mapFragment).commit();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mapView.onResume();
 
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
+        mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
-            public void onMapReady(GoogleMap googleMap) {
-                App.getLocationManager().updateMap(googleMap);
+            public void onMapReady(MapboxMap map) {
+                App.getLocationManager().updateMap(map);
             }
         });
 
@@ -104,6 +107,8 @@ public class GameMapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         tvAttributions = (TextView) view.findViewById(R.id.tvAttributions);
+        mapView = (MapView) view.findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
 
         initDrawer(view);
 
@@ -194,9 +199,28 @@ public class GameMapFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        mapView.onPause();
 
         App.getLocalBroadcastManager().unregisterReceiver(showUserActions);
         App.getLocalBroadcastManager().unregisterReceiver(hideUserActions);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
     }
 
     private BroadcastReceiver showUserActions = new BroadcastReceiver() {

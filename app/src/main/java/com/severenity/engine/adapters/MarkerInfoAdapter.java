@@ -5,19 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.Marker;
+import com.mapbox.mapboxsdk.annotations.Marker;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.severenity.App;
 import com.severenity.R;
 
 /**
  * Created by Andriy on 5/12/2016.
  */
-public class MarkerInfoAdapter implements GoogleMap.InfoWindowAdapter {
-
+public class MarkerInfoAdapter implements MapboxMap.InfoWindowAdapter {
     @Override
-    public View getInfoContents(Marker marker) {
-
+    public View getInfoWindow(Marker marker) {
         LayoutInflater inflater = (LayoutInflater) App.getInstance().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View customView = inflater.inflate(R.layout.marker_info, null);
 
@@ -38,11 +36,6 @@ public class MarkerInfoAdapter implements GoogleMap.InfoWindowAdapter {
 
             return customView;
         }
-        return null;
-    }
-
-    @Override
-    public View getInfoWindow(Marker marker) {
         return null;
     }
 }

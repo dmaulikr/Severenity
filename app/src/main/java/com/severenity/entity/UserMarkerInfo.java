@@ -1,6 +1,6 @@
 package com.severenity.entity;
 
-import com.google.android.gms.maps.model.Marker;
+import com.mapbox.mapboxsdk.annotations.Marker;
 
 /**
  * Created by Andriy on 6/10/2016.

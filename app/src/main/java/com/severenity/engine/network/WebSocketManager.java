@@ -9,7 +9,7 @@ import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphResponse;
-import com.google.android.gms.maps.model.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.severenity.App;
 import com.severenity.entity.Message;
 import com.severenity.entity.User;

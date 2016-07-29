@@ -16,7 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.GraphResponse;
-import com.google.android.gms.maps.model.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.adapters.InfoAdapter;

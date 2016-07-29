@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,15 +23,14 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.annotations.Marker;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.SupportMapFragment;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.adapters.MarkerInfoAdapter;
@@ -62,13 +62,13 @@ public class LocationManager implements LocationListener {
 
     private Marker currentUserMarker, mTempUsersPlaceMarker;
 
-    private GoogleMap googleMap;
+    private MapboxMap mapboxMap;
     private LocationRequest locationRequest;
 
     public boolean requestingLocationUpdates = false;
     private boolean isCameraFixed = false;
     private boolean mIsUpdatingLocationProcessStopped = false;
-    private Circle mViewCircle, mActionCircle;
+//    private Circle mViewCircle, mActionCircle;
     private LatLng mWestSouthPoint, mNorthEastPoint;
     private Map<String, Marker> mPlaceMarkersList;
     private Map<String, UserMarkerInfo> mOtherUsersList = new HashMap<>();
@@ -98,36 +98,19 @@ public class LocationManager implements LocationListener {
      *
      * @param map
      */
-    public void updateMap(GoogleMap map) {
+    public void updateMap(MapboxMap map) {
         if (map == null) {
             return;
         }
 
-        googleMap = map;
-        googleMap.setMyLocationEnabled(true);
-        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-        googleMap.getUiSettings().setScrollGesturesEnabled(false);
-        googleMap.getUiSettings().setTiltGesturesEnabled(false);
-        googleMap.getUiSettings().setCompassEnabled(true);
-        googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-            @Override
-            public void onCameraChange(CameraPosition cameraPosition) {
-                if ((cameraPosition.zoom < Constants.MAX_ZOOM_LEVEL || cameraPosition.zoom > Constants.MIN_ZOOM_LEVEL) && currentLocation != null) {
-                    googleMap.getUiSettings().setZoomGesturesEnabled(false);
-                    if (cameraPosition.zoom < Constants.MAX_ZOOM_LEVEL) {
-                        currentZoom = Constants.MAX_ZOOM_LEVEL;
-                    } else {
-                        currentZoom = Constants.MIN_ZOOM_LEVEL;
-                    }
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(currentLocation), currentZoom));
-                } else {
-                    currentZoom = cameraPosition.zoom;
-                    googleMap.getUiSettings().setZoomGesturesEnabled(true);
-                }
-            }
-        });
-
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+        mapboxMap = map;
+        mapboxMap.getUiSettings().setLogoEnabled(false);
+        mapboxMap.getUiSettings().setScrollGesturesEnabled(false);
+        mapboxMap.getUiSettings().setTiltGesturesEnabled(false);
+        mapboxMap.getUiSettings().setAttributionEnabled(false);
+        mapboxMap.setMaxZoom(Constants.MAX_ZOOM_LEVEL);
+        mapboxMap.setMinZoom(Constants.MIN_ZOOM_LEVEL);
+        mapboxMap.setOnMapClickListener(new MapboxMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
                 if (latLng != null) {
@@ -142,22 +125,22 @@ public class LocationManager implements LocationListener {
             }
         });
 
-        googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                resetCameraLocation();
-                App.getSpellManager().cancelChipMode();
-                return true;
-            }
-        });
+//        mapboxMap.setOnMyLocationButtonClickListener(new OnMyLocationButtonClickListener() {
+//            @Override
+//            public boolean onMyLocationButtonClick() {
+//                resetCameraLocation();
+//                App.getSpellManager().cancelChipMode();
+//                return true;
+//            }
+//        });
 
         // set adapter for custom view
         if (mMarkerInfoAdapter != null) {
-            googleMap.setInfoWindowAdapter(mMarkerInfoAdapter);
+            mapboxMap.setInfoWindowAdapter(mMarkerInfoAdapter);
         }
 
         // Set this to stick with current marker for some time
-        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+        mapboxMap.setOnMarkerClickListener(new MapboxMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 fixCameraAtLocation(marker.getPosition());
@@ -228,15 +211,15 @@ public class LocationManager implements LocationListener {
         });
 
         // set listener for tracking clicking on the info
-        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+        mapboxMap.setOnInfoWindowClickListener(new MapboxMap.OnInfoWindowClickListener() {
             @Override
-            public void onInfoWindowClick(Marker marker) {
-
+            public boolean onInfoWindowClick(@NonNull Marker marker) {
                 Intent intent = new Intent(Constants.INTENT_FILTER_SHOW_PLACE_INFO_DIALOG);
                 intent.putExtra(Constants.OBJECT_INFO_AS_JSON, marker.getSnippet());
 
                 App.getLocalBroadcastManager().sendBroadcast(intent);
                 App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
+                return true;
             }
         });
 
@@ -264,8 +247,8 @@ public class LocationManager implements LocationListener {
      */
     public void fixCameraAtLocation(LatLng latLng) {
         isCameraFixed = true;
-        if (googleMap != null) {
-            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        if (mapboxMap != null) {
+            mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         }
     }
 
@@ -301,14 +284,14 @@ public class LocationManager implements LocationListener {
         if (!mOtherUsersList.containsKey(user.getId())) {
 
             Location userLocation = new Location("user");
-            userLocation.setLatitude(latLng.latitude);
-            userLocation.setLongitude(latLng.longitude);
+            userLocation.setLatitude(latLng.getLatitude());
+            userLocation.setLongitude(latLng.getLongitude());
 
             if (currentLocation != null && currentLocation.distanceTo(userLocation) <= App.getUserManager().getCurrentUser().getViewRadius()) {
 
-                UserMarkerInfo markerInfo = new UserMarkerInfo(googleMap.addMarker(new MarkerOptions()
+                UserMarkerInfo markerInfo = new UserMarkerInfo(mapboxMap.addMarker(new MarkerOptions()
                         .position(latLng)
-                        .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
+                        .icon(IconFactory.getInstance(context).fromBitmap(getMarkerBitmapFromView(user.getId())))
                         .title(user.getName())
                         .snippet(user.getJSONUserInfo())), user);
 
@@ -318,10 +301,10 @@ public class LocationManager implements LocationListener {
             // Check if user is within current user's ViewCircle
             UserMarkerInfo markerInfo = mOtherUsersList.get(user.getId());
             markerInfo.getMarker().remove();
-            markerInfo.setMarker(googleMap.addMarker(
+            markerInfo.setMarker(mapboxMap.addMarker(
                     new MarkerOptions()
                     .position(latLng)
-                    .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(user.getId())))
+                    .icon(IconFactory.getInstance(context).fromBitmap(getMarkerBitmapFromView(user.getId())))
                     .snippet(markerInfo.getUser().getJSONUserInfo())
                     .title(markerInfo.getUser().getName())
             ));
@@ -418,7 +401,7 @@ public class LocationManager implements LocationListener {
             GamePlace placeInner = new GamePlace(
                     place.getId(),
                     place.getName().toString(),
-                    place.getLatLng(),
+                    new LatLng(place.getLatLng().latitude, place.getLatLng().longitude),
                     placeType);
 
             App.getPlacesManager().addPlace(placeInner, true /*send to the server*/);
@@ -486,15 +469,15 @@ public class LocationManager implements LocationListener {
         String userJSONIdentifier = currentUser.getJSONUserInfo();
 
         // TODO: Replace title with user ID or name
-        currentUserMarker = googleMap.addMarker(new MarkerOptions()
+        currentUserMarker = mapboxMap.addMarker(new MarkerOptions()
                 .position(Utils.latLngFromLocation(location))
-                .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(profileId)))
+                .icon(IconFactory.getInstance(context).fromBitmap(getMarkerBitmapFromView(profileId)))
                 .title(title)
                 .snippet(userJSONIdentifier));
 
 
         if (!isCameraFixed) {
-            googleMap.animateCamera(
+            mapboxMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), currentZoom)
             );
         }
@@ -508,7 +491,7 @@ public class LocationManager implements LocationListener {
      */
     @Override
     public void onLocationChanged(Location location) {
-        if (googleMap == null || location == null) {
+        if (mapboxMap == null || location == null) {
             return;
         }
 
@@ -520,9 +503,9 @@ public class LocationManager implements LocationListener {
         if (mLocationOfLastSquareUpdate != null &&
                 location.distanceTo(mLocationOfLastSquareUpdate) >= Constants.DISTANCE_TO_UPDATE_POSITIONS_CONSTS) {
 
-            googleMap.clear();
-            mViewCircle = null;
-            mActionCircle = null;
+            mapboxMap.clear();
+//            mViewCircle = null;
+//            mActionCircle = null;
 
             mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
             displayPlaceMarkerFromDB(true);
@@ -531,7 +514,7 @@ public class LocationManager implements LocationListener {
         currentLocation = location;
 
         updateMarker(location);
-        displayUserActionAndViewCircles();
+//        displayUserActionAndViewCircles();
 
         App.getWebSocketManager().sendLocationToServer(location);
     }
@@ -751,40 +734,40 @@ public class LocationManager implements LocationListener {
 
     }
 
-    private void displayUserActionAndViewCircles() {
-
-        User currentUser = App.getUserManager().getCurrentUser();
-        if (currentUser == null) {
-            return;
-        }
-
-        if (mViewCircle == null) {
-
-            CircleOptions viewCircle = new CircleOptions()
-                    .fillColor(Constants.VIEW_CIRCLE_SHADE_COLOR)
-                    .strokeColor(Constants.VIEW_CIRCLE_STOKE_COLOR)
-                    .radius(currentUser.getViewRadius())
-                    .center(Utils.latLngFromLocation(currentLocation))
-                    .strokeWidth(Constants.VIEW_CIRCLE_BORDER_SIZE);
-
-            mViewCircle = googleMap.addCircle(viewCircle);
-        } else {
-            mViewCircle.setCenter(Utils.latLngFromLocation(currentLocation));
-        }
-
-        if (mActionCircle == null) {
-            CircleOptions actionCircle = new CircleOptions()
-                    .fillColor(Constants.ACTION_CIRCLE_SHADE_COLOR)
-                    .strokeColor(Constants.ACTION_CIRCLE_STOKE_COLOR)
-                    .radius(currentUser.getActionRadius())
-                    .center(Utils.latLngFromLocation(currentLocation))
-                    .strokeWidth(Constants.ACTION_CIRCLE_BORDER_SIZE);
-
-            mActionCircle = googleMap.addCircle(actionCircle);
-        } else {
-            mActionCircle.setCenter(Utils.latLngFromLocation(currentLocation));
-        }
-    }
+//    private void displayUserActionAndViewCircles() {
+//
+//        User currentUser = App.getUserManager().getCurrentUser();
+//        if (currentUser == null) {
+//            return;
+//        }
+//
+//        if (mViewCircle == null) {
+//
+//            CircleOptions viewCircle = new CircleOptions()
+//                    .fillColor(Constants.VIEW_CIRCLE_SHADE_COLOR)
+//                    .strokeColor(Constants.VIEW_CIRCLE_STOKE_COLOR)
+//                    .radius(currentUser.getViewRadius())
+//                    .center(Utils.latLngFromLocation(currentLocation))
+//                    .strokeWidth(Constants.VIEW_CIRCLE_BORDER_SIZE);
+//
+//            mViewCircle = mapboxMap.addCircle(viewCircle);
+//        } else {
+//            mViewCircle.setCenter(Utils.latLngFromLocation(currentLocation));
+//        }
+//
+//        if (mActionCircle == null) {
+//            CircleOptions actionCircle = new CircleOptions()
+//                    .fillColor(Constants.ACTION_CIRCLE_SHADE_COLOR)
+//                    .strokeColor(Constants.ACTION_CIRCLE_STOKE_COLOR)
+//                    .radius(currentUser.getActionRadius())
+//                    .center(Utils.latLngFromLocation(currentLocation))
+//                    .strokeWidth(Constants.ACTION_CIRCLE_BORDER_SIZE);
+//
+//            mActionCircle = mapboxMap.addCircle(actionCircle);
+//        } else {
+//            mActionCircle.setCenter(Utils.latLngFromLocation(currentLocation));
+//        }
+//    }
 
     /**
      * Gets the left bottom and right top position of abstract square for request less amount
@@ -814,13 +797,13 @@ public class LocationManager implements LocationListener {
             mTempUsersPlaceMarker.remove();
         }
 
-        mTempUsersPlaceMarker = googleMap.addMarker(new MarkerOptions()
+        mTempUsersPlaceMarker = mapboxMap.addMarker(new MarkerOptions()
                 .position(place.getPlacePos())
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                .icon(IconFactory.getInstance(context).defaultMarker())
                 .title(String.format("%s", place.getPlaceName()))
                 .snippet(place.getJSONPlaceInfo()));
 
-        mTempUsersPlaceMarker.showInfoWindow();
+//        mTempUsersPlaceMarker.showInfoWindow(mapboxMap, mapView);
 
         fixCameraAtLocation(mTempUsersPlaceMarker.getPosition());
 
@@ -834,12 +817,16 @@ public class LocationManager implements LocationListener {
      * @param place - place for which marker to be created
      */
     private void rememberAndDisplayMarker(GamePlace place) {
+        if (mapboxMap == null) {
+            return;
+        }
+
         int resourceId = getPlaceResourceImage(place);
 
         mPlaceMarkersList.put(place.getPlaceID(),
-                googleMap.addMarker(new MarkerOptions()
+                mapboxMap.addMarker(new MarkerOptions()
                         .position(place.getPlacePos())
-                        .icon(BitmapDescriptorFactory.fromBitmap(Utils.getScaledMarker(resourceId, context)))
+                        .icon(IconFactory.getInstance(context).fromBitmap(Utils.getScaledMarker(resourceId, context)))
                         .title(String.format("%s", place.getPlaceName()))
                         .snippet(place.getJSONPlaceInfo())));
     }
@@ -912,8 +899,7 @@ public class LocationManager implements LocationListener {
             Marker marker = mPlaceMarkersList.get(placeID);
             GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
             int resourceId = getPlaceResourceImage(place);
-            marker.setIcon(BitmapDescriptorFactory.fromBitmap(Utils.getScaledMarker(resourceId, context)));
-
+            marker.setIcon(IconFactory.getInstance(context).fromBitmap(Utils.getScaledMarker(resourceId, context)));
         }
     }
 }

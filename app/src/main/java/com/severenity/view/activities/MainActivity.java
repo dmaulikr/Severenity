@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,7 +32,10 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
-import com.google.android.gms.maps.MapsInitializer;
+import com.mapbox.mapboxsdk.MapboxAccountManager;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.managers.data.EnergyRecoveryManager;
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MapsInitializer.initialize(getApplicationContext());
+        MapboxAccountManager.start(getApplicationContext(), getString(R.string.mapbox_public_access_token));
         setContentView(R.layout.activity_main);
 
         initToolbars();
