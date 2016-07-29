@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -55,7 +56,7 @@ import java.util.Map;
  * Created by Novosad on 3/29/16.
  */
 public class LocationManager implements LocationListener {
-    private Location previousLocation, currentLocation, mLocationOfLastSquareUpdate;
+    private Location previousLocation, currentLocation, mLocationOfLastSquareUpdate, mLocationOfLastPlacesUpdateFromGoogle;
     private Context context;
     private GoogleApiClient googleApiClient;
     private float currentZoom = (Constants.MAX_ZOOM_LEVEL + Constants.MIN_ZOOM_LEVEL) / 2 + 1.0f;
@@ -70,7 +71,7 @@ public class LocationManager implements LocationListener {
     private boolean mIsUpdatingLocationProcessStopped = false;
     private Circle mViewCircle, mActionCircle;
     private LatLng mWestSouthPoint, mNorthEastPoint;
-    private Map<String, Marker> mPlaceMarkersList;
+    private Map<String, Marker> mPlaceMarkersList = new HashMap<>();;
     private Map<String, UserMarkerInfo> mOtherUsersList = new HashMap<>();
 
     private MarkerInfoAdapter mMarkerInfoAdapter = new MarkerInfoAdapter();
@@ -422,7 +423,8 @@ public class LocationManager implements LocationListener {
                     placeType);
 
             App.getPlacesManager().addPlace(placeInner, true /*send to the server*/);
-            rememberAndDisplayMarker(placeInner);
+            displayPlaceMarkerFromDB(true);
+            //rememberAndDisplayMarker(placeInner);
         }
     }
 
@@ -528,6 +530,15 @@ public class LocationManager implements LocationListener {
             displayPlaceMarkerFromDB(true);
         }
 
+        if (mLocationOfLastPlacesUpdateFromGoogle != null &&
+                location.distanceTo(mLocationOfLastPlacesUpdateFromGoogle) >= App.getUserManager().getCurrentUser().getViewRadius()) {
+
+            mLocationOfLastPlacesUpdateFromGoogle = currentLocation;
+
+            App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_REQUEST_PLACES));
+            displayPlaceMarkerFromDB(true);
+        }
+
         currentLocation = location;
 
         updateMarker(location);
@@ -613,6 +624,7 @@ public class LocationManager implements LocationListener {
                 currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
                 if (currentLocation != null) {
                     mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
+                    mLocationOfLastPlacesUpdateFromGoogle = mLocationOfLastSquareUpdate;
                     App.getPlacesManager().clearPlacesAndOwnersData();
                     App.getPlacesManager().getPlacesFromServer(Utils.latLngFromLocation(currentLocation), 1000, placesRequestCallback);
                 }
@@ -738,10 +750,6 @@ public class LocationManager implements LocationListener {
 
         if (place_inner == null)
             return;
-
-        if (mPlaceMarkersList == null) {
-            mPlaceMarkersList = new HashMap<>();
-        }
 
         mPlaceMarkersList.clear();
 
