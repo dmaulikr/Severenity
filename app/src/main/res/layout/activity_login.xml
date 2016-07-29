@@ -5,23 +5,29 @@
     android:gravity="center_horizontal"
     android:paddingTop="32dp"
     android:paddingBottom="32dp"
-    android:background="@drawable/starting_background"
+    android:background="@android:color/black"
     tools:context="com.severenity.view.activities.LoginActivity">
 
     <RelativeLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
 
         <ImageView
-            android:layout_marginTop="48dp"
-            android:background="@color/black"
+            android:layout_marginTop="24dp"
             android:id="@+id/ivAppTitle"
             android:src="@drawable/app_title"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/ivAppTitle"
+            android:src="@drawable/ic_launcher_big"
+            android:layout_centerHorizontal="true"
+            android:layout_width="256dp"
+            android:layout_height="256dp" />
     </RelativeLayout>
 
     <!-- Login progress -->
