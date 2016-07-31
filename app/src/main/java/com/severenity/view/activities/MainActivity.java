@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,7 +49,7 @@ import com.severenity.utils.common.Constants;
 import com.severenity.view.Dialogs.PlacesInfoDialog;
 import com.severenity.view.custom.SplitToolbar;
 import com.severenity.view.fragments.GameMapFragment;
-import com.severenity.view.fragments.MessagesFragment;
+import com.severenity.view.fragments.ClansFragment;
 import com.severenity.view.fragments.PlayerFragment;
 import com.severenity.view.fragments.QuestsFragment;
 import com.severenity.view.fragments.ShopFragment;
@@ -73,12 +72,12 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private FragmentManager fragmentManager;
 
     private ShopFragment shopFragment = new ShopFragment();
-    private MessagesFragment messagesFragment = new MessagesFragment();
+    private ClansFragment clansFragment = new ClansFragment();
     private PlayerFragment playerFragment = new PlayerFragment();
     private QuestsFragment battlesFragment = new QuestsFragment();
     private GameMapFragment gameMapFragment = new GameMapFragment();
     private String shopFragmentTag = ShopFragment.class.getSimpleName();
-    private String messagesFragmentTag = MessagesFragment.class.getSimpleName();
+    private String clansFragmentTag = ClansFragment.class.getSimpleName();
     private String playerFragmentTag = PlayerFragment.class.getSimpleName();
     private String battlesFragmentTag = QuestsFragment.class.getSimpleName();
     private String gameMapFragmentTag = GameMapFragment.class.getSimpleName();
@@ -239,12 +238,12 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             .add(R.id.container, gameMapFragment, gameMapFragmentTag)
             .add(R.id.container, shopFragment, shopFragmentTag)
             .add(R.id.container, playerFragment, playerFragmentTag)
-            .add(R.id.container, messagesFragment, messagesFragmentTag)
+            .add(R.id.container, clansFragment, clansFragmentTag)
             .add(R.id.container, battlesFragment, battlesFragmentTag).commit();
 
         allFragments.addAll(Arrays.asList(
             shopFragment,
-            messagesFragment,
+            clansFragment,
             playerFragment,
             battlesFragment,
             gameMapFragment)
@@ -447,7 +446,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
     // TODO: Replace with transaction to real teams fragment
     private void showTeams() {
-        showFragment(messagesFragment);
+        showFragment(clansFragment);
     }
 
     // TODO: Replace with transaction to real battles fragment

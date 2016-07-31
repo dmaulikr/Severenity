@@ -3,7 +3,7 @@
     android:id="@+id/rlMessagesLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.severenity.view.fragments.MessagesFragment">
+    tools:context=".view.fragments.ClansFragment">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tlTabs"
