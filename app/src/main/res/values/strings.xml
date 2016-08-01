@@ -62,4 +62,7 @@
     <string name="mapbox_style_url_dark">mapbox://styles/novosad/cir4q2c2c000occm0d3zadmz6</string>
     <string name="provide_search_criteria">Provide search criteria</string>
     <string name="chat">chat</string>
+    <string name="chat_name">chat</string>
+    <string name="world_chat">world chat</string>
+    <string name="world_list">worl list</string>
 </resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragments.ClansFrameContainerFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_above="@+id/chatShow"
+        android:id="@+id/fragmentContent"
+        android:layout_alignParentTop="true"></FrameLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/world_chat"
+        android:id="@+id/chatShow"
+        android:layout_alignParentBottom="true"
+        android:textAlignment="center" />
+</RelativeLayout>

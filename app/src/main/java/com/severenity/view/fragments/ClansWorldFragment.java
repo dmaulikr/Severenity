@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.severenity.R;
 
@@ -16,6 +17,8 @@ public class ClansWorldFragment extends Fragment {
     public ClansWorldFragment() {
         // Required empty public constructor
     }
+
+    private RelativeLayout chatLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

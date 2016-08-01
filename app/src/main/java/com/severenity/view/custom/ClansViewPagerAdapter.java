@@ -6,10 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.severenity.R;
-import com.severenity.view.fragments.ChatFragment;
+import com.severenity.view.fragments.ClansFrameContainerFragment;
 import com.severenity.view.fragments.ClansTeamFragment;
-import com.severenity.view.fragments.ClansWorldFragment;
-import com.severenity.view.fragments.ProfileFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,8 +16,7 @@ import java.util.Arrays;
  * Created by Andriy on 7/26/2016.
  */
 public class ClansViewPagerAdapter extends FragmentStatePagerAdapter {
-    private ChatFragment chatFragment = new ChatFragment();
-    private ClansWorldFragment worldClansFragment = new ClansWorldFragment();
+    private ClansFrameContainerFragment worldClansFragment = new ClansFrameContainerFragment();
     private ClansTeamFragment teamClansFragment = new ClansTeamFragment();
     private Context mContext;
 
@@ -28,8 +25,7 @@ public class ClansViewPagerAdapter extends FragmentStatePagerAdapter {
     private ArrayList<Fragment> fragments = new ArrayList<Fragment>(
             Arrays.asList(
                     worldClansFragment,
-                    teamClansFragment,
-                    chatFragment
+                    teamClansFragment
             ));
 
     public ClansViewPagerAdapter(FragmentManager fm, Context nContext) {
@@ -37,8 +33,7 @@ public class ClansViewPagerAdapter extends FragmentStatePagerAdapter {
         mContext = nContext;
         mPageTitles = new String[] {
                 mContext.getResources().getString(R.string.title_world),
-                mContext.getResources().getString(R.string.title_team),
-                mContext.getResources().getString(R.string.title_chat)};
+                mContext.getResources().getString(R.string.title_team)};
     }
 
     @Override
