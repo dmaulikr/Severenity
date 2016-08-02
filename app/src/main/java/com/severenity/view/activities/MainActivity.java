@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +19,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -35,6 +35,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.common.collect.ArrayTable;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.managers.data.EnergyRecoveryManager;
@@ -51,16 +52,18 @@ import com.severenity.utils.common.Constants;
 import com.severenity.view.Dialogs.PlacesInfoDialog;
 import com.severenity.view.custom.SplitToolbar;
 import com.severenity.view.fragments.GameMapFragment;
-import com.severenity.view.fragments.MessagesFragment;
+import com.severenity.view.fragments.ClansFragment;
 import com.severenity.view.fragments.PlayerFragment;
 import com.severenity.view.fragments.QuestsFragment;
 import com.severenity.view.fragments.ShopFragment;
 import com.wooplr.spotlight.SpotlightView;
 import com.wooplr.spotlight.prefs.PreferencesManager;
+import com.wooplr.spotlight.utils.SpotlightListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -71,18 +74,28 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
     private ProfilePictureView userProfilePicture;
     private TextView tvEnergyValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
+
+    /**    Tutorial items       **/
+    private PreferencesManager mPreferencesManager;
     private ImageView ivTutorialBtn;
+    private ActionMenuItemView shopItem;
+    private ActionMenuItemView chatItem;
+    private ActionMenuItemView mapItem;
+    private ActionMenuItemView profileItem;
+    private ActionMenuItemView questsItem;
+    private SpotlightView.Builder[] spotLightViewArr;
+    private int spotLightCounter = 0;
+    /**                         **/
 
     private FragmentManager fragmentManager;
-    PreferencesManager mPreferencesManager;
 
     private ShopFragment shopFragment = new ShopFragment();
-    private MessagesFragment messagesFragment = new MessagesFragment();
+    private ClansFragment clansFragment = new ClansFragment();
     private PlayerFragment playerFragment = new PlayerFragment();
     private QuestsFragment battlesFragment = new QuestsFragment();
     private GameMapFragment gameMapFragment = new GameMapFragment();
     private String shopFragmentTag = ShopFragment.class.getSimpleName();
-    private String messagesFragmentTag = MessagesFragment.class.getSimpleName();
+    private String clansFragmentTag = ClansFragment.class.getSimpleName();
     private String playerFragmentTag = PlayerFragment.class.getSimpleName();
     private String battlesFragmentTag = QuestsFragment.class.getSimpleName();
     private String gameMapFragmentTag = GameMapFragment.class.getSimpleName();
@@ -102,8 +115,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         MapsInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
 
-        mPreferencesManager = new PreferencesManager(MainActivity.this); // manager for Spotlight library
-
+        mPreferencesManager = new PreferencesManager(MainActivity.this);
         initToolbars();
         initFragments();
         initSocketSubscriptions();
@@ -122,37 +134,42 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
         checkGPSConnection();
 
-
-        checkForTutorial();
-
+        checkForFirstLaunch();
     }
 
-    private void checkForTutorial() {
+    private void checkForFirstLaunch() {
         SharedPreferences sPref = getPreferences(MODE_PRIVATE);
-        if (sPref.getBoolean("isTutorialOn", true) ) {
+        if (sPref.getBoolean("isFirstLaunch", true)) {
             SharedPreferences.Editor ed = sPref.edit();
-            ed.putBoolean("isTutorialOn", false);
+            ed.putBoolean("isFirstLaunch", false);
             ed.apply();
-            Toast.makeText(getApplicationContext(),"Future Tutorial", Toast.LENGTH_LONG).show();
             mPreferencesManager.resetAll();
-            showTutorial(ivTutorialBtn, "kek");
-
+            showTutorial();
         }
     }
 
-    private void showTutorial(View view, String usageId) {
-        new SpotlightView.Builder(this)
+    private void showTutorial() {
+        spotLightViewArr = new SpotlightView.Builder[]{ tutorialItem(shopItem, shopItem.getId() + "", "Shop", "Click here to visit shop!"),
+                tutorialItem( profileItem, profileItem.getId() + "", "Profile", "Check your progress here!"),
+                tutorialItem( mapItem, mapItem.getId() + "", "Map", "Click here to play!"),
+                tutorialItem( chatItem, chatItem.getId() + "", "Chat", "Communicate with other players in chat!"),
+                tutorialItem( questsItem, questsItem.getId() + "", "Quests", "Check available quests here!")
+        };
+        spotLightViewArr[spotLightCounter].show();
+
+    }
+    private SpotlightView.Builder tutorialItem(View view, String usageId, String tvText, String headingTvText){
+        return  new SpotlightView.Builder(this)
                 .introAnimationDuration(400)
                 .enableRevalAnimation(true)
                 .performClick(true)
                 .fadeinTextDuration(400)
-                //.setTypeface(FontUtil.get(this, "RemachineScript_Personal_Use"))
                 .headingTvColor(Color.parseColor("#eb273f"))
                 .headingTvSize(32)
-                .headingTvText("Love")
+                .headingTvText(tvText)
                 .subHeadingTvColor(Color.parseColor("#ffffff"))
                 .subHeadingTvSize(16)
-                .subHeadingTvText("Like the picture?\nLet others know.")
+                .subHeadingTvText(headingTvText)
                 .maskColor(Color.parseColor("#dc000000"))
                 .target(view)
                 .lineAnimDuration(400)
@@ -160,7 +177,17 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 .dismissOnTouch(true)
                 .enableDismissAfterShown(true)
                 .usageId(usageId) //UNIQUE ID
-                .show();
+                .setListener(new SpotlightListener() {
+                    @Override
+                    public void onUserClicked(String s) {
+                        spotLightCounter++;
+                        if (spotLightCounter < spotLightViewArr.length)
+                            spotLightViewArr[spotLightCounter].show();
+                    }
+                });
+
+
+
     }
 
     private void checkGPSConnection() {
@@ -270,18 +297,18 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         container = (FrameLayout) findViewById(R.id.container);
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-            .add(R.id.container, gameMapFragment, gameMapFragmentTag)
-            .add(R.id.container, shopFragment, shopFragmentTag)
-            .add(R.id.container, playerFragment, playerFragmentTag)
-            .add(R.id.container, messagesFragment, messagesFragmentTag)
-            .add(R.id.container, battlesFragment, battlesFragmentTag).commit();
+                .add(R.id.container, gameMapFragment, gameMapFragmentTag)
+                .add(R.id.container, shopFragment, shopFragmentTag)
+                .add(R.id.container, playerFragment, playerFragmentTag)
+                .add(R.id.container, clansFragment, clansFragmentTag)
+                .add(R.id.container, battlesFragment, battlesFragmentTag).commit();
 
         allFragments.addAll(Arrays.asList(
-            shopFragment,
-            messagesFragment,
-            playerFragment,
-            battlesFragment,
-            gameMapFragment)
+                shopFragment,
+                clansFragment,
+                playerFragment,
+                battlesFragment,
+                gameMapFragment)
         );
     }
 
@@ -311,17 +338,27 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         tvExperienceValue = (TextView) toolbarTop.findViewById(R.id.tvExperienceValue);
         tvLevelValue = (TextView) toolbarTop.findViewById(R.id.tvLevelValue);
         ivTutorialBtn = (ImageView) toolbarTop.findViewById(R.id.ivTutorialBtn);
+
+
+
+        toolbarBottom = (SplitToolbar) findViewById(R.id.toolbarBottom);
+        toolbarBottom.inflateMenu(R.menu.toolbar_menu);
+
+        shopItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_shop);
+        chatItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_chat);
+        mapItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_map);
+        profileItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_profile);
+        questsItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_quests);
         ivTutorialBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mPreferencesManager.resetAll();
-                showTutorial(ivTutorialBtn, "kek");
+                showTutorial();
             }
         });
         setSupportActionBar(toolbarTop);
 
-        toolbarBottom = (SplitToolbar) findViewById(R.id.toolbarBottom);
-        toolbarBottom.inflateMenu(R.menu.toolbar_menu);
+
         toolbarBottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(final MenuItem item) {
@@ -399,6 +436,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 return false;
             }
         });
+
     }
 
     private void deselectMenu() {
@@ -482,7 +520,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
     // TODO: Replace with transaction to real teams fragment
     private void showTeams() {
-        showFragment(messagesFragment);
+        showFragment(clansFragment);
     }
 
     // TODO: Replace with transaction to real battles fragment
