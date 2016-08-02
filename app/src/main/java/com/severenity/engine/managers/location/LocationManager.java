@@ -108,6 +108,8 @@ public class LocationManager implements LocationListener {
             return;
         }
 
+
+
         googleMap = map;
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);

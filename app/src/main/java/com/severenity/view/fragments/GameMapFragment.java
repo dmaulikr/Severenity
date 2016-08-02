@@ -22,17 +22,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.facebook.AccessToken;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.severenity.App;
@@ -44,14 +41,11 @@ import com.severenity.utils.CustomTypefaceSpan;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.activities.MainActivity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * Handles user with map activity (actual game)
  */
 public class GameMapFragment extends Fragment {
-    private MapView mapView;
+    private SupportMapFragment mapFragment;
     private MainActivity activity;
     private TextView tvAttributions;
 
@@ -69,17 +63,23 @@ public class GameMapFragment extends Fragment {
     }
 
     @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        FragmentManager fragmentManager = getChildFragmentManager();
+        mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
+        if (mapFragment == null) {
+            mapFragment = SupportMapFragment.newInstance();
+        }
+        fragmentManager.beginTransaction().replace(R.id.map, mapFragment).commit();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
 
-        mapView.getMapAsync(new OnMapReadyCallback() {
+        /**  **/
+
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 App.getLocationManager().updateMap(googleMap);
@@ -105,9 +105,6 @@ public class GameMapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        mapView = (MapView) view.findViewById(R.id.map);
-        mapView.onCreate(savedInstanceState);
-
         tvAttributions = (TextView) view.findViewById(R.id.tvAttributions);
 
         initDrawer(view);
@@ -199,22 +196,9 @@ public class GameMapFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mapView.onPause();
 
         App.getLocalBroadcastManager().unregisterReceiver(showUserActions);
         App.getLocalBroadcastManager().unregisterReceiver(hideUserActions);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
     }
 
     private BroadcastReceiver showUserActions = new BroadcastReceiver() {

@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,10 +51,12 @@ import com.severenity.utils.common.Constants;
 import com.severenity.view.Dialogs.PlacesInfoDialog;
 import com.severenity.view.custom.SplitToolbar;
 import com.severenity.view.fragments.GameMapFragment;
-import com.severenity.view.fragments.ClansFragment;
+import com.severenity.view.fragments.MessagesFragment;
 import com.severenity.view.fragments.PlayerFragment;
 import com.severenity.view.fragments.QuestsFragment;
 import com.severenity.view.fragments.ShopFragment;
+import com.wooplr.spotlight.SpotlightView;
+import com.wooplr.spotlight.prefs.PreferencesManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,14 +74,15 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private ImageView ivTutorialBtn;
 
     private FragmentManager fragmentManager;
+    PreferencesManager mPreferencesManager;
 
     private ShopFragment shopFragment = new ShopFragment();
-    private ClansFragment clansFragment = new ClansFragment();
+    private MessagesFragment messagesFragment = new MessagesFragment();
     private PlayerFragment playerFragment = new PlayerFragment();
     private QuestsFragment battlesFragment = new QuestsFragment();
     private GameMapFragment gameMapFragment = new GameMapFragment();
     private String shopFragmentTag = ShopFragment.class.getSimpleName();
-    private String clansFragmentTag = ClansFragment.class.getSimpleName();
+    private String messagesFragmentTag = MessagesFragment.class.getSimpleName();
     private String playerFragmentTag = PlayerFragment.class.getSimpleName();
     private String battlesFragmentTag = QuestsFragment.class.getSimpleName();
     private String gameMapFragmentTag = GameMapFragment.class.getSimpleName();
@@ -97,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         MapsInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
 
+        mPreferencesManager = new PreferencesManager(MainActivity.this); // manager for Spotlight library
+
         initToolbars();
         initFragments();
         initSocketSubscriptions();
@@ -115,17 +122,45 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
         checkGPSConnection();
 
-        showTutorial(false);
+
+        checkForTutorial();
+
     }
 
-    private void showTutorial(boolean isOnButtonClicked) {
+    private void checkForTutorial() {
         SharedPreferences sPref = getPreferences(MODE_PRIVATE);
-        if (sPref.getBoolean("isTutorialOn", true) || isOnButtonClicked) {
+        if (sPref.getBoolean("isTutorialOn", true) ) {
             SharedPreferences.Editor ed = sPref.edit();
             ed.putBoolean("isTutorialOn", false);
             ed.apply();
             Toast.makeText(getApplicationContext(),"Future Tutorial", Toast.LENGTH_LONG).show();
+            mPreferencesManager.resetAll();
+            showTutorial(ivTutorialBtn, "kek");
+
         }
+    }
+
+    private void showTutorial(View view, String usageId) {
+        new SpotlightView.Builder(this)
+                .introAnimationDuration(400)
+                .enableRevalAnimation(true)
+                .performClick(true)
+                .fadeinTextDuration(400)
+                //.setTypeface(FontUtil.get(this, "RemachineScript_Personal_Use"))
+                .headingTvColor(Color.parseColor("#eb273f"))
+                .headingTvSize(32)
+                .headingTvText("Love")
+                .subHeadingTvColor(Color.parseColor("#ffffff"))
+                .subHeadingTvSize(16)
+                .subHeadingTvText("Like the picture?\nLet others know.")
+                .maskColor(Color.parseColor("#dc000000"))
+                .target(view)
+                .lineAnimDuration(400)
+                .lineAndArcColor(Color.parseColor("#eb273f"))
+                .dismissOnTouch(true)
+                .enableDismissAfterShown(true)
+                .usageId(usageId) //UNIQUE ID
+                .show();
     }
 
     private void checkGPSConnection() {
@@ -238,12 +273,12 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             .add(R.id.container, gameMapFragment, gameMapFragmentTag)
             .add(R.id.container, shopFragment, shopFragmentTag)
             .add(R.id.container, playerFragment, playerFragmentTag)
-            .add(R.id.container, clansFragment, clansFragmentTag)
+            .add(R.id.container, messagesFragment, messagesFragmentTag)
             .add(R.id.container, battlesFragment, battlesFragmentTag).commit();
 
         allFragments.addAll(Arrays.asList(
             shopFragment,
-            clansFragment,
+            messagesFragment,
             playerFragment,
             battlesFragment,
             gameMapFragment)
@@ -279,7 +314,8 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         ivTutorialBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTutorial(true);
+                mPreferencesManager.resetAll();
+                showTutorial(ivTutorialBtn, "kek");
             }
         });
         setSupportActionBar(toolbarTop);
@@ -446,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
     // TODO: Replace with transaction to real teams fragment
     private void showTeams() {
-        showFragment(clansFragment);
+        showFragment(messagesFragment);
     }
 
     // TODO: Replace with transaction to real battles fragment
