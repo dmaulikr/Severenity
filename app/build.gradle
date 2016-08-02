@@ -10,7 +10,7 @@ android {
         }
     }
     compileSdkVersion 24
-    buildToolsVersion '24.0.0'
+    buildToolsVersion '24.0.1'
     dataBinding {
         enabled = true
     }
@@ -18,8 +18,8 @@ android {
         applicationId "com.severenity"
         minSdkVersion 19
         targetSdkVersion 24
-        versionCode 4
-        versionName "0.7.1"
+        versionCode 5
+        versionName "0.8"
         multiDexEnabled true
         signingConfig signingConfigs.config
     }

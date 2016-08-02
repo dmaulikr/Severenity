@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/white"
     android:baselineAligned="false"
-    android:gravity="right"
+    android:gravity="end"
     android:orientation="horizontal"
     android:weightSum="10">
 
@@ -12,7 +12,7 @@
         android:layout_width="285dp"
         android:layout_height="match_parent"
         android:layout_marginBottom="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
         android:layout_weight="2.02"
         android:columnCount="2"
         android:orientation="horizontal"
@@ -39,23 +39,20 @@
             android:textAlignment="viewEnd"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/darkgray"
-            android:textSize="13dp"
+            android:textSize="13sp"
             android:visibility="visible" />
     </RelativeLayout>
-
 
     <TextView
         android:id="@+id/messageUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_marginEnd="3dp"
         android:textAlignment="viewStart"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/black"
-        android:textSize="16dp"
+        android:textSize="16sp"
         android:visibility="gone" />
-
 
     <ImageView
         android:id="@+id/messageAvatar"

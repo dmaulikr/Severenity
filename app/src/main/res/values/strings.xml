@@ -61,8 +61,8 @@
     <string name="mapbox_access_token">sk.eyJ1Ijoibm92b3NhZCIsImEiOiJjaXI0cTNyMGMwMDN1aHRtY2c2NDNrZnR1In0.tFOwxODJUnJBSW2kfMmK2Q</string>
     <string name="mapbox_style_url_dark">mapbox://styles/novosad/cir4q2c2c000occm0d3zadmz6</string>
     <string name="provide_search_criteria">Provide search criteria</string>
-    <string name="chat">chat</string>
-    <string name="chat_name">chat</string>
-    <string name="world_chat">world chat</string>
-    <string name="world_list">worl list</string>
+    <string name="chat">Chat</string>
+    <string name="chat_name">Chat</string>
+    <string name="world_chat">Chat</string>
+    <string name="world_list">List</string>
 </resources>

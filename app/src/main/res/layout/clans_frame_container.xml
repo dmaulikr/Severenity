@@ -11,14 +11,14 @@
         android:layout_height="100dp"
         android:layout_above="@+id/chatShow"
         android:id="@+id/fragmentContent"
-        android:layout_alignParentTop="true"></FrameLayout>
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/world_chat"
         android:id="@+id/chatShow"
-        android:layout_alignParentBottom="true"
-        android:textAlignment="center" />
+        android:gravity="center"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

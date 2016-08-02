@@ -137,7 +137,7 @@ public class UsersActions implements View.OnClickListener {
 
             case R.id.btnAttack: {
                 if (getType() == ActionsType.ActionsOnPlace) {
-                    Toast.makeText(mContext, "This signal cannot be performed on place yet as it is under development. Stay tuned!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "This signal cannot be performed on place yet as it is under development. Stay tuned!", Toast.LENGTH_LONG).show();
                     mDataID = "";
                     return;
                 }

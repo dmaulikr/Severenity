@@ -10,9 +10,13 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -923,5 +927,31 @@ public class LocationManager implements LocationListener {
             marker.setIcon(BitmapDescriptorFactory.fromBitmap(Utils.getScaledMarker(resourceId, context)));
 
         }
+    }
+
+    private void animateMarker(final Marker marker, final LatLng position) {
+        final Handler handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+        final long duration = 2500;
+
+        final Interpolator interpolator = new LinearInterpolator();
+        marker.setVisible(true);
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float t = Math.max(
+                        1 - interpolator.getInterpolation((float) elapsed
+                                / duration), 0);
+
+                marker.setAnchor(0.5f, 1.0f + 6 * t);
+                marker.setPosition(position);
+                if (t > 0.0) {
+                    // Post again 16ms later.
+                    handler.postDelayed(this, 16);
+                }
+            }
+        });
     }
 }

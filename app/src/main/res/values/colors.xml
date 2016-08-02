@@ -7,6 +7,5 @@
     <color name="black">#000000</color>
     <color name="grey">#b4b4b4</color>
     <color name="darkgray">#909090</color>
-    <color name="background">#EDE7F6</color>
     <color name="overlay">#33000000</color>
 </resources>
