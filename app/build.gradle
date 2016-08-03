@@ -80,7 +80,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:9.2.1'
     compile 'com.github.iammert:MaterialIntroView:1.5.2'
     compile 'com.github.wooplr:Spotlight:1.1'
-
+    compile 'com.google.android.gms:play-services-analytics:9.2.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

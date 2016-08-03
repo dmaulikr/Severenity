@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -63,21 +62,8 @@ public class GameMapFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        FragmentManager fragmentManager = getChildFragmentManager();
-        mapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
-        if (mapFragment == null) {
-            mapFragment = SupportMapFragment.newInstance();
-        }
-        fragmentManager.beginTransaction().replace(R.id.map, mapFragment).commit();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-
-        /**  **/
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -106,6 +92,14 @@ public class GameMapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         tvAttributions = (TextView) view.findViewById(R.id.tvAttributions);
+        mapFragment = SupportMapFragment.newInstance();
+        getChildFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                App.getLocationManager().updateMap(googleMap);
+            }
+        });
 
         initDrawer(view);
 

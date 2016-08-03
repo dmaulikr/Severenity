@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -14,11 +15,9 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -29,6 +28,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
@@ -107,8 +107,6 @@ public class LocationManager implements LocationListener {
         if (map == null) {
             return;
         }
-
-
 
         googleMap = map;
         googleMap.setMyLocationEnabled(true);
@@ -505,6 +503,7 @@ public class LocationManager implements LocationListener {
             googleMap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(Utils.latLngFromLocation(location), currentZoom)
             );
+//            animateMarker(currentUserMarker, Utils.latLngFromLocation(location));
         }
     }
 
@@ -931,10 +930,13 @@ public class LocationManager implements LocationListener {
         }
     }
 
-    private void animateMarker(final Marker marker, final LatLng position) {
+    public void animateMarker(final Marker marker, final LatLng toPosition) {
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
-        final long duration = 2500;
+        Projection projection = googleMap.getProjection();
+        Point startPoint = projection.toScreenLocation(marker.getPosition());
+        final LatLng startLatLng = projection.fromScreenLocation(startPoint);
+        final long duration = 500;
 
         final Interpolator interpolator = new LinearInterpolator();
         marker.setVisible(true);
@@ -943,13 +945,15 @@ public class LocationManager implements LocationListener {
             @Override
             public void run() {
                 long elapsed = SystemClock.uptimeMillis() - start;
-                float t = Math.max(
-                        1 - interpolator.getInterpolation((float) elapsed
-                                / duration), 0);
+                float t = interpolator.getInterpolation((float) elapsed
+                        / duration);
+                double lng = t * toPosition.longitude + (1 - t)
+                        * startLatLng.longitude;
+                double lat = t * toPosition.latitude + (1 - t)
+                        * startLatLng.latitude;
+                marker.setPosition(new LatLng(lat, lng));
 
-                marker.setAnchor(0.5f, 1.0f + 6 * t);
-                marker.setPosition(position);
-                if (t > 0.0) {
+                if (t < 1.0) {
                     // Post again 16ms later.
                     handler.postDelayed(this, 16);
                 }
