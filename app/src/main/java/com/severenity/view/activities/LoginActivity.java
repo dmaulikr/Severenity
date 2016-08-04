@@ -12,6 +12,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -121,8 +123,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkInternetConnection() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        WifiManager wm = (WifiManager) getSystemService(WIFI_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        if (networkInfo == null){
+        WifiInfo wifiInfo = wm.getConnectionInfo();
+
+        if (networkInfo == null || wifiInfo == null){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Your internet connection seems to be turned off, do you want to enable it?")
                     .setCancelable(false)
@@ -202,7 +207,8 @@ public class LoginActivity extends AppCompatActivity {
                             Manifest.permission.ACCESS_COARSE_LOCATION,
                             Manifest.permission.INTERNET,
                             Manifest.permission.ACCESS_NETWORK_STATE,
-                            Manifest.permission.READ_PHONE_STATE
+                            Manifest.permission.READ_PHONE_STATE,
+                            Manifest.permission.ACCESS_WIFI_STATE
                     },
                     PERMISSION_REQUEST_CODE
             );
