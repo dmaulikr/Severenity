@@ -87,6 +87,9 @@ public class LoginActivity extends AppCompatActivity {
         mCallbackManager = CallbackManager.Factory.create();
 
         mMainActivityIntent = new Intent(getApplicationContext(), MainActivity.class);
+        mMainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        mMainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        mMainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
         mProfileTracker = new ProfileTracker() {
             @Override

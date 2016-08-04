@@ -156,14 +156,14 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 tutorialItem( questsItem, questsItem.getId() + "", "Quests", "Check available quests here!")
         };
         spotLightViewArr[spotLightCounter].show();
-
     }
+
     private SpotlightView.Builder tutorialItem(View view, String usageId, String tvText, String headingTvText){
         return  new SpotlightView.Builder(this)
-                .introAnimationDuration(400)
+                .introAnimationDuration(200)
                 .enableRevalAnimation(true)
                 .performClick(true)
-                .fadeinTextDuration(400)
+                .fadeinTextDuration(200)
                 .headingTvColor(Color.parseColor("#eb273f"))
                 .headingTvSize(32)
                 .headingTvText(tvText)
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 .subHeadingTvText(headingTvText)
                 .maskColor(Color.parseColor("#dc000000"))
                 .target(view)
-                .lineAnimDuration(400)
+                .lineAnimDuration(200)
                 .lineAndArcColor(Color.parseColor("#eb273f"))
                 .dismissOnTouch(true)
                 .enableDismissAfterShown(true)
@@ -181,8 +181,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                     @Override
                     public void onUserClicked(String s) {
                         spotLightCounter++;
-                        if (spotLightCounter < spotLightViewArr.length)
+                        if (spotLightCounter < spotLightViewArr.length) {
                             spotLightViewArr[spotLightCounter].show();
+                        } else {
+                            spotLightCounter = 0;
+                        }
                     }
                 });
 
@@ -692,9 +695,22 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         }
     }
 
+    private Boolean exit = false;
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        if (exit) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
     }
 }
