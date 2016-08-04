@@ -65,4 +65,18 @@
     <string name="chat_name">Chat</string>
     <string name="world_chat">Chat</string>
     <string name="world_list">List</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_profile">Profile</string>
+    <string name="tutorial_shop">Shop</string>
+    <string name="tutorial_map">Map</string>
+    <string name="tutorial_chat">Chat</string>
+    <string name="tutorial_quests">Quests</string>
+    <string name="tutorial_profile_body">Check your progress here!</string>
+    <string name="tutorial_shop_body">Click here to visit shop!</string>
+    <string name="tutorial_map_body">Click here to play!</string>
+    <string name="tutorial_chat_body">Communicate with other players in chat!</string>
+    <string name="tutorial_quests_body">Check available quests here!</string>
+
+
 </resources>

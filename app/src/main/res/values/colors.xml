@@ -8,4 +8,6 @@
     <color name="grey">#b4b4b4</color>
     <color name="darkgray">#909090</color>
     <color name="overlay">#33000000</color>
+    <color name="red" >#eb273f</color>
+    <color name="violet">#7D26CD</color>
 </resources>

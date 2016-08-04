@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.ActionMenuItemView;
@@ -149,11 +150,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     }
 
     private void showTutorial() {
-        spotLightViewArr = new SpotlightView.Builder[]{ tutorialItem(shopItem, shopItem.getId() + "", "Shop", "Click here to visit shop!"),
-                tutorialItem( profileItem, profileItem.getId() + "", "Profile", "Check your progress here!"),
-                tutorialItem( mapItem, mapItem.getId() + "", "Map", "Click here to play!"),
-                tutorialItem( chatItem, chatItem.getId() + "", "Chat", "Communicate with other players in chat!"),
-                tutorialItem( questsItem, questsItem.getId() + "", "Quests", "Check available quests here!")
+        spotLightViewArr = new SpotlightView.Builder[]{ tutorialItem(shopItem, shopItem.getId() + "", getString(R.string.tutorial_shop), getString(R.string.tutorial_shop_body)),
+                tutorialItem( profileItem, profileItem.getId() + "", getString(R.string.tutorial_profile), getString(R.string.tutorial_profile_body)),
+                tutorialItem( mapItem, mapItem.getId() + "", getString(R.string.tutorial_map), getString(R.string.tutorial_map_body)),
+                tutorialItem( chatItem, chatItem.getId() + "", getString(R.string.tutorial_chat), getString(R.string.tutorial_chat_body)),
+                tutorialItem( questsItem, questsItem.getId() + "", getString(R.string.tutorial_quests), getString(R.string.tutorial_chat_body))
         };
         spotLightViewArr[spotLightCounter].show();
     }
@@ -164,19 +165,19 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 .enableRevalAnimation(true)
                 .performClick(true)
                 .fadeinTextDuration(200)
-                .headingTvColor(Color.parseColor("#eb273f"))
+                .headingTvColor(ContextCompat.getColor(this, R.color.violet))
                 .headingTvSize(32)
                 .headingTvText(tvText)
-                .subHeadingTvColor(Color.parseColor("#ffffff"))
+                .subHeadingTvColor(ContextCompat.getColor(this, R.color.white))
                 .subHeadingTvSize(16)
                 .subHeadingTvText(headingTvText)
-                .maskColor(Color.parseColor("#dc000000"))
+                .maskColor(ContextCompat.getColor(this, R.color.black))
                 .target(view)
                 .lineAnimDuration(200)
-                .lineAndArcColor(Color.parseColor("#eb273f"))
+                .lineAndArcColor(ContextCompat.getColor(this, R.color.violet))
                 .dismissOnTouch(true)
                 .enableDismissAfterShown(true)
-                .usageId(usageId) //UNIQUE ID
+                .usageId(usageId)
                 .setListener(new SpotlightListener() {
                     @Override
                     public void onUserClicked(String s) {
