@@ -131,18 +131,27 @@ public class LoginActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Your internet connection seems to be turned off, do you want to enable it?")
                     .setCancelable(false)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            startActivity(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS));
-                        }
-                    })
-                    .setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("Later", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             finish();
                         }
+                    })
+                    .setNeutralButton("Enable Wi-Fi", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton("Enable internet", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            startActivity(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS));
+
+                        }
                     });
+
+
             AlertDialog alert = builder.create();
             alert.show();
 
