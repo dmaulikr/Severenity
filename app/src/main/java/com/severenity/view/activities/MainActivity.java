@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,7 +35,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.common.collect.ArrayTable;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.managers.data.EnergyRecoveryManager;
@@ -52,8 +50,8 @@ import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.Dialogs.PlacesInfoDialog;
 import com.severenity.view.custom.SplitToolbar;
-import com.severenity.view.fragments.GameMapFragment;
 import com.severenity.view.fragments.ClansFragment;
+import com.severenity.view.fragments.GameMapFragment;
 import com.severenity.view.fragments.PlayerFragment;
 import com.severenity.view.fragments.QuestsFragment;
 import com.severenity.view.fragments.ShopFragment;
@@ -64,7 +62,6 @@ import com.wooplr.spotlight.utils.SpotlightListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -151,16 +148,19 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
     private void showTutorial() {
         spotLightViewArr = new SpotlightView.Builder[]{ tutorialItem(shopItem, shopItem.getId() + "", getString(R.string.tutorial_shop), getString(R.string.tutorial_shop_body)),
-                tutorialItem( profileItem, profileItem.getId() + "", getString(R.string.tutorial_profile), getString(R.string.tutorial_profile_body)),
-                tutorialItem( mapItem, mapItem.getId() + "", getString(R.string.tutorial_map), getString(R.string.tutorial_map_body)),
-                tutorialItem( chatItem, chatItem.getId() + "", getString(R.string.tutorial_chat), getString(R.string.tutorial_chat_body)),
-                tutorialItem( questsItem, questsItem.getId() + "", getString(R.string.tutorial_quests), getString(R.string.tutorial_chat_body))
+                tutorialItem(profileItem, profileItem.getId() + "", getString(R.string.tutorial_profile), getString(R.string.tutorial_profile_body)),
+                tutorialItem(mapItem, mapItem.getId() + "", getString(R.string.tutorial_map), getString(R.string.tutorial_map_body)),
+                tutorialItem(chatItem, chatItem.getId() + "", getString(R.string.tutorial_chat), getString(R.string.tutorial_chat_body)),
+                tutorialItem(questsItem, questsItem.getId() + "", getString(R.string.tutorial_quests), getString(R.string.tutorial_quests_body)),
+                tutorialItem(toolbarTop, toolbarTop.getId() + "", getString(R.string.tutorial_toolbar_top), getString(R.string.tutorial_toolbar_top_body)),
+                tutorialItem(userProfilePicture, userProfilePicture.getId() + "", getString(R.string.tutorial_avatar), getString(R.string.tutorial_avatar_body)),
+                tutorialItem(ivTutorialBtn, ivTutorialBtn.getId() + "", getString(R.string.repeat_tutorial), getString(R.string.repeat_tutorial_body))
         };
         spotLightViewArr[spotLightCounter].show();
     }
 
     private SpotlightView.Builder tutorialItem(View view, String usageId, String tvText, String headingTvText){
-        return  new SpotlightView.Builder(this)
+        return new SpotlightView.Builder(this)
                 .introAnimationDuration(200)
                 .enableRevalAnimation(true)
                 .performClick(true)
@@ -342,8 +342,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         tvExperienceValue = (TextView) toolbarTop.findViewById(R.id.tvExperienceValue);
         tvLevelValue = (TextView) toolbarTop.findViewById(R.id.tvLevelValue);
         ivTutorialBtn = (ImageView) toolbarTop.findViewById(R.id.ivTutorialBtn);
-
-
 
         toolbarBottom = (SplitToolbar) findViewById(R.id.toolbarBottom);
         toolbarBottom.inflateMenu(R.menu.toolbar_menu);
