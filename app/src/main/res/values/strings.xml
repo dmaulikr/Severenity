@@ -72,11 +72,17 @@
     <string name="tutorial_map">Map</string>
     <string name="tutorial_chat">Chat</string>
     <string name="tutorial_quests">Quests</string>
-    <string name="tutorial_profile_body">Check your progress here!</string>
-    <string name="tutorial_shop_body">Click here to visit shop!</string>
-    <string name="tutorial_map_body">Click here to play!</string>
-    <string name="tutorial_chat_body">Communicate with other players in chat!</string>
-    <string name="tutorial_quests_body">Check available quests here!</string>
+    <string name="tutorial_profile_body">Check your progress here. All captured objects, total distance, abilities and more is displayed at your profile.</string>
+    <string name="tutorial_shop_body">Visit shop to buy extra goodies. But don\'t spend too much!</string>
+    <string name="tutorial_map_body">Map is your battle arena. All yours, your team and other players activity happen here.</string>
+    <string name="tutorial_chat_body">Communicate with other players in a world chat or manage your team here. Search or join other teams and players.</string>
+    <string name="tutorial_quests_body">All new will appear here after you accept the incoming Severenity message. Track their status and progress here.</string>
+    <string name="tutorial_toolbar_top">Profile Info</string>
+    <string name="tutorial_toolbar_top_body">Main characteristics are displayed here. Track them when you will perform action to see instant updates.</string>
+    <string name="tutorial_avatar">You</string>
+    <string name="tutorial_avatar_body">Look at that! What a nice picture here, huh? :-)</string>
+    <string name="repeat_tutorial">Tutorial</string>
+    <string name="repeat_tutorial_body">Tap here in case you want to pass tutorial once again.</string>
 
 
 </resources>
