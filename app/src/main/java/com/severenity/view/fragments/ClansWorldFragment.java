@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.severenity.R;
 import com.severenity.engine.adapters.UsersSearchAdapter;
+import com.severenity.entity.User;
 import com.severenity.view.custom.CustomListView;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class ClansWorldFragment extends Fragment implements CustomListView.LoadD
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clans_world, container, false);
 
-        UsersSearchAdapter searchAdapter = new UsersSearchAdapter(getContext(), createItems(mult), R.layout.usersearch_item_list);
+        UsersSearchAdapter searchAdapter = new UsersSearchAdapter(getContext(), createItems(mult));
 
         mUsersList = (CustomListView)view.findViewById(R.id.usersList);
         mUsersList.setAdapter(searchAdapter);
@@ -55,21 +56,24 @@ public class ClansWorldFragment extends Fragment implements CustomListView.LoadD
         fl.execute(new String[]{});
     }
 
-    private List<String> createItems(int mult) {
-        List<String> result = new ArrayList<String>();
+    private List<User> createItems(int mult) {
+        List<User> result = new ArrayList<User>();
 
         for (int i=0; i < ITEM_PER_REQUEST; i++) {
-            result.add("Item " + (i * mult));
+            User user = new User();
+            user.setName("User" + i * mult);
+            user.setExperience(i * mult * 2);
+            result.add(user);
         }
 
         return result;
     }
 
 
-    private class FakeNetLoader extends AsyncTask<String, Void, List<String>> {
+    private class FakeNetLoader extends AsyncTask<String, Void, List<User>> {
 
         @Override
-        protected List<String> doInBackground(String... params) {
+        protected List<User> doInBackground(String... params) {
             try {
                 Thread.sleep(4000);
             } catch (InterruptedException e) {
@@ -79,7 +83,7 @@ public class ClansWorldFragment extends Fragment implements CustomListView.LoadD
         }
 
         @Override
-        protected void onPostExecute(List<String> result) {
+        protected void onPostExecute(List<User> result) {
             super.onPostExecute(result);
             mUsersList.addNewData(result);
         }

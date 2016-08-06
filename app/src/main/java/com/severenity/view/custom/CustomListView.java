@@ -9,6 +9,7 @@ import android.widget.ListView;
 
 import com.severenity.R;
 import com.severenity.engine.adapters.UsersSearchAdapter;
+import com.severenity.entity.User;
 
 import java.util.List;
 
@@ -55,17 +56,13 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
         this.removeFooterView(mFooter);
     }
 
-    public void addNewData(List<String> data) {
+    public void addNewData(List<User> data) {
 
         this.removeFooterView(mFooter);
 
-        mAdapter.addAll(data);
+        mAdapter.addList(data);
         mAdapter.notifyDataSetChanged();
         mIsLoading = false;
-    }
-
-    public LoadDataListener setListener() {
-        return mListener;
     }
 
     public static interface LoadDataListener {

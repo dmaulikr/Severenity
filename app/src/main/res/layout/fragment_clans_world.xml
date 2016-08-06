@@ -11,10 +11,10 @@
         android:layout_height="35dp"
         android:id="@+id/searchCriteria"
         android:maxLength="2000"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:hint="@string/provide_search_criteria"
-        android:background="@color/white"
+        android:background="#a1a1a1"
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
@@ -22,6 +22,58 @@
         android:layout_alignParentStart="false"
         android:layout_marginLeft="5dp"
         android:layout_toLeftOf="@+id/imageView" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:id="@+id/captionLayout"
+        android:layout_below="@+id/searchCriteria"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+        <TextView
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="N"
+            android:id="@+id/textView"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="24dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="i"
+            android:id="@+id/textView2"
+            android:layout_alignParentEnd="true"
+            android:phoneNumber="false"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="@color/white"
+            android:layout_marginRight="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/name"
+            android:id="@+id/textView3"
+            android:gravity="left|center_vertical"
+            android:layout_toRightOf="@+id/textView"
+            android:paddingLeft="5dp"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="exp"
+            android:id="@+id/textView4"
+            android:layout_toLeftOf="@+id/textView2"
+            android:paddingLeft="5dp"
+            android:gravity="center_vertical|center_horizontal" />
+    </RelativeLayout>
 
     <ImageView
         android:layout_width="wrap_content"
@@ -41,8 +93,7 @@
         android:layout_height="fill_parent"
         android:id="@+id/usersList"
         android:divider="#00000000"
-        android:layout_below="@+id/searchCriteria"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/captionLayout"
         android:background="@color/white"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp" />

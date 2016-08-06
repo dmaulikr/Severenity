@@ -83,6 +83,7 @@
     <string name="tutorial_avatar_body">Look at that! What a nice picture here, huh? :-)</string>
     <string name="repeat_tutorial">Tutorial</string>
     <string name="repeat_tutorial_body">Tap here in case you want to pass tutorial once again.</string>
+    <string name="name">name</string>
 
 
 </resources>
