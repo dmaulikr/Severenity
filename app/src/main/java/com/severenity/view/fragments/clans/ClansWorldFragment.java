@@ -1,4 +1,4 @@
-package com.severenity.view.fragments;
+package com.severenity.view.fragments.clans;
 
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;

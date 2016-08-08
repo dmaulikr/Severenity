@@ -84,6 +84,10 @@
     <string name="repeat_tutorial">Tutorial</string>
     <string name="repeat_tutorial_body">Tap here in case you want to pass tutorial once again.</string>
     <string name="name">name</string>
+    <string name="team_name">team name</string>
+    <string name="usrers">usrers</string>
+    <string name="clans_team">Team</string>
+    <string name="team_list">All teams</string>
 
 
 </resources>

@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.fragments.clans.ClansWorldFragment">
+    tools:context=".view.fragments.clans.ClansTeamsListFragment">
 
     <EditText
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
             android:layout_width="24dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="i"
+            android:text="+"
             android:id="@+id/textView2"
             android:layout_alignParentEnd="true"
             android:phoneNumber="false"
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="@string/name"
+            android:text="@string/team_name"
             android:id="@+id/textView3"
             android:gravity="left|center_vertical"
             android:layout_toRightOf="@+id/textView"
@@ -68,7 +68,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="exp"
+            android:text="usrers"
             android:id="@+id/textView4"
             android:layout_toLeftOf="@+id/textView2"
             android:paddingLeft="5dp"
@@ -91,10 +91,10 @@
     <com.severenity.view.custom.CustomListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/usersList"
+        android:id="@+id/teamsList"
         android:divider="#00000000"
         android:layout_below="@+id/captionLayout"
-        android:background="@color/white"
+        android:background="#a1a1a1"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:choiceMode="singleChoice" />

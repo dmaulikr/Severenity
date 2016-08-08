@@ -1,8 +1,6 @@
 package com.severenity.engine.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.hardware.usb.UsbRequest;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +9,6 @@ import android.widget.TextView;
 
 import com.severenity.R;
 import com.severenity.entity.User;
-import com.severenity.view.fragments.ClansWorldFragment;
 
 import java.util.List;
 

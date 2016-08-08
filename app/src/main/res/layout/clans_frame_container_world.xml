@@ -4,13 +4,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.ClansFrameContainerFragment">
+    tools:context=".view.fragments.clans.ClansWorldFramesContainerFragment">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_above="@+id/chatShow"
-        android:id="@+id/fragmentContent"
+        android:id="@+id/WorldFragmentContent"
         android:layout_alignParentTop="true" />
 
     <TextView

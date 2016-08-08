@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragments.clans.ClansTeamFramesContainerFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonsLayout"
+        android:id="@+id/TeamsFragmentContent"
+        android:layout_alignParentTop="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonsLayout"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/world_chat"
+            android:id="@+id/chatShow"
+            android:gravity="center"
+            android:layout_weight="3" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/team_list"
+            android:id="@+id/teamListShow"
+            android:gravity="center"
+            android:layout_weight="3" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/clans_team"
+            android:id="@+id/teamShow"
+            android:gravity="center"
+            android:layout_weight="3" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/TeamsWarningFragmentContent"
+        android:background="#dd333333"/>
+
+</RelativeLayout>

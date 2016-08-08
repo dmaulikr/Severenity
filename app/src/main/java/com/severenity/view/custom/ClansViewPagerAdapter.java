@@ -6,8 +6,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.severenity.R;
-import com.severenity.view.fragments.ClansFrameContainerFragment;
-import com.severenity.view.fragments.ClansTeamFragment;
+import com.severenity.view.fragments.clans.ClansTeamFramesContainerFragment;
+import com.severenity.view.fragments.clans.ClansWorldFramesContainerFragment;
+import com.severenity.view.fragments.NotifiableFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,13 +17,13 @@ import java.util.Arrays;
  * Created by Andriy on 7/26/2016.
  */
 public class ClansViewPagerAdapter extends FragmentStatePagerAdapter {
-    private ClansFrameContainerFragment worldClansFragment = new ClansFrameContainerFragment();
-    private ClansTeamFragment teamClansFragment = new ClansTeamFragment();
+    private NotifiableFragment worldClansFragment = new ClansWorldFramesContainerFragment();
+    private NotifiableFragment teamClansFragment = new ClansTeamFramesContainerFragment();
     private Context mContext;
 
     private String mPageTitles[];
 
-    private ArrayList<Fragment> fragments = new ArrayList<Fragment>(
+    private ArrayList<NotifiableFragment> fragments = new ArrayList<NotifiableFragment>(
             Arrays.asList(
                     worldClansFragment,
                     teamClansFragment
@@ -38,7 +39,7 @@ public class ClansViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return fragments.get(position);
+        return (Fragment)fragments.get(position);
     }
 
 

@@ -1,4 +1,4 @@
-package com.severenity.view.fragments;
+package com.severenity.view.fragments.clans;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

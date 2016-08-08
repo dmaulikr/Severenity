@@ -50,7 +50,7 @@ import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.Dialogs.PlacesInfoDialog;
 import com.severenity.view.custom.SplitToolbar;
-import com.severenity.view.fragments.ClansFragment;
+import com.severenity.view.fragments.clans.ClansFragment;
 import com.severenity.view.fragments.GameMapFragment;
 import com.severenity.view.fragments.PlayerFragment;
 import com.severenity.view.fragments.QuestsFragment;

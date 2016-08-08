@@ -47,7 +47,7 @@
         </service>
 
         <activity
-            android:name=".view.activities.LoginActivity"
+            android:name="com.severenity.view.activities.LoginActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -57,7 +57,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activities.MainActivity"
+            android:name="com.severenity.view.activities.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
