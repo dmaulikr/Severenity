@@ -630,7 +630,8 @@ public class LocationManager implements LocationListener {
                 if (currentLocation != null) {
                     mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
                     mLocationOfLastPlacesUpdateFromGoogle = mLocationOfLastSquareUpdate;
-                    App.getPlacesManager().clearPlacesAndOwnersData();
+                    // TODO: afedechko: Think about this case in future. For now do not delete local DB
+                    //App.getPlacesManager().clearPlacesAndOwnersData();
                     App.getPlacesManager().getPlacesFromServer(Utils.latLngFromLocation(currentLocation), 1000, placesRequestCallback);
                 }
                 previousLocation = currentLocation;
