@@ -41,6 +41,11 @@ public class PlacesManager extends DataManager {
         super(context);
     }
 
+    public void dumpPlaces() {
+        dbHelper.dumpTable(TABLE_PLACES_OWNERS);
+        dbHelper.dumpTable(TABLE_PLACES);
+    }
+
     /**
      * Returns {@link GamePlace} object from the cursor in DB.
      *

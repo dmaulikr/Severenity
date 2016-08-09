@@ -1,15 +1,18 @@
 package com.severenity.helpers;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.severenity.entity.contracts.MsgContract;
 import com.severenity.entity.contracts.PlaceContract;
 import com.severenity.entity.contracts.QuestContract;
 import com.severenity.entity.contracts.RecoveryContract;
 import com.severenity.entity.contracts.UserContract;
+import com.severenity.utils.common.Constants;
 
 /**
  * Created by Novosad on 2/17/16.
@@ -173,5 +176,49 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+    public void dumpTable(String tableName) {
+
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(
+                tableName,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+
+        if (cursor == null)
+            return;
+
+        if (cursor.getCount() == 0)
+            return;
+
+        Log.i(Constants.TAG, "============== dumping data from table: " + tableName + " ================ ");
+
+        if( cursor.moveToFirst()) {
+            String dump = new String();
+
+            int colCount = cursor.getColumnCount();
+            for (int i = 0; i < colCount; i++) {
+                dump += cursor.getColumnName(i) + " | ";
+            }
+            Log.i(Constants.TAG, dump);
+            Log.i(Constants.TAG, "----------------------------------------------------------------------------");
+
+            do {
+                dump = "";
+                for (int i = 0; i < colCount; i++) {
+                    dump += cursor.getString(cursor.getColumnIndex(cursor.getColumnName(i)));
+                    dump += " | ";
+                }
+                Log.i(Constants.TAG, dump);
+            } while (cursor.moveToNext());
+        }
+
+        Log.i(Constants.TAG, "=========================================================================== ");
     }
 }
