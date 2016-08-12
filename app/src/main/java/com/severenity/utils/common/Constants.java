@@ -140,6 +140,7 @@ public class Constants {
     public static String REST_API_QUESTS = "/quests";
     public static String REST_API_QUESTS_UPDATE = "/quests/update";
     public static String REST_API_PLACES_ALL = HOST + "/places/all";
+    public static String REST_API_USER_ALL_RANGE = HOST + "/users/all_range";
 
     /**
      * Exception constants

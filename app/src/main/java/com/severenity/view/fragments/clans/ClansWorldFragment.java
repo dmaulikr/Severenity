@@ -8,10 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.android.volley.NetworkResponse;
+import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.adapters.UsersSearchAdapter;
+import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.User;
+import com.severenity.utils.Utils;
 import com.severenity.view.custom.CustomListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +29,10 @@ import java.util.List;
  */
 public class ClansWorldFragment extends Fragment implements CustomListView.LoadDataListener {
 
-    private final int ITEM_PER_REQUEST = 50;
+    private final int ITEM_PER_REQUEST = 15;
 
     private CustomListView mUsersList;
-    int mult = 1;
+    private int mOffset = 0;
 
     public ClansWorldFragment() {
         // Required empty public constructor
@@ -38,54 +46,53 @@ public class ClansWorldFragment extends Fragment implements CustomListView.LoadD
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clans_world, container, false);
 
-        UsersSearchAdapter searchAdapter = new UsersSearchAdapter(getContext(), createItems(mult));
+        UsersSearchAdapter searchAdapter = new UsersSearchAdapter(getContext());
 
         mUsersList = (CustomListView)view.findViewById(R.id.usersList);
         mUsersList.setAdapter(searchAdapter);
         mUsersList.setListener(this);
+
+        requestUsers();
 
         return view;
     }
 
     @Override
     public void loadData() {
-        System.out.println("Load data");
-        mult += 10;
-        // We load more data here
-        FakeNetLoader fl = new FakeNetLoader();
-        fl.execute(new String[]{});
+        requestUsers();
     }
 
-    private List<User> createItems(int mult) {
-        List<User> result = new ArrayList<User>();
+    private void requestUsers() {
 
-        for (int i=0; i < ITEM_PER_REQUEST; i++) {
-            User user = new User();
-            user.setName("User" + i * mult);
-            user.setExperience(i * mult * 2);
-            result.add(user);
-        }
+        App.getUserManager().getUsersAsPage(mOffset, ITEM_PER_REQUEST, "profile.experience", new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
 
-        return result;
-    }
+                try {
+                    JSONArray data = response.getJSONArray("docs");
+                    mOffset += data.length();
 
+                    List<User> result = new ArrayList<User>();
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject jsonUser = data.getJSONObject(i);
+                        User user = Utils.createLimitedUserFromJSON(jsonUser);
+                        if (user != null) {
+                            result.add(user);
+                        }
+                    }
 
-    private class FakeNetLoader extends AsyncTask<String, Void, List<User>> {
+                    mUsersList.addNewData(result);
 
-        @Override
-        protected List<User> doInBackground(String... params) {
-            try {
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-            return createItems(mult);
-        }
 
-        @Override
-        protected void onPostExecute(List<User> result) {
-            super.onPostExecute(result);
-            mUsersList.addNewData(result);
-        }
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+
+            }
+        });
+
     }
 }

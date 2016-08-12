@@ -133,6 +133,46 @@ public class Utils {
         return null;
     }
 
+
+    /**
+     * Creates user in from JSON object. Limited means that it will fill only data
+     * needed World Clan's list view to be displayed. This functioncan be extended
+     * in future.
+     *
+     * AF: The reason why I can't use method above is that some users doesn't have
+     * all fields provided. So function above will not create user e.g. if it's
+     * info misses email.
+     *
+     * @param response - JSON response to create user from.
+     */
+    public static User createLimitedUserFromJSON(JSONObject response) {
+        User user = new User();
+        try {
+            user.setId(response.getString("userId"));
+            user.setName(response.getString("name"));
+
+            JSONObject profileObject = response.getJSONObject("profile");
+            user.setDistance(profileObject.getInt("distance"));
+            user.setExperience(profileObject.getInt("experience"));
+            user.setImmunity(profileObject.getInt("immunity"));
+            user.setEnergy(profileObject.getInt("energy"));
+            user.setCredits(profileObject.getInt("credits"));
+            user.setImplantHP(profileObject.getInt("implantHP"));
+            user.setMaxImplantHP(profileObject.getInt("maxImplantHP"));
+            user.setLevel(profileObject.getInt("level"));
+            user.setMaxImmunity(profileObject.getInt("maxImmunity"));
+            user.setMaxEnergy(profileObject.getInt("maxEnergy"));
+            user.setViewRadius(profileObject.getInt("viewRadius") * 1.0);
+            user.setActionRadius(profileObject.getInt("actionRadius") * 1.0);
+
+            return user;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     /**
      * Combines device model and manufacturer into device name.
      *

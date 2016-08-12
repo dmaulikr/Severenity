@@ -254,6 +254,27 @@ public class UserManager extends DataManager {
     }
 
     /**
+     * Gets the list of users from the server defined by range (pages)
+     *
+     * @param start - indicates start offset.
+     * @param count - indicates count of records to be retrieved.
+     * @param sortby - indicate user's filed to sort by.
+     */
+    public void getUsersAsPage(int start, int count, String sortby, RequestCallback callback) {
+        JSONObject request = new JSONObject();
+
+        try {
+            request.put("pageOffset", start);
+            request.put("pageLimit", count);
+            request.put("sortby", sortby);
+
+            App.getRestManager().createRequest(Constants.REST_API_USER_ALL_RANGE, Request.Method.POST, request, callback);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Sends distance passed update to the server in order to update experience,
      * distance and level.
      *

@@ -1,6 +1,7 @@
 package com.severenity.engine.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,9 @@ import android.widget.TextView;
 
 import com.severenity.R;
 import com.severenity.entity.User;
+import com.severenity.utils.common.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,12 +21,11 @@ import java.util.List;
 
 public class UsersSearchAdapter extends ArrayAdapter<User> {
 
-    private List<User> mItemList;
+    private List<User> mItemList = new ArrayList<>();
     private Context mContext;
 
-    public UsersSearchAdapter(Context ctx, List<User> itemList) {
+    public UsersSearchAdapter(Context ctx) {
         super(ctx, R.layout.usersearch_item_list);
-        this.mItemList = itemList;
         this.mContext= ctx;
     }
 
@@ -56,13 +58,19 @@ public class UsersSearchAdapter extends ArrayAdapter<User> {
         }
 
         TextView number = (TextView) result.findViewById(R.id.recordNumber);
-        number.setText(Integer.toString(position));
+        number.setText(Integer.toString(position + 1));
+
+        User user = getItem(position);
+        if (user == null){
+            Log.e(Constants.TAG, "Null object in the UserSearchAdapter.");
+            return null;
+        }
 
         TextView usrName = (TextView) result.findViewById(R.id.userName);
-        usrName.setText(getItem(position).getName());
+        usrName.setText(user.getName());
 
         TextView userExp = (TextView) result.findViewById(R.id.userExp);
-        userExp.setText(Integer.toString(getItem(position).getExperience()));
+        userExp.setText(Integer.toString(user.getExperience()));
 
         return result;
     }
