@@ -258,20 +258,11 @@ public class UserManager extends DataManager {
      *
      * @param start - indicates start offset.
      * @param count - indicates count of records to be retrieved.
-     * @param sortby - indicate user's filed to sort by.
      */
-    public void getUsersAsPage(int start, int count, String sortby, RequestCallback callback) {
-        JSONObject request = new JSONObject();
+    public void getUsersAsPage(int start, int count, RequestCallback callback) {
 
-        try {
-            request.put("pageOffset", start);
-            request.put("pageLimit", count);
-            request.put("sortby", sortby);
-
-            App.getRestManager().createRequest(Constants.REST_API_USER_ALL_RANGE, Request.Method.POST, request, callback);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        String req = Constants.REST_API_USER_ALL_RANGE + "/?pageOffset=" + start + "&pageLimit=" + count;
+        App.getRestManager().createRequest(req, Request.Method.GET, null, callback);
     }
 
     /**

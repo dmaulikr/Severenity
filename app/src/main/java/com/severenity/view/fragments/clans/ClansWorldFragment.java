@@ -64,7 +64,7 @@ public class ClansWorldFragment extends Fragment implements CustomListView.LoadD
 
     private void requestUsers() {
 
-        App.getUserManager().getUsersAsPage(mOffset, ITEM_PER_REQUEST, "profile.experience", new RequestCallback() {
+        App.getUserManager().getUsersAsPage(mOffset, ITEM_PER_REQUEST, new RequestCallback() {
             @Override
             public void onResponseCallback(JSONObject response) {
 
