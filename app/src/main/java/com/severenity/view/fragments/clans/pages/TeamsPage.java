@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import com.severenity.R;
 import com.severenity.view.fragments.clans.ChatFragment;
-import com.severenity.view.fragments.clans.ClansTeamsListFragment;
+import com.severenity.view.fragments.clans.TeamsListFragment;
 import com.severenity.view.fragments.clans.FragmentInfo;
-import com.severenity.view.fragments.clans.UserLevelWarningFragment;
+import com.severenity.view.fragments.clans.WarningFragment;
 
 import java.util.ArrayList;
 
@@ -29,12 +29,12 @@ public class TeamsPage extends ClansPageBase {
         mContext = context;
         mPageTitle = mContext.getResources().getString(R.string.title_team);
         mFragments = new ArrayList<>(2);
-        mFragments.add(new FragmentInfo(new ClansTeamsListFragment(), "teamsList", "Team list", true));
+        mFragments.add(new FragmentInfo(new TeamsListFragment(), "teamsList", "Team list", true));
         mFragments.add(new FragmentInfo(new ChatFragment(), "chatFragment", "Chat", false));
 
         // if users level is lower then 3 we show warning
         mWarningContentLayoutID = R.id.warningFragmentContent;
-        mWarningFragment = new FragmentInfo(new UserLevelWarningFragment(), "Warning", "Warning", true);
+        mWarningFragment = new FragmentInfo(new WarningFragment(), "Warning", "Warning", true);
     }
 
     @Override

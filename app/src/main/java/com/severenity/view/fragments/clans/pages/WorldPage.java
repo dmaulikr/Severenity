@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.severenity.R;
 import com.severenity.view.fragments.clans.ChatFragment;
-import com.severenity.view.fragments.clans.ClansWorldFragment;
+import com.severenity.view.fragments.clans.WorldFragment;
 import com.severenity.view.fragments.clans.FragmentInfo;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class WorldPage extends ClansPageBase {
     TextView mSwitchButtonTextView;
 
     // two fragments that this page holds
-    FragmentInfo mWorldFragment = new FragmentInfo(new ClansWorldFragment(), "worldClan", "World", true);
+    FragmentInfo mWorldFragment = new FragmentInfo(new WorldFragment(), "worldClan", "World", true);
     FragmentInfo mChatFragment = new FragmentInfo(new ChatFragment(), "chatFragment", "Chat", false);
 
     public WorldPage(Context context) {

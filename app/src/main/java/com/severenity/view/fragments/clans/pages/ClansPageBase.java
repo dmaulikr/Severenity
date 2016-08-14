@@ -96,7 +96,7 @@ public abstract class ClansPageBase extends Fragment implements View.OnClickList
 
     /**
      * Switches fragments from mCurrentFragment to newFragment
-     * @param trans         - fragment transaction object that already holds some info. e.g. animation
+     * @param trans         - fragment transaction object that might already hold some info. e.g. animation
      * @param newFragment   - fragment which needs to be shown
      */
     public void switchFragmentTo(FragmentTransaction trans, FragmentInfo newFragment) {
