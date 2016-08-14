@@ -9,8 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.severenity.R;
-import com.severenity.view.custom.ClansViewPagerAdapter;
-import com.severenity.view.fragments.NotifiableFragment;
+import com.severenity.engine.adapters.ClansViewPagerAdapter;
+import com.severenity.view.fragments.clans.pages.ClansPageBase;
+import com.severenity.view.fragments.clans.pages.TeamsPage;
+import com.severenity.view.fragments.clans.pages.WorldPage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,7 +37,13 @@ public class ClansFragment extends Fragment {
 
         mTabLayout = (TabLayout) view.findViewById(R.id.tlTabs);
         mViewPager = (ViewPager) view.findViewById(R.id.vpPager);
-        mTeamViewPagerAdapter = new ClansViewPagerAdapter(getChildFragmentManager(), getContext());
+
+        ArrayList<ClansPageBase> list = new ArrayList<>(2);
+        list.add(new WorldPage(getContext()));
+        list.add(new TeamsPage(getContext()));
+
+        mTeamViewPagerAdapter = new ClansViewPagerAdapter(getChildFragmentManager(), getContext(), list);
+
         mViewPager.setAdapter(mTeamViewPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
@@ -43,7 +54,7 @@ public class ClansFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         for ( int i = 0; i < mTeamViewPagerAdapter.getCount(); i++) {
-            NotifiableFragment ntFragment = (NotifiableFragment)mTeamViewPagerAdapter.getItem(i);
+            ClansPageBase ntFragment = (ClansPageBase)mTeamViewPagerAdapter.getItem(i);
             ntFragment.onFragmentShow(hidden ? false : true);
         }
     }

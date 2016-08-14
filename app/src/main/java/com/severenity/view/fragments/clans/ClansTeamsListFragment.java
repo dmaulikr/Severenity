@@ -6,10 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.severenity.App;
 import com.severenity.R;
-import com.severenity.entity.User;
-import com.severenity.view.fragments.NotifiableFragment;
 
 /**
  * Created by Andriy on 7/28/2016.
