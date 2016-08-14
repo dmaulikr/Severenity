@@ -13,15 +13,15 @@
         android:maxLength="2000"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
-        android:hint="@string/provide_search_criteria"
+        android:hint="@string/search"
         android:background="#a1a1a1"
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        android:paddingLeft="5dp"
+        android:layout_marginEnd="10dp"
+        android:paddingStart="5dp"
         android:layout_alignParentStart="false"
-        android:layout_marginLeft="5dp"
-        android:layout_toLeftOf="@+id/imageView" />
+        android:layout_marginStart="5dp"
+        android:layout_toStartOf="@+id/imageView" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -48,10 +48,9 @@
             android:text="+"
             android:id="@+id/textView2"
             android:layout_alignParentEnd="true"
-            android:phoneNumber="false"
             android:gravity="center_vertical|center_horizontal"
             android:textColor="@color/white"
-            android:layout_marginRight="5dp" />
+            android:layout_marginStart="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,9 +58,9 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="@string/team_name"
             android:id="@+id/textView3"
-            android:gravity="left|center_vertical"
-            android:layout_toRightOf="@+id/textView"
-            android:paddingLeft="5dp"
+            android:gravity="start|center_vertical"
+            android:layout_toEndOf="@+id/textView"
+            android:paddingStart="5dp"
             android:textColor="@color/white" />
 
         <TextView
@@ -70,8 +69,8 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="usrers"
             android:id="@+id/textView4"
-            android:layout_toLeftOf="@+id/textView2"
-            android:paddingLeft="5dp"
+            android:layout_toStartOf="@+id/textView2"
+            android:paddingStart="5dp"
             android:gravity="center_vertical|center_horizontal" />
     </RelativeLayout>
 
@@ -85,7 +84,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/searchCriteria"
         android:layout_marginTop="4dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:contentDescription="searchButton" />
 
     <com.severenity.view.custom.CustomListView

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="You need to have at least third level of the experience to work with this panel."
+        android:text="@string/level_to_join_team"
         android:gravity="center_vertical|center_horizontal"
         android:singleLine="false"
         android:layout_centerInParent="true"
