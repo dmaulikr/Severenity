@@ -9,7 +9,7 @@ public class Message {
     private String mUserId;
     private String mMessage;
     private String mTimestamp;
-    private String mUserName;
+    private String mUsername;
 
     /*timestamp should be in format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ"*/
     public Message() {}
@@ -26,11 +26,11 @@ public class Message {
     public String getTimestamp() {return this.mTimestamp; }
     public void   setTimestamp(String timestamp) {this.mTimestamp = timestamp;}
 
-    public String getUserName() {return this.mUserName; }
-    public void   setUserName(String username) {this.mUserName = username;}
+    public String getUsername() {return this.mUsername; }
+    public void setUsername(String username) {this.mUsername = username;}
 
     public int getMessageHASH() {
-        String str = mUserId + mMessage + mTimestamp + mUserName;
+        String str = mUserId + mMessage + mTimestamp + mUsername;
         return str.hashCode();
     }
 

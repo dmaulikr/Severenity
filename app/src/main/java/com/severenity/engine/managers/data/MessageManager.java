@@ -37,7 +37,7 @@ public class MessageManager extends DataManager {
         values.put(COLUMN_USER_ID,   msg.getUserID());
         values.put(COLUMN_MESSAGE,   msg.getMessage());
         values.put(COLUMN_TIMESTAMP, msg.getTimestamp());
-        values.put(COLUMN_USER_NAME, msg.getUserName());
+        values.put(COLUMN_USER_NAME, msg.getUsername());
 
         long success = db.insert(TABLE_MESSAGE, "NULL", values);
         db.close();
@@ -70,7 +70,7 @@ public class MessageManager extends DataManager {
             do {
                 Message message = new Message();
                 message.setUserID(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ID)));
-                message.setUserName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
+                message.setUsername(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
                 message.setTimestamp(cursor.getString(cursor.getColumnIndex(COLUMN_TIMESTAMP)));
                 message.setMessage(cursor.getString(cursor.getColumnIndex(COLUMN_MESSAGE)));
 
@@ -115,7 +115,7 @@ public class MessageManager extends DataManager {
         intent.putExtra(COLUMN_MESSAGE, msg.getMessage());
         intent.putExtra(COLUMN_TIMESTAMP, msg.getTimestamp());
         intent.putExtra(COLUMN_USER_ID, msg.getUserID());
-        intent.putExtra(COLUMN_USER_NAME, msg.getUserName());
+        intent.putExtra(COLUMN_USER_NAME, msg.getUsername());
 
         App.getLocalBroadcastManager().sendBroadcast(intent);
 

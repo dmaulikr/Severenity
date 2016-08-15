@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.entity.Message;
@@ -92,7 +91,7 @@ public class MessagesAdapter extends BaseAdapter {
             tvTime.setText(DateUtils.getDateFromTimestamp(message.getTimestamp()));
 
         TextView tvUserName = (TextView) messageView.findViewById(R.id.messageUsername);
-        tvUserName.setText(message.getUserName());
+        tvUserName.setText(message.getUsername());
 
         TextView tvMessage = (TextView) messageView.findViewById(R.id.messageMessage);
         tvMessage.setText(message.getMessage());

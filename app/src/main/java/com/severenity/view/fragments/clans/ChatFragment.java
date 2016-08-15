@@ -88,7 +88,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
                     Message msg = new Message();
                     msg.setMessage(mMessageEdit.getText().toString());
-                    msg.setUserName(mCurrentUser.getName());
+                    msg.setUsername(mCurrentUser.getName());
                     msg.setUserID(mCurrentUser.getId());
                     msg.setTimestamp(DateUtils.getTimestamp());
                     mMessageEdit.setText("");
@@ -170,7 +170,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             Message msg = new Message();
             msg.setMessage(extra.getString(COLUMN_MESSAGE));
             msg.setTimestamp(extra.getString(COLUMN_TIMESTAMP));
-            msg.setUserName(extra.getString(COLUMN_USER_NAME));
+            msg.setUsername(extra.getString(COLUMN_USER_NAME));
             msg.setUserID(extra.getString(COLUMN_USER_ID));
 
             if (mMessageAdapter != null) {

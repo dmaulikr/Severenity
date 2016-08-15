@@ -354,7 +354,7 @@ public class WebSocketManager {
                         final Message message = new Message();
                         message.setUserID(jsonObject.getString("id"));
                         message.setMessage(jsonObject.getString("text"));
-                        message.setUserName(jsonObject.getString("name"));
+                        message.setUsername(jsonObject.getString("name"));
                         message.setTimestamp(jsonObject.getString("timestamp"));
 
                         Handler handler = new Handler(Looper.getMainLooper());
@@ -397,9 +397,9 @@ public class WebSocketManager {
 
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", AccessToken.getCurrentAccessToken().getUserId());
+            jsonObject.put("senderId", AccessToken.getCurrentAccessToken().getUserId());
             jsonObject.put("text", message.getMessage());
-            jsonObject.put("name", message.getUserName());
+            jsonObject.put("senderName", message.getUsername());
             jsonObject.put("timestamp", message.getTimestamp());
             mSocket.emit(Constants.SOCKET_EVENT_MESSAGE, jsonObject);
         } catch (JSONException e) {
