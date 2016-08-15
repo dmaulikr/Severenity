@@ -27,14 +27,14 @@ import java.util.List;
 /**
  * Created by Andriy on 7/28/2016.
  */
-public class ClansWorldFragment extends Fragment implements CustomListView.LoadDataListener {
+public class WorldFragment extends Fragment implements CustomListView.LoadDataListener {
 
     private final int ITEM_PER_REQUEST = 15;
 
     private CustomListView mUsersList;
     private int mOffset = 0;
 
-    public ClansWorldFragment() {
+    public WorldFragment() {
         // Required empty public constructor
     }
 
