@@ -1,6 +1,7 @@
 package com.severenity.view.fragments.clans.pages;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.View;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 public class TeamsPage extends ClansPageBase {
 
     private Context mContext;
+
+    private View currentSelectedPagesButton = null;
 
     public TeamsPage(Context context) {
         super(  R.layout.team_clans_container_fragment,
@@ -57,6 +60,10 @@ public class TeamsPage extends ClansPageBase {
             tv.setText(fragmentInfo.mFragmentButtonCaption);
             tv.setGravity(Gravity.CENTER);
             tv.setOnClickListener(this);
+            if (fragmentInfo.mActiveFragment) {
+                tv.setBackgroundResource(R.drawable.selected_view_backgroud);
+                currentSelectedPagesButton = tv;
+            }
             buttonsIDcounter++;
             ((LinearLayout)v.findViewById(R.id.buttonsLayout)).addView(tv);
         }
@@ -108,5 +115,11 @@ public class TeamsPage extends ClansPageBase {
             fragment.setCustomAnimations(R.anim.chat_slide_up, R.anim.content_slide_up);
             switchFragmentTo(fragment, mFragments.get(fragmentToShow));
         }
+
+        if (currentSelectedPagesButton != null) {
+            currentSelectedPagesButton.setBackgroundResource(0);
+        }
+        view.setBackgroundResource(R.drawable.selected_view_backgroud);
+        currentSelectedPagesButton = view;
     }
 }

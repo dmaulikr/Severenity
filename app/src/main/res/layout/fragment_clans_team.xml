@@ -20,16 +20,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Name:"
-        android:id="@+id/name"
-        android:layout_toRightOf="@+id/teamLogo"
+        android:text="@string/moderator"
+        android:id="@+id/teamModerator"
         android:layout_alignTop="@+id/teamLogo"
+        android:layout_toRightOf="@+id/teamLogo"
         android:layout_marginLeft="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Name:"
+        android:id="@+id/name"
+        android:layout_below="@+id/teamModerator"
+        android:layout_alignLeft="@+id/teamModerator"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Fights:"
         android:id="@+id/fights"
         android:layout_alignLeft="@+id/name"
@@ -39,7 +49,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Total points:"
         android:id="@+id/score"
         android:layout_alignLeft="@+id/name"
