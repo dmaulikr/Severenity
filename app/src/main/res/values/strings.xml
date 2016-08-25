@@ -86,4 +86,5 @@
     <string name="clans_team">Team</string>
     <string name="team_list">All teams</string>
     <string name="level_to_join_team">You have to reach level 3 in order to join teams.</string>
+    <string name="teammate">teammate</string>
 </resources>

@@ -26,7 +26,7 @@ public abstract class ClansPageBase extends Fragment implements View.OnClickList
     private   int                mPageResource;
     private   int                mContentFrameLayout;
 
-    // data that describes warning Fragment that needs to pop's
+    // data that describes warning Fragment that needs to pop
     // up under all other content. Note that the page XML file
     // defined ny mPageResource needs to have this additional
     // FrameLayout added.
@@ -73,15 +73,18 @@ public abstract class ClansPageBase extends Fragment implements View.OnClickList
             }
         }
 
+        FrameLayout warningFragment = (FrameLayout)view.findViewById(mWarningContentLayoutID);
+        if (warningFragment == null) {
+            transaction.commit();
+            return view;
+        }
+
         if (mWarningFragment != null && mWarningContentLayoutID != 0) {
-
-            FrameLayout fl = (FrameLayout)view.findViewById(mWarningContentLayoutID);
-
-            if (fl != null) {
-                transaction.add(mWarningContentLayoutID, mWarningFragment.mFragment, mWarningFragment.mFragmentName)
-                        .addToBackStack(mWarningFragment.mFragmentName)
-                        .show(mWarningFragment.mFragment);
-            }
+            transaction.add(mWarningContentLayoutID, mWarningFragment.mFragment, mWarningFragment.mFragmentName)
+                    .addToBackStack(mWarningFragment.mFragmentName)
+                    .show(mWarningFragment.mFragment);
+        } else {
+            warningFragment.setVisibility(View.GONE);
         }
 
         transaction.commit();

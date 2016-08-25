@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.fragments.clans.ClansTeamFramesContainerFragment">
+    tools:context=".view.fragments.clans.pages.WorldPage">
 
     <FrameLayout
         android:layout_width="match_parent"
