@@ -142,6 +142,8 @@ public class Constants {
     public static String REST_API_PLACES_ALL = HOST + "/places/all";
     public static String REST_API_USER_ALL_RANGE = HOST + "/users/allaspage";
     public static String REST_API_USER_ALL = HOST + "/users/all";
+    public static String REST_API_TEAM_CREATE  = HOST + "/team/create";
+    public static String REST_API_TEAM_GET  = HOST + "/team";
 
     /**
      * Exception constants

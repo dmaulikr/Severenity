@@ -11,6 +11,7 @@ import com.facebook.login.LoginManager;
 import com.severenity.engine.managers.data.MessageManager;
 import com.severenity.engine.managers.data.PlacesManager;
 import com.severenity.engine.managers.data.QuestManager;
+import com.severenity.engine.managers.data.TeamManager;
 import com.severenity.engine.managers.data.UserManager;
 import com.severenity.engine.managers.game.ChipManager;
 import com.severenity.engine.managers.location.LocationManager;
@@ -37,6 +38,7 @@ public class App extends MultiDexApplication {
     private GCMManager gcmManager;
     private RestManager restManager;
     private PlacesManager mPlacesManager;
+    private TeamManager mTeamManager;
 
     private static App mInstance;
     private static Context mContext;
@@ -67,6 +69,7 @@ public class App extends MultiDexApplication {
 
         sharedPrefereces = getSharedPreferences("Severenity", MODE_PRIVATE);
         mPlacesManager = new PlacesManager(mContext);
+        mTeamManager = new TeamManager(mContext);
     }
 
     public SharedPreferences getSharedPreferencesInstance() {
@@ -185,5 +188,13 @@ public class App extends MultiDexApplication {
 
     public static PlacesManager getPlacesManager() {
         return getInstance().getPlacesManagerInstance();
+    }
+
+    public TeamManager getTeamManagerInstance() {
+        return this.mTeamManager;
+    }
+
+    public static TeamManager getTeamManager() {
+        return getInstance().getTeamManagerInstance();
     }
 }
