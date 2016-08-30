@@ -535,7 +535,7 @@ public class LocationManager implements LocationListener {
             displayPlaceMarkerFromDB(true);
         }
 
-        if (mLocationOfLastPlacesUpdateFromGoogle != null &&
+        if (mLocationOfLastPlacesUpdateFromGoogle != null && App.getUserManager().getCurrentUser() != null &&
                 location.distanceTo(mLocationOfLastPlacesUpdateFromGoogle) >= App.getUserManager().getCurrentUser().getViewRadius()) {
 
             mLocationOfLastPlacesUpdateFromGoogle = currentLocation;

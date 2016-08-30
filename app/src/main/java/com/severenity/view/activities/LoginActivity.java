@@ -292,6 +292,11 @@ public class LoginActivity extends AppCompatActivity {
                                 if (devices.length() == 0) {
                                     startDeviceRegistrationService(userId);
                                 } else {
+                                    if (!checkDeviceRegistrationToken(devices.getJSONObject(0).getString("registrationId"))) {
+                                        startDeviceRegistrationService(userId);
+                                        return;
+                                    }
+
                                     isAuthorizing = false;
 
                                     User userFromJson = Utils.createUserFromJSON(userObject);
@@ -397,6 +402,16 @@ public class LoginActivity extends AppCompatActivity {
         intent.putExtra(Constants.INTENT_EXTRA_USER_ID, userId);
         intent.putExtra(Constants.INTENT_EXTRA_REGISTRATION_ID, App.getCurrentFCMToken());
         startService(intent);
+    }
+
+    /**
+     * Checks current device token against one used on the server.
+     *
+     * @param token - token of the current device assigned to user
+     * @return true if token is the same as current, false otherwise.
+     */
+    private boolean checkDeviceRegistrationToken(String token) {
+        return token.equals(App.getCurrentFCMToken());
     }
 
     /**
