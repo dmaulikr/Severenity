@@ -38,6 +38,7 @@ import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_NAME;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_NULLABLE;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_VIEW_RADIUS;
 import static com.severenity.entity.contracts.UserContract.DBUser.TABLE_USERS;
+import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
 
 /**
  * Created by Novosad on 2/17/16.
@@ -73,6 +74,7 @@ public class UserManager extends DataManager {
         values.put(COLUMN_MAX_IMPLANT_HP, user.getMaxImplantHP());
         values.put(COLUMN_ACTION_RADIUS, user.getActionRadius());
         values.put(COLUMN_VIEW_RADIUS, user.getViewRadius());
+        values.put(COLUMN_TEAM, user.getTeam());
 
         long success = db.insert(TABLE_USERS, COLUMN_NULLABLE, values);
         db.close();
@@ -118,6 +120,7 @@ public class UserManager extends DataManager {
             user.setMaxImplantHP(cursor.getInt(cursor.getColumnIndex(COLUMN_MAX_IMPLANT_HP)));
             user.setViewRadius(cursor.getDouble(cursor.getColumnIndex(COLUMN_VIEW_RADIUS)));
             user.setActionRadius(cursor.getDouble(cursor.getColumnIndex(COLUMN_ACTION_RADIUS)));
+            user.setTeam(cursor.getString(cursor.getColumnIndex(COLUMN_TEAM)));
 
             cursor.close();
             db.close();
@@ -153,8 +156,35 @@ public class UserManager extends DataManager {
         values.put(COLUMN_IMPLANT_HP, currentUser.getImplantHP());
         values.put(COLUMN_MAX_IMPLANT_HP, currentUser.getMaxImplantHP());
         values.put(COLUMN_CREDITS, currentUser.getCredits());
+        values.put(COLUMN_TEAM, currentUser.getTeam());
 
         db.update(TABLE_USERS, values, "id = ?", new String[]{currentUser.getId()});
+        db.close();
+
+        retrieveCurrentUser();
+    }
+
+    /**
+     * Updates current user.
+     *
+     * @param columns - specifies the array of columns to be updated
+     * @param values - specifies the value of the columns
+     */
+    public void updateCurrentUser(String[] columns, String[] values) {
+        if (columns.length != values.length) {
+            Log.w(Constants.TAG, "Inconsistent data for columns and values.");
+            return;
+        }
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues ctValues = new ContentValues();
+        int i = 0;
+        for(String column: columns) {
+            ctValues.put(column, values[i]);
+            i++;
+        }
+
+        db.update(TABLE_USERS, ctValues, "id = ?", new String[]{currentUser.getId()});
         db.close();
 
         retrieveCurrentUser();
@@ -173,6 +203,7 @@ public class UserManager extends DataManager {
         values.put(COLUMN_IMPLANT_HP, user.getImplantHP());
         values.put(COLUMN_MAX_IMPLANT_HP, user.getMaxImplantHP());
         values.put(COLUMN_CREDITS, user.getCredits());
+        values.put(COLUMN_TEAM, user.getTeam());
 
         if (currentUser != null && user.getLevel() > currentUser.getLevel()) {
             Intent levelUpIntent = new Intent(context, MainActivity.class);

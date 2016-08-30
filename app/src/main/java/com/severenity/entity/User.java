@@ -25,6 +25,7 @@ public class User {
     private int maxImmunity;
     private int maxEnergy;
     private String createdDate;
+    private String userTeam;
 
     public User() {
 
@@ -171,5 +172,16 @@ public class User {
         }
 
         return obj.toString();
+    }
+
+    public String getTeam() {
+        if (this.userTeam == null) {
+            return "";
+        }
+        return this.userTeam;
+    }
+
+    public void setTeam(String team) {
+        this.userTeam = team;
     }
 }

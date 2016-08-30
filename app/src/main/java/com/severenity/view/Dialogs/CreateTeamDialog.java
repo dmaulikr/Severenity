@@ -3,6 +3,7 @@ package com.severenity.view.Dialogs;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import com.severenity.utils.common.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
 
 /**
  * Created by Andriy on 8/25/2016.
@@ -46,6 +49,7 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.dialog_create_team, null);
+        setCancelable(false);
 
         ((Button)view.findViewById(R.id.btnCreateTeam)).setOnClickListener(this);
         ((Button)view.findViewById(R.id.btnCancel)).setOnClickListener(this);
@@ -69,6 +73,7 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
                 }
 
                 App.getTeamManager().createTeam(teamName, App.getUserManager().getCurrentUser(), teamCreationCallBack);
+                //App.getTeamManager().getTeam("ffff", teamFindCallback);
         }
     }
 
@@ -80,10 +85,14 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
         public void onResponseCallback(JSONObject response) {
             try {
                 if (response.getString("result").equals("success")) {
+                    String teamName = response.getString("data");
+                    App.getUserManager().updateCurrentUser(new String[]{COLUMN_TEAM}, new String[]{teamName});
                     mListener.OnTeamCreated();
                 } else {
                     // TODO: Error handling
-                    Toast.makeText(getContext(), "Team creation fail", Toast.LENGTH_SHORT).show();
+                    String err = response.getString("data");
+                    Toast.makeText(getContext(), "Team creation fail: " + err, Toast.LENGTH_SHORT).show();
+                    Log.e(Constants.TAG, "Team creation fail: " + err);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -93,6 +102,7 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
         @Override
         public void onErrorCallback(NetworkResponse response) {
             //TODO: Error handling
+            Log.e(Constants.TAG, "Team creation fail: " + (response == null ? "" : response.toString()));
         }
     };
 
@@ -102,6 +112,10 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
             try {
                 if (response.getString("result").equals("success")) {
                     JSONObject team = new JSONObject(response.getString("data"));
+                } else {
+                    // TODO: Error handling
+                    String err = response.getString("data");
+                    Log.e(Constants.TAG, "find team fail: " + err);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -111,6 +125,7 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
         @Override
         public void onErrorCallback(NetworkResponse response) {
             // TODO: Error handling
+            Log.e(Constants.TAG, "Team creation fail: " + response.toString());
         }
     };
 }

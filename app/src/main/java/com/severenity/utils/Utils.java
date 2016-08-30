@@ -110,6 +110,7 @@ public class Utils {
             user.setId(response.getString("userId"));
             user.setName(response.getString("name"));
             user.setEmail(response.getString("email"));
+            user.setTeam(response.optString("team", ""));
 
             JSONObject profileObject = response.getJSONObject("profile");
             user.setDistance(profileObject.getInt("distance"));

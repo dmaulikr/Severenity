@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.severenity.App;
 import com.severenity.R;
 import com.severenity.view.Dialogs.CreateTeamDialog;
 
@@ -15,6 +16,7 @@ import com.severenity.view.Dialogs.CreateTeamDialog;
 public class TeamsListFragment extends Fragment implements View.OnClickListener, CreateTeamDialog.OnTeamCreatedListener {
 
     private View mAddTeamButtonsView = null;
+    private CreateTeamDialog mTeamDialog;
 
     public TeamsListFragment() {
         // Required empty public constructor
@@ -28,8 +30,10 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
 
         mAddTeamButtonsView = view.findViewById(R.id.createTeam);
         mAddTeamButtonsView.setOnClickListener(this);
-        //if (App.getUserManager().getCurrentUser().getLevel() < 5 || user is within some team )
-        //mAddTeamButtonsView.setVisibility(View.GONE);
+        //if (App.getUserManager().getCurrentUser().getLevel() < 5
+        if (!App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
+            mAddTeamButtonsView.setVisibility(View.GONE);
+        }
 
         return view;
     }
@@ -38,9 +42,9 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.createTeam: {
-                CreateTeamDialog teamDialog = CreateTeamDialog.newInstance();
-                teamDialog.setListener(this);
-                teamDialog.show(getFragmentManager(), "CreateTeam");
+                mTeamDialog = CreateTeamDialog.newInstance();
+                mTeamDialog.setListener(this);
+                mTeamDialog.show(getFragmentManager(), "CreateTeam");
                 break;
             }
         }
@@ -48,6 +52,10 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void OnTeamCreated() {
-
+        mTeamDialog.dismiss();
+        mTeamDialog = null;
+        if (!App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
+            mAddTeamButtonsView.setVisibility(View.GONE);
+        }
     }
 }

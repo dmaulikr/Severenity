@@ -24,7 +24,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     // 4 - added place/owners tables
     // 5 - added recovery info table
     // 6 - added max implant hp column
-    private static final int DB_VERSION = 6;
+    // 7 - added team column into users tanle
+    private static final int DB_VERSION = 7;
     private static final String DB_NAME = "Filter.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -120,6 +121,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     private static final String DB_SQL_ADD_MAX_IMPLANT_HP_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_MAX_IMPLANT_HP + INT_TYPE + ";";
 
+    private static final String DB_SQL_ADD_USER_TEAM_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_TEAM + TEXT_TYPE + ";";
+
     private void createPlace(SQLiteDatabase db) {
         db.execSQL(DB_SQL_CREATE_PLACES);
         db.execSQL(DB_SQL_CREATE_PLACES_OWNERS);
@@ -170,6 +173,10 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
         if (oldVersion == 5 && newVersion == DB_VERSION) {
             db.execSQL(DB_SQL_ADD_MAX_IMPLANT_HP_COLUMN);
+        }
+
+        if (oldVersion == 6 && newVersion == DB_VERSION) {
+            db.execSQL(DB_SQL_ADD_USER_TEAM_COLUMN);
         }
     }
 

@@ -29,6 +29,7 @@ public final class UserContract {
         public static final String COLUMN_VIEW_RADIUS = "viewRadius";
         public static final String COLUMN_ACTION_RADIUS = "actionRadius";
         public static final String COLUMN_LEVEL = "level";
+        public static final String COLUMN_TEAM = "team";
         public static final String COLUMN_NULLABLE = "NULL";
     }
 }
