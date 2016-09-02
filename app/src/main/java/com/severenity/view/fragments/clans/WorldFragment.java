@@ -75,7 +75,7 @@ public class WorldFragment extends Fragment implements CustomListView.LoadDataLi
                     List<User> result = new ArrayList<User>();
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject jsonUser = data.getJSONObject(i);
-                        User user = Utils.createLimitedUserFromJSON(jsonUser);
+                        User user = Utils.createUserFromJSON(jsonUser);
                         if (user != null) {
                             result.add(user);
                         }

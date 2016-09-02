@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.severenity.App;
 import com.severenity.R;
 import com.severenity.view.fragments.clans.ChatFragment;
 import com.severenity.view.fragments.clans.TeamFragment;
@@ -34,13 +35,17 @@ public class TeamsPage extends ClansPageBase {
         mContext = context;
         mPageTitle = mContext.getResources().getString(R.string.title_team);
         mFragments = new ArrayList<>(3);
-        mFragments.add(new FragmentInfo(new TeamsListFragment(), "teamsList", "Team list", true));
-        mFragments.add(new FragmentInfo(new TeamFragment(), "teamFragment", "Team", false));
+
+        boolean showTeamPageFirst = !App.getUserManager().getCurrentUser().getTeam().isEmpty();
+        mFragments.add(new FragmentInfo(new TeamsListFragment(), "teamsList", "Team list", !showTeamPageFirst));
+        mFragments.add(new FragmentInfo(new TeamFragment(), "teamFragment", "Team", showTeamPageFirst));
         mFragments.add(new FragmentInfo(new ChatFragment(), "chatFragment", "Chat", false));
+        mWarningContentLayoutID = R.id.warningFragmentContent;
 
         // if users level is lower then 3 we show warning
-        mWarningContentLayoutID = R.id.warningFragmentContent;
-        mWarningFragment = new FragmentInfo(new WarningFragment(), "Warning", "Warning", true);
+        if (App.getUserManager().getCurrentUser().getLevel() < 3) {
+            mWarningFragment = new FragmentInfo(new WarningFragment(), "Warning", "Warning", true);
+        }
     }
 
     @Override

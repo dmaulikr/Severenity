@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.severenity.R;
-import com.severenity.entity.User;
+import com.severenity.entity.Team;
 import com.severenity.utils.common.Constants;
 
 import java.util.ArrayList;
@@ -17,18 +17,16 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by Andriy on 8/4/2016.
+ * Created by Andriy on 8/31/2016.
  */
+public class TeamsListAdapter extends CustomSearchAdapterBase<Team> {
 
-public class UsersSearchAdapter extends CustomSearchAdapterBase<User> {
-
-    public UsersSearchAdapter(Context ctx) {
-        super(ctx, R.layout.usersearch_item_list);
+    public TeamsListAdapter(Context ctx) {
+        super(ctx, R.layout.teams_item_list);
     }
 
-    @Override
-    public <T> void addList(List<T> user) {
-        mItemList.addAll((Collection<? extends User>) user);
+    public <T> void addList(List<T> teams) {
+        mItemList.addAll((Collection<? extends Team>) teams);
     }
 
     @Override
@@ -37,25 +35,24 @@ public class UsersSearchAdapter extends CustomSearchAdapterBase<User> {
 
         if (result == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            result = inflater.inflate(R.layout.usersearch_item_list, parent, false);
+            result = inflater.inflate(R.layout.teams_item_list, parent, false);
         }
 
         TextView number = (TextView) result.findViewById(R.id.recordNumber);
         number.setText(Integer.toString(position + 1));
 
-        User user = getItem(position);
-        if (user == null){
-            Log.e(Constants.TAG, "Null object in the UserSearchAdapter.");
+        Team team = getItem(position);
+        if (team == null){
+            Log.e(Constants.TAG, "Null object in the TeamListAdapter.");
             return null;
         }
 
-        TextView usrName = (TextView) result.findViewById(R.id.userName);
-        usrName.setText(user.getName());
+        TextView tmName = (TextView) result.findViewById(R.id.teamName);
+        tmName.setText(team.getName());
 
-        TextView userExp = (TextView) result.findViewById(R.id.userExp);
-        userExp.setText(Integer.toString(user.getExperience()));
+        TextView membersCount = (TextView) result.findViewById(R.id.membersCount);
+        membersCount.setText(Integer.toString(team.getMembers().size()));
 
         return result;
     }
 }
-

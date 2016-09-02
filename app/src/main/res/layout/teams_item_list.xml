@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:background="@drawable/search_item_backgroud">
+
+    <TextView android:id="@+id/recordNumber"
+        android:layout_width="35dp"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical|center_horizontal" />
+
+    <TextView
+        android:id="@+id/teamName"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="left|center_vertical"
+        android:layout_toRightOf="@+id/recordNumber"
+        android:layout_toLeftOf="@+id/membersCount"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
+
+    <TextView
+        android:id="@+id/membersCount"
+        android:layout_width="100dp"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_toLeftOf="@+id/imageView2"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/imageView2"
+        android:src="@drawable/icon_info"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp" />
+
+</RelativeLayout>

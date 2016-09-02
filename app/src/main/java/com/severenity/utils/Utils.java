@@ -20,18 +20,23 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.severenity.App;
 import com.severenity.R;
+import com.severenity.entity.Team;
 import com.severenity.entity.User;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.activities.MainActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -106,10 +111,10 @@ public class Utils {
     public static User createUserFromJSON(JSONObject response) {
         User user = new User();
         try {
-            user.setCreatedDate(response.getString("createdDate"));
+            user.setCreatedDate(response.optString("createdDate"));
             user.setId(response.getString("userId"));
             user.setName(response.getString("name"));
-            user.setEmail(response.getString("email"));
+            user.setEmail(response.optString("email"));
             user.setTeam(response.optString("team", ""));
 
             JSONObject profileObject = response.getJSONObject("profile");
@@ -134,39 +139,25 @@ public class Utils {
         return null;
     }
 
-
     /**
-     * Creates user in from JSON object. Limited means that it will fill only data
-     * needed World Clan's list view to be displayed. This functioncan be extended
-     * in future.
-     *
-     * AF: The reason why I can't use method above is that some users doesn't have
-     * all fields provided. So function above will not create user e.g. if it's
-     * info misses email.
-     *
-     * @param response - JSON response to create user from.
+     *  Creates team object from JSON
      */
-    public static User createLimitedUserFromJSON(JSONObject response) {
-        User user = new User();
+    public static Team createTeamFromJSON(JSONObject response){
+        Team team = new Team();
+
         try {
-            user.setId(response.getString("userId"));
-            user.setName(response.getString("name"));
+            team.setName(response.optString("name"));
+            JSONObject moderatorJSON = response.getJSONObject("moderator");
+            User moderator = Utils.createUserFromJSON(moderatorJSON);
+            team.setModerator(moderator);
 
-            JSONObject profileObject = response.getJSONObject("profile");
-            user.setDistance(profileObject.getInt("distance"));
-            user.setExperience(profileObject.getInt("experience"));
-            user.setImmunity(profileObject.getInt("immunity"));
-            user.setEnergy(profileObject.getInt("energy"));
-            user.setCredits(profileObject.getInt("credits"));
-            user.setImplantHP(profileObject.getInt("implantHP"));
-            user.setMaxImplantHP(profileObject.getInt("maxImplantHP"));
-            user.setLevel(profileObject.getInt("level"));
-            user.setMaxImmunity(profileObject.getInt("maxImmunity"));
-            user.setMaxEnergy(profileObject.getInt("maxEnergy"));
-            user.setViewRadius(profileObject.getInt("viewRadius") * 1.0);
-            user.setActionRadius(profileObject.getInt("actionRadius") * 1.0);
+            JSONArray members = response.getJSONArray("members");
+            for(int i = 0; i < members.length(); i++) {
+                User user = Utils.createUserFromJSON(members.getJSONObject(i));
+                team.addMember(user);
+            }
 
-            return user;
+            return  team;
         } catch (JSONException e) {
             e.printStackTrace();
         }

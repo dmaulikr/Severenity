@@ -73,7 +73,7 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
                 }
 
                 App.getTeamManager().createTeam(teamName, App.getUserManager().getCurrentUser(), teamCreationCallBack);
-                //App.getTeamManager().getTeam("ffff", teamFindCallback);
+                return;
         }
     }
 

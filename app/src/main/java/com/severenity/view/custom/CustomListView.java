@@ -8,6 +8,7 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.severenity.R;
+import com.severenity.engine.adapters.CustomSearchAdapterBase;
 import com.severenity.engine.adapters.UsersSearchAdapter;
 import com.severenity.entity.User;
 
@@ -21,7 +22,7 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
     private View mFooter;
     private boolean mIsLoading;
     private LoadDataListener mListener;
-    private UsersSearchAdapter mAdapter;
+    private CustomSearchAdapterBase mAdapter;
 
     public CustomListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -50,13 +51,13 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
         this.mListener = listener;
     }
 
-    public void setAdapter(UsersSearchAdapter adapter) {
+    public void setAdapter(CustomSearchAdapterBase adapter) {
         super.setAdapter(adapter);
         this.mAdapter = adapter;
         this.removeFooterView(mFooter);
     }
 
-    public void addNewData(List<User> data) {
+    public void addNewData(List data) {
 
         this.removeFooterView(mFooter);
 

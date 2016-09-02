@@ -29,12 +29,33 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/teamModeratorText"
+        android:layout_alignParentEnd="false"
+        android:layout_marginRight="15dp"
+        android:layout_alignTop="@+id/teamModerator"
+        android:singleLine="true"
+        android:layout_toRightOf="@+id/teamModerator"
+        android:layout_marginLeft="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Name:"
         android:id="@+id/name"
         android:layout_below="@+id/teamModerator"
         android:layout_alignLeft="@+id/teamModerator"
         android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/teamNameText"
+        android:layout_alignLeft="@+id/teamModeratorText"
+        android:layout_alignTop="@+id/name"
+        android:singleLine="true" />
 
     <TextView
         android:layout_width="wrap_content"
