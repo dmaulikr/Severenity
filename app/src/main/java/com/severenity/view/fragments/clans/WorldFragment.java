@@ -1,6 +1,5 @@
 package com.severenity.view.fragments.clans;
 
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -65,6 +65,11 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
         this.removeFooterView(mFooter);
     }
 
+    /**
+     * method used to add additional data to be displayed in the list
+     *
+     * @param data - data to be added
+     */
     public void addNewData(List data) {
 
         this.removeFooterView(mFooter);
@@ -94,30 +99,26 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
 
     @Override
     public void onScrollStateChanged(AbsListView absListView, int i) {
+        if (i == SCROLL_STATE_IDLE ) {
+            // is the position is the last item within the adapter
+            // request more items.
+            int count = getAdapter().getCount();
+            int pos = getLastVisiblePosition();
+            if (count - 1 == pos) {
+                if (mShowSpinner) {
+                    this.addFooterView(mFooter);
+                    mIsLoading = true;
+                }
 
+                if (mListener != null) {
+                    mListener.loadData();
+                }
+            }
+        }
     }
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem,
                          int visibleItemCount, int totalItemCount) {
-
-        if (getAdapter() == null)
-            return ;
-
-        if (getAdapter().getCount() == 0)
-            return ;
-
-        int l = visibleItemCount + firstVisibleItem;
-        if (l >= totalItemCount && !mIsLoading) {
-            // It is time to add new data. We call the listener
-            if (mShowSpinner) {
-                this.addFooterView(mFooter);
-                mIsLoading = true;
-            }
-
-            if (mListener != null) {
-                mListener.loadData();
-            }
-        }
     }
 }
