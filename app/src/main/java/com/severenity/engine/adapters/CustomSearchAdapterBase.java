@@ -39,4 +39,8 @@ public abstract class CustomSearchAdapterBase<T> extends ArrayAdapter<T> {
 
     @Override
     public abstract View getView(int position, View convertView, ViewGroup parent);
+
+    public void clearData() {
+        mItemList.clear();
+    }
 }

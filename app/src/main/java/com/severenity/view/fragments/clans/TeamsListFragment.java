@@ -124,6 +124,7 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
         if (!App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
             mAddTeamButtonsView.setVisibility(View.GONE);
         }
+        Utils.hideKeyboard(getActivity());
 
         // pass information further to the main holder
         // so that it can create team fragment and switch

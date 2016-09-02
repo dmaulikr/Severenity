@@ -23,6 +23,9 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
     private boolean mIsLoading;
     private LoadDataListener mListener;
     private CustomSearchAdapterBase mAdapter;
+    // When list is used not for infinite info displaying
+    // we do not need to show footer.
+    private boolean mShowSpinner = true;
 
     public CustomListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -44,7 +47,12 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
 
         LayoutInflater inflater = (LayoutInflater) super.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mFooter = (View) inflater.inflate(R.layout.loading_layout, null);
-        this.addFooterView(mFooter);
+
+        if (mShowSpinner) {
+            this.addFooterView(mFooter);
+        } else {
+            this.removeFooterView(mFooter);
+        }
     }
 
     public void setListener(LoadDataListener listener) {
@@ -66,8 +74,22 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
         mIsLoading = false;
     }
 
+    public void clearData() {
+        mAdapter.clearData();
+        mAdapter.notifyDataSetChanged();
+    }
+
     public static interface LoadDataListener {
         public void loadData() ;
+    }
+
+    public void showLoadSpinner(boolean show) {
+        mShowSpinner = show;
+        if (mShowSpinner) {
+            this.addFooterView(mFooter);
+        } else {
+            this.removeFooterView(mFooter);
+        }
     }
 
     @Override
@@ -88,9 +110,14 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
         int l = visibleItemCount + firstVisibleItem;
         if (l >= totalItemCount && !mIsLoading) {
             // It is time to add new data. We call the listener
-            this.addFooterView(mFooter);
-            mIsLoading = true;
-            mListener.loadData();
+            if (mShowSpinner) {
+                this.addFooterView(mFooter);
+                mIsLoading = true;
+            }
+
+            if (mListener != null) {
+                mListener.loadData();
+            }
         }
     }
 }

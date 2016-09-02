@@ -1,6 +1,5 @@
 package com.severenity.view.fragments.clans;
 
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,10 +11,12 @@ import android.widget.TextView;
 import com.android.volley.NetworkResponse;
 import com.severenity.App;
 import com.severenity.R;
+import com.severenity.engine.adapters.UsersSearchAdapter;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.Team;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
+import com.severenity.view.custom.CustomListView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ public class TeamFragment extends Fragment {
 
     private TextView mTeamModerator;
     private TextView mTeamName;
+    private CustomListView mUsersInTeamList;
 
     public TeamFragment() {
         // Required empty public constructor
@@ -40,6 +42,11 @@ public class TeamFragment extends Fragment {
 
         mTeamModerator = (TextView)view.findViewById(R.id.teamModeratorText);
         mTeamName = (TextView)view.findViewById(R.id.teamNameText);
+
+        UsersSearchAdapter searchAdapter = new UsersSearchAdapter(getContext());
+        mUsersInTeamList = (CustomListView)view.findViewById(R.id.usersInTeamList);
+        mUsersInTeamList.setAdapter(searchAdapter);
+        mUsersInTeamList.showLoadSpinner(false);
 
         requestTeamInfo();
 
@@ -64,6 +71,8 @@ public class TeamFragment extends Fragment {
                             Team team = Utils.createTeamFromJSON(response.getJSONObject("data"));
                             mTeamModerator.setText(team.getModerator().getName());
                             mTeamName.setText(team.getName());
+                            mUsersInTeamList.clearData();
+                            mUsersInTeamList.addNewData(team.getMembers());
                         } else {
                             Log.e(Constants.TAG, "Getting team by name fails");
                         }
