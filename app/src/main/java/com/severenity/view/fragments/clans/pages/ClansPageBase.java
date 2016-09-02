@@ -11,14 +11,14 @@ import android.widget.FrameLayout;
 
 import com.severenity.view.fragments.clans.FragmentInfo;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Andriy on 8/13/2016.
  */
 public abstract class ClansPageBase extends Fragment implements View.OnClickListener {
 
-    protected List<FragmentInfo> mFragments;
+    protected Map<Integer, FragmentInfo> mFragments;
     protected FragmentManager    mFragmentManager;
     protected String             mPageTitle;
 
@@ -32,9 +32,6 @@ public abstract class ClansPageBase extends Fragment implements View.OnClickList
     // FrameLayout added.
     protected int                mWarningContentLayoutID = 0;
     protected FragmentInfo       mWarningFragment = null;
-
-    // variable to start button id's from.
-    protected final int BUTTONS_ID_OFFSET = 10001;
 
     public ClansPageBase() {
     }
@@ -64,12 +61,15 @@ public abstract class ClansPageBase extends Fragment implements View.OnClickList
 
         mFragmentManager = getFragmentManager();
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        for (FragmentInfo fragmentInfo: mFragments) {
-            transaction.add(mContentFrameLayout, fragmentInfo.mFragment, fragmentInfo.mFragmentName);
-            if (!fragmentInfo.mActiveFragment) {
-                transaction.hide(fragmentInfo.mFragment);
+
+        for (Map.Entry<Integer, FragmentInfo> entry : mFragments.entrySet()) {
+
+            FragmentInfo info = entry.getValue();
+            transaction.add(mContentFrameLayout, info.mFragment, info.mFragmentName);
+            if (!info.mActiveFragment) {
+                transaction.hide(info.mFragment);
             } else {
-                mCurrentFragment = fragmentInfo;
+                mCurrentFragment = info;
             }
         }
 

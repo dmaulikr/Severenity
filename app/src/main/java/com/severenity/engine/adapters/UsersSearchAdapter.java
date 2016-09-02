@@ -5,14 +5,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.severenity.R;
 import com.severenity.entity.User;
 import com.severenity.utils.common.Constants;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 

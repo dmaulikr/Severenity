@@ -37,9 +37,13 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
 
     private CustomListView mTeamsList;
 
-    public TeamsListFragment() {
+    public TeamsListFragment(CreateTeamDialog.OnTeamCreatedListener listener) {
         // Required empty public constructor
+        mListener = listener;
     }
+
+    // listener that might handle event once team is created
+    private CreateTeamDialog.OnTeamCreatedListener mListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,9 +124,20 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
         if (!App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
             mAddTeamButtonsView.setVisibility(View.GONE);
         }
+
+        // pass information further to the main holder
+        // so that it can create team fragment and switch
+        // user to it.
+        mListener.OnTeamCreated();
     }
 
     @Override
     public void loadData() { requestTeams(); }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if (!hidden) {
+            requestTeams();
+        }
+    }
 }

@@ -5,8 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import com.severenity.R;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -2,6 +2,7 @@ package com.severenity.view.fragments.clans.pages;
 
 import android.content.Context;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.ArrayMap;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +14,17 @@ import com.severenity.view.fragments.clans.ChatFragment;
 import com.severenity.view.fragments.clans.WorldFragment;
 import com.severenity.view.fragments.clans.FragmentInfo;
 
-import java.util.ArrayList;
-
 /**
  * Created by Andriy on 8/14/2016.
  */
 public class WorldPage extends ClansPageBase {
 
     private Context mContext;
+
     // indicate button's ID that current page has.
     private final int BUTTON_ID = 1;
+    protected final int BUTTONS_ID_OFFSET = 20001;
 
-    //
     TextView mSwitchButtonTextView;
 
     // two fragments that this page holds
@@ -37,9 +37,9 @@ public class WorldPage extends ClansPageBase {
 
         mContext   = context;
         mPageTitle = mContext.getResources().getString(R.string.title_world);
-        mFragments = new ArrayList<>(2);
-        mFragments.add(mWorldFragment);
-        mFragments.add(mChatFragment);
+        mFragments = new ArrayMap<>(2);
+        mFragments.put(BUTTONS_ID_OFFSET, mWorldFragment);
+        mFragments.put(BUTTONS_ID_OFFSET + BUTTON_ID, mChatFragment);
     }
 
     @Override
@@ -80,11 +80,11 @@ public class WorldPage extends ClansPageBase {
                 FragmentTransaction t = getFragmentManager().beginTransaction();
 
                 ((TextView) view).setText(getCurrentFragment().mFragmentButtonCaption);
-                if (getCurrentFragment().mFragmentName.equals("worldClan")) {
+                if (getCurrentFragment().mFragmentName.equals(mWorldFragment.mFragmentName)) {
                     t.setCustomAnimations(R.anim.chat_slide_up, R.anim.content_slide_up);
                     switchFragmentTo(t, mChatFragment);
 
-                } else if (getCurrentFragment().mFragmentName.equals("chatFragment")) {
+                } else if (getCurrentFragment().mFragmentName.equals(mChatFragment.mFragmentName)) {
                     t.setCustomAnimations(R.anim.content_slide_down, R.anim.chat_slide_down);
                     switchFragmentTo(t, mWorldFragment);
                 }

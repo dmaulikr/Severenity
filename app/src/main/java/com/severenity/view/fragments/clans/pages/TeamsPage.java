@@ -1,8 +1,8 @@
 package com.severenity.view.fragments.clans.pages;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.util.ArrayMap;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,22 +11,27 @@ import android.widget.TextView;
 
 import com.severenity.App;
 import com.severenity.R;
+import com.severenity.view.Dialogs.CreateTeamDialog;
 import com.severenity.view.fragments.clans.ChatFragment;
 import com.severenity.view.fragments.clans.TeamFragment;
 import com.severenity.view.fragments.clans.TeamsListFragment;
 import com.severenity.view.fragments.clans.FragmentInfo;
 import com.severenity.view.fragments.clans.WarningFragment;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by Andriy on 8/14/2016.
  */
-public class TeamsPage extends ClansPageBase {
+public class TeamsPage extends ClansPageBase implements CreateTeamDialog.OnTeamCreatedListener {
+
+    // variable to start button id's from.
+    protected final int BUTTONS_ID_OFFSET = 10001;
 
     private Context mContext;
 
     private View currentSelectedPagesButton = null;
+    private LinearLayout mButtonsLayout;
 
     public TeamsPage(Context context) {
         super(  R.layout.team_clans_container_fragment,
@@ -34,12 +39,14 @@ public class TeamsPage extends ClansPageBase {
 
         mContext = context;
         mPageTitle = mContext.getResources().getString(R.string.title_team);
-        mFragments = new ArrayList<>(3);
+        mFragments = new ArrayMap<>();
 
         boolean showTeamPageFirst = !App.getUserManager().getCurrentUser().getTeam().isEmpty();
-        mFragments.add(new FragmentInfo(new TeamsListFragment(), "teamsList", "Team list", !showTeamPageFirst));
-        mFragments.add(new FragmentInfo(new TeamFragment(), "teamFragment", "Team", showTeamPageFirst));
-        mFragments.add(new FragmentInfo(new ChatFragment(), "chatFragment", "Chat", false));
+        mFragments.put(BUTTONS_ID_OFFSET, new FragmentInfo(new TeamsListFragment(this), "teamsList", "Team list", !showTeamPageFirst));
+        if (!App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
+            mFragments.put(BUTTONS_ID_OFFSET + 1, new FragmentInfo(new TeamFragment(), "teamFragment", "Team",showTeamPageFirst));
+        }
+        mFragments.put(BUTTONS_ID_OFFSET + 2, new FragmentInfo(new ChatFragment(), "chatFragment", "Chat", false));
         mWarningContentLayoutID = R.id.warningFragmentContent;
 
         // if users level is lower then 3 we show warning
@@ -51,29 +58,40 @@ public class TeamsPage extends ClansPageBase {
     @Override
     public View onCreate(View view) {
         View v = super.onCreate(view);
+        mButtonsLayout = ((LinearLayout)v.findViewById(R.id.buttonsLayout));
 
-        int buttonsIDcounter = 0;
-        for(FragmentInfo fragmentInfo: mFragments) {
-            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    mFragments.size());
-
-            TextView tv = new TextView(getContext());
-            tv.setLayoutParams(param);
-            tv.setId(BUTTONS_ID_OFFSET + buttonsIDcounter);
-            tv.setText(fragmentInfo.mFragmentButtonCaption);
-            tv.setGravity(Gravity.CENTER);
-            tv.setOnClickListener(this);
-            if (fragmentInfo.mActiveFragment) {
-                tv.setBackgroundResource(R.drawable.selected_view_backgroud);
-                currentSelectedPagesButton = tv;
-            }
-            buttonsIDcounter++;
-            ((LinearLayout)v.findViewById(R.id.buttonsLayout)).addView(tv);
+        for (Map.Entry<Integer, FragmentInfo> entry : mFragments.entrySet()) {
+            createButton(entry.getValue(), entry.getKey());
         }
 
         return v;
+    }
+
+    /**
+     * Creates a button as a TextView for the fragment
+     *
+     * @param fragmentInfo - information about the fragment fro which the
+     *                     button is going to be created
+     * @param buttonID     - identifies the ID of the resource
+     */
+    private void createButton(FragmentInfo fragmentInfo, int buttonID) {
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                mFragments.size());
+
+        TextView tv = new TextView(getContext());
+        tv.setLayoutParams(param);
+        tv.setId(buttonID);
+        tv.setText(fragmentInfo.mFragmentButtonCaption);
+        tv.setGravity(Gravity.CENTER);
+        tv.setOnClickListener(this);
+        tv.setBackgroundResource(0);
+        if (fragmentInfo.mActiveFragment) {
+            tv.setBackgroundResource(R.drawable.selected_view_backgroud);
+            currentSelectedPagesButton = tv;
+        }
+        mButtonsLayout.addView(tv);
     }
 
     @Override
@@ -84,47 +102,50 @@ public class TeamsPage extends ClansPageBase {
     @Override
     public void onClick(View view) {
 
-        int fragmentToShow = 0;
-        FragmentTransaction fragment = null;
-        switch (view.getId()) {
-
-            case BUTTONS_ID_OFFSET: /*Teams list*/ {
-                fragment = getFragmentManager().beginTransaction();
-                if (getCurrentFragment().mFragmentName.equals("teamsList")) {
-                    return;
-                }
-                fragmentToShow = 0;
-                break;
-            }
-
-            case BUTTONS_ID_OFFSET + 1: /*Team*/ {
-                fragment = getFragmentManager().beginTransaction();
-                if (getCurrentFragment().mFragmentName.equals("teamFragment")) {
-                    return;
-                }
-                fragmentToShow = 1;
-                break;
-            }
-
-            case BUTTONS_ID_OFFSET + 2: /*Chat*/ {
-                fragment = getFragmentManager().beginTransaction();
-                if (getCurrentFragment().mFragmentName.equals("chatFragment")) {
-                    return;
-                }
-                fragmentToShow = 2;
-                break;
-            }
+        FragmentInfo info = mFragments.get(view.getId());
+        if (info == null) {
+            return;
         }
 
-        if (fragment != null) {
-            fragment.setCustomAnimations(R.anim.chat_slide_up, R.anim.content_slide_up);
-            switchFragmentTo(fragment, mFragments.get(fragmentToShow));
+        if (getCurrentFragment().mFragmentName.equals(info.mFragmentName)) {
+            return;
         }
+
+        FragmentTransaction fragment = getFragmentManager().beginTransaction();
+        fragment.setCustomAnimations(R.anim.chat_slide_up, R.anim.content_slide_up);
+        switchFragmentTo(fragment, info);
 
         if (currentSelectedPagesButton != null) {
             currentSelectedPagesButton.setBackgroundResource(0);
         }
         view.setBackgroundResource(R.drawable.selected_view_backgroud);
         currentSelectedPagesButton = view;
+    }
+
+    @Override
+    public void OnTeamCreated() {
+        if (mFragments.get(BUTTONS_ID_OFFSET + 1) == null) {
+            FragmentInfo info = new FragmentInfo(new TeamFragment(), "teamFragment", "Team", false);
+            mFragments.put(BUTTONS_ID_OFFSET + 1, info);
+
+            FragmentTransaction transaction = mFragmentManager.beginTransaction();
+            transaction.add(R.id.teamFragmentsContent, info.mFragment, info.mFragmentName);
+            transaction.hide(info.mFragment);
+            transaction.commit();
+
+            for (Map.Entry<Integer, FragmentInfo> entry : mFragments.entrySet()) {
+                LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        mFragments.size());
+
+                TextView tv = (TextView)getView().findViewById(entry.getKey());
+                if (tv != null) {
+                    tv.setLayoutParams(param);
+                }
+            }
+            createButton(info, BUTTONS_ID_OFFSET + 1);
+            ((TextView)getView().findViewById(BUTTONS_ID_OFFSET + 1)).callOnClick();
+        }
     }
 }
