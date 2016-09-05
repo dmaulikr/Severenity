@@ -51,6 +51,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     UserContract.DBUser.COLUMN_CREDITS + INT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_VIEW_RADIUS + REAL_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_ACTION_RADIUS + REAL_TYPE + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_TEAM + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_LEVEL + INT_TYPE + " )";
 
     private static final String DB_SQL_CREATE_MESSAGES =

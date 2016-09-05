@@ -34,18 +34,22 @@ public class TeamsPage extends ClansPageBase implements CreateTeamDialog.OnTeamC
     private LinearLayout mButtonsLayout;
 
     public TeamsPage(Context context) {
-        super(  R.layout.team_clans_container_fragment,
-                R.id.teamFragmentsContent);
+        super(R.layout.team_clans_container_fragment, R.id.teamFragmentsContent);
 
         mContext = context;
         mPageTitle = mContext.getResources().getString(R.string.title_team);
         mFragments = new ArrayMap<>();
 
-        boolean showTeamPageFirst = !App.getUserManager().getCurrentUser().getTeam().isEmpty();
-        mFragments.put(BUTTONS_ID_OFFSET, new FragmentInfo(new TeamsListFragment(this), "teamsList", "Team list", !showTeamPageFirst));
-        if (!App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
-            mFragments.put(BUTTONS_ID_OFFSET + 1, new FragmentInfo(new TeamFragment(), "teamFragment", "Team",showTeamPageFirst));
+        boolean showTeamPageFirst = false;
+        if (App.getUserManager().getCurrentUser().getTeam() != null) {
+            showTeamPageFirst = !App.getUserManager().getCurrentUser().getTeam().isEmpty();
         }
+
+        mFragments.put(BUTTONS_ID_OFFSET, new FragmentInfo(new TeamsListFragment(this), "teamsList", "Team list", !showTeamPageFirst));
+        if (showTeamPageFirst) {
+            mFragments.put(BUTTONS_ID_OFFSET + 1, new FragmentInfo(new TeamFragment(), "teamFragment", "Team", showTeamPageFirst));
+        }
+
         mFragments.put(BUTTONS_ID_OFFSET + 2, new FragmentInfo(new ChatFragment(), "chatFragment", "Chat", false));
         mWarningContentLayoutID = R.id.warningFragmentContent;
 

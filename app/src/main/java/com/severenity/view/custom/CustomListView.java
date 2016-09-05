@@ -46,7 +46,7 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
         this.setOnScrollListener(this);
 
         LayoutInflater inflater = (LayoutInflater) super.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mFooter = (View) inflater.inflate(R.layout.loading_layout, null);
+        mFooter = inflater.inflate(R.layout.loading_layout, null);
 
         if (mShowSpinner) {
             this.addFooterView(mFooter);
@@ -84,8 +84,8 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
         mAdapter.notifyDataSetChanged();
     }
 
-    public static interface LoadDataListener {
-        public void loadData() ;
+    public interface LoadDataListener {
+        void loadData();
     }
 
     public void showLoadSpinner(boolean show) {
