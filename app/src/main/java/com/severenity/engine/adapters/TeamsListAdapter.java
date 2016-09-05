@@ -1,17 +1,20 @@
 package com.severenity.engine.adapters;
 
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.severenity.R;
 import com.severenity.entity.Team;
 import com.severenity.utils.common.Constants;
+import com.severenity.view.Dialogs.TeamInfoDialog;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,8 +26,8 @@ public class TeamsListAdapter extends CustomSearchAdapterBase<Team> {
         super(ctx, R.layout.teams_item_list);
     }
 
-    public <T> void addList(List<T> teams) {
-        mItemList.addAll((Collection<? extends Team>) teams);
+    public void addList(List teams) {
+        mItemList.addAll(teams);
     }
 
     @Override
@@ -39,7 +42,7 @@ public class TeamsListAdapter extends CustomSearchAdapterBase<Team> {
         TextView number = (TextView) result.findViewById(R.id.recordNumber);
         number.setText(Integer.toString(position + 1));
 
-        Team team = getItem(position);
+        final Team team = getItem(position);
         if (team == null){
             Log.e(Constants.TAG, "Null object in the TeamListAdapter.");
             return null;
@@ -50,6 +53,15 @@ public class TeamsListAdapter extends CustomSearchAdapterBase<Team> {
 
         TextView membersCount = (TextView) result.findViewById(R.id.membersCount);
         membersCount.setText(Integer.toString(team.getMembers().size()));
+
+        ((ImageView)result.findViewById(R.id.teamInfoImg)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TeamInfoDialog dialog = TeamInfoDialog.newInstance(team.getTeamID());
+                FragmentManager manager = ((FragmentActivity) mContext).getSupportFragmentManager();
+                dialog.show(manager, "TeamInfo");
+            }
+        });
 
         return result;
     }

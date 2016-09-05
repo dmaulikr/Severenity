@@ -44,7 +44,7 @@ public class TeamsPage extends ClansPageBase implements CreateTeamDialog.OnTeamC
         boolean showTeamPageFirst = !App.getUserManager().getCurrentUser().getTeam().isEmpty();
         mFragments.put(BUTTONS_ID_OFFSET, new FragmentInfo(new TeamsListFragment(this), "teamsList", "Team list", !showTeamPageFirst));
         if (!App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
-            mFragments.put(BUTTONS_ID_OFFSET + 1, new FragmentInfo(new TeamFragment(), "teamFragment", "Team",showTeamPageFirst));
+            mFragments.put(BUTTONS_ID_OFFSET + 1, new FragmentInfo(new TeamFragment(App.getUserManager().getCurrentUser().getTeam()), "teamFragment", "Team",showTeamPageFirst));
         }
         mFragments.put(BUTTONS_ID_OFFSET + 2, new FragmentInfo(new ChatFragment(), "chatFragment", "Chat", false));
         mWarningContentLayoutID = R.id.warningFragmentContent;
@@ -125,7 +125,7 @@ public class TeamsPage extends ClansPageBase implements CreateTeamDialog.OnTeamC
     @Override
     public void OnTeamCreated() {
         if (mFragments.get(BUTTONS_ID_OFFSET + 1) == null) {
-            FragmentInfo info = new FragmentInfo(new TeamFragment(), "teamFragment", "Team", false);
+            FragmentInfo info = new FragmentInfo(new TeamFragment(App.getUserManager().getCurrentUser().getTeam()), "teamFragment", "Team", false);
             mFragments.put(BUTTONS_ID_OFFSET + 1, info);
 
             FragmentTransaction transaction = mFragmentManager.beginTransaction();
