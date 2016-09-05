@@ -180,7 +180,7 @@ public class LocationManager implements LocationListener {
                                 return false;
                             }
 
-                            if (Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
+                            if (App.getUserManager().getCurrentUser() != null && Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
                                     App.getUserManager().getCurrentUser().getActionRadius()) {
                                 intent = new Intent(Constants.INTENT_FILTER_SHOW_USER_ACTIONS);
                                 intent.putExtra(Constants.OBJECT_TYPE_IDENTIFIER, Constants.TYPE_PLACE);
