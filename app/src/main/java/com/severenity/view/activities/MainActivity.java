@@ -142,12 +142,32 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             ed.putBoolean("isFirstLaunch", false);
             ed.apply();
             mPreferencesManager.resetAll();
-            showTutorial();
+             AlertDialog.Builder builder = new  android.support.v7.app.AlertDialog.Builder(this);
+                    builder.setTitle("Tutorial")
+                    .setMessage("Wanna watch tutorial?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            showTutorial();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // nothing
+                        }
+                    });
+            AlertDialog ad = builder.create();
+            ad.show();
         }
+
     }
 
+
+
     private void showTutorial() {
-        spotLightViewArr = new SpotlightView.Builder[]{ tutorialItem(shopItem, shopItem.getId() + "", getString(R.string.tutorial_shop), getString(R.string.tutorial_shop_body)),
+        spotLightViewArr = new SpotlightView.Builder[]{
+                tutorialItem(shopItem, shopItem.getId() + "", getString(R.string.tutorial_shop), getString(R.string.tutorial_shop_body)),
                 tutorialItem(profileItem, profileItem.getId() + "", getString(R.string.tutorial_profile), getString(R.string.tutorial_profile_body)),
                 tutorialItem(mapItem, mapItem.getId() + "", getString(R.string.tutorial_map), getString(R.string.tutorial_map_body)),
                 tutorialItem(chatItem, chatItem.getId() + "", getString(R.string.tutorial_chat), getString(R.string.tutorial_chat_body)),
@@ -157,6 +177,8 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 tutorialItem(ivTutorialBtn, ivTutorialBtn.getId() + "", getString(R.string.repeat_tutorial), getString(R.string.repeat_tutorial_body))
         };
         spotLightViewArr[spotLightCounter].show();
+
+
     }
 
     private SpotlightView.Builder tutorialItem(View view, String usageId, String tvText, String headingTvText){
