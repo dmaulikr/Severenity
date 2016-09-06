@@ -4,18 +4,27 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.android.volley.NetworkResponse;
+import com.facebook.internal.Utility;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.network.RequestCallback;
+import com.severenity.entity.User;
+import com.severenity.utils.Utils;
+import com.severenity.utils.common.Constants;
 import com.severenity.view.fragments.clans.TeamFragment;
+import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
 
 /**
  * Created by Andriy on 9/5/2016.
@@ -24,13 +33,21 @@ public class TeamInfoDialog extends DialogFragment implements View.OnClickListen
 
     private TeamFragment mTeamFragment;
     private String mTeamID;
+    private static TeamInfoDialog mDialog;
+
+    // listener that might handle event once team is created
+    private TeamEventsListener mListener;
+
+    public void setListener(TeamEventsListener listener) {
+        mListener = listener;
+    }
 
     public static TeamInfoDialog newInstance(String teamID) {
-        TeamInfoDialog frag = new TeamInfoDialog();
+        mDialog = new TeamInfoDialog();
         Bundle arg = new Bundle();
         arg.putString("teamID", teamID);
-        frag.setArguments(arg);
-        return frag;
+        mDialog.setArguments(arg);
+        return mDialog;
     }
 
     @Override
@@ -70,7 +87,7 @@ public class TeamInfoDialog extends DialogFragment implements View.OnClickListen
                 break;
 
             case R.id.joinButton:
-                //App.getTeamManager().joinUserToTeam(mTeamID, App.getUserManager().getCurrentUser().getId(), teamJoiningCallback);
+                App.getTeamManager().joinUserToTeam(mTeamID, App.getUserManager().getCurrentUser().getId(), teamJoiningCallback);
                 break;
             }
     }
@@ -81,12 +98,28 @@ public class TeamInfoDialog extends DialogFragment implements View.OnClickListen
     private RequestCallback teamJoiningCallback = new RequestCallback() {
         @Override
         public void onResponseCallback(JSONObject response) {
-
+            try {
+                if (response.getString("result").equals("success")) {
+                    User user = Utils.createUserFromJSON(response.getJSONObject("data"));
+                    App.getUserManager().updateCurrentUserLocallyWithUser(user);
+                    mDialog.dismiss();
+                    if (mListener != null) {
+                        mListener.OnTeamJoined();
+                    }
+                } else {
+                    // TODO: Error handling
+                    String err = response.getString("data");
+                    Log.e(Constants.TAG, "joining team fail: " + err);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
         public void onErrorCallback(NetworkResponse response) {
-
+            // TODO: Error handling
+            Log.e(Constants.TAG, "Joining to team fail: " + (response == null ? "" : response.toString()));
         }
     };
 }

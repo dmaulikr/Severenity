@@ -16,6 +16,7 @@ import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.utils.common.Constants;
+import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,19 +30,15 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
 
     private TextView mTeamNameView;
 
-    public interface OnTeamCreatedListener {
-        void OnTeamCreated();
-    }
-
     // listener that might handle event once team is created
-    private OnTeamCreatedListener mListener;
+    private TeamEventsListener mListener;
 
     public static CreateTeamDialog newInstance() {
         CreateTeamDialog frag = new CreateTeamDialog();
         return frag;
     }
 
-    public void setListener(OnTeamCreatedListener listener) {
+    public void setListener(TeamEventsListener listener) {
         mListener = listener;
     }
 

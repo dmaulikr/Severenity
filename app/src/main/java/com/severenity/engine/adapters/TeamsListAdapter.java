@@ -14,6 +14,7 @@ import com.severenity.R;
 import com.severenity.entity.Team;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.Dialogs.TeamInfoDialog;
+import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 
 import java.util.List;
 
@@ -22,8 +23,12 @@ import java.util.List;
  */
 public class TeamsListAdapter extends CustomSearchAdapterBase<Team> {
 
-    public TeamsListAdapter(Context ctx) {
+    // event listener to be passed to the dialog
+    private TeamEventsListener mListener;
+
+    public TeamsListAdapter(Context ctx, TeamEventsListener listener) {
         super(ctx, R.layout.teams_item_list);
+        mListener = listener;
     }
 
     public void addList(List teams) {
@@ -58,6 +63,7 @@ public class TeamsListAdapter extends CustomSearchAdapterBase<Team> {
             @Override
             public void onClick(View view) {
                 TeamInfoDialog dialog = TeamInfoDialog.newInstance(team.getTeamID());
+                dialog.setListener(mListener);
                 FragmentManager manager = ((FragmentActivity) mContext).getSupportFragmentManager();
                 dialog.show(manager, "TeamInfo");
             }

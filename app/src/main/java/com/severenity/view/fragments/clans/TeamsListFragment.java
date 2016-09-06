@@ -15,6 +15,7 @@ import com.severenity.entity.Team;
 import com.severenity.utils.Utils;
 import com.severenity.view.Dialogs.CreateTeamDialog;
 import com.severenity.view.custom.CustomListView;
+import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * Created by Andriy on 7/28/2016.
  */
-public class TeamsListFragment extends Fragment implements View.OnClickListener, CreateTeamDialog.OnTeamCreatedListener,
+public class TeamsListFragment extends Fragment implements View.OnClickListener, TeamEventsListener,
         CustomListView.LoadDataListener{
 
     private View mAddTeamButtonsView = null;
@@ -36,13 +37,13 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
 
     private CustomListView mTeamsList;
 
-    public TeamsListFragment(CreateTeamDialog.OnTeamCreatedListener listener) {
+    public TeamsListFragment(TeamEventsListener listener) {
         // Required empty public constructor
         mListener = listener;
     }
 
     // listener that might handle event once team is created
-    private CreateTeamDialog.OnTeamCreatedListener mListener;
+    private TeamEventsListener mListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +53,7 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
 
         mAddTeamButtonsView = view.findViewById(R.id.createTeam);
         mAddTeamButtonsView.setOnClickListener(this);
-        TeamsListAdapter adapter = new TeamsListAdapter(getContext());
+        TeamsListAdapter adapter = new TeamsListAdapter(getContext(), this);
         mTeamsList = (CustomListView)view.findViewById(R.id.teamsList);
         mTeamsList.setAdapter(adapter);
         mTeamsList.setListener(this);
@@ -129,6 +130,20 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
         // so that it can create team fragment and switch
         // user to it.
         mListener.OnTeamCreated();
+    }
+
+    @Override
+    public void OnTeamJoined() {
+        if (!App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
+            mAddTeamButtonsView.setVisibility(View.GONE);
+        }
+
+        mListener.OnTeamJoined();
+    }
+
+    @Override
+    public void OnTeamLeft() {
+
     }
 
     @Override

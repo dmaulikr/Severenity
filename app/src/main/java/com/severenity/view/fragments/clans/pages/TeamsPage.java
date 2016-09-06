@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Created by Andriy on 8/14/2016.
  */
-public class TeamsPage extends ClansPageBase implements CreateTeamDialog.OnTeamCreatedListener {
+public class TeamsPage extends ClansPageBase implements TeamEventsListener {
 
     // variable to start button id's from.
     protected final int BUTTONS_ID_OFFSET = 10001;
@@ -127,8 +127,7 @@ public class TeamsPage extends ClansPageBase implements CreateTeamDialog.OnTeamC
         currentSelectedPagesButton = view;
     }
 
-    @Override
-    public void OnTeamCreated() {
+    protected void createFragmentAndButtonForTheTeam() {
         if (mFragments.get(BUTTONS_ID_OFFSET + 1) == null) {
             FragmentInfo info = new FragmentInfo(new TeamFragment(App.getUserManager().getCurrentUser().getTeam()), "teamFragment", "Team", false);
             mFragments.put(BUTTONS_ID_OFFSET + 1, info);
@@ -152,5 +151,20 @@ public class TeamsPage extends ClansPageBase implements CreateTeamDialog.OnTeamC
             createButton(info, BUTTONS_ID_OFFSET + 1);
             ((TextView)getView().findViewById(BUTTONS_ID_OFFSET + 1)).callOnClick();
         }
+    }
+
+    @Override
+    public void OnTeamCreated() {
+        createFragmentAndButtonForTheTeam();
+    }
+
+    @Override
+    public void OnTeamJoined() {
+        createFragmentAndButtonForTheTeam();
+    }
+
+    @Override
+    public void OnTeamLeft() {
+
     }
 }
