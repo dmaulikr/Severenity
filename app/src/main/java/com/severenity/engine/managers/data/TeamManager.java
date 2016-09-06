@@ -69,6 +69,25 @@ public class TeamManager {
     }
 
     /**
+     * Joint the user to the specific team
+     *
+     * @param teamID - the ID of the team into wich user is going to be joined
+     * @param userID - users ID who is going to join the team
+     * @param callback - callback method to handle response
+     */
+    public void joinUserToTeam(String teamID, String userID, RequestCallback callback) {
+        JSONObject requestObject = new JSONObject();
+        try {
+            requestObject.put("userId", userID);
+            requestObject.put("teamId", teamID);
+
+            App.getRestManager().createRequest(Constants.REST_API_TEAM_JOIN_TEAM, Request.Method.POST, requestObject, callback);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Removes user from the team
      *
      * @param userID - the ID of the user to be removed

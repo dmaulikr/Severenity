@@ -12,7 +12,6 @@ import com.severenity.R;
 import com.severenity.engine.adapters.TeamsListAdapter;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.Team;
-import com.severenity.entity.User;
 import com.severenity.utils.Utils;
 import com.severenity.view.Dialogs.CreateTeamDialog;
 import com.severenity.view.custom.CustomListView;

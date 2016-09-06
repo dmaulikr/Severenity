@@ -29,9 +29,11 @@ public class TeamFragment extends Fragment {
     private TextView mTeamModerator;
     private TextView mTeamName;
     private CustomListView mUsersInTeamList;
+    private String mTeamID;
 
-    public TeamFragment() {
+    public TeamFragment(String teamID) {
         // Required empty public constructor
+        mTeamID = teamID;
     }
 
     @Override
@@ -61,9 +63,9 @@ public class TeamFragment extends Fragment {
     }
 
     private void requestTeamInfo() {
-        String currentUsersTeam = App.getUserManager().getCurrentUser().getTeam();
-        if (currentUsersTeam != null && !currentUsersTeam.isEmpty()) {
-            App.getTeamManager().getTeam(currentUsersTeam, new RequestCallback() {
+
+        if (mTeamID != null && !mTeamID.isEmpty()) {
+            App.getTeamManager().getTeam(mTeamID, new RequestCallback() {
                 @Override
                 public void onResponseCallback(JSONObject response) {
                     try {

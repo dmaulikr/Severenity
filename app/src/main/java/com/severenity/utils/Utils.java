@@ -150,6 +150,7 @@ public class Utils {
 
         try {
             team.setName(response.optString("name"));
+            team.setTeamID(response.optString("teamID"));
             JSONObject moderatorJSON = response.getJSONObject("moderator");
             User moderator = Utils.createUserFromJSON(moderatorJSON);
             team.setModerator(moderator);

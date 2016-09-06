@@ -13,9 +13,9 @@ import com.severenity.App;
 import com.severenity.R;
 import com.severenity.view.Dialogs.CreateTeamDialog;
 import com.severenity.view.fragments.clans.ChatFragment;
+import com.severenity.view.fragments.clans.FragmentInfo;
 import com.severenity.view.fragments.clans.TeamFragment;
 import com.severenity.view.fragments.clans.TeamsListFragment;
-import com.severenity.view.fragments.clans.FragmentInfo;
 import com.severenity.view.fragments.clans.WarningFragment;
 
 import java.util.Map;
@@ -46,8 +46,9 @@ public class TeamsPage extends ClansPageBase implements CreateTeamDialog.OnTeamC
         }
 
         mFragments.put(BUTTONS_ID_OFFSET, new FragmentInfo(new TeamsListFragment(this), "teamsList", "Team list", !showTeamPageFirst));
+
         if (showTeamPageFirst) {
-            mFragments.put(BUTTONS_ID_OFFSET + 1, new FragmentInfo(new TeamFragment(), "teamFragment", "Team", showTeamPageFirst));
+            mFragments.put(BUTTONS_ID_OFFSET + 1, new FragmentInfo(new TeamFragment(App.getUserManager().getCurrentUser().getTeam()), "teamFragment", "Team", showTeamPageFirst));
         }
 
         mFragments.put(BUTTONS_ID_OFFSET + 2, new FragmentInfo(new ChatFragment(), "chatFragment", "Chat", false));
@@ -129,7 +130,7 @@ public class TeamsPage extends ClansPageBase implements CreateTeamDialog.OnTeamC
     @Override
     public void OnTeamCreated() {
         if (mFragments.get(BUTTONS_ID_OFFSET + 1) == null) {
-            FragmentInfo info = new FragmentInfo(new TeamFragment(), "teamFragment", "Team", false);
+            FragmentInfo info = new FragmentInfo(new TeamFragment(App.getUserManager().getCurrentUser().getTeam()), "teamFragment", "Team", false);
             mFragments.put(BUTTONS_ID_OFFSET + 1, info);
 
             FragmentTransaction transaction = mFragmentManager.beginTransaction();
