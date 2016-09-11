@@ -8,9 +8,7 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.severenity.R;
-import com.severenity.engine.adapters.CustomSearchAdapterBase;
-import com.severenity.engine.adapters.UsersSearchAdapter;
-import com.severenity.entity.User;
+import com.severenity.engine.adapters.CustomListArrayAdapterBase;
 
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
     private View mFooter;
     private boolean mIsLoading;
     private LoadDataListener mListener;
-    private CustomSearchAdapterBase mAdapter;
+    private CustomListArrayAdapterBase mAdapter;
     // When list is used not for infinite info displaying
     // we do not need to show footer.
     private boolean mShowSpinner = true;
@@ -59,7 +57,7 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
         this.mListener = listener;
     }
 
-    public void setAdapter(CustomSearchAdapterBase adapter) {
+    public void setAdapter(CustomListArrayAdapterBase adapter) {
         super.setAdapter(adapter);
         this.mAdapter = adapter;
         this.removeFooterView(mFooter);

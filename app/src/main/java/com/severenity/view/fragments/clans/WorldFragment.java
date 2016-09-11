@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import com.android.volley.NetworkResponse;
 import com.severenity.App;
 import com.severenity.R;
-import com.severenity.engine.adapters.UsersSearchAdapter;
+import com.severenity.engine.adapters.UsersListAdapter;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.User;
 import com.severenity.utils.Utils;
@@ -45,7 +45,7 @@ public class WorldFragment extends Fragment implements CustomListView.LoadDataLi
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clans_world, container, false);
 
-        UsersSearchAdapter searchAdapter = new UsersSearchAdapter(getContext());
+        UsersListAdapter searchAdapter = new UsersListAdapter(getContext());
 
         mUsersList = (CustomListView)view.findViewById(R.id.usersList);
         mUsersList.setAdapter(searchAdapter);

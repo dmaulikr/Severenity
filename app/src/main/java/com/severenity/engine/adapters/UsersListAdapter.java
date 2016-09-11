@@ -18,10 +18,13 @@ import java.util.List;
  * Created by Andriy on 8/4/2016.
  */
 
-public class UsersSearchAdapter extends CustomSearchAdapterBase<User> {
+public class UsersListAdapter extends CustomListArrayAdapterBase<User> {
 
-    public UsersSearchAdapter(Context ctx) {
+    private boolean mIsUserModerator = false;
+
+    public UsersListAdapter(Context ctx, boolean isModerator) {
         super(ctx, R.layout.usersearch_item_list);
+        mIsUserModerator = isModerator;
     }
 
     @Override
@@ -52,6 +55,13 @@ public class UsersSearchAdapter extends CustomSearchAdapterBase<User> {
 
         TextView userExp = (TextView) result.findViewById(R.id.userExp);
         userExp.setText(Integer.toString(user.getExperience()));
+
+        result.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return false;
+            }
+        });
 
         return result;
     }

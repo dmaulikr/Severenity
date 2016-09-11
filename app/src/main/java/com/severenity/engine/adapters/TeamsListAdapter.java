@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by Andriy on 8/31/2016.
  */
-public class TeamsListAdapter extends CustomSearchAdapterBase<Team> {
+public class TeamsListAdapter extends CustomListArrayAdapterBase<Team> {
 
     // event listener to be passed to the dialog
     private TeamEventsListener mListener;

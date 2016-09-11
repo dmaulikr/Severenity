@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.android.volley.NetworkResponse;
 import com.severenity.App;
 import com.severenity.R;
-import com.severenity.engine.adapters.UsersSearchAdapter;
+import com.severenity.engine.adapters.UsersListAdapter;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.Team;
 import com.severenity.utils.Utils;
@@ -30,6 +30,7 @@ public class TeamFragment extends Fragment {
     private TextView mTeamName;
     private CustomListView mUsersInTeamList;
     private String mTeamID;
+    private boolean mIsUserModerator = false;
 
     public TeamFragment(String teamID) {
         // Required empty public constructor
@@ -39,18 +40,19 @@ public class TeamFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        requestTeamInfo();
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clans_team, container, false);
 
         mTeamModerator = (TextView)view.findViewById(R.id.teamModeratorText);
         mTeamName = (TextView)view.findViewById(R.id.teamNameText);
 
-        UsersSearchAdapter searchAdapter = new UsersSearchAdapter(getContext());
+        UsersListAdapter searchAdapter = new UsersListAdapter(getContext(), mIsUserModerator);
         mUsersInTeamList = (CustomListView)view.findViewById(R.id.usersInTeamList);
         mUsersInTeamList.setAdapter(searchAdapter);
         mUsersInTeamList.showLoadSpinner(false);
-
-        requestTeamInfo();
 
         return view;
     }
@@ -71,10 +73,17 @@ public class TeamFragment extends Fragment {
                     try {
                         if (response.getString("result").equals("success")) {
                             Team team = Utils.createTeamFromJSON(response.getJSONObject("data"));
+                            if (team == null) {
+                                Log.e(Constants.TAG, "Was not able to create user from JSON:" + response.getJSONObject("data"));
+                                return;
+                            }
                             mTeamModerator.setText(team.getModerator().getName());
                             mTeamName.setText(team.getName());
                             mUsersInTeamList.clearData();
                             mUsersInTeamList.addNewData(team.getMembers());
+                            if (App.getUserManager().getCurrentUser().getId().equals(team.getModerator().getId())) {
+                                mIsUserModerator = true;
+                            }
                         } else {
                             Log.e(Constants.TAG, "Getting team by name fails");
                         }

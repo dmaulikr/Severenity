@@ -11,11 +11,11 @@ import java.util.List;
 /**
  * Created by Andriy on 9/2/2016.
  */
-public abstract class CustomSearchAdapterBase<T> extends ArrayAdapter<T> {
+public abstract class CustomListArrayAdapterBase<T> extends ArrayAdapter<T> {
     protected List<T> mItemList = new ArrayList<>();
     protected Context mContext;
 
-    public CustomSearchAdapterBase(Context ctx, int resource) {
+    public CustomListArrayAdapterBase(Context ctx, int resource) {
         super(ctx, resource);
         this.mContext = ctx;
     }

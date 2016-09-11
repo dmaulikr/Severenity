@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.facebook.internal.Utility;
@@ -110,6 +111,7 @@ public class TeamInfoDialog extends DialogFragment implements View.OnClickListen
                     // TODO: Error handling
                     String err = response.getString("data");
                     Log.e(Constants.TAG, "joining team fail: " + err);
+                    Toast.makeText(getContext(), err, Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
