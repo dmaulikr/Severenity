@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="equ-dC-efz">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Initial Tab Bar Controller-->
+        <scene sceneID="k07-Uu-xLl">
+            <objects>
+                <tabBarController id="equ-dC-efz" customClass="InitialTabBarController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="JGg-au-fAL">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="selectedIndex">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <segue destination="drd-a5-xUY" kind="relationship" relationship="viewControllers" id="H26-Wf-jXy"/>
+                        <segue destination="ywl-yH-zXU" kind="relationship" relationship="viewControllers" id="RG4-97-pRh"/>
+                        <segue destination="Vji-IS-xEi" kind="relationship" relationship="viewControllers" id="D40-qP-djS"/>
+                        <segue destination="JZ4-CZ-pB3" kind="relationship" relationship="viewControllers" id="kzR-vu-hyN"/>
+                        <segue destination="jxb-cg-N5J" kind="relationship" relationship="viewControllers" id="Z9Q-NY-FZe"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VvL-S4-oWe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-757.5" y="8.5"/>
+        </scene>
+        <!--Upper Bar-->
+        <scene sceneID="X1Y-5R-8FD">
+            <objects>
+                <viewController id="ldY-ZS-q4s" customClass="Tab1ViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="za3-vv-ofF"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ocg-ZE-VF5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fr4-iS-ZG0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Upper Bar" prompt="test" id="2Pa-On-Gan"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FLt-nU-vtg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-275.5" y="-1003.5"/>
+        </scene>
+        <!--Upper Bar-->
+        <scene sceneID="fJH-eQ-5KW">
+            <objects>
+                <viewController id="UjW-jb-Lg0" customClass="Tab2ViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Wf6-vW-5cw"/>
+                        <viewControllerLayoutGuide type="bottom" id="2va-fc-Rfa"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mTF-zQ-Z86">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Upper Bar" prompt="test" id="DZS-b1-diU"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="H3S-A9-rn6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="680.5" y="-790.5"/>
+        </scene>
+        <!--Item 1-->
+        <scene sceneID="UcC-yR-zd3">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="drd-a5-xUY" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item 1" id="pHm-Y1-UHg"/>
+                    <toolbarItems/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FLK-8r-Oq0">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ldY-ZS-q4s" kind="relationship" relationship="rootViewController" id="NKK-DD-V8y"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HHP-xv-g6n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-768.5" y="-1003.5"/>
+        </scene>
+        <!--Item 2-->
+        <scene sceneID="0mz-lo-PeW">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ywl-yH-zXU" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item 2" id="eYp-dv-Zms"/>
+                    <toolbarItems/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="RFw-Uf-Dzy">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="UjW-jb-Lg0" kind="relationship" relationship="rootViewController" id="6fk-1u-oiE"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="raJ-ne-Cdr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="187.5" y="-790.5"/>
+        </scene>
+        <!--Upper Bar-->
+        <scene sceneID="Mip-pj-5w8">
+            <objects>
+                <viewController id="mcu-PL-Cos" customClass="Tab3ViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="M4Z-kV-hue"/>
+                        <viewControllerLayoutGuide type="bottom" id="B4x-8y-x6Y"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0sg-qu-YPS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Upper Bar" prompt="test" id="wWK-KZ-iX6"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EEI-2X-3eu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="860.5" y="-46.5"/>
+        </scene>
+        <!--Item 3-->
+        <scene sceneID="vS6-pR-KRm">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Vji-IS-xEi" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item 3" id="0Ke-hW-7Ea"/>
+                    <toolbarItems/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xAK-46-bRb">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="mcu-PL-Cos" kind="relationship" relationship="rootViewController" id="Khp-GN-aef"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xJH-kn-gG2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="367.5" y="-46.5"/>
+        </scene>
+        <!--Upper Bar-->
+        <scene sceneID="oKO-4g-UQX">
+            <objects>
+                <viewController id="dHU-YV-G28" customClass="Tab4ViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RtP-ub-Zph"/>
+                        <viewControllerLayoutGuide type="bottom" id="Y1H-aC-mOA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JoI-hB-8OF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Upper Bar" prompt="test" id="irk-3Y-gTP"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nNh-5R-btD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="680.5" y="743.5"/>
+        </scene>
+        <!--Item 4-->
+        <scene sceneID="W1f-vY-3ke">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JZ4-CZ-pB3" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item 4" id="DRo-ps-RXW"/>
+                    <toolbarItems/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PfO-cR-PKb">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dHU-YV-G28" kind="relationship" relationship="rootViewController" id="4Ob-mh-89I"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7P6-aD-2ev" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="187.5" y="743.5"/>
+        </scene>
+        <!--Upper Bar-->
+        <scene sceneID="0su-TL-oWl">
+            <objects>
+                <viewController id="7qv-Ph-hYD" customClass="Tab5ViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qCi-FE-2lx"/>
+                        <viewControllerLayoutGuide type="bottom" id="OZa-ad-6z9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="xZ7-4W-OJ3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Upper Bar" prompt="test" id="y2m-W2-KqG"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jEm-np-Qgq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-275.5" y="1013.5"/>
+        </scene>
+        <!--Item 5-->
+        <scene sceneID="uQP-9P-OUr">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jxb-cg-N5J" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item 5" id="H5m-q4-Byt"/>
+                    <toolbarItems/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LJb-AX-543">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="7qv-Ph-hYD" kind="relationship" relationship="rootViewController" id="XgT-Wu-l8Z"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OEw-js-lfc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-768.5" y="1013.5"/>
+        </scene>
+    </scenes>
+</document>
