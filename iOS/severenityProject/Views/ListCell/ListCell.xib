@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellInList" rowHeight="59" id="sN7-fZ-yQy">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CellInList" rowHeight="59" id="sN7-fZ-yQy" customClass="ListCell" customModule="severenityProject" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="315" height="59"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sN7-fZ-yQy" id="jmK-Vz-KNZ">
@@ -22,7 +22,10 @@
                     </label>
                 </subviews>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="702.5" y="325.5"/>
+            <connections>
+                <outlet property="listCellTitle" destination="791-2o-RrC" id="FzP-mW-JRd"/>
+            </connections>
+            <point key="canvasLocation" x="747.5" y="313.5"/>
         </tableViewCell>
     </objects>
 </document>

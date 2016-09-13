@@ -45,7 +45,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Upper Bar" prompt="test" id="2Pa-On-Gan"/>
+                    <navigationItem key="navigationItem" title="Upper Bar" id="2Pa-On-Gan"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FLt-nU-vtg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -54,7 +54,7 @@
         <!--Upper Bar-->
         <scene sceneID="fJH-eQ-5KW">
             <objects>
-                <viewController id="UjW-jb-Lg0" customClass="Tab2ViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="UjW-jb-Lg0" customClass="Tab2ViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Wf6-vW-5cw"/>
                         <viewControllerLayoutGuide type="bottom" id="2va-fc-Rfa"/>
@@ -62,9 +62,38 @@
                     <view key="view" contentMode="scaleToFill" id="mTF-zQ-Z86">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cmG-zW-xOo">
+                                <rect key="frame" x="25" y="69" width="325" height="29"/>
+                                <segments>
+                                    <segment title="List"/>
+                                    <segment title="Grid"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeContentMode:" destination="UjW-jb-Lg0" eventType="valueChanged" id="djw-O0-w9g"/>
+                                </connections>
+                            </segmentedControl>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bAX-0b-l42" userLabel="Content View">
+                                <rect key="frame" x="0.0" y="102" width="375" height="516"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="bAX-0b-l42" firstAttribute="top" secondItem="cmG-zW-xOo" secondAttribute="bottom" constant="5" id="H4y-Ni-Dab"/>
+                            <constraint firstItem="cmG-zW-xOo" firstAttribute="leading" secondItem="mTF-zQ-Z86" secondAttribute="leading" constant="25" id="KIb-w5-Eop"/>
+                            <constraint firstAttribute="trailing" secondItem="cmG-zW-xOo" secondAttribute="trailing" constant="25" id="KTF-ol-Dab"/>
+                            <constraint firstItem="bAX-0b-l42" firstAttribute="leading" secondItem="mTF-zQ-Z86" secondAttribute="leading" id="MUN-WK-jA9"/>
+                            <constraint firstItem="2va-fc-Rfa" firstAttribute="top" secondItem="bAX-0b-l42" secondAttribute="bottom" id="V7j-xI-eu0"/>
+                            <constraint firstItem="cmG-zW-xOo" firstAttribute="top" secondItem="Wf6-vW-5cw" secondAttribute="bottom" constant="5" id="ql9-H9-Oat"/>
+                            <constraint firstAttribute="trailing" secondItem="bAX-0b-l42" secondAttribute="trailing" id="qrg-eQ-g7Q"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Upper Bar" prompt="test" id="DZS-b1-diU"/>
+                    <navigationItem key="navigationItem" title="Upper Bar" id="DZS-b1-diU"/>
+                    <connections>
+                        <outlet property="contentModeSwitcher" destination="cmG-zW-xOo" id="Tsy-QJ-EaD"/>
+                        <outlet property="contentView" destination="bAX-0b-l42" id="tHg-QZ-BFo"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H3S-A9-rn6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -123,7 +152,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Upper Bar" prompt="test" id="wWK-KZ-iX6"/>
+                    <navigationItem key="navigationItem" title="Upper Bar" id="wWK-KZ-iX6"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EEI-2X-3eu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -162,7 +191,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Upper Bar" prompt="test" id="irk-3Y-gTP"/>
+                    <navigationItem key="navigationItem" title="Upper Bar" id="irk-3Y-gTP"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nNh-5R-btD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -201,7 +230,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Upper Bar" prompt="test" id="y2m-W2-KqG"/>
+                    <navigationItem key="navigationItem" title="Upper Bar" id="y2m-W2-KqG"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jEm-np-Qgq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
