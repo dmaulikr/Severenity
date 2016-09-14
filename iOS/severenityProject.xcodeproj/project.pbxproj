@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		523828751D89331500F55364 /* severenityProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828741D89331500F55364 /* severenityProjectTests.swift */; };
+		523828831D89332D00F55364 /* severenityProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828821D89332D00F55364 /* severenityProjectUITests.swift */; };
 		5264A7A11D8828B500EE78FC /* LocationsServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7A01D8828B500EE78FC /* LocationsServerManager.swift */; };
 		5264A7A51D882F1700EE78FC /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A7A41D882F1700EE78FC /* ListCell.xib */; };
 		5264A7A71D882F2400EE78FC /* GridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A7A61D882F2400EE78FC /* GridCell.xib */; };
@@ -27,8 +29,31 @@
 		9E28403612ACC78905B5AA1A /* Pods_severenityProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D2F58729FDE60536BBE9EC6 /* Pods_severenityProject.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		523828771D89331500F55364 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 52787BD41D86AA35009D17F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52787BDB1D86AA35009D17F5;
+			remoteInfo = severenityProject;
+		};
+		523828851D89332D00F55364 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 52787BD41D86AA35009D17F5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52787BDB1D86AA35009D17F5;
+			remoteInfo = severenityProject;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		3C9B25F8AB0EE5633501A8A2 /* Pods-severenityProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-severenityProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-severenityProject/Pods-severenityProject.release.xcconfig"; sourceTree = "<group>"; };
+		523828721D89331500F55364 /* severenityProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = severenityProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		523828741D89331500F55364 /* severenityProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = severenityProjectTests.swift; sourceTree = "<group>"; };
+		523828761D89331500F55364 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		523828801D89332D00F55364 /* severenityProjectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = severenityProjectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		523828821D89332D00F55364 /* severenityProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = severenityProjectUITests.swift; sourceTree = "<group>"; };
+		523828841D89332D00F55364 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5264A7A01D8828B500EE78FC /* LocationsServerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationsServerManager.swift; path = "Network Managers/LocationsServerManager.swift"; sourceTree = "<group>"; };
 		5264A7A41D882F1700EE78FC /* ListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListCell.xib; path = Views/ListCell/ListCell.xib; sourceTree = "<group>"; };
 		5264A7A61D882F2400EE78FC /* GridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GridCell.xib; path = Views/GridCell/GridCell.xib; sourceTree = "<group>"; };
@@ -53,6 +78,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5238286F1D89331500F55364 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5238287D1D89332D00F55364 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		52787BD91D86AA35009D17F5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -64,6 +103,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		523828731D89331500F55364 /* severenityProjectTests */ = {
+			isa = PBXGroup;
+			children = (
+				523828741D89331500F55364 /* severenityProjectTests.swift */,
+				523828761D89331500F55364 /* Info.plist */,
+			);
+			path = severenityProjectTests;
+			sourceTree = "<group>";
+		};
+		523828811D89332D00F55364 /* severenityProjectUITests */ = {
+			isa = PBXGroup;
+			children = (
+				523828821D89332D00F55364 /* severenityProjectUITests.swift */,
+				523828841D89332D00F55364 /* Info.plist */,
+			);
+			path = severenityProjectUITests;
+			sourceTree = "<group>";
+		};
 		5264A7A21D882ED000EE78FC /* ListCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +143,8 @@
 			isa = PBXGroup;
 			children = (
 				52787BDE1D86AA35009D17F5 /* severenityProject */,
+				523828731D89331500F55364 /* severenityProjectTests */,
+				523828811D89332D00F55364 /* severenityProjectUITests */,
 				52787BDD1D86AA35009D17F5 /* Products */,
 				A56B052621749CD00A7D7D85 /* Pods */,
 				80D382F60247FFE0365B0D4A /* Frameworks */,
@@ -96,6 +155,8 @@
 			isa = PBXGroup;
 			children = (
 				52787BDC1D86AA35009D17F5 /* severenityProject.app */,
+				523828721D89331500F55364 /* severenityProjectTests.xctest */,
+				523828801D89332D00F55364 /* severenityProjectUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -167,6 +228,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		523828711D89331500F55364 /* severenityProjectTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5238287B1D89331600F55364 /* Build configuration list for PBXNativeTarget "severenityProjectTests" */;
+			buildPhases = (
+				5238286E1D89331500F55364 /* Sources */,
+				5238286F1D89331500F55364 /* Frameworks */,
+				523828701D89331500F55364 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				523828781D89331500F55364 /* PBXTargetDependency */,
+			);
+			name = severenityProjectTests;
+			productName = severenityProjectTests;
+			productReference = 523828721D89331500F55364 /* severenityProjectTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		5238287F1D89332D00F55364 /* severenityProjectUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 523828871D89332D00F55364 /* Build configuration list for PBXNativeTarget "severenityProjectUITests" */;
+			buildPhases = (
+				5238287C1D89332D00F55364 /* Sources */,
+				5238287D1D89332D00F55364 /* Frameworks */,
+				5238287E1D89332D00F55364 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				523828861D89332D00F55364 /* PBXTargetDependency */,
+			);
+			name = severenityProjectUITests;
+			productName = severenityProjectUITests;
+			productReference = 523828801D89332D00F55364 /* severenityProjectUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		52787BDB1D86AA35009D17F5 /* severenityProject */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 52787BEE1D86AA35009D17F5 /* Build configuration list for PBXNativeTarget "severenityProject" */;
@@ -197,6 +294,16 @@
 				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = severenity;
 				TargetAttributes = {
+					523828711D89331500F55364 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = M7LFA46QZA;
+						TestTargetID = 52787BDB1D86AA35009D17F5;
+					};
+					5238287F1D89332D00F55364 = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = M7LFA46QZA;
+						TestTargetID = 52787BDB1D86AA35009D17F5;
+					};
 					52787BDB1D86AA35009D17F5 = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
@@ -216,11 +323,27 @@
 			projectRoot = "";
 			targets = (
 				52787BDB1D86AA35009D17F5 /* severenityProject */,
+				523828711D89331500F55364 /* severenityProjectTests */,
+				5238287F1D89332D00F55364 /* severenityProjectUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		523828701D89331500F55364 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5238287E1D89332D00F55364 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		52787BDA1D86AA35009D17F5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -284,6 +407,22 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5238286E1D89331500F55364 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				523828751D89331500F55364 /* severenityProjectTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5238287C1D89332D00F55364 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				523828831D89332D00F55364 /* severenityProjectUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		52787BD81D86AA35009D17F5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -305,6 +444,19 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		523828781D89331500F55364 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52787BDB1D86AA35009D17F5 /* severenityProject */;
+			targetProxy = 523828771D89331500F55364 /* PBXContainerItemProxy */;
+		};
+		523828861D89332D00F55364 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52787BDB1D86AA35009D17F5 /* severenityProject */;
+			targetProxy = 523828851D89332D00F55364 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		52787BE31D86AA35009D17F5 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -325,6 +477,52 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		523828791D89331500F55364 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = severenityProjectTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.severenityProjectTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/severenityProject.app/severenityProject";
+			};
+			name = Debug;
+		};
+		5238287A1D89331500F55364 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = severenityProjectTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.severenityProjectTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/severenityProject.app/severenityProject";
+			};
+			name = Release;
+		};
+		523828881D89332D00F55364 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = severenityProjectUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.severenityProjectUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = severenityProject;
+			};
+			name = Debug;
+		};
+		523828891D89332D00F55364 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = severenityProjectUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.severenityProjectUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = severenityProject;
+			};
+			name = Release;
+		};
 		52787BEC1D86AA35009D17F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -439,6 +637,22 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5238287B1D89331600F55364 /* Build configuration list for PBXNativeTarget "severenityProjectTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				523828791D89331500F55364 /* Debug */,
+				5238287A1D89331500F55364 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		523828871D89332D00F55364 /* Build configuration list for PBXNativeTarget "severenityProjectUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				523828881D89332D00F55364 /* Debug */,
+				523828891D89332D00F55364 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		52787BD71D86AA35009D17F5 /* Build configuration list for PBXProject "severenityProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

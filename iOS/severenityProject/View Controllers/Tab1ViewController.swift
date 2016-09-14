@@ -15,6 +15,4 @@ class Tab1ViewController: UIViewController {
         print("Tab 1 did load");
     }
 
-
-
 }
