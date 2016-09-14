@@ -19,11 +19,11 @@
 		52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE61D86AA35009D17F5 /* Assets.xcassets */; };
 		52787BEA1D86AA35009D17F5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE81D86AA35009D17F5 /* LaunchScreen.storyboard */; };
 		52787C051D86C3BD009D17F5 /* InitialTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787BFF1D86C3BD009D17F5 /* InitialTabBarController.swift */; };
-		52787C061D86C3BD009D17F5 /* Tab1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C001D86C3BD009D17F5 /* Tab1ViewController.swift */; };
-		52787C071D86C3BD009D17F5 /* Tab2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C011D86C3BD009D17F5 /* Tab2ViewController.swift */; };
-		52787C081D86C3BD009D17F5 /* Tab3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C021D86C3BD009D17F5 /* Tab3ViewController.swift */; };
-		52787C091D86C3BD009D17F5 /* Tab4ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C031D86C3BD009D17F5 /* Tab4ViewController.swift */; };
-		52787C0A1D86C3BD009D17F5 /* Tab5ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C041D86C3BD009D17F5 /* Tab5ViewController.swift */; };
+		52787C061D86C3BD009D17F5 /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C001D86C3BD009D17F5 /* ShopViewController.swift */; };
+		52787C071D86C3BD009D17F5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C011D86C3BD009D17F5 /* ProfileViewController.swift */; };
+		52787C081D86C3BD009D17F5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C021D86C3BD009D17F5 /* MapViewController.swift */; };
+		52787C091D86C3BD009D17F5 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C031D86C3BD009D17F5 /* ChatViewController.swift */; };
+		52787C0A1D86C3BD009D17F5 /* QuestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C041D86C3BD009D17F5 /* QuestsViewController.swift */; };
 		52787C1B1D86D88D009D17F5 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C1A1D86D88D009D17F5 /* ListViewController.swift */; };
 		52787C211D86EEC6009D17F5 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C201D86EEC6009D17F5 /* GridViewController.swift */; };
 		9E28403612ACC78905B5AA1A /* Pods_severenityProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D2F58729FDE60536BBE9EC6 /* Pods_severenityProject.framework */; };
@@ -66,11 +66,11 @@
 		52787BE91D86AA35009D17F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		52787BEB1D86AA35009D17F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		52787BFF1D86C3BD009D17F5 /* InitialTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialTabBarController.swift; path = "View Controllers/InitialTabBarController.swift"; sourceTree = "<group>"; };
-		52787C001D86C3BD009D17F5 /* Tab1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tab1ViewController.swift; path = "View Controllers/Tab1ViewController.swift"; sourceTree = "<group>"; };
-		52787C011D86C3BD009D17F5 /* Tab2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tab2ViewController.swift; path = "View Controllers/Tab2ViewController.swift"; sourceTree = "<group>"; };
-		52787C021D86C3BD009D17F5 /* Tab3ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tab3ViewController.swift; path = "View Controllers/Tab3ViewController.swift"; sourceTree = "<group>"; };
-		52787C031D86C3BD009D17F5 /* Tab4ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tab4ViewController.swift; path = "View Controllers/Tab4ViewController.swift"; sourceTree = "<group>"; };
-		52787C041D86C3BD009D17F5 /* Tab5ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tab5ViewController.swift; path = "View Controllers/Tab5ViewController.swift"; sourceTree = "<group>"; };
+		52787C001D86C3BD009D17F5 /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShopViewController.swift; path = "View Controllers/ShopViewController.swift"; sourceTree = "<group>"; };
+		52787C011D86C3BD009D17F5 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = "View Controllers/ProfileViewController.swift"; sourceTree = "<group>"; };
+		52787C021D86C3BD009D17F5 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = "View Controllers/MapViewController.swift"; sourceTree = "<group>"; };
+		52787C031D86C3BD009D17F5 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatViewController.swift; path = "View Controllers/ChatViewController.swift"; sourceTree = "<group>"; };
+		52787C041D86C3BD009D17F5 /* QuestsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuestsViewController.swift; path = "View Controllers/QuestsViewController.swift"; sourceTree = "<group>"; };
 		52787C1A1D86D88D009D17F5 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListViewController.swift; path = "View Controllers/ListViewController.swift"; sourceTree = "<group>"; };
 		52787C201D86EEC6009D17F5 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridViewController.swift; path = "View Controllers/GridViewController.swift"; sourceTree = "<group>"; };
 		6D2F58729FDE60536BBE9EC6 /* Pods_severenityProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_severenityProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -188,11 +188,11 @@
 			isa = PBXGroup;
 			children = (
 				52787BFF1D86C3BD009D17F5 /* InitialTabBarController.swift */,
-				52787C001D86C3BD009D17F5 /* Tab1ViewController.swift */,
-				52787C011D86C3BD009D17F5 /* Tab2ViewController.swift */,
-				52787C021D86C3BD009D17F5 /* Tab3ViewController.swift */,
-				52787C031D86C3BD009D17F5 /* Tab4ViewController.swift */,
-				52787C041D86C3BD009D17F5 /* Tab5ViewController.swift */,
+				52787C001D86C3BD009D17F5 /* ShopViewController.swift */,
+				52787C011D86C3BD009D17F5 /* ProfileViewController.swift */,
+				52787C021D86C3BD009D17F5 /* MapViewController.swift */,
+				52787C031D86C3BD009D17F5 /* ChatViewController.swift */,
+				52787C041D86C3BD009D17F5 /* QuestsViewController.swift */,
 				52787C1A1D86D88D009D17F5 /* ListViewController.swift */,
 				52787C201D86EEC6009D17F5 /* GridViewController.swift */,
 			);
@@ -427,15 +427,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52787C061D86C3BD009D17F5 /* Tab1ViewController.swift in Sources */,
-				52787C0A1D86C3BD009D17F5 /* Tab5ViewController.swift in Sources */,
+				52787C061D86C3BD009D17F5 /* ShopViewController.swift in Sources */,
+				52787C0A1D86C3BD009D17F5 /* QuestsViewController.swift in Sources */,
 				52787C051D86C3BD009D17F5 /* InitialTabBarController.swift in Sources */,
-				52787C081D86C3BD009D17F5 /* Tab3ViewController.swift in Sources */,
+				52787C081D86C3BD009D17F5 /* MapViewController.swift in Sources */,
 				52787BE01D86AA35009D17F5 /* AppDelegate.swift in Sources */,
-				52787C071D86C3BD009D17F5 /* Tab2ViewController.swift in Sources */,
+				52787C071D86C3BD009D17F5 /* ProfileViewController.swift in Sources */,
 				5264A7A91D882F6700EE78FC /* ListCell.swift in Sources */,
 				52787C1B1D86D88D009D17F5 /* ListViewController.swift in Sources */,
-				52787C091D86C3BD009D17F5 /* Tab4ViewController.swift in Sources */,
+				52787C091D86C3BD009D17F5 /* ChatViewController.swift in Sources */,
 				52787C211D86EEC6009D17F5 /* GridViewController.swift in Sources */,
 				5264A7A11D8828B500EE78FC /* LocationsServerManager.swift in Sources */,
 				5264A7AB1D882F8800EE78FC /* GridCell.swift in Sources */,
@@ -644,6 +644,7 @@
 				5238287A1D89331500F55364 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		523828871D89332D00F55364 /* Build configuration list for PBXNativeTarget "severenityProjectUITests" */ = {
 			isa = XCConfigurationList;
@@ -652,6 +653,7 @@
 				523828891D89332D00F55364 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		52787BD71D86AA35009D17F5 /* Build configuration list for PBXProject "severenityProject" */ = {
 			isa = XCConfigurationList;
