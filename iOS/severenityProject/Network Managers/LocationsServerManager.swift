@@ -11,42 +11,42 @@ import Alamofire
 
 class LocationsServerManager: NSObject {
     
-    let serverURLString: String = "https://severenity.herokuapp.com/places/all"
+    let serverURLString = "https://severenity.herokuapp.com/places/all"
     
     func requestLocationsFromServer(completion: (result: NSArray) -> Void) {
         
-        let dataFromServer: NSMutableArray = []
+        var dataFromServer: [AnyObject] = []
         
-        let serverURL = NSURL.init(string: serverURLString)
-        let serverRequest = NSURLRequest.init(URL: serverURL!)
+        if let serverURL = NSURL.init(string: serverURLString) {
+            
+        let serverRequest = NSURLRequest.init(URL: serverURL)
         
         Alamofire.request(serverRequest).responseJSON { response in
+            //Server response info
 //            print("Response request: \(response.request)")
 //            print("Response response: \(response.response)")
 //            print("Response data: \(response.data)")
 //            print("Response result: \(response.result)")
 //            print("Response timeline: \(response.timeline)")
-            
-            if let JSON = response.result.value {
+
+            if let JSON = response.result.value as? NSArray {
                 //print("JSON: \(JSON)")
-                for location in JSON as! NSArray { // if let
-                    //print("Location: \(location)")
-                    let owners = location["owners"] as! NSArray // if let
-                    for owner in owners {
-                        if owner.isEqualToString("931974540209503") {
-                            print("Owner: \(owner) found!")
-                            dataFromServer.addObject(location)
+            
+                for location in JSON {
+                    if let owners = location["owners"] as? NSArray {
+                        for owner in owners {
+                            if owner.isEqualToString("931974540209503") {
+                                print("Owner: \(owner) found in place \(location["name"])")
+                                dataFromServer.append(location)
+                            }
                         }
                     }
-                    //dataFromServer.addObject(location)
-
+                    
                 }
-                completion(result: dataFromServer.copy() as! NSArray) // if let
-                
+                completion(result: dataFromServer)
             }
- 
         }
-
+      }
     }
     
 }
