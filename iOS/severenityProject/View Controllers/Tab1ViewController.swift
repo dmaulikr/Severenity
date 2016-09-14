@@ -12,16 +12,14 @@ class Tab1ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Tab 1 did load");
+        print("Tab 1 did load")
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+
 
     /*
     // MARK: - Navigation
@@ -32,9 +30,4 @@ class Tab1ViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
-=======
->>>>>>> 422f695... A few more fixes
-=======
->>>>>>> 422f695... A few more fixes
 }
