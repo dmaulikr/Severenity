@@ -30,6 +30,7 @@
 		52787C0A1D86C3BD009D17F5 /* QuestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C041D86C3BD009D17F5 /* QuestsViewController.swift */; };
 		52787C1B1D86D88D009D17F5 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C1A1D86D88D009D17F5 /* ListViewController.swift */; };
 		52787C211D86EEC6009D17F5 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C201D86EEC6009D17F5 /* GridViewController.swift */; };
+		527D92B31D8988510059F14F /* RealmDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527D92B21D8988510059F14F /* RealmDataModel.swift */; };
 		9E28403612ACC78905B5AA1A /* Pods_severenityProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D2F58729FDE60536BBE9EC6 /* Pods_severenityProject.framework */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +95,7 @@
 		52787C041D86C3BD009D17F5 /* QuestsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuestsViewController.swift; path = "View Controllers/QuestsViewController.swift"; sourceTree = "<group>"; };
 		52787C1A1D86D88D009D17F5 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListViewController.swift; path = "View Controllers/ListViewController.swift"; sourceTree = "<group>"; };
 		52787C201D86EEC6009D17F5 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridViewController.swift; path = "View Controllers/GridViewController.swift"; sourceTree = "<group>"; };
+		527D92B21D8988510059F14F /* RealmDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RealmDataModel.swift; path = Models/RealmDataModel.swift; sourceTree = "<group>"; };
 		6D2F58729FDE60536BBE9EC6 /* Pods_severenityProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_severenityProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78E1B83C8E7B05EED892731A /* Pods-severenityProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-severenityProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-severenityProject/Pods-severenityProject.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -188,6 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				5264A7A01D8828B500EE78FC /* LocationsServerManager.swift */,
+				527D92B21D8988510059F14F /* RealmDataModel.swift */,
 				52787C0B1D86C838009D17F5 /* Views */,
 				52787BF41D86B0B9009D17F5 /* View Controllers */,
 				52787BE31D86AA35009D17F5 /* Main.storyboard */,
@@ -462,6 +465,7 @@
 				5264A7A91D882F6700EE78FC /* ListCell.swift in Sources */,
 				52787C1B1D86D88D009D17F5 /* ListViewController.swift in Sources */,
 				52787C091D86C3BD009D17F5 /* ChatViewController.swift in Sources */,
+				527D92B31D8988510059F14F /* RealmDataModel.swift in Sources */,
 				52787C211D86EEC6009D17F5 /* GridViewController.swift in Sources */,
 				5264A7A11D8828B500EE78FC /* LocationsServerManager.swift in Sources */,
 				5264A7AB1D882F8800EE78FC /* GridCell.swift in Sources */,

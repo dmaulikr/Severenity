@@ -8,10 +8,13 @@
 
 import UIKit
 import Alamofire
+import RealmSwift
 
 class LocationsServerManager: NSObject {
     
     let serverURLString = "https://severenity.herokuapp.com/places/all"
+
+    
     
     func requestLocationsFromServer(completion: (result: NSArray) -> Void) {
         
@@ -32,17 +35,49 @@ class LocationsServerManager: NSObject {
             if let JSON = response.result.value as? NSArray {
                 //print("JSON: \(JSON)")
             
-                for location in JSON {
-                    if let owners = location["owners"] as? NSArray {
+                for place in JSON {
+                    if let owners = place["owners"] as? NSArray {
                         for owner in owners {
                             if owner.isEqualToString("931974540209503") {
-                                print("Owner: \(owner) found in place \(location["name"])")
-                                dataFromServer.append(location)
+                                
+                                print("Owner: \(owner) found in place \(place["name"])")
+                                dataFromServer.append(place)
+                                
                             }
                         }
                     }
                     
                 }
+                
+                
+                let placeInRealm = RealmPlace()
+                placeInRealm.placeId = "placeId"
+                placeInRealm.name = "name"
+                placeInRealm.locationType = "locationType"
+                placeInRealm.locationLangtitude = 0.0
+                placeInRealm.locationLongtitude = 0.0
+                placeInRealm.type = 0.0
+                placeInRealm.createdDate = "createdDate"
+                
+                let placeOwner = RealmPlaceOwner()
+                placeOwner.owner = "Owner 1"
+                placeInRealm.owners.insert(placeOwner, atIndex: 0)
+                
+                // Get the default Realm
+                let realm = try! Realm()
+                // You only need to do this once (per thread)
+                // So should i put it in AppDelegate?
+                
+                // Add to the Realm inside a transaction
+                try! realm.write {
+                    realm.add(placeInRealm)
+                }
+                
+                
+                let testQuerying = realm.objects(RealmPlace.self) // retrieves all Places from the default Realm
+                print("Data from Realm: \(testQuerying)")
+
+                
                 completion(result: dataFromServer)
             }
         }
