@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5223A0E11D8AE821009A0EC7 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */; };
+		5223A0EB1D8AEBED009A0EC7 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5223A0E81D8AEBED009A0EC7 /* FBSDKCoreKit.framework */; };
+		5223A0EC1D8AEBED009A0EC7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5223A0E91D8AEBED009A0EC7 /* FBSDKLoginKit.framework */; };
+		5223A0ED1D8AEBED009A0EC7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5223A0EA1D8AEBED009A0EC7 /* FBSDKShareKit.framework */; };
 		523828751D89331500F55364 /* severenityProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828741D89331500F55364 /* severenityProjectTests.swift */; };
 		523828831D89332D00F55364 /* severenityProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828821D89332D00F55364 /* severenityProjectUITests.swift */; };
 		5238289A1D89826F00F55364 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523828981D89826F00F55364 /* Realm.framework */; };
@@ -22,7 +26,6 @@
 		52787BE51D86AA35009D17F5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE31D86AA35009D17F5 /* Main.storyboard */; };
 		52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE61D86AA35009D17F5 /* Assets.xcassets */; };
 		52787BEA1D86AA35009D17F5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE81D86AA35009D17F5 /* LaunchScreen.storyboard */; };
-		52787C051D86C3BD009D17F5 /* InitialTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787BFF1D86C3BD009D17F5 /* InitialTabBarController.swift */; };
 		52787C061D86C3BD009D17F5 /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C001D86C3BD009D17F5 /* ShopViewController.swift */; };
 		52787C071D86C3BD009D17F5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C011D86C3BD009D17F5 /* ProfileViewController.swift */; };
 		52787C081D86C3BD009D17F5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C021D86C3BD009D17F5 /* MapViewController.swift */; };
@@ -31,7 +34,6 @@
 		52787C1B1D86D88D009D17F5 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C1A1D86D88D009D17F5 /* ListViewController.swift */; };
 		52787C211D86EEC6009D17F5 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C201D86EEC6009D17F5 /* GridViewController.swift */; };
 		527D92B31D8988510059F14F /* RealmDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527D92B21D8988510059F14F /* RealmDataModel.swift */; };
-		9E28403612ACC78905B5AA1A /* Pods_severenityProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D2F58729FDE60536BBE9EC6 /* Pods_severenityProject.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +70,10 @@
 
 /* Begin PBXFileReference section */
 		3C9B25F8AB0EE5633501A8A2 /* Pods-severenityProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-severenityProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-severenityProject/Pods-severenityProject.release.xcconfig"; sourceTree = "<group>"; };
+		5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialViewController.swift; path = "View Controllers/InitialViewController.swift"; sourceTree = "<group>"; };
+		5223A0E81D8AEBED009A0EC7 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Frameworks/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		5223A0E91D8AEBED009A0EC7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		5223A0EA1D8AEBED009A0EC7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Frameworks/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		523828721D89331500F55364 /* severenityProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = severenityProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		523828741D89331500F55364 /* severenityProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = severenityProjectTests.swift; sourceTree = "<group>"; };
 		523828761D89331500F55364 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -87,7 +93,6 @@
 		52787BE61D86AA35009D17F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		52787BE91D86AA35009D17F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		52787BEB1D86AA35009D17F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		52787BFF1D86C3BD009D17F5 /* InitialTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialTabBarController.swift; path = "View Controllers/InitialTabBarController.swift"; sourceTree = "<group>"; };
 		52787C001D86C3BD009D17F5 /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShopViewController.swift; path = "View Controllers/ShopViewController.swift"; sourceTree = "<group>"; };
 		52787C011D86C3BD009D17F5 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = "View Controllers/ProfileViewController.swift"; sourceTree = "<group>"; };
 		52787C021D86C3BD009D17F5 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = "View Controllers/MapViewController.swift"; sourceTree = "<group>"; };
@@ -96,7 +101,6 @@
 		52787C1A1D86D88D009D17F5 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListViewController.swift; path = "View Controllers/ListViewController.swift"; sourceTree = "<group>"; };
 		52787C201D86EEC6009D17F5 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridViewController.swift; path = "View Controllers/GridViewController.swift"; sourceTree = "<group>"; };
 		527D92B21D8988510059F14F /* RealmDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RealmDataModel.swift; path = Models/RealmDataModel.swift; sourceTree = "<group>"; };
-		6D2F58729FDE60536BBE9EC6 /* Pods_severenityProject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_severenityProject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		78E1B83C8E7B05EED892731A /* Pods-severenityProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-severenityProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-severenityProject/Pods-severenityProject.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -120,7 +124,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				5238289A1D89826F00F55364 /* Realm.framework in Frameworks */,
-				9E28403612ACC78905B5AA1A /* Pods_severenityProject.framework in Frameworks */,
+				5223A0EB1D8AEBED009A0EC7 /* FBSDKCoreKit.framework in Frameworks */,
+				5223A0ED1D8AEBED009A0EC7 /* FBSDKShareKit.framework in Frameworks */,
+				5223A0EC1D8AEBED009A0EC7 /* FBSDKLoginKit.framework in Frameworks */,
 				5238289C1D89826F00F55364 /* RealmSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -213,7 +219,7 @@
 		52787BF41D86B0B9009D17F5 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				52787BFF1D86C3BD009D17F5 /* InitialTabBarController.swift */,
+				5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */,
 				52787C001D86C3BD009D17F5 /* ShopViewController.swift */,
 				52787C011D86C3BD009D17F5 /* ProfileViewController.swift */,
 				52787C021D86C3BD009D17F5 /* MapViewController.swift */,
@@ -237,9 +243,11 @@
 		80D382F60247FFE0365B0D4A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5223A0E81D8AEBED009A0EC7 /* FBSDKCoreKit.framework */,
+				5223A0E91D8AEBED009A0EC7 /* FBSDKLoginKit.framework */,
+				5223A0EA1D8AEBED009A0EC7 /* FBSDKShareKit.framework */,
 				523828981D89826F00F55364 /* Realm.framework */,
 				523828991D89826F00F55364 /* RealmSwift.framework */,
-				6D2F58729FDE60536BBE9EC6 /* Pods_severenityProject.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -457,8 +465,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				52787C061D86C3BD009D17F5 /* ShopViewController.swift in Sources */,
+				5223A0E11D8AE821009A0EC7 /* InitialViewController.swift in Sources */,
 				52787C0A1D86C3BD009D17F5 /* QuestsViewController.swift in Sources */,
-				52787C051D86C3BD009D17F5 /* InitialTabBarController.swift in Sources */,
 				52787C081D86C3BD009D17F5 /* MapViewController.swift in Sources */,
 				52787BE01D86AA35009D17F5 /* AppDelegate.swift in Sources */,
 				52787C071D86C3BD009D17F5 /* ProfileViewController.swift in Sources */,

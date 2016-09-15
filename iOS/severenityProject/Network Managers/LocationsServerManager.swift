@@ -22,14 +22,14 @@ class LocationsServerManager: NSObject {
     func provideData(completion: (result: NSArray) -> Void) {
     
         if checkIfRealmIsEmpty() {
-            print("Realm is empty")
+            print("Realm is empty, asking server for data")
             requestDataFromServer({ 
                 self.getDataFromRealm({ (data) in
                     completion(result: data)
                 })
             })
         } else {
-            print("Realm is not empty")
+            print("Realm is not empty, loading data")
             getDataFromRealm({ (data) in
                 completion(result: data)
             })
