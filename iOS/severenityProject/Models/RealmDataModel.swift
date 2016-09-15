@@ -15,7 +15,7 @@ class RealmPlace: Object {
     dynamic var placeId = ""
     dynamic var name = ""
     dynamic var locationType = ""
-    dynamic var locationLangtitude = 0.0
+    dynamic var locationLatitude = 0.0
     dynamic var locationLongtitude = 0.0
     dynamic var type = 0.0
     dynamic var createdDate = ""

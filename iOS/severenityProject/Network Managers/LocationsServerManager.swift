@@ -17,76 +17,133 @@ class LocationsServerManager: NSObject {
     // Get the default Realm
     // You only need to do this once (per thread)
     let realm = try! Realm()
-    // So should i put it in AppDelegate?
+    // Should I put it in AppDelegate?
     
+    func provideData(completion: (result: NSArray) -> Void) {
     
-    func requestLocationsFromServer(completion: (result: NSArray) -> Void) {
+        if checkIfRealmIsEmpty() {
+            print("Realm is empty")
+            requestDataFromServer({ 
+                self.getDataFromRealm({ (data) in
+                    completion(result: data)
+                })
+            })
+        } else {
+            print("Realm is not empty")
+            getDataFromRealm({ (data) in
+                completion(result: data)
+            })
+        }
         
-        var dataFromServer: [AnyObject] = []
+    }
+    
+    func checkIfRealmIsEmpty() -> Bool {
+        let realmReadQuery = self.realm.objects(RealmPlace.self)
+        if realmReadQuery.isEmpty {
+            return true
+        }
+        else {
+         return false
+        }
+    }
+    
+    func requestDataFromServer(completion: () -> Void) {
+        
+        //var dataFromServer: [AnyObject] = []
         
         if let serverURL = NSURL.init(string: serverURLString) {
             
         let serverRequest = NSURLRequest.init(URL: serverURL)
         
         Alamofire.request(serverRequest).responseJSON { response in
-            //Server response info
-//            print("Response request: \(response.request)")
-//            print("Response response: \(response.response)")
-//            print("Response data: \(response.data)")
-//            print("Response result: \(response.result)")
-//            print("Response timeline: \(response.timeline)")
 
             if let JSON = response.result.value as? NSArray {
-                //print("JSON: \(JSON)")
                 
                 for place in JSON {
                     if let owners = place["owners"] as? NSArray {
-                        for owner in owners {
-                            if owner.isEqualToString("931974540209503") {
-                                
-                                // Adding data to array (to show on table)
-                                print("Owner: \(owner) found in place \(place["name"])")
-                                dataFromServer.append(place)
-                                
-                                
+                        for owner in owners
+                            where owner.isEqualToString("931974540209503") {
+
                                 // Adding data to Realm DB
                                 let placeInRealm = RealmPlace()
-                                placeInRealm.placeId = place["placeId"] as! String
-                                placeInRealm.name = place["name"] as! String
-                                placeInRealm.locationType = place["location"]!!["type"] as! String
-                                placeInRealm.locationLangtitude = place["location"]!!["coordinates"]!![0] as! Double
-                                placeInRealm.locationLongtitude = place["location"]!!["coordinates"]!![1] as! Double
-                                placeInRealm.type = place["type"] as! Double // but it has to be enum, not double?
-                                placeInRealm.createdDate = place["createdDate"] as! String
+                                if let placeId = place["placeId"] as? String {
+                                    placeInRealm.placeId = placeId
+                                }
+                                if let name = place["name"] as? String {
+                                    placeInRealm.name = name
+                                }
+                                if let locationType = place["location"]??["type"] as? String {
+                                    placeInRealm.locationType = locationType
+                                }
+                                if let locationLatitude = place["location"]??["coordinates"]??[0] as? Double {
+                                    placeInRealm.locationLatitude = locationLatitude
+                                }
+                                if let locationLongtitude = place["location"]??["coordinates"]??[1] as? Double {
+                                    placeInRealm.locationLongtitude = locationLongtitude
+                                }
+                                if let type = place["type"] as? Double {
+                                    placeInRealm.type = type
+                                }
+                                if let createdDate = place["createdDate"] as? String {
+                                    placeInRealm.createdDate = createdDate
+                                }
                                 
                                 let placeOwner = RealmPlaceOwner()
                                 for object in owners {
                                 
-                                placeOwner.owner = object as! String
-                                placeInRealm.owners.append(placeOwner)
+                                    if let owner = object as? String {
+                                        
+                                        placeOwner.owner = owner
+                                        placeInRealm.owners.append(placeOwner)
+                                    }
                                     
                                 }
-                                
-//                                try! self.realm.write {
-//                                    self.realm.deleteAll()
-//                                }
                                 
                                 try! self.realm.write {
                                     self.realm.add(placeInRealm)
                                 }
                                 
-                                let testQuerying = self.realm.objects(RealmPlace.self) // retrieves all Places from the default Realm
-                                print("Data from Realm: \(testQuerying)")
-                                
                             }
-                        }
+                        
                     }
                 }
 
-                completion(result: dataFromServer)
+                completion()
             }
         }
       }
+        
+        
+        
     }
+    
+    func getDataFromRealm(completion: (data: NSArray) -> Void) {
+        
+        let realmReadQuery = self.realm.objects(RealmPlace.self)
+        var dataFromRealm: [AnyObject] = []
+        
+        for place in realmReadQuery {
+            let dictionaryWithPlace: [String: AnyObject] = [
+                "placeId" : place.placeId,
+                "name" : place.name,
+                "type" : place.type,
+                "createdDate" : place.createdDate,
+                "owners" : place.owners,
+                "locationType" : place.locationType,
+                "locationLatitude" : place.locationLatitude,
+                "locationLongtitude" : place.locationLongtitude
+            ]
+            dataFromRealm.append(dictionaryWithPlace)
+        }
+        completion(data: dataFromRealm)
+
+    }
+    
+    private func dropDataInRealm() {
+       try! self.realm.write {
+          self.realm.deleteAll()
+       }
+    }
+
     
 }

@@ -17,7 +17,7 @@ class ListViewController: UITableViewController {
     func provideDataForList() {
         
         let locationsServerManager = LocationsServerManager()
-        locationsServerManager.requestLocationsFromServer { (result) in
+        locationsServerManager.provideData { (result) in
             self.dataForList = result
             self.tableView.reloadData()
         }
