@@ -14,6 +14,10 @@ class LocationsServerManager: NSObject {
     
     let serverURLString = "https://severenity.herokuapp.com/places/all"
 
+    // Get the default Realm
+    // You only need to do this once (per thread)
+    let realm = try! Realm()
+    // So should i put it in AppDelegate?
     
     
     func requestLocationsFromServer(completion: (result: NSArray) -> Void) {
@@ -34,50 +38,51 @@ class LocationsServerManager: NSObject {
 
             if let JSON = response.result.value as? NSArray {
                 //print("JSON: \(JSON)")
-            
+                
                 for place in JSON {
                     if let owners = place["owners"] as? NSArray {
                         for owner in owners {
                             if owner.isEqualToString("931974540209503") {
                                 
+                                // Adding data to array (to show on table)
                                 print("Owner: \(owner) found in place \(place["name"])")
                                 dataFromServer.append(place)
+                                
+                                
+                                // Adding data to Realm DB
+                                let placeInRealm = RealmPlace()
+                                placeInRealm.placeId = place["placeId"] as! String
+                                placeInRealm.name = place["name"] as! String
+                                placeInRealm.locationType = place["location"]!!["type"] as! String
+                                placeInRealm.locationLangtitude = place["location"]!!["coordinates"]!![0] as! Double
+                                placeInRealm.locationLongtitude = place["location"]!!["coordinates"]!![1] as! Double
+                                placeInRealm.type = place["type"] as! Double // but it has to be enum, not double?
+                                placeInRealm.createdDate = place["createdDate"] as! String
+                                
+                                let placeOwner = RealmPlaceOwner()
+                                for object in owners {
+                                
+                                placeOwner.owner = object as! String
+                                placeInRealm.owners.append(placeOwner)
+                                    
+                                }
+                                
+//                                try! self.realm.write {
+//                                    self.realm.deleteAll()
+//                                }
+                                
+                                try! self.realm.write {
+                                    self.realm.add(placeInRealm)
+                                }
+                                
+                                let testQuerying = self.realm.objects(RealmPlace.self) // retrieves all Places from the default Realm
+                                print("Data from Realm: \(testQuerying)")
                                 
                             }
                         }
                     }
-                    
                 }
-                
-                
-                let placeInRealm = RealmPlace()
-                placeInRealm.placeId = "placeId"
-                placeInRealm.name = "name"
-                placeInRealm.locationType = "locationType"
-                placeInRealm.locationLangtitude = 0.0
-                placeInRealm.locationLongtitude = 0.0
-                placeInRealm.type = 0.0
-                placeInRealm.createdDate = "createdDate"
-                
-                let placeOwner = RealmPlaceOwner()
-                placeOwner.owner = "Owner 1"
-                placeInRealm.owners.insert(placeOwner, atIndex: 0)
-                
-                // Get the default Realm
-                let realm = try! Realm()
-                // You only need to do this once (per thread)
-                // So should i put it in AppDelegate?
-                
-                // Add to the Realm inside a transaction
-                try! realm.write {
-                    realm.add(placeInRealm)
-                }
-                
-                
-                let testQuerying = realm.objects(RealmPlace.self) // retrieves all Places from the default Realm
-                print("Data from Realm: \(testQuerying)")
 
-                
                 completion(result: dataFromServer)
             }
         }
