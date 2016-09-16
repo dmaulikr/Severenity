@@ -57,7 +57,7 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         print("Facebook SDK version \(FBSDKSettings .sdkVersion())")
         let loginButton = LoginButton(readPermissions: [ .PublicProfile ])
         loginButton.delegate = self

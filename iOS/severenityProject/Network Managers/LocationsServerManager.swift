@@ -20,7 +20,7 @@ class LocationsServerManager: NSObject {
     // Should I put it in AppDelegate?
     
     func provideData(completion: (result: NSArray) -> Void) {
-    
+        
         if checkIfRealmIsEmpty() {
             print("Realm is empty, asking server for data")
             requestDataFromServer({ 
@@ -29,7 +29,7 @@ class LocationsServerManager: NSObject {
                 })
             })
         } else {
-            print("Realm is not empty, try load data")
+            print("Realm is not empty, loading data")
             getDataFromRealm({ (data) in
                 completion(result: data)
             })
@@ -112,8 +112,6 @@ class LocationsServerManager: NSObject {
             }
         }
       }
-        
-        
         
     }
     

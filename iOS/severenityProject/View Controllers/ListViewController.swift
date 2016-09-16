@@ -14,6 +14,8 @@ class ListViewController: UITableViewController {
     
     private var dataForList = []
     
+    weak var activityIndicatorView: UIActivityIndicatorView!
+    
     func provideDataForList() {
         
         let locationsServerManager = LocationsServerManager()
@@ -21,6 +23,7 @@ class ListViewController: UITableViewController {
             self.dataForList = result
             self.tableView.reloadData()
         }
+        
     }
     
     // MARK: - Loading view
@@ -28,6 +31,13 @@ class ListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.registerNib(UINib(nibName: "ListCell", bundle: nil), forCellReuseIdentifier: "CellInList")
+        
+        // Data loading indicator for the tableview
+        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
+        activityIndicatorView.color = UIColor.blueColor()
+        tableView.backgroundView = activityIndicatorView
+        self.activityIndicatorView = activityIndicatorView
+        activityIndicatorView.startAnimating()
 
         provideDataForList()
         
@@ -37,7 +47,15 @@ class ListViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
+        
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if indexPath.row == tableView.indexPathsForVisibleRows?.last?.row {
+            activityIndicatorView.stopAnimating()
+        }
     }
 
 

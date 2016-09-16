@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Tab1ViewController: UIViewController {
+class ShopViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

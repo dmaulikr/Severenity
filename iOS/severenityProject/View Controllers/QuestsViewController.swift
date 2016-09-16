@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Tab5ViewController: UIViewController {
+class QuestsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

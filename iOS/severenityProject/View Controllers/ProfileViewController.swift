@@ -11,8 +11,7 @@ import FacebookLogin
 import FBSDKCoreKit
 import FBSDKLoginKit
 
-class Tab2ViewController: UIViewController, LoginButtonDelegate {
-    
+class ProfileViewController: UIViewController, LoginButtonDelegate {
 
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var contentModeSwitcher: UISegmentedControl!
@@ -27,12 +26,12 @@ class Tab2ViewController: UIViewController, LoginButtonDelegate {
     func loginButtonDidLogOut(loginButton: LoginButton) {
         
         if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewControllerWithIdentifier("loginController")
             self.navigationController?.popViewControllerAnimated(true)
             appDelegate.window?.rootViewController = vc
         }
-        print("login button did logout")
     }
     
     // MARK: - Managing view presentation

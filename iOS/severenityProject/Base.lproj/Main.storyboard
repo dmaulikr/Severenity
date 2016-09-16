@@ -65,7 +65,7 @@
         <!--Upper Bar-->
         <scene sceneID="X1Y-5R-8FD">
             <objects>
-                <viewController id="ldY-ZS-q4s" customClass="Tab1ViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ldY-ZS-q4s" customClass="ShopViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="za3-vv-ofF"/>
                         <viewControllerLayoutGuide type="bottom" id="Ocg-ZE-VF5"/>
@@ -84,7 +84,7 @@
         <!--Upper Bar-->
         <scene sceneID="fJH-eQ-5KW">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="UjW-jb-Lg0" customClass="Tab2ViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="UjW-jb-Lg0" customClass="ProfileViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Wf6-vW-5cw"/>
                         <viewControllerLayoutGuide type="bottom" id="2va-fc-Rfa"/>
@@ -129,11 +129,11 @@
             </objects>
             <point key="canvasLocation" x="680.5" y="-790.5"/>
         </scene>
-        <!--Item 1-->
+        <!--Shop-->
         <scene sceneID="UcC-yR-zd3">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="drd-a5-xUY" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item 1" id="pHm-Y1-UHg"/>
+                    <tabBarItem key="tabBarItem" title="Shop" id="pHm-Y1-UHg"/>
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="FLK-8r-Oq0">
@@ -149,11 +149,11 @@
             </objects>
             <point key="canvasLocation" x="-768.5" y="-1003.5"/>
         </scene>
-        <!--Item 2-->
+        <!--Profile-->
         <scene sceneID="0mz-lo-PeW">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ywl-yH-zXU" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item 2" id="eYp-dv-Zms"/>
+                    <tabBarItem key="tabBarItem" title="Profile" id="eYp-dv-Zms"/>
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="RFw-Uf-Dzy">
@@ -172,7 +172,7 @@
         <!--Upper Bar-->
         <scene sceneID="Mip-pj-5w8">
             <objects>
-                <viewController id="mcu-PL-Cos" customClass="Tab3ViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="mcu-PL-Cos" customClass="MapViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="M4Z-kV-hue"/>
                         <viewControllerLayoutGuide type="bottom" id="B4x-8y-x6Y"/>
@@ -188,11 +188,11 @@
             </objects>
             <point key="canvasLocation" x="860.5" y="-46.5"/>
         </scene>
-        <!--Item 3-->
+        <!--Map-->
         <scene sceneID="vS6-pR-KRm">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Vji-IS-xEi" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item 3" id="0Ke-hW-7Ea"/>
+                    <tabBarItem key="tabBarItem" title="Map" id="0Ke-hW-7Ea"/>
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xAK-46-bRb">
@@ -211,7 +211,7 @@
         <!--Upper Bar-->
         <scene sceneID="oKO-4g-UQX">
             <objects>
-                <viewController id="dHU-YV-G28" customClass="Tab4ViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="dHU-YV-G28" customClass="ChatViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RtP-ub-Zph"/>
                         <viewControllerLayoutGuide type="bottom" id="Y1H-aC-mOA"/>
@@ -227,11 +227,11 @@
             </objects>
             <point key="canvasLocation" x="680.5" y="743.5"/>
         </scene>
-        <!--Item 4-->
+        <!--Chat-->
         <scene sceneID="W1f-vY-3ke">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JZ4-CZ-pB3" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item 4" id="DRo-ps-RXW"/>
+                    <tabBarItem key="tabBarItem" title="Chat" id="DRo-ps-RXW"/>
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="PfO-cR-PKb">
@@ -250,7 +250,7 @@
         <!--Upper Bar-->
         <scene sceneID="0su-TL-oWl">
             <objects>
-                <viewController id="7qv-Ph-hYD" customClass="Tab5ViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="7qv-Ph-hYD" customClass="QuestsViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qCi-FE-2lx"/>
                         <viewControllerLayoutGuide type="bottom" id="OZa-ad-6z9"/>
@@ -266,11 +266,11 @@
             </objects>
             <point key="canvasLocation" x="-275.5" y="1013.5"/>
         </scene>
-        <!--Item 5-->
+        <!--Quests-->
         <scene sceneID="uQP-9P-OUr">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jxb-cg-N5J" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item 5" id="H5m-q4-Byt"/>
+                    <tabBarItem key="tabBarItem" title="Quests" id="H5m-q4-Byt"/>
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="LJb-AX-543">
