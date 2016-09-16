@@ -17,12 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        print("Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyDwGUVtOrI3FpJeVZKtmYcBC5w3TL9X9dM"))")
-        print("Google Maps API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyDwGUVtOrI3FpJeVZKtmYcBC5w3TL9X9dM"))")
+        print("Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
+        print("Google Maps API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
         
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }

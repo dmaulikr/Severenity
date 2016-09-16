@@ -11,24 +11,24 @@ import GoogleMaps
 
 class MapViewController: UIViewController, CLLocationManagerDelegate {
     
-    let locationManager = CLLocationManager()
+    var locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
-        }
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
         
-        let camera = GMSCameraPosition.cameraWithLatitude(49.832836,
-                                                          longitude: 23.997104, zoom: 6)
+         let currentLocation = locationManager.location!.coordinate
+        let camera = GMSCameraPosition.cameraWithLatitude(locationManager.location!.coordinate.latitude,
+                                                          longitude: locationManager.location!.coordinate.longitude, zoom: 6)
         let mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
         mapView.myLocationEnabled = true
         self.view = mapView
         let marker = GMSMarker()
-        let currentLocation = locationManager.location!.coordinate
+       
         marker.position = currentLocation
         marker.title = "Current location"
         marker.map = mapView
