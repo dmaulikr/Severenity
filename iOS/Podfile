@@ -4,4 +4,7 @@ use_frameworks!
 
 target 'severenityProject' do
 pod 'Alamofire'
+pod 'FacebookCore'
+pod 'FacebookLogin'
+pod 'FacebookShare'
 end

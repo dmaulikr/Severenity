@@ -8,7 +8,7 @@
         <!--Initial View Controller-->
         <scene sceneID="fIg-rQ-5sB">
             <objects>
-                <viewController id="lqx-g2-TFI" customClass="InitialViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="loginController" id="lqx-g2-TFI" customClass="InitialViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Gwa-O9-1zc"/>
                         <viewControllerLayoutGuide type="bottom" id="57q-i1-bm7"/>
@@ -17,45 +17,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pQw-9X-vZt">
-                                <rect key="frame" x="151" y="414" width="72" height="34"/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Login">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="performFacebookLogin:" destination="lqx-g2-TFI" eventType="touchUpInside" id="7pD-c6-Jba"/>
-                                    <segue destination="equ-dC-efz" kind="presentation" modalTransitionStyle="crossDissolve" id="Yki-vQ-Akr"/>
-                                </connections>
-                            </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Login" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kAZ-tN-i2M">
-                                <rect key="frame" x="131" y="274" width="112" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yvm-W6-s8e">
-                                <rect key="frame" x="131" y="312" width="112" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Login with Facebook" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v7K-8q-4n6">
-                                <rect key="frame" x="106" y="233" width="163" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Welcome to Severenity, please log-in with your Facebook account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Za-qB-qnQ">
+                                <rect key="frame" x="20" y="48" width="335" height="85"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <outlet property="loginTextfield" destination="kAZ-tN-i2M" id="fgq-do-rLR"/>
-                        <outlet property="passwordTextfield" destination="yvm-W6-s8e" id="IHw-3O-DpU"/>
+                        <outlet property="welcomeLabel" destination="8Za-qB-qnQ" id="Fag-3b-VNZ"/>
+                        <segue destination="equ-dC-efz" kind="presentation" identifier="didLoginSegue" modalTransitionStyle="crossDissolve" id="qSf-yy-sxL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3pC-OE-qlg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -65,7 +38,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="k07-Uu-xLl">
             <objects>
-                <tabBarController id="equ-dC-efz" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="logedInController" id="equ-dC-efz" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="JGg-au-fAL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
@@ -92,7 +65,7 @@
         <!--Upper Bar-->
         <scene sceneID="X1Y-5R-8FD">
             <objects>
-                <viewController id="ldY-ZS-q4s" customClass="Tab1ViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ldY-ZS-q4s" customClass="Tab1ViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="za3-vv-ofF"/>
                         <viewControllerLayoutGuide type="bottom" id="Ocg-ZE-VF5"/>
@@ -111,7 +84,7 @@
         <!--Upper Bar-->
         <scene sceneID="fJH-eQ-5KW">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="UjW-jb-Lg0" customClass="Tab2ViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="UjW-jb-Lg0" customClass="Tab2ViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Wf6-vW-5cw"/>
                         <viewControllerLayoutGuide type="bottom" id="2va-fc-Rfa"/>
@@ -131,7 +104,7 @@
                                 </connections>
                             </segmentedControl>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bAX-0b-l42" userLabel="Content View">
-                                <rect key="frame" x="0.0" y="102" width="375" height="516"/>
+                                <rect key="frame" x="0.0" y="102" width="375" height="476"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -141,7 +114,7 @@
                             <constraint firstItem="cmG-zW-xOo" firstAttribute="leading" secondItem="mTF-zQ-Z86" secondAttribute="leading" constant="25" id="KIb-w5-Eop"/>
                             <constraint firstAttribute="trailing" secondItem="cmG-zW-xOo" secondAttribute="trailing" constant="25" id="KTF-ol-Dab"/>
                             <constraint firstItem="bAX-0b-l42" firstAttribute="leading" secondItem="mTF-zQ-Z86" secondAttribute="leading" id="MUN-WK-jA9"/>
-                            <constraint firstItem="2va-fc-Rfa" firstAttribute="top" secondItem="bAX-0b-l42" secondAttribute="bottom" id="V7j-xI-eu0"/>
+                            <constraint firstItem="2va-fc-Rfa" firstAttribute="top" secondItem="bAX-0b-l42" secondAttribute="bottom" constant="40" id="V7j-xI-eu0"/>
                             <constraint firstItem="cmG-zW-xOo" firstAttribute="top" secondItem="Wf6-vW-5cw" secondAttribute="bottom" constant="5" id="ql9-H9-Oat"/>
                             <constraint firstAttribute="trailing" secondItem="bAX-0b-l42" secondAttribute="trailing" id="qrg-eQ-g7Q"/>
                         </constraints>
@@ -199,7 +172,7 @@
         <!--Upper Bar-->
         <scene sceneID="Mip-pj-5w8">
             <objects>
-                <viewController id="mcu-PL-Cos" customClass="Tab3ViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="mcu-PL-Cos" customClass="Tab3ViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="M4Z-kV-hue"/>
                         <viewControllerLayoutGuide type="bottom" id="B4x-8y-x6Y"/>
@@ -238,7 +211,7 @@
         <!--Upper Bar-->
         <scene sceneID="oKO-4g-UQX">
             <objects>
-                <viewController id="dHU-YV-G28" customClass="Tab4ViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="dHU-YV-G28" customClass="Tab4ViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RtP-ub-Zph"/>
                         <viewControllerLayoutGuide type="bottom" id="Y1H-aC-mOA"/>
@@ -277,7 +250,7 @@
         <!--Upper Bar-->
         <scene sceneID="0su-TL-oWl">
             <objects>
-                <viewController id="7qv-Ph-hYD" customClass="Tab5ViewController" customModule="severenityProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="7qv-Ph-hYD" customClass="Tab5ViewController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qCi-FE-2lx"/>
                         <viewControllerLayoutGuide type="bottom" id="OZa-ad-6z9"/>

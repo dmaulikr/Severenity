@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:severenityProject.xcodeproj">
+      location = "group:/Users/MacBookPro/Desktop/Swift/Severenity/iOS/Severenity.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
