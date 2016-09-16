@@ -13,10 +13,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     
     let locationManager = CLLocationManager()
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let locValue:CLLocationCoordinate2D = locationManager.location!.coordinate
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,7 +21,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
         }
-        
         
         let camera = GMSCameraPosition.cameraWithLatitude(49.832836,
                                                           longitude: 23.997104, zoom: 6)
