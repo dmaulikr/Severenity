@@ -39,6 +39,8 @@
 		<string>fb-messenger-api</string>
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
+        <string>googlechromes</string>
+        <string>comgooglemaps</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -68,5 +70,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Severenity needs your GPS information to load the map</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Severenity needs your GPS information to load the map</string>
 </dict>
 </plist>

@@ -9,6 +9,8 @@
 import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
+import GoogleMaps
+import GooglePlaces
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        print("Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyDwGUVtOrI3FpJeVZKtmYcBC5w3TL9X9dM"))")
+        print("Google Maps API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyDwGUVtOrI3FpJeVZKtmYcBC5w3TL9X9dM"))")
+        
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     

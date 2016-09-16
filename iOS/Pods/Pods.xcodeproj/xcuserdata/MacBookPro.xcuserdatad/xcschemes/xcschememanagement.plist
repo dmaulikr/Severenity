@@ -44,7 +44,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-severenityProject.xcscheme</key>
+		<key>Pods-Severenity.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -52,7 +52,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>33313BB5B0BD72DB6C7F62E99CF4C9C8</key>
+		<key>395E6BB9F746A962FE15A0AC04C5FECE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
