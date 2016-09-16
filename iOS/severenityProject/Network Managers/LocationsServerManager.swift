@@ -29,7 +29,7 @@ class LocationsServerManager: NSObject {
                 })
             })
         } else {
-            print("Realm is not empty, loading data")
+            print("Realm is not empty, try load data")
             getDataFromRealm({ (data) in
                 completion(result: data)
             })
@@ -62,7 +62,7 @@ class LocationsServerManager: NSObject {
                 for place in JSON {
                     if let owners = place["owners"] as? NSArray {
                         for owner in owners
-                            where owner.isEqualToString("931974540209503") {
+                            where owner.isEqualToString("931974540209503") { //should be Facebook token userID
 
                                 // Adding data to Realm DB
                                 let placeInRealm = RealmPlace()
@@ -121,19 +121,31 @@ class LocationsServerManager: NSObject {
         
         let realmReadQuery = self.realm.objects(RealmPlace.self)
         var dataFromRealm: [AnyObject] = []
+        var ownersArray: [AnyObject] = []
+        var isRightOwnerFound = false
         
         for place in realmReadQuery {
-            let dictionaryWithPlace: [String: AnyObject] = [
-                "placeId" : place.placeId,
-                "name" : place.name,
-                "type" : place.type,
-                "createdDate" : place.createdDate,
-                "owners" : place.owners,
-                "locationType" : place.locationType,
-                "locationLatitude" : place.locationLatitude,
-                "locationLongtitude" : place.locationLongtitude
-            ]
-            dataFromRealm.append(dictionaryWithPlace)
+            let tempArray = Array(place.owners)
+            for owner in tempArray {
+                ownersArray.append(owner.owner)
+                if owner.owner == "931974540209503" { //should be Facebook token userID
+                    isRightOwnerFound = true
+                }
+            }
+            if isRightOwnerFound {
+                let dictionaryWithPlace: [String: AnyObject] = [
+                    "placeId" : place.placeId,
+                    "name" : place.name,
+                    "type" : place.type,
+                    "createdDate" : place.createdDate,
+                    "owners" : ownersArray,
+                    "locationType" : place.locationType,
+                    "locationLatitude" : place.locationLatitude,
+                    "locationLongtitude" : place.locationLongtitude
+                ]
+                dataFromRealm.append(dictionaryWithPlace)
+            }
+
         }
         completion(data: dataFromRealm)
 

@@ -54,10 +54,6 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
     }
 
     // MARK: - Loading view
-    
-    override func viewWillAppear(animated: Bool) {
-        
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
