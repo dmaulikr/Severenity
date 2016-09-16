@@ -75,11 +75,11 @@ class LocationsServerManager: NSObject {
                                 if let locationType = place["location"]??["type"] as? String {
                                     placeInRealm.locationType = locationType
                                 }
-                                if let locationLatitude = place["location"]??["coordinates"]??[0] as? Double {
-                                    placeInRealm.locationLatitude = locationLatitude
-                                }
-                                if let locationLongtitude = place["location"]??["coordinates"]??[1] as? Double {
+                                if let locationLongtitude = place["location"]??["coordinates"]??[0] as? Double {
                                     placeInRealm.locationLongtitude = locationLongtitude
+                                }
+                                if let locationLatitude = place["location"]??["coordinates"]??[1] as? Double {
+                                    placeInRealm.locationLatitude = locationLatitude
                                 }
                                 if let type = place["type"] as? Double {
                                     placeInRealm.type = type
@@ -99,10 +99,12 @@ class LocationsServerManager: NSObject {
                                     
                                 }
                                 
-                                try! self.realm.write {
-                                    self.realm.add(placeInRealm)
+                                struct Tokens { static var token: dispatch_once_t = 0 }
+                                dispatch_once(&Tokens.token) {
+                                    try! self.realm.write {
+                                        self.realm.add(placeInRealm)
+                                    }
                                 }
-                                
                             }
                         
                     }

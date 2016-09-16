@@ -23,7 +23,6 @@ class ListViewController: UITableViewController {
             self.dataForList = result
             self.tableView.reloadData()
         }
-        
     }
     
     // MARK: - Loading view
@@ -47,7 +46,23 @@ class ListViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        
+        // probably need to refactor this pyramid of doom with guard statement
+        if let mapViewController = self.tabBarController?.viewControllers?[2].childViewControllers.first {
+            if let mapVC = mapViewController as? MapViewController {
+                if let dataToPass = dataForList[indexPath.row] as? [String : AnyObject] {
+                    mapVC.recievedLocation = dataToPass
+                    self.tabBarController?.selectedIndex = 2;
+                }
+            }
+        } else {
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
+
+//        if let mapVC = (self.tabBarController?.viewControllers?[2].childViewControllers.first)! as? MapViewController {
+//            mapVC.recievedLocation = dataForList[indexPath.row] as! [String : AnyObject]
+//            self.tabBarController?.selectedIndex = 2;
+//        }
+
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
@@ -57,7 +72,6 @@ class ListViewController: UITableViewController {
             activityIndicatorView.stopAnimating()
         }
     }
-
 
     // MARK: - Table view data source
 
