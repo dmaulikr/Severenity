@@ -18,25 +18,25 @@ class ProfileViewController: UIViewController, LoginButtonDelegate {
     
     // MARK: - Facebook login button delegate
     
-    func loginButtonDidCompleteLogin(loginButton: LoginButton, result: LoginResult) {
+    func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         
         print("login button did login")
     }
     
-    func loginButtonDidLogOut(loginButton: LoginButton) {
+    func loginButtonDidLogOut(_ loginButton: LoginButton) {
         
-        if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewControllerWithIdentifier("loginController")
-            self.navigationController?.popViewControllerAnimated(true)
+            let vc = storyboard.instantiateViewController(withIdentifier: "loginController")
+            self.navigationController?.popViewController(animated: true)
             appDelegate.window?.rootViewController = vc
         }
     }
     
     // MARK: - Managing view presentation
     
-    @IBAction func changeContentMode(sender: AnyObject) {
+    @IBAction func changeContentMode(_ sender: AnyObject) {
         
         switch contentModeSwitcher.selectedSegmentIndex {
         case 0:
@@ -47,7 +47,7 @@ class ProfileViewController: UIViewController, LoginButtonDelegate {
             listViewController.tableView?.frame = contentView.bounds
         case 1:
             let layout = UICollectionViewFlowLayout()
-            layout.itemSize = CGSizeMake(100, 50)
+            layout.itemSize = CGSize(width: 100, height: 50)
             let gridViewController = GridViewController(collectionViewLayout: layout)
             self.addChildViewController(gridViewController)
             contentView.subviews.last?.removeFromSuperview()
@@ -64,7 +64,7 @@ class ProfileViewController: UIViewController, LoginButtonDelegate {
         
         let loginButton = LoginButton(readPermissions: [ .PublicProfile ])
         loginButton.delegate = self
-        loginButton.center = CGPointMake(view.center.x, contentView.bounds.size.height + 122)
+        loginButton.center = CGPoint(x: view.center.x, y: contentView.bounds.size.height + 122)
         view.addSubview(loginButton)
     }
 

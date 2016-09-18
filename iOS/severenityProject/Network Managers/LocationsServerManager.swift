@@ -19,19 +19,19 @@ class LocationsServerManager: NSObject {
     let realm = try! Realm()
     // Should I put it in AppDelegate?
     
-    func provideData(completion: (result: NSArray) -> Void) {
+    func provideData(_ completion: @escaping (_ result: NSArray) -> Void) {
         
         if checkIfRealmIsEmpty() {
             print("Realm is empty, asking server for data")
             requestDataFromServer({ 
                 self.getDataFromRealm({ (data) in
-                    completion(result: data)
+                    completion(data)
                 })
             })
         } else {
             print("Realm is not empty, loading data")
             getDataFromRealm({ (data) in
-                completion(result: data)
+                completion(data)
             })
         }
         
@@ -47,13 +47,13 @@ class LocationsServerManager: NSObject {
         }
     }
     
-    func requestDataFromServer(completion: () -> Void) {
+    func requestDataFromServer(_ completion: @escaping () -> Void) {
         
         //var dataFromServer: [AnyObject] = []
         
-        if let serverURL = NSURL.init(string: serverURLString) {
+        if let serverURL = URL.init(string: serverURLString) {
             
-        let serverRequest = NSURLRequest.init(URL: serverURL)
+        let serverRequest = URLRequest.init(url: serverURL)
         
         Alamofire.request(serverRequest).responseJSON { response in
 
@@ -117,7 +117,7 @@ class LocationsServerManager: NSObject {
         
     }
     
-    func getDataFromRealm(completion: (data: NSArray) -> Void) {
+    func getDataFromRealm(_ completion: (_ data: NSArray) -> Void) {
         
         let realmReadQuery = self.realm.objects(RealmPlace.self)
         var dataFromRealm: [AnyObject] = []
@@ -147,11 +147,11 @@ class LocationsServerManager: NSObject {
             }
 
         }
-        completion(data: dataFromRealm)
+        completion(dataFromRealm as NSArray)
 
     }
     
-    private func dropDataInRealm() {
+    fileprivate func dropDataInRealm() {
        try! self.realm.write {
           self.realm.deleteAll()
        }

@@ -17,26 +17,26 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
     
     // MARK: - Facebook login button delegate
     
-    func loginButtonDidCompleteLogin(loginButton: LoginButton, result: LoginResult) {
+    func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         
         if let accessToken = FBSDKAccessToken.currentAccessToken() {
             print("FB access token: \n AppID: \(accessToken.appID) \n userID: \(accessToken.userID) \n token: \(accessToken.tokenString) \n")
             
             // Adding login indicator to the view
-            view.backgroundColor = UIColor.whiteColor()
+            view.backgroundColor = UIColor.white
             loginButton.hidden = true
-            welcomeLabel.hidden = true
+            welcomeLabel.isHidden = true
             let loginIndicator = UIActivityIndicatorView()
-            loginIndicator.color = UIColor.blueColor()
+            loginIndicator.color = UIColor.blue
             loginIndicator.hidesWhenStopped = true
             view.addSubview(loginIndicator)
             loginIndicator.center = view.center
             loginIndicator.startAnimating()
             //self.performSegueWithIdentifier("didLoginSegue", sender: self)
-            if let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let vc = storyboard.instantiateViewControllerWithIdentifier("logedInController")
-                self.navigationController?.popViewControllerAnimated(true)
+                let vc = storyboard.instantiateViewController(withIdentifier: "logedInController")
+                self.navigationController?.popViewController(animated: true)
                 appDelegate.window?.rootViewController = vc
             }
             loginIndicator.stopAnimating()
@@ -48,7 +48,7 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
         
     }
 
-    func loginButtonDidLogOut(loginButton: LoginButton) {
+    func loginButtonDidLogOut(_ loginButton: LoginButton) {
         
         print("login button did logout")
     }
@@ -61,10 +61,10 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
         print("Facebook SDK version \(FBSDKSettings .sdkVersion())")
         let loginButton = LoginButton(readPermissions: [ .PublicProfile ])
         loginButton.delegate = self
-        loginButton.center = CGPointMake(view.center.x, view.center.y+100)
+        loginButton.center = CGPoint(x: view.center.x, y: view.center.y+100)
         view.addSubview(loginButton)
         loginButton.hidden = false
-        welcomeLabel.hidden = false
+        welcomeLabel.isHidden = false
     }
     
 

@@ -14,11 +14,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     var locationManager = CLLocationManager()
 
     var recievedLocation: [String: AnyObject] = [:]
-    private var recievedLocationCoordinates: CLLocationCoordinate2D = CLLocationCoordinate2DMake(0, 0)
+    fileprivate var recievedLocationCoordinates: CLLocationCoordinate2D = CLLocationCoordinate2DMake(0, 0)
     
     // MARK: - Loading view
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         if let recievedLocationLatitude = recievedLocation["locationLatitude"] as? Double {
             if let recievedLocationLongtitude = recievedLocation["locationLongtitude"] as? Double {
@@ -27,7 +27,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         }
         let camera = GMSCameraPosition.cameraWithLatitude(recievedLocationCoordinates.latitude,
                                                           longitude: recievedLocationCoordinates.longitude, zoom: 15)
-        let mapView = GMSMapView.mapWithFrame(CGRectZero, camera: camera)
+        let mapView = GMSMapView.mapWithFrame(CGRect.zero, camera: camera)
         mapView.myLocationEnabled = true
         self.view = mapView
         let marker = GMSMarker()

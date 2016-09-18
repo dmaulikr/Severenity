@@ -24,28 +24,28 @@ class GridViewController: UICollectionViewController {
         super.viewDidLoad()
     
 
-        collectionView?.registerNib(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "CellInGrid")
-        self.collectionView?.backgroundColor = UIColor.whiteColor()
+        collectionView?.register(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "CellInGrid")
+        self.collectionView?.backgroundColor = UIColor.white
         
 
     }
 
     // MARK: UICollectionViewDataSource
 
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
 
         return 1
     }
 
 
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
         return 75
     }
 
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("CellInGrid", forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellInGrid", for: indexPath)
         return cell
         
     }
