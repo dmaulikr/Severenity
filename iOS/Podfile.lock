@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (3.4.1)
+  - Alamofire (4.0.0)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
@@ -37,7 +37,7 @@ PODS:
     - GoogleMaps/Base (= 2.0.0)
 
 DEPENDENCIES:
-  - Alamofire
+  - Alamofire (~> 4.0)
   - FacebookCore
   - FacebookLogin
   - FacebookShare
@@ -46,7 +46,7 @@ DEPENDENCIES:
   - GooglePlaces
 
 SPEC CHECKSUMS:
-  Alamofire: 01a82e2f6c0f860ade35534c8dd88be61bdef40c
+  Alamofire: fef59f00388f267e52d9b432aa5d93dc97190f14
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   FacebookCore: 14f27add6888c27470d42a100374e6361f4e0f79
   FacebookLogin: 748f4e621e874da3e0bf63bccf6fd1542c786a1b
@@ -58,6 +58,6 @@ SPEC CHECKSUMS:
   GooglePlacePicker: 98ab548cedda3a7acb8efde486d1c2bcd316007e
   GooglePlaces: e3bd7cf10fb691ad3f40f03e467fd807e1940e9c
 
-PODFILE CHECKSUM: fdc528fd268d0ac986c13fa109ba491ee31e4ebc
+PODFILE CHECKSUM: cc9a19a10bd69d74c19a175f29cdb9d565aabe93
 
 COCOAPODS: 1.0.1
