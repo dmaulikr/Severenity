@@ -9,12 +9,8 @@
 import UIKit
 
 class ListCell: UITableViewCell {
-    
-    
     @IBOutlet weak var listCellTitle: UILabel!
     
-    
-
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -25,5 +21,4 @@ class ListCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
 }

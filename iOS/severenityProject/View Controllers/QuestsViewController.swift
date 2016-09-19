@@ -12,7 +12,7 @@ class QuestsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Tab 5 did load");
+        print("Tab 'Quests' did load");
 
     }
 

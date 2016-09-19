@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="lqx-g2-TFI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lqx-g2-TFI">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Initial View Controller-->
@@ -18,14 +19,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Welcome to Severenity, please log-in with your Facebook account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Za-qB-qnQ">
-                                <rect key="frame" x="20" y="48" width="335" height="85"/>
+                                <frame key="frameInset" minX="20" minY="48" width="335" height="85"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="welcomeLabel" destination="8Za-qB-qnQ" id="Fag-3b-VNZ"/>
                         <segue destination="equ-dC-efz" kind="presentation" identifier="didLoginSegue" modalTransitionStyle="crossDissolve" id="qSf-yy-sxL"/>
@@ -33,17 +34,16 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3pC-OE-qlg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1289.5" y="8.5"/>
+            <point key="canvasLocation" x="-1526" y="8"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="k07-Uu-xLl">
             <objects>
-                <tabBarController storyboardIdentifier="logedInController" id="equ-dC-efz" sceneMemberID="viewController">
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                <tabBarController storyboardIdentifier="loggedInController" id="equ-dC-efz" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="JGg-au-fAL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="selectedIndex">
@@ -73,7 +73,7 @@
                     <view key="view" contentMode="scaleToFill" id="fr4-iS-ZG0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="Upper Bar" id="2Pa-On-Gan"/>
                 </viewController>
@@ -94,7 +94,6 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cmG-zW-xOo">
-                                <rect key="frame" x="25" y="69" width="325" height="29"/>
                                 <segments>
                                     <segment title="List"/>
                                     <segment title="Grid"/>
@@ -104,11 +103,10 @@
                                 </connections>
                             </segmentedControl>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bAX-0b-l42" userLabel="Content View">
-                                <rect key="frame" x="0.0" y="102" width="375" height="476"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="bAX-0b-l42" firstAttribute="top" secondItem="cmG-zW-xOo" secondAttribute="bottom" constant="5" id="H4y-Ni-Dab"/>
                             <constraint firstItem="cmG-zW-xOo" firstAttribute="leading" secondItem="mTF-zQ-Z86" secondAttribute="leading" constant="25" id="KIb-w5-Eop"/>
@@ -135,7 +133,6 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="drd-a5-xUY" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Shop" id="pHm-Y1-UHg"/>
                     <toolbarItems/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="FLK-8r-Oq0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -155,7 +152,6 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ywl-yH-zXU" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" id="eYp-dv-Zms"/>
                     <toolbarItems/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="RFw-Uf-Dzy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -180,7 +176,7 @@
                     <view key="view" contentMode="scaleToFill" id="0sg-qu-YPS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="Upper Bar" id="wWK-KZ-iX6"/>
                 </viewController>
@@ -194,7 +190,6 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Vji-IS-xEi" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" id="0Ke-hW-7Ea"/>
                     <toolbarItems/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xAK-46-bRb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -219,7 +214,7 @@
                     <view key="view" contentMode="scaleToFill" id="JoI-hB-8OF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="Upper Bar" id="irk-3Y-gTP"/>
                 </viewController>
@@ -233,7 +228,6 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JZ4-CZ-pB3" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Chat" id="DRo-ps-RXW"/>
                     <toolbarItems/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="PfO-cR-PKb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -258,7 +252,7 @@
                     <view key="view" contentMode="scaleToFill" id="xZ7-4W-OJ3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="Upper Bar" id="y2m-W2-KqG"/>
                 </viewController>
@@ -272,7 +266,6 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jxb-cg-N5J" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Quests" id="H5m-q4-Byt"/>
                     <toolbarItems/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="LJb-AX-543">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

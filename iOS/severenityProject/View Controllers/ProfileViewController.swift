@@ -20,7 +20,7 @@ class ProfileViewController: UIViewController, LoginButtonDelegate {
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         
-        print("login button did login")
+        print("FB login button did login")
     }
     
     func loginButtonDidLogOut(_ loginButton: LoginButton) {
@@ -39,22 +39,22 @@ class ProfileViewController: UIViewController, LoginButtonDelegate {
     @IBAction func changeContentMode(_ sender: AnyObject) {
         
         switch contentModeSwitcher.selectedSegmentIndex {
-        case 0:
-            let listViewController = ListViewController()
-            self.addChildViewController(listViewController)
-            contentView.subviews.last?.removeFromSuperview()
-            contentView.addSubview(listViewController.view)
-            listViewController.tableView?.frame = contentView.bounds
-        case 1:
-            let layout = UICollectionViewFlowLayout()
-            layout.itemSize = CGSize(width: 100, height: 50)
-            let gridViewController = GridViewController(collectionViewLayout: layout)
-            self.addChildViewController(gridViewController)
-            contentView.subviews.last?.removeFromSuperview()
-            contentView.addSubview(gridViewController.view)
-            gridViewController.collectionView?.frame = contentView.bounds
-        default:
-            return
+            case 0:
+                let listViewController = ListViewController()
+                self.addChildViewController(listViewController)
+                contentView.subviews.last?.removeFromSuperview()
+                contentView.addSubview(listViewController.view)
+                listViewController.tableView?.frame = contentView.bounds
+            case 1:
+                let layout = UICollectionViewFlowLayout()
+                layout.itemSize = CGSize(width: 100, height: 50)
+                let gridViewController = GridViewController(collectionViewLayout: layout)
+                self.addChildViewController(gridViewController)
+                contentView.subviews.last?.removeFromSuperview()
+                contentView.addSubview(gridViewController.view)
+                gridViewController.collectionView?.frame = contentView.bounds
+            default:
+                return
         }
     }
     
@@ -67,6 +67,4 @@ class ProfileViewController: UIViewController, LoginButtonDelegate {
         loginButton.center = CGPoint(x: view.center.x, y: contentView.bounds.size.height + 122)
         view.addSubview(loginButton)
     }
-
-
 }

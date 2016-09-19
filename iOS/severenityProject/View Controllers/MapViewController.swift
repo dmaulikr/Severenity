@@ -20,10 +20,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         
-        if let recievedLocationLatitude = recievedLocation["locationLatitude"] as? Double {
-            if let recievedLocationLongtitude = recievedLocation["locationLongtitude"] as? Double {
+        if let recievedLocationLatitude = recievedLocation["locationLatitude"] as? Double,
+            let recievedLocationLongtitude = recievedLocation["locationLongtitude"] as? Double {
                 recievedLocationCoordinates = CLLocationCoordinate2DMake(recievedLocationLatitude, recievedLocationLongtitude)
-            }
         }
         let camera = GMSCameraPosition.cameraWithLatitude(recievedLocationCoordinates.latitude,
                                                           longitude: recievedLocationCoordinates.longitude, zoom: 15)

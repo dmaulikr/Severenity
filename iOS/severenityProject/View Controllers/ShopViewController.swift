@@ -12,7 +12,7 @@ class ShopViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Tab 1 did load");
+        print("Tab 'Shop' did load");
     }
 
 }

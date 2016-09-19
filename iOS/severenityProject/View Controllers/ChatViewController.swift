@@ -12,7 +12,7 @@ class ChatViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Tab 4 did load");
+        print("Tab 'Chat' did load");
         
     }
 

@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let fbToken = FBSDKAccessToken.currentAccessToken()
         if ((fbToken) != nil) {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "logedInController")
+            let vc = storyboard.instantiateViewController(withIdentifier: "loggedInController")
             self.window?.rootViewController = vc
         } else {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
