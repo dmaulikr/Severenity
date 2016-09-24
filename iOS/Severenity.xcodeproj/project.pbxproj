@@ -34,6 +34,11 @@
 		52787C1B1D86D88D009D17F5 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C1A1D86D88D009D17F5 /* ListViewController.swift */; };
 		52787C211D86EEC6009D17F5 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C201D86EEC6009D17F5 /* GridViewController.swift */; };
 		527D92B31D8988510059F14F /* RealmDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527D92B21D8988510059F14F /* RealmDataModel.swift */; };
+		7E0F9D0E1D9649A90038D11D /* app_title.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D0C1D9649A90038D11D /* app_title.png */; };
+		7E0F9D0F1D9649A90038D11D /* ic_launcher_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */; };
+		7E0F9D121D964C440038D11D /* facebook_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D101D964C440038D11D /* facebook_login.png */; };
+		7E0F9D131D964C440038D11D /* facebook_logout.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D111D964C440038D11D /* facebook_logout.png */; };
+		7E0F9D151D96524F0038D11D /* DeepSpace.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D141D96524F0038D11D /* DeepSpace.png */; };
 		F7F9968E342323C91D242D2A /* Pods_Severenity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3AAAE59B41ABFF884BC13C0 /* Pods_Severenity.framework */; };
 /* End PBXBuildFile section */
 
@@ -105,6 +110,11 @@
 		52787C201D86EEC6009D17F5 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridViewController.swift; path = "View Controllers/GridViewController.swift"; sourceTree = "<group>"; };
 		527D92B21D8988510059F14F /* RealmDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RealmDataModel.swift; path = Models/RealmDataModel.swift; sourceTree = "<group>"; };
 		78E1B83C8E7B05EED892731A /* Pods-severenityProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-severenityProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-severenityProject/Pods-severenityProject.debug.xcconfig"; sourceTree = "<group>"; };
+		7E0F9D0C1D9649A90038D11D /* app_title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_title.png; sourceTree = "<group>"; };
+		7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_launcher_big.png; sourceTree = "<group>"; };
+		7E0F9D101D964C440038D11D /* facebook_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_login.png; sourceTree = "<group>"; };
+		7E0F9D111D964C440038D11D /* facebook_logout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_logout.png; sourceTree = "<group>"; };
+		7E0F9D141D96524F0038D11D /* DeepSpace.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DeepSpace.png; sourceTree = "<group>"; };
 		B3AAAE59B41ABFF884BC13C0 /* Pods_Severenity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Severenity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -216,6 +226,11 @@
 		52787BF11D86AAE3009D17F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				7E0F9D141D96524F0038D11D /* DeepSpace.png */,
+				7E0F9D101D964C440038D11D /* facebook_login.png */,
+				7E0F9D111D964C440038D11D /* facebook_logout.png */,
+				7E0F9D0C1D9649A90038D11D /* app_title.png */,
+				7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */,
 				52787BDF1D86AA35009D17F5 /* AppDelegate.swift */,
 				52787BE61D86AA35009D17F5 /* Assets.xcassets */,
 				52787BE81D86AA35009D17F5 /* LaunchScreen.storyboard */,
@@ -399,11 +414,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E0F9D131D964C440038D11D /* facebook_logout.png in Resources */,
 				52787BEA1D86AA35009D17F5 /* LaunchScreen.storyboard in Resources */,
 				5264A7A71D882F2400EE78FC /* GridCell.xib in Resources */,
+				7E0F9D0E1D9649A90038D11D /* app_title.png in Resources */,
 				5264A7A51D882F1700EE78FC /* ListCell.xib in Resources */,
+				7E0F9D0F1D9649A90038D11D /* ic_launcher_big.png in Resources */,
 				52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */,
 				52787BE51D86AA35009D17F5 /* Main.storyboard in Resources */,
+				7E0F9D151D96524F0038D11D /* DeepSpace.png in Resources */,
+				7E0F9D121D964C440038D11D /* facebook_login.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
