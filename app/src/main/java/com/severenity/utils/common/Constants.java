@@ -117,7 +117,7 @@ public class Constants {
      */
 
     public final static String HOST =  "https://severenity.herokuapp.com";
-    //public final static String HOST =  "http://localhost:8080";
+//    public final static String HOST =  "http://localhost:8080";
 
     public final static int CONNECTION_READ_TIMEOUT = 10000; // milliseconds
     public final static int CONNECTION_CONNECT_TIMEOUT = 15000; // milliseconds
@@ -147,6 +147,7 @@ public class Constants {
     public static String REST_API_TEAM_REMOVE_USER  = HOST + "/team/removeUser";
     public static String REST_API_TEAM_ALL_RANGE = HOST + "/teams/allaspage";
     public static String REST_API_TEAM_JOIN_TEAM  = HOST + "/team/join";
+    public static String REST_API_MESSAGES = HOST + "/messages/all";
 
     /**
      * Exception constants

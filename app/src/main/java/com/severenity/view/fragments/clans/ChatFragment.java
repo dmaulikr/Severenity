@@ -147,6 +147,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         if (msg != null && !msg.isEmpty()) {
             setMessageAdapter(msg);
         }
+
+        App.getMessageManager().getMessagesFromServer();
     }
 
     private void setMessageAdapter(ArrayList<Message> messages) {

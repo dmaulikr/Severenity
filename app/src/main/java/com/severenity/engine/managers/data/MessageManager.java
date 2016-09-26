@@ -6,11 +6,18 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
 import com.severenity.App;
+import com.severenity.engine.network.RequestCallback;
+import com.severenity.engine.network.RestManager;
 import com.severenity.entity.Message;
 import com.severenity.entity.User;
 import com.severenity.utils.common.Constants;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -45,8 +52,12 @@ public class MessageManager extends DataManager {
         return success != -1;
     }
 
+    /**
+     * Retrieves all messages the local database and tries to update with new ones from the server.
+     *
+     * @return list of messages from DB.
+     */
     public ArrayList<Message> getMessages() {
-
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor;
@@ -58,7 +69,7 @@ public class MessageManager extends DataManager {
                     null,
                     null, null, null, null
             );
-        } catch (SQLException e){
+        } catch (SQLException e) {
             return null;
         }
 
@@ -84,6 +95,32 @@ public class MessageManager extends DataManager {
         return messagesList;
     }
 
+    /**
+     * Retrieves messages from server, updates local database with retrieved ones and notifies
+     * UI to update the list.
+     */
+    public void getMessagesFromServer() {
+        App.getRestManager().createRequest(Constants.REST_API_MESSAGES, Request.Method.GET, null, new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
+                Log.d(Constants.TAG, response.toString());
+            }
+
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+                if (response != null) {
+                    Log.e(Constants.TAG, response.toString());
+                }
+            }
+        });
+    }
+
+    /**
+     * Sends message via web sockets.
+     *
+     * @param msg - {@link Message} message to send.
+     * @return true if message was fired, false otherwise.
+     */
     public boolean sendMessage(Message msg) {
 
         if (msg == null) {
@@ -91,7 +128,6 @@ public class MessageManager extends DataManager {
         }
 
         if (addMessage(msg)) {
-
             App.getWebSocketManager().sendMessageToServer(msg);
             return true;
         }
