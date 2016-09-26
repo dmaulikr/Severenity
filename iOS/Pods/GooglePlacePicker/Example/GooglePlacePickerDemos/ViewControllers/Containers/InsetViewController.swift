@@ -1,3 +1,18 @@
+/*
+ * Copyright 2016 Google Inc. All rights reserved.
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
 import UIKit
 
 @available(iOS 8.0, *)
@@ -38,15 +53,15 @@ class InsetViewController: BaseContainerViewController {
 
     addChildViewController(backgroundViewController)
     backgroundViewController.view.frame = view.bounds
-    backgroundViewController.view.autoresizingMask = [.FlexibleHeight, .FlexibleWidth]
+    backgroundViewController.view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     view.addSubview(backgroundViewController.view)
-    backgroundViewController.didMoveToParentViewController(self)
+    backgroundViewController.didMove(toParentViewController: self)
 
     addChildViewController(contentViewController)
     view.addSubview(contentViewController.view)
-    contentViewController.view.autoresizingMask = [.FlexibleTopMargin, .FlexibleLeftMargin,
-                                                   .FlexibleRightMargin, .FlexibleBottomMargin]
-    contentViewController.didMoveToParentViewController(self)
+    contentViewController.view.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin,
+                                                   .flexibleRightMargin, .flexibleBottomMargin]
+    contentViewController.didMove(toParentViewController: self)
 
     initializeParallax()
   }
@@ -54,13 +69,13 @@ class InsetViewController: BaseContainerViewController {
   private func initializeParallax() {
     // Set vertical effect
     let verticalMotionEffect = UIInterpolatingMotionEffect(keyPath: "center.y",
-                                                           type: .TiltAlongVerticalAxis)
+                                                           type: .tiltAlongVerticalAxis)
     verticalMotionEffect.minimumRelativeValue = -30
     verticalMotionEffect.maximumRelativeValue = 30
 
     // Set horizontal effect
     let horizontalMotionEffect = UIInterpolatingMotionEffect(keyPath: "center.x",
-                                                             type: .TiltAlongHorizontalAxis)
+                                                             type: .tiltAlongHorizontalAxis)
     horizontalMotionEffect.minimumRelativeValue = -30
     horizontalMotionEffect.maximumRelativeValue = 30
 
@@ -69,36 +84,36 @@ class InsetViewController: BaseContainerViewController {
     parallax.motionEffects = [horizontalMotionEffect, verticalMotionEffect]
   }
 
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
     // Trigger a layout when we are first made visible.
-    transitionToSize(view.bounds.size, traitCollection: traitCollection) {}
+    transition(to: view.bounds.size, traitCollection: traitCollection) {}
   }
 
   /// Listen to size changes and trigger the appropriate animations.
-  override func viewWillTransitionToSize(size: CGSize,
-    withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-      transitionToSize(size, traitCollection: actualTraitCollection, coordinator: coordinator) {}
+  override func viewWillTransition(to size: CGSize,
+                                   with coordinator: UIViewControllerTransitionCoordinator) {
+    transition(to: size, traitCollection: actualTraitCollection, coordinator: coordinator) {}
 
-      super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    super.viewWillTransition(to: size, with: coordinator)
   }
 
   /// Provide the correct size of the child controller to UIKit.
-  override func sizeForChildContentContainer(container: UIContentContainer,
-                                             withParentContainerSize parentSize: CGSize) -> CGSize {
+  override func size(forChildContentContainer container: UIContentContainer,
+                     withParentContainerSize parentSize: CGSize) -> CGSize {
     if container.isEqual(contentViewController) {
       return InsetViewController.viewControllerSize(contentViewController.preferredContentSize,
                                                     size: parentSize, traits: actualTraitCollection)
     } else if container.isEqual(backgroundViewController) {
       return parentSize
     } else {
-      return super.sizeForChildContentContainer(container, withParentContainerSize: parentSize)
+      return super.size(forChildContentContainer: container, withParentContainerSize: parentSize)
     }
   }
 
   /// Pass through to the appropriate child view controller for status bar appearance.
-  override func childViewControllerForStatusBarStyle() -> UIViewController? {
+  override var childViewControllerForStatusBarStyle: UIViewController? {
     if contentViewController.view.frame == view.bounds {
       return contentViewController
     } else {
@@ -107,7 +122,7 @@ class InsetViewController: BaseContainerViewController {
   }
 
   /// Pass through to the appropriate child view controller for status bar appearance.
-  override func childViewControllerForStatusBarHidden() -> UIViewController? {
+  override var childViewControllerForStatusBarHidden: UIViewController? {
     if contentViewController.view.frame == view.bounds {
       return contentViewController
     } else {
@@ -116,9 +131,9 @@ class InsetViewController: BaseContainerViewController {
   }
 
   /// Listen for changes in our children's preferred content size.
-  override func preferredContentSizeDidChangeForChildContentContainer(
+  override func preferredContentSizeDidChange(forChildContentContainer
     container: UIContentContainer) {
-    transitionToSize(view.bounds.size, traitCollection: actualTraitCollection) {}
+    transition(to: view.bounds.size, traitCollection: actualTraitCollection) {}
   }
 
   // MARK: - Layout
@@ -129,11 +144,12 @@ class InsetViewController: BaseContainerViewController {
   /// - parameter traitCollection The trait collection which will be used for layout.
   /// - parameter coordinator An optional animation coordinator to use.
   /// - parameter completion The completion block to call upon animation completion.
-  private func transitionToSize(size: CGSize, traitCollection: UITraitCollection,
-                                coordinator: UIViewControllerTransitionCoordinator? = nil,
-                                completion: () -> Void) {
+  private func transition(to size: CGSize,
+                          traitCollection: UITraitCollection,
+                          coordinator: UIViewControllerTransitionCoordinator? = nil,
+                          completion: @escaping () -> Void) {
     // Determine the visibility state of the background before and after the transition.
-    let backgroundWasHidden = backgroundViewController.view.hidden
+    let backgroundWasHidden = backgroundViewController.view.isHidden
     var newFrame = CGRect()
     newFrame.size = InsetViewController.viewControllerSize(
       contentViewController.preferredContentSize, size: size, traits: traitCollection)
@@ -151,14 +167,14 @@ class InsetViewController: BaseContainerViewController {
                                                                 animated: true)
       }
 
-      self.backgroundViewController.view.hidden = backgroundWasHidden && backgroundWillBeHidden
+      self.backgroundViewController.view.isHidden = backgroundWasHidden && backgroundWillBeHidden
 
       self.setNeedsStatusBarAppearanceUpdate()
     }
 
     // And the completion callback.
     let finish = {
-      self.backgroundViewController.view.hidden = backgroundWillBeHidden
+      self.backgroundViewController.view.isHidden = backgroundWillBeHidden
 
       if backgroundWasHidden != backgroundWillBeHidden {
         // Notify the background controller that the transition in/out has finished.
@@ -177,7 +193,7 @@ class InsetViewController: BaseContainerViewController {
 
     // If a coordinator was provided use that, otherwise kick of a vanilla UIView animation.
     if let coordinator = coordinator {
-      coordinator.animateAlongsideTransition({ _ in
+      coordinator.animate(alongsideTransition: { _ in
         animate()
         }, completion: { _ in
           finish()
@@ -197,10 +213,11 @@ class InsetViewController: BaseContainerViewController {
   /// - parameter traits The trait classes which this controller will be displayed for.
   ///
   /// - returns: The size the child view controller should be given the parameters.
-  private static func viewControllerSize(controllersPreferredSize: CGSize, size: CGSize,
+  private static func viewControllerSize(_ controllersPreferredSize: CGSize,
+                                         size: CGSize,
                                          traits: UITraitCollection) -> CGSize {
     // If we're compact immediately make the child fullscreen, it'll need all the space it can get.
-    if traits.horizontalSizeClass == .Compact || traits.verticalSizeClass == .Compact {
+    if traits.horizontalSizeClass == .compact || traits.verticalSizeClass == .compact {
       return size
     }
 
@@ -235,10 +252,10 @@ extension UIViewController {
       repeat {
         if let inset = objc_getAssociatedObject(check,
                                                 &InsetViewControllerAssociatedObjectHandle) as?
-                           InsetViewController {
+          InsetViewController {
           return inset
         }
-        guard let parent = check.parentViewController else {
+        guard let parent = check.parent else {
           return nil
         }
         check = parent

@@ -12,10 +12,10 @@ class ListViewController: UITableViewController {
     
     // MARK: - Managing table data
     
-    fileprivate var dataForList = []
+    fileprivate var dataForList = [AnyObject]()
     
     weak var activityIndicatorView: UIActivityIndicatorView!
-    lazy let locationsServerManager = LocationsServerManager()
+    let locationsServerManager = LocationsServerManager()
     
     /**- provideDataForList calls LocationsServerManager's instance
      and asks it to provide data that should be shown in UITableView.
@@ -23,7 +23,7 @@ class ListViewController: UITableViewController {
      Each dicitonary is a separate place later displayed in the table.*/
     func provideDataForList() {
         locationsServerManager.provideData { (result) in
-            self.dataForList = result as! [Any]
+            self.dataForList = (result as! [Any] as AnyObject) as! [AnyObject]
             self.tableView.reloadData()
         }
     }
@@ -82,7 +82,7 @@ class ListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var c: UITableViewCell
-        if c = tableView.dequeueReusableCell(withIdentifier: "CellInList", for: indexPath) as? ListCell {
+        if let c = (tableView.dequeueReusableCell(withIdentifier: "CellInList", for: indexPath) as? ListCell)! {
             c.listCellTitle.text = dataForList[(indexPath as NSIndexPath).row]["name"] as? String
         } else {
             c = tableView.dequeueReusableCell(withIdentifier: "CellInList", for: indexPath)

@@ -29,7 +29,7 @@ class ProfileViewController: UIViewController, LoginButtonDelegate {
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "loginController")
-            self.navigationController?.popViewController(animated: true)
+            _ = self.navigationController?.popViewController(animated: true)
             appDelegate.window?.rootViewController = vc
         }
     }
@@ -62,7 +62,7 @@ class ProfileViewController: UIViewController, LoginButtonDelegate {
         super.viewDidLoad()
         changeContentMode(self)
         
-        let loginButton = LoginButton(readPermissions: [ .PublicProfile ])
+        let loginButton = LoginButton(readPermissions: [ .publicProfile ])
         loginButton.delegate = self
         loginButton.center = CGPoint(x: view.center.x, y: contentView.bounds.size.height + 122)
         view.addSubview(loginButton)

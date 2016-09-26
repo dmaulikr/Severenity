@@ -19,7 +19,7 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         
-        guard let accessToken = FBSDKAccessToken.currentAccessToken() else {
+        guard let accessToken = FBSDKAccessToken.current() else {
             print("Facebook login did complete with result: \(result)")
             return
         }
@@ -28,7 +28,7 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
         
         view.backgroundColor = UIColor.white
         
-        loginButton.hidden = true
+        loginButton.isHidden = true
         
         welcomeLabel.isHidden = true
         
@@ -44,7 +44,7 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "loggedInController") // double g
-            self.navigationController?.popViewController(animated: true)
+            _ = self.navigationController?.popViewController(animated: true)
             appDelegate.window?.rootViewController = vc
         }
         
@@ -65,10 +65,10 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
         
         print("Facebook SDK version \(FBSDKSettings .sdkVersion())")
         
-        let loginButton = LoginButton(readPermissions: [ .PublicProfile ])
+        let loginButton = LoginButton(readPermissions: [ .publicProfile ])
         loginButton.delegate = self
         loginButton.center = CGPoint(x: view.center.x, y: view.center.y+100)
-        loginButton.hidden = false
+        loginButton.isHidden = false
         
         welcomeLabel.isHidden = false
         

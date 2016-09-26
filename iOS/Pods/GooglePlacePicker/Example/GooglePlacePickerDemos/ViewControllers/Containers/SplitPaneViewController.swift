@@ -1,16 +1,31 @@
+/*
+ * Copyright 2016 Google Inc. All rights reserved.
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
 import UIKit
 
 /// Represents the current UI state of a |SplitPaneViewController|.
 enum State {
   /// The UI is being displayed fullscreen, only one view controller will be onscreen at a time.
-  case FullScreen
+  case fullScreen
   /// The UI is being displayed in a fullscreen split. One or two controllers will be visible at a
   /// time.
-  case SplitScreen
+  case splitScreen
   /// The UI is being displayed in a split inset from the screen. One or two controllers will be
   /// visible at a time and background view will likely be visible around them. Note, this state
   /// can only occur when nested in a |InsetViewController|.
-  case CenteredSplitScreen
+  case centeredSplitScreen
 }
 
 /// A container view controller which displays up to two view controllers in a navigation controller
@@ -57,19 +72,19 @@ class SplitPaneViewController: BaseContainerViewController {
     endAdd(leftController)
   }
 
-  override func viewWillAppear(animated: Bool) {
+  override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    transitionToState(state, animated: false) {}
+    transition(to: state, animated: false) {}
   }
 
   @available(iOS 8.0, *)
   /// Listen to size changes and trigger the appropriate animations.
-  override func viewWillTransitionToSize(size: CGSize,
-    withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-      transitionToState(state, overrideSize: size, withTransitionCoordinator: coordinator) {}
+  override func viewWillTransition(to size: CGSize,
+                                   with coordinator: UIViewControllerTransitionCoordinator) {
+    transition(to: state, overrideSize: size, coordinator: coordinator) {}
 
-      super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    super.viewWillTransition(to: size, with: coordinator)
   }
 
   /// Only needed for iOS 7 support.
@@ -77,24 +92,24 @@ class SplitPaneViewController: BaseContainerViewController {
     super.viewDidLayoutSubviews()
 
     guard #available(iOS 8.0, *) else {
-      transitionToState(state, overrideSize: view.bounds.size) {}
+      transition(to: state, overrideSize: view.bounds.size) {}
       return
     }
   }
 
   /// Pass through to the child view controller for status bar appearance.
-  override func childViewControllerForStatusBarStyle() -> UIViewController? {
+  override var childViewControllerForStatusBarStyle: UIViewController? {
     return leftController
   }
 
   /// Pass through to the child view controller for status bar appearance.
-  override func childViewControllerForStatusBarHidden() -> UIViewController? {
+  override var childViewControllerForStatusBarHidden: UIViewController? {
     return leftController
   }
 
   /// Listen to changes in the preferred content size of our children.
-  override func preferredContentSizeDidChangeForChildContentContainer(
-    container: UIContentContainer) {
+  override func preferredContentSizeDidChange(
+    forChildContentContainer container: UIContentContainer) {
     updatePreferredContentSize()
   }
 
@@ -116,7 +131,7 @@ class SplitPaneViewController: BaseContainerViewController {
   ///
   /// - parameter rightController The new controller to display to the right of the current one.
   /// - parameter animated Whether to animate the push. This is true by default.
-  func pushViewController(rightController: UIViewController, animated: Bool = true) {
+  func push(viewController rightController: UIViewController, animated: Bool = true) {
     var animate = animated
 
     // Check to see if there is an existing view controller which we need to remove.
@@ -125,7 +140,7 @@ class SplitPaneViewController: BaseContainerViewController {
       animate = false
 
       startRemove(oldRightController)
-      transitionToState(state, forceCollapsed: false, animated: false) {
+      transition(to: state, forceCollapsed: false, animated: false) {
         oldRightController.view.removeFromSuperview()
         self.endRemove(oldRightController)
       }
@@ -138,8 +153,8 @@ class SplitPaneViewController: BaseContainerViewController {
     wrapperView.insertSubview(rightController.view, belowSubview: leftController.view)
 
     // Trigger an initial layout with the split pane collapsed, and then animate to being open.
-    layoutViewControllersForState(state, forceCollapsed: true)
-    transitionToState(state, animated: animate) {
+    layoutViewControllers(for: state, forceCollapsed: true)
+    transition(to: state, animated: animate) {
       self.endAdd(rightController)
     }
   }
@@ -154,7 +169,7 @@ class SplitPaneViewController: BaseContainerViewController {
 
     // Remove the controller and animate it out.
     startRemove(rightController)
-    transitionToState(state, forceCollapsed: true, animated: animated) {
+    transition(to: state, forceCollapsed: true, animated: animated) {
       rightController.view.removeFromSuperview()
       self.endRemove(rightController)
     }
@@ -169,10 +184,10 @@ class SplitPaneViewController: BaseContainerViewController {
     get {
       if #available(iOS 8.0, *) {
         let hasMargin = insetViewController?.hasMargin ?? false
-        return SplitPaneViewController.stateForTraitCollection(actualTraitCollection,
-                                                               hasMargin: hasMargin)
+        return SplitPaneViewController.state(for: actualTraitCollection,
+                                             hasMargin: hasMargin)
       } else {
-        return .FullScreen
+        return .fullScreen
       }
     }
   }
@@ -182,11 +197,10 @@ class SplitPaneViewController: BaseContainerViewController {
   ///
   /// - parameter traitCollection The trait collection the UI will be displayed for.
   /// - parameter hasMargin Whether or not a wrapping |InsetViewController| has margins.
-  private static func stateForTraitCollection(traitCollection: UITraitCollection,
-                                              hasMargin: Bool) -> State {
+  private static func state(for traitCollection: UITraitCollection, hasMargin: Bool) -> State {
     switch traitCollection.horizontalSizeClass {
-    case .Compact, .Unspecified: return .FullScreen
-    case .Regular: return hasMargin ? .CenteredSplitScreen : .SplitScreen
+    case .compact, .unspecified: return .fullScreen
+    case .regular: return hasMargin ? .centeredSplitScreen : .splitScreen
     }
   }
 
@@ -200,64 +214,66 @@ class SplitPaneViewController: BaseContainerViewController {
   /// - parameter coordinator An optional animation coordinator to animate with.
   /// - parameter animated Whether to animate the transition. Defaults to true.
   /// - parameter completion A completion block to call when the animation has finished.
-  private func transitionToState(
-    state: State, forceCollapsed: Bool = false, overrideSize: CGSize? = nil, animated: Bool = true,
-    withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator? = nil,
-    completion: () -> Void) {
-      // Determine which controllers were visible.
-      let leftWasHidden = !wrapperView.bounds.intersects(leftController.view.frame)
-      var rightWasHidden = false
-      if let rightController = rightController {
-        rightWasHidden = !view.bounds.intersects(rightController.view.frame)
+  private func transition(to state: State,
+                          forceCollapsed: Bool = false,
+                          overrideSize: CGSize? = nil,
+                          animated: Bool = true,
+                          coordinator: UIViewControllerTransitionCoordinator? = nil,
+                          completion: @escaping () -> Void) {
+    // Determine which controllers were visible.
+    let leftWasHidden = !wrapperView.bounds.intersects(leftController.view.frame)
+    var rightWasHidden = false
+    if let rightController = rightController {
+      rightWasHidden = !view.bounds.intersects(rightController.view.frame)
+    }
+
+    var leftWillBeHidden = false
+    var rightWillBeHidden = false
+
+    // Setup the animation block.
+    let animation = {
+      // Layout the controllers using the given information.
+      self.layoutViewControllers(for: state, forceCollapsed: forceCollapsed,
+                                 overrideSize: overrideSize)
+
+      // Update the state of whether the left and right controllers will be hidden. Also set the
+      // 'from' hidden state.
+      leftWillBeHidden = !self.view.bounds.intersects(self.leftController.view.frame)
+      self.leftController.view.isHidden = leftWasHidden && leftWillBeHidden
+      if let rightController = self.rightController {
+        rightWillBeHidden = !self.wrapperView.bounds.intersects(rightController.view.frame)
+        rightController.view.isHidden = rightWasHidden && rightWillBeHidden
+      }
+    }
+
+    // Once the animation is finished update the hidden states and call the callback.
+    let finish = {
+      self.leftController.view.isHidden = leftWillBeHidden
+      if let rightController = self.rightController {
+        rightController.view.isHidden = rightWillBeHidden
       }
 
-      var leftWillBeHidden = false
-      var rightWillBeHidden = false
+      completion()
+    }
 
-      // Setup the animation block.
-      let animation = {
-        // Layout the controllers using the given information.
-        self.layoutViewControllersForState(state, forceCollapsed: forceCollapsed,
-                                           overrideSize: overrideSize)
-
-        // Update the state of whether the left and right controllers will be hidden. Also set the
-        // 'from' hidden state.
-        leftWillBeHidden = !self.view.bounds.intersects(self.leftController.view.frame)
-        self.leftController.view.hidden = leftWasHidden && leftWillBeHidden
-        if let rightController = self.rightController {
-          rightWillBeHidden = !self.wrapperView.bounds.intersects(rightController.view.frame)
-          rightController.view.hidden = rightWasHidden && rightWillBeHidden
-        }
-      }
-
-      // Once the animation is finished update the hidden states and call the callback.
-      let finish = {
-        self.leftController.view.hidden = leftWillBeHidden
-        if let rightController = self.rightController {
-          rightController.view.hidden = rightWillBeHidden
-        }
-
-        completion()
-      }
-
-      // Check to see if we should be animating
-      if animated {
-        // Check to see if we do a coordinated animation or a standalone one.
-        if let coordinator = coordinator {
-          coordinator.animateAlongsideTransition({ _ in
-            animation()
-            }, completion: { _ in
-              finish()
-          })
-        } else {
-          UIView.animateWithDuration(0.367, animations: animation) { (finished) in
+    // Check to see if we should be animating
+    if animated {
+      // Check to see if we do a coordinated animation or a standalone one.
+      if let coordinator = coordinator {
+        coordinator.animate(alongsideTransition: { _ in
+          animation()
+          }, completion: { _ in
             finish()
-          }
-        }
+        })
       } else {
-        animation()
-        finish()
+        UIView.animate(withDuration: 0.367, animations: animation) { (finished) in
+          finish()
+        }
       }
+    } else {
+      animation()
+      finish()
+    }
   }
 
   // MARK: - Centralized Layout
@@ -267,17 +283,18 @@ class SplitPaneViewController: BaseContainerViewController {
   /// - parameter state The state to layout the controllers for.
   /// - parameter forceCollapsed Whether to force the second controller to be under the first one.
   /// - parameter overrideSize Override the size to use for layout.
-  private func layoutViewControllersForState(state: State, forceCollapsed: Bool = false,
-                                             overrideSize: CGSize? = nil) {
+  private func layoutViewControllers(for state: State,
+                                     forceCollapsed: Bool = false,
+                                     overrideSize: CGSize? = nil) {
     let collapsed = rightController == nil || forceCollapsed
     // Call out the the static function.
-    SplitPaneViewController.layoutViewControllersForState(state,
-                                                          collapsed: collapsed,
-                                                          size: overrideSize ?? view.bounds.size,
-                                                          leftController: leftController,
-                                                          rightController: rightController,
-                                                          wrapperView: wrapperView,
-                                                          shadowView: shadowView)
+    SplitPaneViewController.layoutViewControllers(for: state,
+                                                  collapsed: collapsed,
+                                                  size: overrideSize ?? view.bounds.size,
+                                                  leftController: leftController,
+                                                  rightController: rightController,
+                                                  wrapperView: wrapperView,
+                                                  shadowView: shadowView)
   }
 
   /// Layout the view controllers with the specified state. This function is static specifically so
@@ -290,17 +307,17 @@ class SplitPaneViewController: BaseContainerViewController {
   /// - parameter leftController The left controller.
   /// - parameter rightController The right controller.
   /// - parameter wrapperView The superview of left and right controller.
-  private static func layoutViewControllersForState(state: State,
-                                                    collapsed: Bool,
-                                                    size: CGSize,
-                                                    leftController: UIViewController,
-                                                    rightController: UIViewController?,
-                                                    wrapperView: UIView,
-                                                    shadowView: ShadowView) {
+  private static func layoutViewControllers(for state: State,
+                                            collapsed: Bool,
+                                            size: CGSize,
+                                            leftController: UIViewController,
+                                            rightController: UIViewController?,
+                                            wrapperView: UIView,
+                                            shadowView: ShadowView) {
     let fullBounds = CGRect(origin: CGPoint.zero, size: size)
 
     switch state {
-    case .FullScreen:
+    case .fullScreen:
       // If we are fullscreen, then both view controllers will have a bounds of |fullBounds|.
       // In the case where we are collapsed then they will be on top of each other, otherwise
       // the left controller will be offscreen to the left and the right controller will be
@@ -323,16 +340,14 @@ class SplitPaneViewController: BaseContainerViewController {
         }
       }
 
-    case .SplitScreen:
+    case .splitScreen:
       // If we are split screen, then both controllers can be shown side-by-side. If there is only
       // one controller or we are collapsed make if fill the bounds, otherwise split the space
       // equally.
       wrapperView.frame = fullBounds
 
-      var leftFrame = CGRect()
-      var rightFrame = CGRect()
-      CGRectDivide(wrapperView.bounds, &leftFrame, &rightFrame, wrapperView.bounds.size.width/2,
-                   .MinXEdge)
+      let (leftFrame, rightFrame) =
+        wrapperView.bounds.divided(atDistance: wrapperView.bounds.size.width/2, from: .minXEdge)
 
       if collapsed {
         leftController.view.frame = wrapperView.bounds
@@ -348,14 +363,13 @@ class SplitPaneViewController: BaseContainerViewController {
         }
       }
 
-    case .CenteredSplitScreen:
+    case .centeredSplitScreen:
       // If we are centered split screen it's basically the same as split screen, except for that
       // when we are collapsed or there is only one controller then we display them smaller than the
       // full bounds. This makes it look like the second one is always hidden behind the first as
       // the size of them do not change.
-      var leftFrame = CGRect()
-      var rightFrame = CGRect()
-      CGRectDivide(fullBounds, &leftFrame, &rightFrame, fullBounds.size.width/2, .MinXEdge)
+      let (leftFrame, rightFrame) =
+        fullBounds.divided(atDistance: fullBounds.size.width/2, from: .minXEdge)
 
       if collapsed {
         wrapperView.frame = leftFrame
@@ -374,45 +388,49 @@ class SplitPaneViewController: BaseContainerViewController {
     }
 
     // Update shadow and corner radius state. These are only shown when we are centered.
-    wrapperView.clipsToBounds = state == .CenteredSplitScreen
-    shadowView.enableShadow = state == .CenteredSplitScreen
+    wrapperView.clipsToBounds = state == .centeredSplitScreen
+    shadowView.enableShadow = state == .centeredSplitScreen
     shadowView.frame = wrapperView.frame
   }
 
   // MARK: - Utilities
 
   /// Offset a GGPoint along the X axis by the specified amount.
-  private static func offset(point: CGPoint, by offset: CGFloat) -> CGPoint {
+  private static func offset(_ point: CGPoint, by offset: CGFloat) -> CGPoint {
     return CGPoint(x: point.x + offset, y: point.y)
   }
 
   /// Start adding a view controller. This makes it a child and sets the associated object on it
   /// so that |self| can be looked up using |UIViewController.splitPaneViewController|.
-  private func startAdd(viewController: UIViewController) {
-    objc_setAssociatedObject(viewController, &SplitPaneViewControllerAssociatedObjectHandle, self,
+  private func startAdd(_ viewController: UIViewController) {
+    objc_setAssociatedObject(viewController,
+                             &SplitPaneViewControllerAssociatedObjectHandle,
+                             self,
                              .OBJC_ASSOCIATION_ASSIGN)
 
     self.addChildViewController(viewController)
   }
 
   /// Finish up adding a view controller.
-  private func endAdd(viewController: UIViewController) {
-    viewController.didMoveToParentViewController(self)
+  private func endAdd(_ viewController: UIViewController) {
+    viewController.didMove(toParentViewController: self)
   }
 
   /// Start removing a child view controller.
-  private func startRemove(viewController: UIViewController) {
-    viewController.willMoveToParentViewController(self)
+  private func startRemove(_ viewController: UIViewController) {
+    viewController.willMove(toParentViewController: self)
   }
 
   /// Finish up removing a child view controller. Remove it as a child and reset the
   /// |UIViewController.splitPaneViewController| property.
-  private func endRemove(viewController: UIViewController) {
+  private func endRemove(_ viewController: UIViewController) {
     viewController.removeFromParentViewController()
 
     // Check to see if it hasn't changed before nilling it out.
     if viewController.splitPaneViewController == self {
-      objc_setAssociatedObject(viewController, &SplitPaneViewControllerAssociatedObjectHandle, nil,
+      objc_setAssociatedObject(viewController,
+                               &SplitPaneViewControllerAssociatedObjectHandle,
+                               nil,
                                .OBJC_ASSOCIATION_ASSIGN)
     }
   }
@@ -429,12 +447,12 @@ extension UIViewController {
       // Walk up the view controller hierarchy until we find one with the associated object set.
       var check = self
       repeat {
-        if let pane = objc_getAssociatedObject(check,
-                                               &SplitPaneViewControllerAssociatedObjectHandle) as?
-                           SplitPaneViewController {
+        if let pane =
+          objc_getAssociatedObject(check, &SplitPaneViewControllerAssociatedObjectHandle) as?
+          SplitPaneViewController {
           return pane
         }
-        guard let parent = check.parentViewController else {
+        guard let parent = check.parent else {
           return nil
         }
         check = parent

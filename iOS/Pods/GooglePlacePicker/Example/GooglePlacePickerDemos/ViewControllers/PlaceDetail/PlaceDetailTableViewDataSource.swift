@@ -1,17 +1,32 @@
+/*
+ * Copyright 2016 Google Inc. All rights reserved.
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
 import UIKit
 import GooglePlaces
 
 enum PlaceProperty: Int {
-  case PlaceID
-  case Coordinate
-  case OpenNowStatus
-  case PhoneNumber
-  case Website
-  case FormattedAddress
-  case Rating
-  case PriceLevel
-  case Types
-  case Attribution
+  case placeID
+  case coordinate
+  case openNowStatus
+  case phoneNumber
+  case website
+  case formattedAddress
+  case rating
+  case priceLevel
+  case types
+  case attribution
 
   static func numberOfProperties() -> Int {
     return 10
@@ -28,6 +43,7 @@ class PlaceDetailTableViewDataSource: NSObject, UITableViewDataSource, UITableVi
   private let extensionConstraint: NSLayoutConstraint
   private let noneText = NSLocalizedString("PlaceDetails.MissingValue",
                                            comment: "The value of a property which is missing")
+  private let tableView: UITableView
   // Additional margin padding to use during layout. This is 0 for iOS versions 8.0 and above, while
   // on iOS 7 this needs to be hardcoded to 8 to ensure the correct layout.
   private let additionalMarginPadding: CGFloat = {
@@ -38,6 +54,20 @@ class PlaceDetailTableViewDataSource: NSObject, UITableViewDataSource, UITableVi
     }
   }()
 
+  var compactHeader = false {
+    didSet {
+      if #available(iOS 9.0, *) {
+        tableView.beginUpdates()
+        updateNavigationBar()
+        tableView.endUpdates()
+      } else {
+        // We'd really rather not call reloadData(), but on iOS 8.x begin/endUpdates tend to crash
+        // for this particular tableView.
+        tableView.reloadData()
+      }
+    }
+  }
+
   var offsetNavigationTitle = false
 
   // MARK: Init/Deinit
@@ -47,24 +77,19 @@ class PlaceDetailTableViewDataSource: NSObject, UITableViewDataSource, UITableVi
   /// - parameter place The |GMSPlace| to show details for.
   /// - parameter extensionConstraint The |NSLayoutConstraint| to update when scrolling so that
   /// the header view shrinks/grows to fill the gap between the map/photo and the details.
-  init(place: GMSPlace, extensionConstraint: NSLayoutConstraint) {
+  /// - parameter tableView The UITableView for this data.
+  init(place: GMSPlace, extensionConstraint: NSLayoutConstraint, tableView: UITableView) {
     self.place = place
     self.extensionConstraint = extensionConstraint
-  }
+    self.tableView = tableView
 
-  // MARK: - Public Methods
-
-  /// Configure the |UITableView| we will be providing results for.
-  ///
-  /// - parameter tableView The table view to configure.
-  func configure(tableView: UITableView) {
     // Register the |UITableViewCell|s.
-    tableView.registerNib(PlaceAttributeCell.nib,
-                          forCellReuseIdentifier: PlaceAttributeCell.reuseIdentifier)
-    tableView.registerNib(PlaceNameHeader.nib,
-                          forHeaderFooterViewReuseIdentifier: PlaceNameHeader.reuseIdentifier)
-    tableView.registerClass(UITableViewCell.self,
-                            forCellReuseIdentifier: blueCellIdentifier)
+    tableView.register(PlaceAttributeCell.nib,
+                      forCellReuseIdentifier: PlaceAttributeCell.reuseIdentifier)
+    tableView.register(PlaceNameHeader.nib,
+                      forHeaderFooterViewReuseIdentifier: PlaceNameHeader.reuseIdentifier)
+    tableView.register(UITableViewCell.self,
+                      forCellReuseIdentifier: blueCellIdentifier)
 
     // Configure some other properties.
     tableView.estimatedRowHeight = 44
@@ -72,51 +97,42 @@ class PlaceDetailTableViewDataSource: NSObject, UITableViewDataSource, UITableVi
     tableView.sectionHeaderHeight = UITableViewAutomaticDimension
   }
 
-  func updateNavigationTextOffset(tableView: UITableView) {
-    // Grab the header.
-    if let header = tableView.headerViewForSection(0) as? PlaceNameHeader {
-      // Check to see if we should be offsetting the navigation title.
-      if offsetNavigationTitle {
-        // If so offset it by at most 36 pixels, relative to how much we've scrolled past 160px.
-        let offset = max(0, min(36, tableView.contentOffset.y - 160))
-        header.leadingConstraint.constant = offset + additionalMarginPadding
-      } else {
-        // Otherwise don't offset.
-        header.leadingConstraint.constant = additionalMarginPadding
-      }
-    }
+  // MARK: - Public Methods
+
+  func updateNavigationTextOffset() {
+    updateNavigationBar()
   }
 
   // MARK: - UITableView DataSource/Delegate
 
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
 
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return PlaceProperty.numberOfProperties() + 1
   }
 
-  func tableView(tableView: UITableView,
-                 cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+  func tableView(_ tableView: UITableView,
+                 cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     // The first cell is special, this is a small blue spacer we use to pad out the place name
     // header.
     if indexPath.item == 0 {
-      let cell = tableView.dequeueReusableCellWithIdentifier(blueCellIdentifier,
-                                                             forIndexPath: indexPath)
+      let cell = tableView.dequeueReusableCell(withIdentifier: blueCellIdentifier,
+                                               for: indexPath)
       cell.backgroundColor = Colors.blue2
-      cell.selectionStyle = .None
+      cell.selectionStyle = .none
       return cell
     }
 
     // For all the other cells use the same class.
 
-    let untyped = tableView.dequeueReusableCellWithIdentifier(PlaceAttributeCell.reuseIdentifier,
-                                                              forIndexPath: indexPath)
+    let untyped = tableView.dequeueReusableCell(withIdentifier: PlaceAttributeCell.reuseIdentifier,
+                                                for: indexPath)
     let cell = untyped as! PlaceAttributeCell
 
     // Disable selection.
-    cell.selectionStyle = .None
+    cell.selectionStyle = .none
 
     // Set the relevant values.
     if let propertyType = PlaceProperty(rawValue: indexPath.item - 1) {
@@ -124,22 +140,22 @@ class PlaceDetailTableViewDataSource: NSObject, UITableViewDataSource, UITableVi
       cell.propertyIcon.image = propertyType.icon()
 
       switch propertyType {
-      case .PlaceID:
+      case .placeID:
         cell.propertyValue.text = place.placeID
-      case .Coordinate:
+      case .coordinate:
         let format = NSLocalizedString("Places.Property.Coordinate.Format",
                                        comment: "The format string for latitude, longitude")
         cell.propertyValue.text = String(format: format, place.coordinate.latitude,
                                          place.coordinate.longitude)
-      case .OpenNowStatus:
-        cell.propertyValue.text = textForOpenNowStatus(place.openNowStatus)
-      case .PhoneNumber:
+      case .openNowStatus:
+        cell.propertyValue.text = text(for: place.openNowStatus)
+      case .phoneNumber:
         cell.propertyValue.text = place.phoneNumber ?? noneText
-      case .Website:
+      case .website:
         cell.propertyValue.text = place.website?.absoluteString ?? noneText
-      case .FormattedAddress:
+      case .formattedAddress:
         cell.propertyValue.text = place.formattedAddress ?? noneText
-      case .Rating:
+      case .rating:
         let rating = place.rating
         // As specified in the documentation for |GMSPlace|, a rating of 0.0 signifies that there
         // have not yet been any ratings for this location.
@@ -148,14 +164,11 @@ class PlaceDetailTableViewDataSource: NSObject, UITableViewDataSource, UITableVi
         } else {
           cell.propertyValue.text = noneText
         }
-      case .PriceLevel:
-        cell.propertyValue.text = textForPriceLevel(place.priceLevel)
-      case .Types:
-        // NOTE: The following line is only required to work around a bug in earlier versions of
-        // the Swift compiler. If you have a recent version of Xcode this cast is not needed.
-        let types = place.types as! [String]
-        cell.propertyValue.text = types.joinWithSeparator(", ")
-      case .Attribution:
+      case .priceLevel:
+        cell.propertyValue.text = text(for: place.priceLevel)
+      case .types:
+        cell.propertyValue.text = place.types.joined(separator: ", ")
+      case .attribution:
         if let attributions = place.attributions {
           cell.propertyValue.attributedText = attributions
         } else {
@@ -169,19 +182,23 @@ class PlaceDetailTableViewDataSource: NSObject, UITableViewDataSource, UITableVi
     return cell
   }
 
-  func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     return place.name
   }
 
-  func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    return tableView.dequeueReusableHeaderFooterViewWithIdentifier(PlaceNameHeader.reuseIdentifier)
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let view =
+      tableView.dequeueReusableHeaderFooterView(withIdentifier: PlaceNameHeader.reuseIdentifier)
+    let header = view as! PlaceNameHeader
+    updateNavigationBar(header)
+    return header
   }
 
-  func tableView(tableView: UITableView,
-                 heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+  func tableView(_ tableView: UITableView,
+                 heightForRowAt indexPath: IndexPath) -> CGFloat {
     // Our first cell has a fixed height, all the rest are automatic.
     if indexPath.item == 0 {
-      return 20
+      return compactHeader ? 0 : 20
     }
     else {
       if #available(iOS 8.0, *) {
@@ -194,7 +211,7 @@ class PlaceDetailTableViewDataSource: NSObject, UITableViewDataSource, UITableVi
   }
 
   /// Only needed for iOS 7, explodes if this is not provided.
-  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     if #available(iOS 8.0, *) {
       return UITableViewAutomaticDimension
     } else {
@@ -203,79 +220,99 @@ class PlaceDetailTableViewDataSource: NSObject, UITableViewDataSource, UITableVi
     }
   }
 
-  func scrollViewDidScroll(scrollView: UIScrollView) {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
     // Update the extensionConstraint and the navigation title offset when the tableView scrolls.
-    if let tableView = scrollView as? UITableView {
-      extensionConstraint.constant = max(0, -scrollView.contentOffset.y)
+    extensionConstraint.constant = max(0, -scrollView.contentOffset.y)
 
-      updateNavigationTextOffset(tableView)
-    }
+    updateNavigationTextOffset()
   }
 
   // MARK: - Utilities
 
   /// Return the appropriate text string for the specified |GMSPlacesOpenNowStatus|.
-  private func textForOpenNowStatus(status: GMSPlacesOpenNowStatus) -> String {
+  private func text(for status: GMSPlacesOpenNowStatus) -> String {
     switch status {
-    case .No: return NSLocalizedString("Places.OpenNow.No",
+    case .no: return NSLocalizedString("Places.OpenNow.No",
                                        comment: "Closed/Open state for a closed location")
-    case .Yes: return NSLocalizedString("Places.OpenNow.Yes",
+    case .yes: return NSLocalizedString("Places.OpenNow.Yes",
                                         comment: "Closed/Open state for an open location")
-    case .Unknown: return NSLocalizedString("Places.OpenNow.Unknown",
+    case .unknown: return NSLocalizedString("Places.OpenNow.Unknown",
                                             comment: "Closed/Open state for when it is unknown")
     }
   }
 
   /// Return the appropriate text string for the specified |GMSPlacesPriceLevel|.
-  private func textForPriceLevel(priceLevel: GMSPlacesPriceLevel) -> String {
+  private func text(for priceLevel: GMSPlacesPriceLevel) -> String {
     switch priceLevel {
-    case .Free: return NSLocalizedString("Places.PriceLevel.Free",
+    case .free: return NSLocalizedString("Places.PriceLevel.Free",
                                          comment: "Relative cost for a free location")
-    case .Cheap: return NSLocalizedString("Places.PriceLevel.Cheap",
+    case .cheap: return NSLocalizedString("Places.PriceLevel.Cheap",
                                           comment: "Relative cost for a cheap location")
-    case .Medium: return NSLocalizedString("Places.PriceLevel.Medium",
+    case .medium: return NSLocalizedString("Places.PriceLevel.Medium",
                                            comment: "Relative cost for a medium cost location")
-    case .High: return NSLocalizedString("Places.PriceLevel.High",
+    case .high: return NSLocalizedString("Places.PriceLevel.High",
                                          comment: "Relative cost for a high cost location")
-    case .Expensive: return NSLocalizedString("Places.PriceLevel.Expensive",
+    case .expensive: return NSLocalizedString("Places.PriceLevel.Expensive",
                                               comment: "Relative cost for an expensive location")
-    case .Unknown: return NSLocalizedString("Places.PriceLevel.Unknown",
+    case .unknown: return NSLocalizedString("Places.PriceLevel.Unknown",
                                             comment: "Relative cost for when it is unknown")
     }
+  }
+
+  private func updateNavigationBar() {
+    // Grab the header.
+    if let header = tableView.headerView(forSection: 0) as? PlaceNameHeader {
+      updateNavigationBar(header)
+    }
+  }
+
+  private func updateNavigationBar(_ header: PlaceNameHeader) {
+    // Check to see if we should be offsetting the navigation title.
+    if offsetNavigationTitle {
+      // If so offset it by at most 36 pixels, relative to how much we've scrolled past 160px.
+      let offset = max(0, min(36, tableView.contentOffset.y - 160))
+      header.leadingConstraint.constant = offset + additionalMarginPadding
+    } else {
+      // Otherwise don't offset.
+      header.leadingConstraint.constant = additionalMarginPadding
+    }
+
+    // Update the compact status.
+    header.compact = compactHeader
   }
 }
 
 extension PlaceProperty {
   func localizedDescription() -> String {
     switch self {
-    case .PlaceID:
+    case .placeID:
       return NSLocalizedString("Places.Property.PlaceID",
                                comment: "Name for the Place ID property")
-    case .Coordinate:
+    case .coordinate:
       return NSLocalizedString("Places.Property.Coordinate",
                                comment: "Name for the Coordinate property")
-    case .OpenNowStatus:
+    case .openNowStatus:
       return NSLocalizedString("Places.Property.OpenNowStatus",
                                comment: "Name for the Open now status property")
-    case .PhoneNumber:
+    case .phoneNumber:
       return NSLocalizedString("Places.Property.PhoneNumber",
                                comment: "Name for the Phone number property")
-    case .Website:
+    case .website:
       return NSLocalizedString("Places.Property.Website",
                                comment: "Name for the Website property")
-    case .FormattedAddress:
+    case .formattedAddress:
       return NSLocalizedString("Places.Property.FormattedAddress",
                                comment: "Name for the Formatted address property")
-    case .Rating:
+    case .rating:
       return NSLocalizedString("Places.Property.Rating",
                                comment: "Name for the Rating property")
-    case .PriceLevel:
+    case .priceLevel:
       return NSLocalizedString("Places.Property.PriceLevel",
                                comment: "Name for the Price level property")
-    case .Types:
+    case .types:
       return NSLocalizedString("Places.Property.Types",
                                comment: "Name for the Types property")
-    case .Attribution:
+    case .attribution:
       return NSLocalizedString("Places.Property.Attributions",
                                comment: "Name for the Attributions property")
     }
@@ -283,25 +320,25 @@ extension PlaceProperty {
 
   func icon() -> UIImage? {
     switch self {
-    case .PlaceID:
+    case .placeID:
       return UIImage(named: "place_id")
-    case .Coordinate:
+    case .coordinate:
       return UIImage(named: "coordinate")
-    case .OpenNowStatus:
+    case .openNowStatus:
       return UIImage(named: "open_now")
-    case .PhoneNumber:
+    case .phoneNumber:
       return UIImage(named: "phone_number")
-    case .Website:
+    case .website:
       return UIImage(named: "website")
-    case .FormattedAddress:
+    case .formattedAddress:
       return UIImage(named: "address")
-    case .Rating:
+    case .rating:
       return UIImage(named: "rating")
-    case .PriceLevel:
+    case .priceLevel:
       return UIImage(named: "price_level")
-    case .Types:
+    case .types:
       return UIImage(named: "types")
-    case .Attribution:
+    case .attribution:
       return UIImage(named: "attribution")
     }
   }

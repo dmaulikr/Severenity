@@ -101,23 +101,23 @@ class LocationsServerManager: NSObject {
         for place in realmReadQuery {
             let tempArray = Array(place.owners)
             for owner in tempArray {
-                ownersArray.append(owner.owner)
+                ownersArray.append(owner.owner as AnyObject)
                 isRightOwnerFound = owner.owner == "931974540209503" //should be Facebook token userID
             }
             if isRightOwnerFound {
                 let dictionaryWithPlace: [String: AnyObject] = [
-                    "placeId" : place.placeId,
-                    "name" : place.name,
-                    "type" : place.type,
-                    "createdDate" : place.createdDate,
-                    "owners" : ownersArray,
-                    "locationType" : place.locationType,
-                    "locationLatitude" : place.locationLatitude,
-                    "locationLongtitude" : place.locationLongtitude
+                    "placeId" : place.placeId as AnyObject,
+                    "name" : place.name as AnyObject,
+                    "type" : place.type as AnyObject,
+                    "createdDate" : place.createdDate as AnyObject,
+                    "owners" : ownersArray as AnyObject,
+                    "locationType" : place.locationType as AnyObject,
+                    "locationLatitude" : place.locationLatitude as AnyObject,
+                    "locationLongtitude" : place.locationLongtitude as AnyObject
                 ]
-                dataFromRealm.append(dictionaryWithPlace)
+                dataFromRealm.append(dictionaryWithPlace as AnyObject)
             }
-            ownersArray.clean()
+            ownersArray.removeAll()
         }
         completion(dataFromRealm as NSArray)
 

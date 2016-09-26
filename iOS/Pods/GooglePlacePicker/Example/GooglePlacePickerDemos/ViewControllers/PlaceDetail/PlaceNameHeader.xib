@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -24,7 +24,7 @@
                 <constraint firstAttribute="bottom" secondItem="pyK-pG-itw" secondAttribute="bottom" priority="999" constant="9" id="UOw-JD-Rao"/>
                 <constraint firstItem="pyK-pG-itw" firstAttribute="leading" secondItem="lR7-Bh-Hkv" secondAttribute="leadingMargin" id="aY6-ag-hBD"/>
                 <constraint firstItem="pyK-pG-itw" firstAttribute="top" secondItem="lR7-Bh-Hkv" secondAttribute="top" priority="999" constant="29" id="fgM-YU-afs"/>
-                <constraint firstAttribute="trailingMargin" secondItem="pyK-pG-itw" secondAttribute="trailing" id="hWY-v8-Nuw"/>
+                <constraint firstAttribute="trailingMargin" secondItem="pyK-pG-itw" secondAttribute="trailing" priority="999" id="hWY-v8-Nuw"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
@@ -33,6 +33,7 @@
             <connections>
                 <outlet property="leadingConstraint" destination="aY6-ag-hBD" id="Jf7-9G-vup"/>
                 <outlet property="placeNameLabel" destination="pyK-pG-itw" id="EQs-iK-hH3"/>
+                <outlet property="topConstraint" destination="fgM-YU-afs" id="tLl-nH-C01"/>
             </connections>
             <point key="canvasLocation" x="542.5" y="-83.5"/>
         </view>

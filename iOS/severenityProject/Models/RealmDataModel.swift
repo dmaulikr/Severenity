@@ -27,7 +27,7 @@ class RealmPlace: BusinessObject {
     dynamic var createdDate = ""
     var owners = List<RealmPlaceOwner>()
     
-    init() {
+    required init() {
         
     }
     

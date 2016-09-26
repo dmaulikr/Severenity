@@ -1,3 +1,18 @@
+/*
+ * Copyright 2016 Google Inc. All rights reserved.
+ *
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
+ */
+
 import UIKit
 import GooglePlacePicker
 
@@ -6,10 +21,11 @@ import GooglePlacePicker
 class PickAPlaceViewController: UIViewController {
   private var placePicker: GMSPlacePicker?
   @IBOutlet private weak var pickAPlaceButton: UIButton!
+  @IBOutlet weak var buildNumberLabel: UILabel!
   var mapViewController: BackgroundMapViewController?
 
   init() {
-    super.init(nibName: String(self.dynamicType), bundle: nil)
+    super.init(nibName: String(describing: type(of: self)), bundle: nil)
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -25,6 +41,9 @@ class PickAPlaceViewController: UIViewController {
     // Configure our view.
     view.backgroundColor = Colors.blue1
     view.clipsToBounds = true
+
+    // Set the build number.
+    buildNumberLabel.text = "Places API Build: \(GMSPlacesClient.sdkVersion())"
   }
 
   @IBAction func buttonTapped() {
@@ -33,13 +52,13 @@ class PickAPlaceViewController: UIViewController {
     let placePicker = GMSPlacePicker(config: config)
 
     // Present it fullscreen.
-    placePicker.pickPlaceWithCallback { (place, error) in
+    placePicker.pickPlace { (place, error) in
 
       // Handle the selection if it was successful.
       if let place = place {
         // Create the next view controller we are going to display and present it.
         let nextScreen = PlaceDetailViewController(place: place)
-        self.splitPaneViewController?.pushViewController(nextScreen, animated: false)
+        self.splitPaneViewController?.push(viewController: nextScreen, animated: false)
         self.mapViewController?.coordinate = place.coordinate
       } else if error != nil {
         // In your own app you should handle this better, but for the demo we are just going to log
@@ -58,7 +77,7 @@ class PickAPlaceViewController: UIViewController {
     self.placePicker = placePicker
   }
 
-  override func preferredStatusBarStyle() -> UIStatusBarStyle {
-    return .LightContent
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
   }
 }

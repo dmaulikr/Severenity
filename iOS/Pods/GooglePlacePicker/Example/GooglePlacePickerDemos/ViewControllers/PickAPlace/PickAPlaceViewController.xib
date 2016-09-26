@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -8,6 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PickAPlaceViewController" customModule="PlacePickerDemo">
             <connections>
+                <outlet property="buildNumberLabel" destination="9Zy-yZ-90r" id="Yia-fg-YUf"/>
                 <outlet property="pickAPlaceButton" destination="t2A-rw-BJQ" id="GsS-lO-RLt"/>
                 <outlet property="view" destination="iN0-l3-epB" id="rKm-lv-pMf"/>
             </connections>
@@ -63,6 +64,12 @@
                         <constraint firstAttribute="width" constant="20" id="Cnu-g2-Ugq"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Zy-yZ-90r">
+                    <rect key="frame" x="300" y="568" width="0.0" height="0.0"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="8"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.00086542638449999996" green="0.29038038929999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -70,7 +77,10 @@
                 <constraint firstAttribute="trailing" secondItem="Ne4-at-Rhf" secondAttribute="trailing" id="5oQ-rU-3vz"/>
                 <constraint firstItem="cUT-t6-Qy0" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="7i3-hT-DsG"/>
                 <constraint firstItem="Ne4-at-Rhf" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="bottom" multiplier="0.44" priority="751" id="HYY-f1-F8H"/>
+                <constraint firstItem="9Zy-yZ-90r" firstAttribute="top" secondItem="8fb-Kq-jv6" secondAttribute="bottom" constant="8" id="I60-50-YuX"/>
                 <constraint firstItem="Ne4-at-Rhf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Iub-pB-aR3"/>
+                <constraint firstItem="9Zy-yZ-90r" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="UrZ-s4-oEu"/>
+                <constraint firstItem="8fb-Kq-jv6" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="VMn-sh-Ret"/>
                 <constraint firstItem="4aC-0G-vLm" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="bcE-SV-SGU"/>
                 <constraint firstItem="hOa-8b-qmx" firstAttribute="top" secondItem="Ne4-at-Rhf" secondAttribute="bottom" id="c80-d3-QXN"/>
                 <constraint firstItem="hOa-8b-qmx" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="cQj-sE-25O"/>
@@ -83,7 +93,7 @@
                 <constraint firstItem="cUT-t6-Qy0" firstAttribute="top" secondItem="hOa-8b-qmx" secondAttribute="bottom" priority="240" id="y0e-zB-6s9"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="610" y="435"/>
+            <point key="canvasLocation" x="465" y="435"/>
         </view>
     </objects>
     <resources>

@@ -13,10 +13,6 @@
 		5223A0ED1D8AEBED009A0EC7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5223A0EA1D8AEBED009A0EC7 /* FBSDKShareKit.framework */; };
 		523828751D89331500F55364 /* severenityProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828741D89331500F55364 /* severenityProjectTests.swift */; };
 		523828831D89332D00F55364 /* severenityProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828821D89332D00F55364 /* severenityProjectUITests.swift */; };
-		5238289A1D89826F00F55364 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523828981D89826F00F55364 /* Realm.framework */; };
-		5238289B1D89826F00F55364 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 523828981D89826F00F55364 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5238289C1D89826F00F55364 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 523828991D89826F00F55364 /* RealmSwift.framework */; };
-		5238289D1D89826F00F55364 /* RealmSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 523828991D89826F00F55364 /* RealmSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5264A7A11D8828B500EE78FC /* LocationsServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7A01D8828B500EE78FC /* LocationsServerManager.swift */; };
 		5264A7A51D882F1700EE78FC /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A7A41D882F1700EE78FC /* ListCell.xib */; };
 		5264A7A71D882F2400EE78FC /* GridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A7A61D882F2400EE78FC /* GridCell.xib */; };
@@ -59,21 +55,6 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		5238289E1D89826F00F55364 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				5238289D1D89826F00F55364 /* RealmSwift.framework in Embed Frameworks */,
-				5238289B1D89826F00F55364 /* Realm.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		32F484CB3F8B329893C92576 /* Pods-Severenity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Severenity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Severenity/Pods-Severenity.release.xcconfig"; sourceTree = "<group>"; };
 		3C9B25F8AB0EE5633501A8A2 /* Pods-severenityProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-severenityProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-severenityProject/Pods-severenityProject.release.xcconfig"; sourceTree = "<group>"; };
@@ -88,8 +69,6 @@
 		523828801D89332D00F55364 /* SeverenityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SeverenityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		523828821D89332D00F55364 /* severenityProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = severenityProjectUITests.swift; sourceTree = "<group>"; };
 		523828841D89332D00F55364 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		523828981D89826F00F55364 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Frameworks/Realm.framework; sourceTree = "<group>"; };
-		523828991D89826F00F55364 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Frameworks/RealmSwift.framework; sourceTree = "<group>"; };
 		5264A7A01D8828B500EE78FC /* LocationsServerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationsServerManager.swift; path = "Network Managers/LocationsServerManager.swift"; sourceTree = "<group>"; };
 		5264A7A41D882F1700EE78FC /* ListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListCell.xib; path = Views/ListCell/ListCell.xib; sourceTree = "<group>"; };
 		5264A7A61D882F2400EE78FC /* GridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GridCell.xib; path = Views/GridCell/GridCell.xib; sourceTree = "<group>"; };
@@ -137,11 +116,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5238289A1D89826F00F55364 /* Realm.framework in Frameworks */,
 				5223A0EB1D8AEBED009A0EC7 /* FBSDKCoreKit.framework in Frameworks */,
 				5223A0ED1D8AEBED009A0EC7 /* FBSDKShareKit.framework in Frameworks */,
 				5223A0EC1D8AEBED009A0EC7 /* FBSDKLoginKit.framework in Frameworks */,
-				5238289C1D89826F00F55364 /* RealmSwift.framework in Frameworks */,
 				F7F9968E342323C91D242D2A /* Pods_Severenity.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -269,8 +246,6 @@
 				5223A0E81D8AEBED009A0EC7 /* FBSDKCoreKit.framework */,
 				5223A0E91D8AEBED009A0EC7 /* FBSDKLoginKit.framework */,
 				5223A0EA1D8AEBED009A0EC7 /* FBSDKShareKit.framework */,
-				523828981D89826F00F55364 /* Realm.framework */,
-				523828991D89826F00F55364 /* RealmSwift.framework */,
 				B3AAAE59B41ABFF884BC13C0 /* Pods_Severenity.framework */,
 			);
 			name = Frameworks;
@@ -336,7 +311,6 @@
 				52787BDA1D86AA35009D17F5 /* Resources */,
 				B60EEFC992BC0FCABDCBAE88 /* [CP] Embed Pods Frameworks */,
 				B21832CE1A90FAFFD17B9784 /* [CP] Copy Pods Resources */,
-				5238289E1D89826F00F55364 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -442,7 +416,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		B21832CE1A90FAFFD17B9784 /* [CP] Copy Pods Resources */ = {
@@ -638,13 +612,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Severenity;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -682,12 +656,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = Severenity;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -697,7 +671,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3EF1D539D2A4755EDFC9C1D5 /* Pods-Severenity.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -716,7 +689,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 32F484CB3F8B329893C92576 /* Pods-Severenity.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (

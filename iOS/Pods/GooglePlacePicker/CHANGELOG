@@ -1,3 +1,20 @@
+Version 2.1.0 - September 2016
+==============================
+
+Resolved Issues:
+  - Added workaround for the `userEmail` triggering false positives during
+    submission to the Apple app store.
+  - Errors returned from lookUpPlaceID(_:callback:) now have the correct error
+    domain and codes.
+  - Small fixes to RTL support in the place picker.
+  - Minor reliability improvements for the autocomplete widget and place picker.
+
+Version 2.0.1 - July 2016
+=========================
+
+Resolved Issues:
+  - Array properties are now correctly typed when accessed from Swift.
+
 Version 2.0.0 - July 2016
 =========================
 
@@ -18,3 +35,5 @@ Resolved Issues:
     on behalf of the app. This means that existing code which calls
     GMSPlacesClient.currentPlaceWithCallback(_:) must be updated to ensure that
     the location permission has been granted beforehand.
+
+* Items denoted with an '!' may indicate a backwards incompatible change.

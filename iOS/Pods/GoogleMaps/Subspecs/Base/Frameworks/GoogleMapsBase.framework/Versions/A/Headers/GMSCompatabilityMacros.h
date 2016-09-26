@@ -8,6 +8,8 @@
 //  Service: https://developers.google.com/maps/terms
 //
 
+#import <Foundation/Foundation.h>
+
 #if !__has_feature(nullability) || !defined(NS_ASSUME_NONNULL_BEGIN) || \
     !defined(NS_ASSUME_NONNULL_END)
 #define GMS_ASSUME_NONNULL_BEGIN

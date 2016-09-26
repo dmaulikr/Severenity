@@ -24,10 +24,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
             let recievedLocationLongtitude = recievedLocation["locationLongtitude"] as? Double {
                 recievedLocationCoordinates = CLLocationCoordinate2DMake(recievedLocationLatitude, recievedLocationLongtitude)
         }
-        let camera = GMSCameraPosition.cameraWithLatitude(recievedLocationCoordinates.latitude,
+        let camera = GMSCameraPosition.camera(withLatitude: recievedLocationCoordinates.latitude,
                                                           longitude: recievedLocationCoordinates.longitude, zoom: 15)
-        let mapView = GMSMapView.mapWithFrame(CGRect.zero, camera: camera)
-        mapView.myLocationEnabled = true
+        let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+        mapView.isMyLocationEnabled = true
         self.view = mapView
         let marker = GMSMarker()
         marker.position = recievedLocationCoordinates
