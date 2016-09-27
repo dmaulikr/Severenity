@@ -12,6 +12,16 @@ public class ShopItem {
     private String title;
     private int imageURL;
     private String description;
+    private String price;
+
+
+
+    public ShopItem(String title, int imageURL, String description, String price) {
+        this.title = title;
+        this.imageURL = imageURL;
+        this.description = description;
+        this.price = price;
+    }
 
     public ShopItem(String title, int imageURL, String description) {
         this.title = title;
@@ -42,6 +52,13 @@ public class ShopItem {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
 

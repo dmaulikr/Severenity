@@ -1,5 +1,7 @@
 package com.severenity.engine.adapters;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.severenity.R;
 import com.severenity.entity.ShopItem;
@@ -35,7 +38,33 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.Shop
 
         holder.tvTitle.setText(item.getTitle());
         holder.tvDescrip.setText(item.getDescription());
+        //TODO: Rework image loading with Picasso after getting the URL
         holder.ivItemPhoto.setImageResource(item.getImageURL());
+        holder.tvPrice.setText(item.getPrice());
+
+        holder.btnPurchase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle("Confirmation")
+                        .setMessage("Are you sure you want to buy "+ item.getTitle())
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // TODO: Make some realization
+                            }
+                        })
+                        .setNegativeButton("No",null)
+                        .setCancelable(true);
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+
+
+            }
+        });
+
     }
 
     @Override
@@ -48,6 +77,7 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.Shop
         ImageView ivItemPhoto;
         TextView tvDescrip;
         Button btnPurchase;
+        TextView tvPrice;
         public ShopItemsListHolder(View itemView) {
             super(itemView);
 
@@ -55,6 +85,7 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.Shop
             ivItemPhoto = (ImageView) itemView.findViewById(R.id.ivShopItemImage);
             tvDescrip = (TextView) itemView.findViewById(R.id.tvShopItemDescription);
             btnPurchase = (Button) itemView.findViewById(R.id.btnShopItemButton);
+            tvPrice = (TextView) itemView.findViewById(R.id.tvShopItemPrice);
         }
     }
 }

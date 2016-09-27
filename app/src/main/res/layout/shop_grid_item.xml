@@ -14,8 +14,8 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/ivShopItemImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"/>
             <TextView
                 android:id="@+id/tvShopItemTitle"
@@ -26,15 +26,6 @@
                 android:textSize="17sp"
                 />
 
-            <TextView
-                android:id="@+id/tvShopItemDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="This item is used to check how it looks blah-blah"
-                android:layout_below="@+id/tvShopItemTitle"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="5dp"/>
-
             <Button
                 android:id="@+id/btnShopItemButton"
                 android:layout_height="wrap_content"
@@ -42,7 +33,25 @@
                 android:text="Purchase"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:id="@+id/tvShopItemDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This item is used to check how it looks blah-blah"
+                android:layout_marginTop="12dp"
+                android:layout_below="@+id/tvShopItemTitle"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="6dp" />
+
+            <TextView
+                android:text="Price :"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvShopItemDescription"
+                android:layout_alignStart="@+id/tvShopItemDescription"
+                android:id="@+id/tvShopItemPrice" />
 
         </RelativeLayout>
 

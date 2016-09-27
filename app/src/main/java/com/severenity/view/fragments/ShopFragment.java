@@ -41,11 +41,11 @@ public class ShopFragment extends Fragment {
 
     private List<ShopItem> createMockListData() {
         List<ShopItem> list = new ArrayList<>();
-        list.add(new ShopItem("First item",  0, "Test description blah-blah-blah"));
-        list.add(new ShopItem("First item",  0, "Test description blah-blah-blah"));
-        list.add(new ShopItem("First item",  0, "Test description blah-blah-blah"));
-        list.add(new ShopItem("First item",  0, "Test description blah-blah-blah"));
-        list.add(new ShopItem("First item",  0, "Test description blah-blah-blah"));
+        list.add(new ShopItem("First item", R.drawable.shop_item, "Test description blah-blah-blah", "50 credits"));
+        list.add(new ShopItem("First item", 0, "Test description blah-blah-blah", "70 credits"));
+        list.add(new ShopItem("First item", 0, "Test description blah-blah-blah", "110 credits"));
+        list.add(new ShopItem("First item", 0, "Test description blah-blah-blah", "90 credits"));
+        list.add(new ShopItem("First item", 0, "Test description blah-blah-blah", "10 credits"));
         return list;
     }
 

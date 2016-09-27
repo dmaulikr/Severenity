@@ -1,8 +1,23 @@
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.severenity.view.fragments.ShopFragment">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fs_linearLayout">
+        <TextView
+            android:text="Credits : 500"
+            android:id="@+id/tvFragmentShopCredits"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="5dp"/>
+
+    </LinearLayout>
 
     <!--<TextView-->
         <!--android:layout_centerInParent="true"-->
@@ -18,5 +33,6 @@
         android:background="@android:color/transparent"
         android:dividerHeight="1dp"
         android:choiceMode="singleChoice"
+        android:layout_below="@+id/fs_linearLayout"
         android:scrollbars="vertical" />
 </RelativeLayout>
