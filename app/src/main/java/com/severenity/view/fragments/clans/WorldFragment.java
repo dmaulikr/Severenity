@@ -48,7 +48,7 @@ public class WorldFragment extends Fragment implements CustomListView.LoadDataLi
         boolean isModerator = false;
         UsersListAdapter searchAdapter = new UsersListAdapter(getContext(), isModerator);
 
-        mUsersList = (CustomListView)view.findViewById(R.id.usersList);
+        mUsersList = (CustomListView) view.findViewById(R.id.usersList);
         mUsersList.setAdapter(searchAdapter);
         mUsersList.setListener(this);
 
