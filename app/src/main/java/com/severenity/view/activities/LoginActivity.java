@@ -1,9 +1,7 @@
 package com.severenity.view.activities;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,7 +20,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 
 import com.android.volley.NetworkResponse;
 import com.facebook.AccessToken;
@@ -71,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProfileTracker mProfileTracker;
     private CallbackManager mCallbackManager;
 
-    private View mProgressView;
+    private ProgressDialog mProgressView;
 
     private Intent mMainActivityIntent;
     private boolean isAuthorizing = false;
@@ -112,13 +109,8 @@ public class LoginActivity extends AppCompatActivity {
         mProfileTracker.startTracking();
 
         initViews();
-
-
-
         registerReceivers();
-
         authorizeCurrentUser();
-
     }
 
     private void checkInternetConnection() {
@@ -178,8 +170,6 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e(Constants.TAG, "Facebook login attempt failed");
             }
         });
-
-        mProgressView = findViewById(R.id.login_progress);
     }
 
     private void registerReceivers() {
@@ -419,26 +409,15 @@ public class LoginActivity extends AppCompatActivity {
      *
      * @param show - if true - show the progress, otherwise hide it.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
+        if (show) {
+            mProgressView = ProgressDialog.show(
+                LoginActivity.this,
+                getResources().getString(R.string.authentication),
+                getResources().getString(R.string.authentication_in_progress),
+                true);
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.dismiss();
         }
     }
 

@@ -12,7 +12,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.severenity.App;
 import com.severenity.engine.network.RequestCallback;
-import com.severenity.engine.network.RestManager;
 import com.severenity.entity.Message;
 import com.severenity.entity.User;
 import com.severenity.utils.common.Constants;
@@ -21,11 +20,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.severenity.entity.contracts.MsgContract.DBMsg.TABLE_MESSAGE;
-import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_USER_ID;
-import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_USER_NAME;
 import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_MESSAGE;
 import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_TIMESTAMP;
+import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_USER_ID;
+import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_USER_NAME;
+import static com.severenity.entity.contracts.MsgContract.DBMsg.TABLE_MESSAGE;
 
 
 /**

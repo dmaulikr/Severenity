@@ -30,22 +30,11 @@
             android:layout_height="256dp" />
     </RelativeLayout>
 
-    <!-- Login progress -->
-    <ProgressBar
-        android:layout_alignParentTop="true"
+    <com.facebook.login.widget.LoginButton
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-
-        <com.facebook.login.widget.LoginButton
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:id="@+id/btnLoginWithFacebook" />
+        android:layout_marginTop="16dp"
+        android:id="@+id/btnLoginWithFacebook" />
 </RelativeLayout>
