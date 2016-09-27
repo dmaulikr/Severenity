@@ -41,7 +41,6 @@ public class App extends MultiDexApplication {
     private TeamManager mTeamManager;
 
     private static App mInstance;
-    private static Context mContext;
 
     private SharedPreferences sharedPrefereces;
 
@@ -54,7 +53,7 @@ public class App extends MultiDexApplication {
         FacebookSdk.sdkInitialize(this);
 
         mInstance = this;
-        mContext = getApplicationContext();
+        Context mContext = getApplicationContext();
         googleApiHelper = new GoogleApiHelper(mContext);
         locationManager = new LocationManager(mContext);
         localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
@@ -72,12 +71,8 @@ public class App extends MultiDexApplication {
         mTeamManager = new TeamManager(mContext);
     }
 
-    public SharedPreferences getSharedPreferencesInstance() {
-        return this.sharedPrefereces;
-    }
-
     public static SharedPreferences getSharedPreferences() {
-        return getInstance().getSharedPreferencesInstance();
+        return getInstance().sharedPrefereces;
     }
 
     public static void setCurrentFCMToken(String token) {
@@ -102,99 +97,51 @@ public class App extends MultiDexApplication {
         return mInstance;
     }
 
-    public GoogleApiHelper getGoogleApiHelperInstance() {
-        return this.googleApiHelper;
-    }
-
     public static GoogleApiHelper getGoogleApiHelper() {
-        return getInstance().getGoogleApiHelperInstance();
-    }
-
-    public LocationManager getLocationManagerInstance() {
-        return this.locationManager;
+        return getInstance().googleApiHelper;
     }
 
     public static LocationManager getLocationManager() {
-        return getInstance().getLocationManagerInstance();
-    }
-
-    public LocalBroadcastManager getLocalBroadcastManagerInstance() {
-        return this.localBroadcastManager;
+        return getInstance().locationManager;
     }
 
     public static GCMManager getGCMManager() {
-        return getInstance().getGCMManagerInstance();
-    }
-
-    public GCMManager getGCMManagerInstance() {
-        return this.gcmManager;
+        return getInstance().gcmManager;
     }
 
     public static LocalBroadcastManager getLocalBroadcastManager() {
-        return getInstance().getLocalBroadcastManagerInstance();
-    }
-
-    public UserManager getUserManagerInstance() {
-        return this.userManager;
+        return getInstance().localBroadcastManager;
     }
 
     public static UserManager getUserManager() {
-        return getInstance().getUserManagerInstance();
-    }
-
-    public RestManager getRestManagerInstance() {
-        return this.restManager;
+        return getInstance().userManager;
     }
 
     public static RestManager getRestManager() {
-        return getInstance().getRestManagerInstance();
-    }
-
-    public ChipManager getSpellManagerInstance() {
-        return this.chipManager;
+        return getInstance().restManager;
     }
 
     public static ChipManager getSpellManager() {
-        return getInstance().getSpellManagerInstance();
-    }
-
-    public WebSocketManager getWebSocketManagerInstance() {
-        return this.webSocketManager;
+        return getInstance().chipManager;
     }
 
     public static WebSocketManager getWebSocketManager() {
-        return getInstance().getWebSocketManagerInstance();
-    }
-
-    public MessageManager getMessageManagerInstance() {
-        return this.msgManager;
+        return getInstance().webSocketManager;
     }
 
     public static MessageManager getMessageManager() {
-        return getInstance().getMessageManagerInstance();
-    }
-
-    public QuestManager getQuestManagerInstance() {
-        return this.questManager;
+        return getInstance().msgManager;
     }
 
     public static QuestManager getQuestManager() {
-        return getInstance().getQuestManagerInstance();
-    }
-
-    public PlacesManager getPlacesManagerInstance() {
-        return this.mPlacesManager;
+        return getInstance().questManager;
     }
 
     public static PlacesManager getPlacesManager() {
-        return getInstance().getPlacesManagerInstance();
-    }
-
-    public TeamManager getTeamManagerInstance() {
-        return this.mTeamManager;
+        return getInstance().mPlacesManager;
     }
 
     public static TeamManager getTeamManager() {
-        return getInstance().getTeamManagerInstance();
+        return getInstance().mTeamManager;
     }
 }
