@@ -6,6 +6,10 @@ import java.util.Locale;
  * Created by Novosad on 02/06/2015.
  */
 public class Constants {
+    private Constants() {
+        // Added to hide explicit public constructor.
+    }
+
     public enum Characteristic {
         Experience("experience"),
         Level("level"),
@@ -61,23 +65,22 @@ public class Constants {
         }
     }
 
-    public final static String TAG = "SAMPLE";
-
-    public static final String GCM_SENDER_ID = "967925944048";
+    public final static String TAG = "SEVERENITY";
 
     /**
      * Intent filter and intent extra constants
      */
-    public static final String INTENT_FILTER_GAC = "com.nosad.sample.googleapiclient";
-    public static final String INTENT_FILTER_UPDATE_UI = "com.nosad.sample.updateui";
-    public static final String INTENT_FILTER_NEW_MESSAGE = "com.nosad.sample.newmessage";
-    public static final String INTENT_FILTER_NEW_QUEST = "com.nosad.sample.newquest";
-    public static final String INTENT_FILTER_QUEST_UPDATE = "com.nosad.sample.questupdate";
-    public static final String INTENT_FILTER_SHOW_PLACE_INFO_DIALOG = "com.nosad.sample.showplaceinfodialog";
-    public static final String INTENT_FILTER_SHOW_USER_ACTIONS = "com.nosad.sample.showplaceactions";
-    public static final String INTENT_FILTER_HIDE_USER_ACTIONS = "com.nosad.sample.hideplaceactions";
-    public static final String INTENT_FILTER_DELETE_OWNER = "com.nosad.sample.deleteowner";
-    public static final String INTENT_FILTER_REQUEST_PLACES = "com.nosad.sample.requestplaces";
+    public static final String INTENT_FILTER_GAC = "com.severenity.googleapiclient";
+    public static final String INTENT_FILTER_UPDATE_UI = "com.severenity.updateui";
+    public static final String INTENT_FILTER_NEW_MESSAGE = "com.severenity.newmessage";
+    public static final String INTENT_FILTER_NEW_QUEST = "com.severenity.newquest";
+    public static final String INTENT_FILTER_QUEST_UPDATE = "com.severenity.questupdate";
+    public static final String INTENT_FILTER_SHOW_PLACE_INFO_DIALOG = "com.severenity.showplaceinfodialog";
+    public static final String INTENT_FILTER_SHOW_USER_ACTIONS = "com.severenity.showplaceactions";
+    public static final String INTENT_FILTER_HIDE_USER_ACTIONS = "com.severenity.hideplaceactions";
+    public static final String INTENT_FILTER_DELETE_OWNER = "com.severenity.deleteowner";
+    public static final String INTENT_FILTER_REQUEST_PLACES = "com.severenity.requestplaces";
+    public static final String INTENT_INTERNET_CONNECTED = "com.severenity.internetconnected";
 
 
     public static final String INTENT_EXTRA_USER_ID = "USER_ID";

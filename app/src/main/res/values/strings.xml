@@ -8,9 +8,9 @@
     <!--<string name="google_app_id">967925944048</string>-->
 
     <string name="wifi_connected">WiFi Connected</string>
-    <string name="lost_connection">Connection lost</string>
+    <string name="disconnected">Disconnected</string>
     <string name="mobile_connected">Mobile Connected</string>
-    <string name="connection_established">Connection established</string>
+    <string name="connected">Connected</string>
     <string name="title">Severenity</string>
     <string name="severenity_notification">Severenity notifies</string>
     <string name="menu_shop">Shop</string>

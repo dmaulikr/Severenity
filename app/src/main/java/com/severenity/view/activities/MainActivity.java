@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,7 +26,6 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +40,7 @@ import com.severenity.R;
 import com.severenity.engine.managers.data.EnergyRecoveryManager;
 import com.severenity.engine.managers.messaging.FCMListener;
 import com.severenity.engine.managers.messaging.GCMManager;
+import com.severenity.engine.network.RestManager;
 import com.severenity.entity.GamePlace;
 import com.severenity.entity.User;
 import com.severenity.entity.quest.CaptureQuest;
@@ -50,11 +51,11 @@ import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.Dialogs.PlacesInfoDialog;
 import com.severenity.view.custom.SplitToolbar;
-import com.severenity.view.fragments.clans.ClansFragment;
 import com.severenity.view.fragments.GameMapFragment;
 import com.severenity.view.fragments.PlayerFragment;
 import com.severenity.view.fragments.QuestsFragment;
 import com.severenity.view.fragments.ShopFragment;
+import com.severenity.view.fragments.clans.ClansFragment;
 import com.wooplr.spotlight.SpotlightView;
 import com.wooplr.spotlight.prefs.PreferencesManager;
 import com.wooplr.spotlight.utils.SpotlightListener;
@@ -66,7 +67,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.OnRelocateMapListener {
-    private FrameLayout container;
     private SplitToolbar toolbarBottom;
     private Toolbar toolbarTop;
 
@@ -99,13 +99,12 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private String gameMapFragmentTag = GameMapFragment.class.getSimpleName();
     private PlacesInfoDialog mPlaceInfoDialog;
 
-    private LocationManager locationManager;
-
     private ArrayList<Fragment> allFragments = new ArrayList<>();
 
     private boolean activityActive = false;
 
     private EnergyRecoveryManager mRecoveryManager;
+    private RestManager.NetworkReceiver mNetworkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,13 +116,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         initToolbars();
         initFragments();
         initSocketSubscriptions();
-
-        toolbarBottom.findViewById(R.id.menu_map).performClick();
-
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(GCMManager.MESSAGE_RECEIVED);
-        intentFilter.addAction(GCMManager.QUEST_RECEIVED);
-        App.getLocalBroadcastManager().registerReceiver(gcmMessageReceiver, intentFilter);
+        initReceivers();
 
         processNewIntent(getIntent());
 
@@ -131,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         mRecoveryManager.start();
 
         checkGPSConnection();
-
         checkForFirstLaunch();
     }
 
@@ -163,8 +155,9 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
     }
 
-
-
+    /**
+     * Method calls tutorial show and setups spot light view.
+     */
     private void showTutorial() {
         spotLightViewArr = new SpotlightView.Builder[]{
                 tutorialItem(shopItem, shopItem.getId() + "", getString(R.string.tutorial_shop), getString(R.string.tutorial_shop_body)),
@@ -177,8 +170,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 tutorialItem(ivTutorialBtn, ivTutorialBtn.getId() + "", getString(R.string.repeat_tutorial), getString(R.string.repeat_tutorial_body))
         };
         spotLightViewArr[spotLightCounter].show();
-
-
     }
 
     private SpotlightView.Builder tutorialItem(View view, String usageId, String tvText, String headingTvText){
@@ -211,13 +202,27 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         }
                     }
                 });
+    }
 
+    private void initReceivers() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(GCMManager.MESSAGE_RECEIVED);
+        intentFilter.addAction(GCMManager.QUEST_RECEIVED);
+        App.getLocalBroadcastManager().registerReceiver(gcmMessageReceiver, intentFilter);
 
-
+        IntentFilter connectivityFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        mNetworkReceiver = App.getRestManager().getNetworkReceiver();
+        mNetworkReceiver.setOnConnectionChangedListener(new RestManager.OnConnectionChangedListener() {
+            @Override
+            public void onConnectionChanged(boolean connected) {
+                Toast.makeText(MainActivity.this, connected ? "Connected." : "Disconnected.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        App.getLocalBroadcastManager().registerReceiver(mNetworkReceiver, connectivityFilter);
     }
 
     private void checkGPSConnection() {
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             AlertDialog.Builder agBuilder = new AlertDialog.Builder(this);
@@ -320,7 +325,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     }
 
     private void initFragments() {
-        container = (FrameLayout) findViewById(R.id.container);
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.container, gameMapFragment, gameMapFragmentTag)
@@ -381,7 +385,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             }
         });
         setSupportActionBar(toolbarTop);
-
 
         toolbarBottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -461,8 +464,12 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             }
         });
 
+        toolbarBottom.findViewById(R.id.menu_map).performClick();
     }
 
+    /**
+     * Handles behaviour when user selects one of the menu items we have to deselect others.
+     */
     private void deselectMenu() {
         for (int i = 0; i < toolbarBottom.getMenu().size(); i++) {
             MenuItem item = toolbarBottom.getMenu().getItem(i);
@@ -507,6 +514,9 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         }
     }
 
+    /**
+     * Hides all fragments in <code>allFragments</code> list.
+     */
     private void hideAllFragments() {
         FragmentTransaction ft = fragmentManager.beginTransaction();
         for (Fragment f : allFragments) {
@@ -515,6 +525,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         ft.commit();
     }
 
+    /**
+     * Shows specific fragment and hides others.
+     *
+     * @param fragment - {@link Fragment} to show.
+     */
     public void showFragment(final Fragment fragment) {
         if (fragment.isVisible()) {
             return;
@@ -532,22 +547,18 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         showFragment(gameMapFragment);
     }
 
-    // TODO: Replace with transaction to real profile fragment
     private void showProfile() {
         showFragment(playerFragment);
     }
 
-    // TODO: Replace with transaction to real shop fragment
     private void showShop() {
         showFragment(shopFragment);
     }
 
-    // TODO: Replace with transaction to real teams fragment
     private void showTeams() {
         showFragment(clansFragment);
     }
 
-    // TODO: Replace with transaction to real battles fragment
     private void showBattles() {
         showFragment(battlesFragment);
     }
@@ -565,32 +576,36 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         App.getLocalBroadcastManager().unregisterReceiver(updateUIReceiver);
         App.getLocalBroadcastManager().unregisterReceiver(App.getLocationManager().getGoogleApiClientReceiver());
         App.getLocalBroadcastManager().unregisterReceiver(showPlaceInfoDialog);
+        App.getLocalBroadcastManager().unregisterReceiver(mNetworkReceiver);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         activityActive = true;
-
         updateUIInfo();
 
         App.getLocalBroadcastManager().registerReceiver(
-                updateUIReceiver,
-                new IntentFilter(Constants.INTENT_FILTER_UPDATE_UI)
+            updateUIReceiver,
+            new IntentFilter(Constants.INTENT_FILTER_UPDATE_UI)
         );
 
         App.getLocalBroadcastManager().registerReceiver(
-                App.getLocationManager().getGoogleApiClientReceiver(),
-                new IntentFilter(Constants.INTENT_FILTER_GAC)
+            App.getLocationManager().getGoogleApiClientReceiver(),
+            new IntentFilter(Constants.INTENT_FILTER_GAC)
+        );
+
+        App.getLocalBroadcastManager().registerReceiver(
+            showPlaceInfoDialog,
+            new IntentFilter(Constants.INTENT_FILTER_SHOW_PLACE_INFO_DIALOG)
+        );
+
+        App.getLocalBroadcastManager().registerReceiver(
+            mNetworkReceiver,
+            new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         );
 
         App.getGoogleApiHelper().connect();
-
-        App.getLocalBroadcastManager().registerReceiver(
-                showPlaceInfoDialog,
-                new IntentFilter(Constants.INTENT_FILTER_SHOW_PLACE_INFO_DIALOG)
-        );
     }
 
     /**

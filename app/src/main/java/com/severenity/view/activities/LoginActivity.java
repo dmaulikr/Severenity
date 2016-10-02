@@ -4,22 +4,17 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.facebook.AccessToken;
@@ -78,8 +73,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         requestPermissions();
-
-        checkInternetConnection();
         
         setContentView(R.layout.activity_login);
 
@@ -113,43 +106,6 @@ public class LoginActivity extends AppCompatActivity {
         authorizeCurrentUser();
     }
 
-    private void checkInternetConnection() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        WifiManager wm = (WifiManager) getSystemService(WIFI_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        WifiInfo wifiInfo = wm.getConnectionInfo();
-
-        if (networkInfo == null || wifiInfo == null){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Your internet connection seems to be turned off, do you want to enable it?")
-                    .setCancelable(false)
-                    .setPositiveButton("Later", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    })
-                    .setNeutralButton("Enable Wi-Fi", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                        }
-                    })
-                    .setNegativeButton("Enable internet", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            startActivity(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS));
-
-                        }
-                    });
-
-
-            AlertDialog alert = builder.create();
-            alert.show();
-
-        }
-    }
-
     private void initViews() {
         LoginButton loginButton = (LoginButton) findViewById(R.id.btnLoginWithFacebook);
         loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email"));
@@ -176,7 +132,13 @@ public class LoginActivity extends AppCompatActivity {
         // Registers BroadcastReceiver to track network connection changes.
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         mNetworkReceiver = App.getRestManager().getNetworkReceiver();
-        this.registerReceiver(mNetworkReceiver, filter);
+        mNetworkReceiver.setOnConnectionChangedListener(new RestManager.OnConnectionChangedListener() {
+            @Override
+            public void onConnectionChanged(boolean connected) {
+                Toast.makeText(LoginActivity.this, connected ? "Connected." : "Disconnected.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        App.getLocalBroadcastManager().registerReceiver(mNetworkReceiver, filter);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(GCMManager.REGISTRATION_PROCESS);
@@ -253,12 +215,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
 
         // Unregisters BroadcastReceiver when app is destroyed.
-        this.unregisterReceiver(mNetworkReceiver);
+        App.getLocalBroadcastManager().unregisterReceiver(mNetworkReceiver);
+        App.getLocalBroadcastManager().unregisterReceiver(gcmReceiver);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        App.getLocalBroadcastManager().unregisterReceiver(mNetworkReceiver);
         App.getLocalBroadcastManager().unregisterReceiver(gcmReceiver);
     }
 
@@ -322,7 +286,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onErrorCallback(NetworkResponse response) {
-
+                    Log.e(Constants.TAG, response != null ? response.toString() : "Response is null");
                 }
             });
         }
@@ -410,23 +374,22 @@ public class LoginActivity extends AppCompatActivity {
      * @param show - if true - show the progress, otherwise hide it.
      */
     private void showProgress(final boolean show) {
-        if (show) {
-            mProgressView = ProgressDialog.show(
-                LoginActivity.this,
-                getResources().getString(R.string.authentication),
-                getResources().getString(R.string.authentication_in_progress),
-                true);
-        } else {
-            mProgressView.dismiss();
+        if (!isFinishing()) {
+            if (show) {
+                mProgressView = ProgressDialog.show(
+                        LoginActivity.this,
+                        getResources().getString(R.string.authentication),
+                        getResources().getString(R.string.authentication_in_progress),
+                        true);
+            } else {
+                mProgressView.dismiss();
+            }
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        // Update if connection is available
-        App.getRestManager().updateConnectedFlags();
 
         if (AccessToken.getCurrentAccessToken() == null) {
             LoginManager.getInstance().logOut();

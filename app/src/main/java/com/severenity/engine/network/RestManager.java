@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 import android.util.LruCache;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,12 +33,8 @@ public class RestManager {
     private ImageLoader imageLoader;
     private Context context;
 
-    // Whether there is a Wi-Fi connection.
-    private static boolean wifiConnected = false;
-    // Whether there is a mobile connection.
-    private static boolean mobileConnected = false;
-    // Whether the display should be refreshed.
-    public static boolean refreshDisplay = true;
+    private boolean wifiConnected = false;
+    private boolean mobileConnected = false;
 
     /**
      * Private singleton constructor.
@@ -89,11 +86,13 @@ public class RestManager {
             new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
+                    Log.i(Constants.TAG, response.toString());
                     callback.onResponseCallback(response);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    Log.e(Constants.TAG, error.toString());
                     callback.onErrorCallback(error.networkResponse);
                 }
         });
@@ -130,61 +129,39 @@ public class RestManager {
      * Checks for both mobile / WiFi networks.
      */
     public class NetworkReceiver extends BroadcastReceiver {
+        private OnConnectionChangedListener onConnectionChangedListener;
+
+        public void setOnConnectionChangedListener(OnConnectionChangedListener onConnectionChangedListener) {
+            this.onConnectionChangedListener = onConnectionChangedListener;
+        }
+
         @Override
         public void onReceive(Context context, Intent intent) {
             ConnectivityManager conn = (ConnectivityManager)
                     context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = conn.getActiveNetworkInfo();
 
-            updateConnectedFlags();
-
-            // Checks the user prefs and the network connection. Based on the result, decides whether
-            // to refresh the display or keep the current display.
-            // If the userpref is Wi-Fi only, checks to see if the device has a Wi-Fi connection.
-            if (networkInfo != null) {
-                refreshDisplay = true;
-                // If device has its Wi-Fi connection, sets refreshDisplay
-                // to true. This causes the display to be refreshed when the user
-                // returns to the app.
+            if (networkInfo != null && networkInfo.isConnected()) {
                 if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                    wifiConnected = true;
                     Log.d(Constants.TAG, context.getResources().getString(R.string.wifi_connected));
                 } else if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
-                    // If the setting is ANY network and there is a network connection
-                    // (which by process of elimination would be mobile), sets refreshDisplay to true.
                     Log.d(Constants.TAG, context.getResources().getString(R.string.mobile_connected));
+                    mobileConnected = true;
                 } else {
-                    Log.d(Constants.TAG, context.getResources().getString(R.string.connection_established));
+                    Log.d(Constants.TAG, context.getResources().getString(R.string.connected));
                 }
+                onConnectionChangedListener.onConnectionChanged(true);
             } else {
-                refreshDisplay = false;
-                Log.d(Constants.TAG, context.getResources().getString(R.string.lost_connection));
+                wifiConnected = false;
+                mobileConnected = false;
+                onConnectionChangedListener.onConnectionChanged(false);
+                Log.d(Constants.TAG, context.getResources().getString(R.string.disconnected));
             }
         }
     }
 
-    /**
-     * Checks the network connection and sets the wifiConnected and mobileConnected
-     * variables accordingly.
-     */
-    public void updateConnectedFlags() {
-        ConnectivityManager connMgr = (ConnectivityManager)
-                context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeInfo = connMgr.getActiveNetworkInfo();
-        if (activeInfo != null && activeInfo.isConnected()) {
-            wifiConnected = activeInfo.getType() == ConnectivityManager.TYPE_WIFI;
-            mobileConnected = activeInfo.getType() == ConnectivityManager.TYPE_MOBILE;
-        } else {
-            wifiConnected = false;
-            mobileConnected = false;
-        }
-    }
-
-    /**
-     *
-     * @return true if connect to mobile or wifi network.
-     */
-    public boolean isConnected() {
-        return wifiConnected || mobileConnected;
+    public interface OnConnectionChangedListener {
+        void onConnectionChanged(boolean connected);
     }
 }

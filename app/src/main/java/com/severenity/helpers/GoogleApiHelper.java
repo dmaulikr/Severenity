@@ -81,6 +81,5 @@ public class GoogleApiHelper implements GoogleApiClient.ConnectionCallbacks, Goo
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed: connectionResult.toString() = " + connectionResult.toString());
-
     }
 }

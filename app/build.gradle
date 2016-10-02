@@ -9,11 +9,14 @@ android {
             storePassword 'jd9ab359'
         }
     }
+
     compileSdkVersion 24
     buildToolsVersion '24.0.1'
+
     dataBinding {
         enabled = true
     }
+
     defaultConfig {
         applicationId "com.severenity"
         minSdkVersion 19
@@ -23,15 +26,15 @@ android {
         multiDexEnabled true
         signingConfig signingConfigs.config
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
-        debug {
-        }
     }
+
     lintOptions {
         // set to true to turn off analysis progress reporting by lint
         quiet true
@@ -40,28 +43,27 @@ android {
         // if true, only report errors
         ignoreWarnings true
     }
+
     dexOptions {
         incremental true
         javaMaxHeapSize "4g"
     }
+
     repositories {
         mavenCentral()
         maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://jitpack.io" }
-    }
-    productFlavors {
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile('io.socket:socket.io-client:0.7.0') {
+    compile('io.socket:socket.io-client:0.8.1') {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
     compile 'com.android.volley:volley:1.0.0'
-
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
