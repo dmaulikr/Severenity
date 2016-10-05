@@ -34,10 +34,9 @@ import io.socket.emitter.Emitter;
  */
 public class WebSocketManager {
     private Socket mSocket = null;
-    private Context mContext;
 
-    public WebSocketManager(Context context) {
-        this.mContext = context;
+    public WebSocketManager() {
+        createSocket(Constants.HOST, true);
     }
 
     /**

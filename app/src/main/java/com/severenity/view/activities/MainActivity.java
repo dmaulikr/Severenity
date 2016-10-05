@@ -7,13 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.location.LocationManager;
-import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -38,9 +35,10 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.managers.data.EnergyRecoveryManager;
+import com.severenity.engine.managers.location.LocationManager;
 import com.severenity.engine.managers.messaging.FCMListener;
 import com.severenity.engine.managers.messaging.GCMManager;
-import com.severenity.engine.network.RestManager;
+import com.severenity.engine.network.NetworkManager;
 import com.severenity.entity.GamePlace;
 import com.severenity.entity.User;
 import com.severenity.entity.quest.CaptureQuest;
@@ -72,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
     private ProfilePictureView userProfilePicture;
     private TextView tvEnergyValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
+    private TextView tvConnectionState;
+    private ImageView ivGPSState;
 
     /**    Tutorial items       **/
     private PreferencesManager mPreferencesManager;
@@ -104,8 +104,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private boolean activityActive = false;
 
     private EnergyRecoveryManager mRecoveryManager;
-    private RestManager.NetworkReceiver mNetworkReceiver;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         mRecoveryManager = new EnergyRecoveryManager(getApplicationContext());
         mRecoveryManager.start();
 
-        checkGPSConnection();
         checkForFirstLaunch();
+        toolbarBottom.findViewById(R.id.menu_map).performClick();
     }
 
     private void checkForFirstLaunch() {
@@ -210,38 +208,35 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         intentFilter.addAction(GCMManager.QUEST_RECEIVED);
         App.getLocalBroadcastManager().registerReceiver(gcmMessageReceiver, intentFilter);
 
-        IntentFilter connectivityFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        mNetworkReceiver = App.getRestManager().getNetworkReceiver();
-        mNetworkReceiver.setOnConnectionChangedListener(new RestManager.OnConnectionChangedListener() {
+        App.getNetworkManager().addOnConnectionChangedListener(new NetworkManager.OnConnectionChangedListener() {
             @Override
             public void onConnectionChanged(boolean connected) {
-                Toast.makeText(MainActivity.this, connected ? "Connected." : "Disconnected.", Toast.LENGTH_SHORT).show();
+                updateConnectionState();
             }
         });
-        App.getLocalBroadcastManager().registerReceiver(mNetworkReceiver, connectivityFilter);
+
+        App.getLocationManager().addOnGPSStateChangedListener(new com.severenity.engine.managers.location.LocationManager.OnGPSStateChangedListener() {
+            @Override
+            public void onGPSStateChangedListener(com.severenity.engine.managers.location.LocationManager.GPSSignal signal) {
+                ivGPSState.setImageDrawable(getResources().getDrawable(signal.getId()));
+            }
+        });
+
+        LocationManager.updateWithGPSSignal(this);
     }
 
-    private void checkGPSConnection() {
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder agBuilder = new AlertDialog.Builder(this);
-            agBuilder.setMessage("Your GPS seems to be turned off, do you want to enable it?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                        }
-                    })
-                    .setNegativeButton("Later", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    });
-            final AlertDialog ad = agBuilder.create();
-            ad.show();
+    /**
+     * Updates connection state label look and feel and performs actions on connectivity change.
+     */
+    private void updateConnectionState() {
+        if (App.getNetworkManager().isConnected()) {
+            tvConnectionState.setText(getResources().getString(R.string.connected));
+            tvConnectionState.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            Utils.expandOrCollapse(tvConnectionState, false, true);
+        } else {
+            tvConnectionState.setText(getResources().getString(R.string.disconnected));
+            tvConnectionState.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+            Utils.expandOrCollapse(tvConnectionState, true, true);
         }
     }
 
@@ -371,6 +366,8 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
         toolbarBottom = (SplitToolbar) findViewById(R.id.toolbarBottom);
         toolbarBottom.inflateMenu(R.menu.toolbar_menu);
+        tvConnectionState = (TextView) findViewById(R.id.tvConnectionStateMainActivity);
+        ivGPSState = (ImageView) toolbarTop.findViewById(R.id.ivGPSStateMainActivity);
 
         shopItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_shop);
         chatItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_chat);
@@ -463,8 +460,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 return false;
             }
         });
-
-        toolbarBottom.findViewById(R.id.menu_map).performClick();
     }
 
     /**
@@ -576,7 +571,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         App.getLocalBroadcastManager().unregisterReceiver(updateUIReceiver);
         App.getLocalBroadcastManager().unregisterReceiver(App.getLocationManager().getGoogleApiClientReceiver());
         App.getLocalBroadcastManager().unregisterReceiver(showPlaceInfoDialog);
-        App.getLocalBroadcastManager().unregisterReceiver(mNetworkReceiver);
     }
 
     @Override
@@ -598,11 +592,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         App.getLocalBroadcastManager().registerReceiver(
             showPlaceInfoDialog,
             new IntentFilter(Constants.INTENT_FILTER_SHOW_PLACE_INFO_DIALOG)
-        );
-
-        App.getLocalBroadcastManager().registerReceiver(
-            mNetworkReceiver,
-            new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
         );
 
         App.getGoogleApiHelper().connect();

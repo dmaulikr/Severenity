@@ -65,14 +65,22 @@
             android:textSize="12sp"
             android:text="@string/level_value" />
 
-        <!-- TODO: Artem add id for this button and handler (tutorial task) -->
         <ImageView
             android:id="@+id/ivTutorialBtn"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="4dp"
             android:src="@drawable/icon_question" />
+
+        <ImageView
+            android:id="@+id/ivGPSStateMainActivity"
+            android:src="@mipmap/gps_off"
+            android:layout_margin="4dp"
+            android:layout_toStartOf="@id/ivTutorialBtn"
+            android:layout_centerVertical="true"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

@@ -16,6 +16,7 @@ import com.severenity.engine.managers.data.UserManager;
 import com.severenity.engine.managers.game.ChipManager;
 import com.severenity.engine.managers.location.LocationManager;
 import com.severenity.engine.managers.messaging.GCMManager;
+import com.severenity.engine.network.NetworkManager;
 import com.severenity.engine.network.RestManager;
 import com.severenity.engine.network.WebSocketManager;
 import com.severenity.helpers.GoogleApiHelper;
@@ -24,6 +25,8 @@ import com.severenity.utils.common.Constants;
 import com.severenity.view.activities.LoginActivity;
 
 /**
+ * Main app file. Handles all managers and is central point for access to the managers.
+ *
  * Created by Novosad on 3/24/16.
  */
 public class App extends MultiDexApplication {
@@ -39,6 +42,7 @@ public class App extends MultiDexApplication {
     private RestManager restManager;
     private PlacesManager mPlacesManager;
     private TeamManager mTeamManager;
+    private NetworkManager mNetworkManager;
 
     private static App mInstance;
 
@@ -59,12 +63,12 @@ public class App extends MultiDexApplication {
         localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
         userManager = new UserManager(mContext);
         chipManager = new ChipManager(mContext);
-        webSocketManager = new WebSocketManager(mContext);
-        App.getWebSocketManager().createSocket(Constants.HOST, true);
+        webSocketManager = new WebSocketManager();
         restManager = new RestManager(mContext);
         questManager = new QuestManager(mContext);
         gcmManager = new GCMManager(mContext);
         msgManager = new MessageManager(mContext);
+        mNetworkManager = new NetworkManager(mContext);
 
         sharedPrefereces = getSharedPreferences("Severenity", MODE_PRIVATE);
         mPlacesManager = new PlacesManager(mContext);
@@ -143,5 +147,9 @@ public class App extends MultiDexApplication {
 
     public static TeamManager getTeamManager() {
         return getInstance().mTeamManager;
+    }
+
+    public static NetworkManager getNetworkManager() {
+        return getInstance().mNetworkManager;
     }
 }

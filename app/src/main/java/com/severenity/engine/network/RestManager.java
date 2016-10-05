@@ -33,9 +33,6 @@ public class RestManager {
     private ImageLoader imageLoader;
     private Context context;
 
-    private boolean wifiConnected = false;
-    private boolean mobileConnected = false;
-
     /**
      * Private singleton constructor.
      *
@@ -113,55 +110,5 @@ public class RestManager {
 
     public ImageLoader getImageLoader() {
         return imageLoader;
-    }
-
-    /**
-     * Getter for network changes receiver.
-     *
-     * @return {@link NetworkReceiver} - receiver of network changes.
-     */
-    public NetworkReceiver getNetworkReceiver() {
-        return new NetworkReceiver();
-    }
-
-    /**
-     * Receives updates for the network changes.
-     * Checks for both mobile / WiFi networks.
-     */
-    public class NetworkReceiver extends BroadcastReceiver {
-        private OnConnectionChangedListener onConnectionChangedListener;
-
-        public void setOnConnectionChangedListener(OnConnectionChangedListener onConnectionChangedListener) {
-            this.onConnectionChangedListener = onConnectionChangedListener;
-        }
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            ConnectivityManager conn = (ConnectivityManager)
-                    context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = conn.getActiveNetworkInfo();
-
-            if (networkInfo != null && networkInfo.isConnected()) {
-                if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                    wifiConnected = true;
-                    Log.d(Constants.TAG, context.getResources().getString(R.string.wifi_connected));
-                } else if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
-                    Log.d(Constants.TAG, context.getResources().getString(R.string.mobile_connected));
-                    mobileConnected = true;
-                } else {
-                    Log.d(Constants.TAG, context.getResources().getString(R.string.connected));
-                }
-                onConnectionChangedListener.onConnectionChanged(true);
-            } else {
-                wifiConnected = false;
-                mobileConnected = false;
-                onConnectionChangedListener.onConnectionChanged(false);
-                Log.d(Constants.TAG, context.getResources().getString(R.string.disconnected));
-            }
-        }
-    }
-
-    public interface OnConnectionChangedListener {
-        void onConnectionChanged(boolean connected);
     }
 }

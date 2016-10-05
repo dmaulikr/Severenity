@@ -7,14 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.android.volley.NetworkResponse;
 import com.facebook.AccessToken;
@@ -35,8 +34,8 @@ import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.engine.managers.messaging.RegistrationIntentService;
+import com.severenity.engine.network.NetworkManager;
 import com.severenity.engine.network.RequestCallback;
-import com.severenity.engine.network.RestManager;
 import com.severenity.entity.User;
 import com.severenity.utils.FacebookUtils;
 import com.severenity.utils.Utils;
@@ -55,18 +54,23 @@ public class LoginActivity extends AppCompatActivity {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final int PERMISSION_REQUEST_CODE = 1;
 
-    // The BroadcastReceiver that tracks network connectivity changes.
-    private RestManager.NetworkReceiver mNetworkReceiver;
-
     public Profile profile;
     private AccessTokenTracker mAccessTokenTracker;
     private ProfileTracker mProfileTracker;
     private CallbackManager mCallbackManager;
 
     private ProgressDialog mProgressView;
+    private TextView tvConnectionState;
 
     private Intent mMainActivityIntent;
     private boolean isAuthorizing = false;
+
+    private NetworkManager.OnConnectionChangedListener onConnectionChangedListener = new NetworkManager.OnConnectionChangedListener() {
+        @Override
+        public void onConnectionChanged(boolean connected) {
+            updateConnectionState();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +107,6 @@ public class LoginActivity extends AppCompatActivity {
 
         initViews();
         registerReceivers();
-        authorizeCurrentUser();
     }
 
     private void initViews() {
@@ -126,19 +129,12 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e(Constants.TAG, "Facebook login attempt failed");
             }
         });
+
+        tvConnectionState = (TextView) findViewById(R.id.tvConnectionState);
     }
 
     private void registerReceivers() {
-        // Registers BroadcastReceiver to track network connection changes.
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        mNetworkReceiver = App.getRestManager().getNetworkReceiver();
-        mNetworkReceiver.setOnConnectionChangedListener(new RestManager.OnConnectionChangedListener() {
-            @Override
-            public void onConnectionChanged(boolean connected) {
-                Toast.makeText(LoginActivity.this, connected ? "Connected." : "Disconnected.", Toast.LENGTH_SHORT).show();
-            }
-        });
-        App.getLocalBroadcastManager().registerReceiver(mNetworkReceiver, filter);
+        App.getNetworkManager().addOnConnectionChangedListener(onConnectionChangedListener);
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(GCMManager.REGISTRATION_PROCESS);
@@ -215,14 +211,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onDestroy();
 
         // Unregisters BroadcastReceiver when app is destroyed.
-        App.getLocalBroadcastManager().unregisterReceiver(mNetworkReceiver);
         App.getLocalBroadcastManager().unregisterReceiver(gcmReceiver);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        App.getLocalBroadcastManager().unregisterReceiver(mNetworkReceiver);
         App.getLocalBroadcastManager().unregisterReceiver(gcmReceiver);
     }
 
@@ -261,6 +255,7 @@ public class LoginActivity extends AppCompatActivity {
                                     }
 
                                     App.getWebSocketManager().sendAuthenticatedToServer();
+                                    App.getNetworkManager().removeOnConnectionChangedListener(onConnectionChangedListener);
                                     startActivity(mMainActivityIntent);
                                 }
                                 break;
@@ -369,6 +364,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * Updates connection state label look and feel and performs actions on connectivity change.
+     */
+    private void updateConnectionState() {
+        if (App.getNetworkManager().isConnected()) {
+            tvConnectionState.setText(getResources().getString(R.string.connected));
+            tvConnectionState.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            Utils.expandOrCollapse(tvConnectionState, false, false);
+            authorizeCurrentUser();
+        } else {
+            tvConnectionState.setText(getResources().getString(R.string.disconnected));
+            tvConnectionState.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+            Utils.expandOrCollapse(tvConnectionState, true, false);
+        }
+    }
+
+    /**
      * Shows the progress UI and hides the login form.
      *
      * @param show - if true - show the progress, otherwise hide it.
@@ -390,6 +401,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        updateConnectionState();
 
         if (AccessToken.getCurrentAccessToken() == null) {
             LoginManager.getInstance().logOut();
@@ -423,6 +436,7 @@ public class LoginActivity extends AppCompatActivity {
                 String result = intent.getStringExtra("result");
                 if (result.equals("success")) {
                     App.getWebSocketManager().sendAuthenticatedToServer();
+                    App.getNetworkManager().removeOnConnectionChangedListener(onConnectionChangedListener);
                     startActivity(mMainActivityIntent);
                 } else {
                     Log.wtf(Constants.TAG, "Critical error on the server.");

@@ -21,6 +21,9 @@ import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -405,5 +408,43 @@ public class Utils {
         }
 
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    /**
+     * Expands or collapses view.
+     *
+     * @param v - view to animate.
+     * @param expand - true if expand, false otherwise.
+     */
+    public static void expandOrCollapse(final View v, boolean expand, boolean reverse) {
+        TranslateAnimation animation;
+        if (expand) {
+            animation = new TranslateAnimation(0.0f, 0.0f, (reverse ? v.getHeight() : -v.getHeight()), 0.0f);
+            v.setVisibility(View.VISIBLE);
+        } else {
+            animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, (reverse ? v.getHeight() : -v.getHeight()));
+            Animation.AnimationListener collapseListener = new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    // Add animation start logic if needed.
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                    // Add animation repeat logic if needed.
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    v.setVisibility(View.GONE);
+                }
+            };
+
+            animation.setAnimationListener(collapseListener);
+        }
+
+        animation.setDuration(1000);
+        animation.setInterpolator(new AccelerateInterpolator(0.5f));
+        v.startAnimation(animation);
     }
 }

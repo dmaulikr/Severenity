@@ -59,9 +59,28 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
+ * Class is responsible to handle all location related logic as far as map and GPS connectivity
+ * handling.
+ *
  * Created by Novosad on 3/29/16.
  */
 public class LocationManager implements LocationListener {
+    public enum GPSSignal {
+        Strong(R.mipmap.gps_strong),
+        Weak(R.mipmap.gps_weak),
+        Off(R.mipmap.gps_off);
+
+        private int id;
+
+        GPSSignal(int id) {
+            this.id = id;
+        }
+
+        public int getId() {
+            return id;
+        }
+    }
+
     private Location previousLocation, currentLocation, mLocationOfLastSquareUpdate, mLocationOfLastPlacesUpdateFromGoogle;
     private Context context;
     private GoogleApiClient googleApiClient;
@@ -98,12 +117,14 @@ public class LocationManager implements LocationListener {
                 checkDistanceHandler.postDelayed(this, interval);
             }
         }, interval);
+
+
     }
 
     /**
      * Updates the active map with the map got from fragment
      *
-     * @param map
+     * @param map - current map will be replaced with this instance.
      */
     public void updateMap(GoogleMap map) {
         if (map == null) {
@@ -205,7 +226,6 @@ public class LocationManager implements LocationListener {
                         }
 
                         case Constants.TYPE_USER: {
-
                             String userID = markerType.getString(Constants.USER_ID);
                             UserMarkerInfo userMarkerinfo = mOtherUsersList.get(userID);
                             if (userMarkerinfo == null) {
@@ -227,15 +247,14 @@ public class LocationManager implements LocationListener {
 
                         default:
                             Log.d(Constants.TAG, "Unknown marker type: " + markerType.getInt(Constants.OBJECT_TYPE_IDENTIFIER));
+                            break;
                     }
 
                     if (intent != null) {
                         App.getLocalBroadcastManager().sendBroadcast(intent);
-                    }
-                    else {
+                    } else {
                         Log.e(Constants.TAG, "message intent is null");
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -277,7 +296,7 @@ public class LocationManager implements LocationListener {
      * Points camera to the specified location in the meanwhile stopping camera updates
      * to current user location.
      *
-     * @param latLng
+     * @param latLng - location to fix camera at.
      */
     public void fixCameraAtLocation(LatLng latLng) {
         isCameraFixed = true;
@@ -286,6 +305,11 @@ public class LocationManager implements LocationListener {
         }
     }
 
+    /**
+     * Returns current state of location updates.
+     *
+     * @return true if we are receiving location updates, false otherwise.
+     */
     public boolean isRequestingLocationUpdates() {
         return requestingLocationUpdates;
     }
@@ -705,7 +729,6 @@ public class LocationManager implements LocationListener {
                             break;
                         }
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -731,6 +754,12 @@ public class LocationManager implements LocationListener {
         return googleApiClientReceiver;
     }
 
+    /**
+     * Creates marker bitmap from the user profiles avatar.
+     *
+     * @param profileId - id of the FB account of the user.
+     * @return bitmap image to set as icon for {@link Marker}.
+     */
     private Bitmap getMarkerBitmapFromView(String profileId) {
         View customMarkerView = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.photo_marker, null);
         ImageView markerImageView = (ImageView) customMarkerView.findViewById(R.id.ivPhotoMarker);
@@ -750,33 +779,43 @@ public class LocationManager implements LocationListener {
         return returnedBitmap;
     }
 
+    /**
+     * Displays markers for all places stored in local db.
+     *
+     * @param squareLimited - determines if the amount of places displayed should be limited by
+     *                      square radius.
+     */
     public void displayPlaceMarkerFromDB(boolean squareLimited) {
         if (App.getUserManager().getCurrentUser() == null) {
             return;
         }
 
-        ArrayList<GamePlace> place_inner;
+        ArrayList<GamePlace> placesToShow;
 
         if (squareLimited) {
-            place_inner = App.getPlacesManager().getLimitedPlaces(Utils.latLngFromLocation(currentLocation),
+            placesToShow = App.getPlacesManager().getLimitedPlaces(Utils.latLngFromLocation(currentLocation),
                     mWestSouthPoint,
                     mNorthEastPoint,
                     App.getUserManager().getCurrentUser().getViewRadius());
         } else {
-            place_inner = App.getPlacesManager().getPlaces();
+            placesToShow = App.getPlacesManager().getPlaces();
         }
 
-        if (place_inner == null)
+        if (placesToShow == null) {
             return;
+        }
 
         mPlaceMarkersList.clear();
 
-        for (GamePlace pl : place_inner) {
-            rememberAndDisplayMarker(pl);
+        for (GamePlace place : placesToShow) {
+            rememberAndDisplayMarker(place);
         }
-
     }
 
+    /**
+     * Draws both action circles (where user can perform actions) and view circles (where user
+     * is able to observe other map items).
+     */
     private void displayUserActionAndViewCircles() {
 
         User currentUser = App.getUserManager().getCurrentUser();
@@ -972,5 +1011,63 @@ public class LocationManager implements LocationListener {
                 }
             }
         });
+    }
+
+    public interface OnGPSStateChangedListener {
+        void onGPSStateChangedListener(GPSSignal signal);
+    }
+
+    private static ArrayList<OnGPSStateChangedListener> gpsStateChangedListeners = new ArrayList<>();
+
+    /**
+     * Handles GPS connectivity and sets current signal level, either strong, weak or off (disconnected)
+     */
+    public static class LocationReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateWithGPSSignal(context);
+        }
+    }
+
+    /**
+     * Notifies all listeners with current GPS signal level.
+     */
+    public static void updateWithGPSSignal(Context context) {
+        android.location.LocationManager locationManager = (android.location.LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        GPSSignal signal;
+        if (locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)
+                && locationManager.isProviderEnabled(android.location.LocationManager.NETWORK_PROVIDER)) {
+            // "High accuracy. Uses GPS, Wi-Fi, and mobile networks to determine location";
+            signal = GPSSignal.Strong;
+        } else if (locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+            // "Device only. Uses GPS to determine location";
+            signal = GPSSignal.Weak;
+        } else {
+            // "Battery saving. Uses Wi-Fi and mobile networks to determine location";
+            signal = GPSSignal.Off;
+        }
+
+        for (OnGPSStateChangedListener listener : gpsStateChangedListeners) {
+            listener.onGPSStateChangedListener(signal);
+        }
+    }
+
+    /**
+     * Adds new observer for the gps connection change.
+     *
+     * @param listener - {@link OnGPSStateChangedListener} listener instance to add.
+     */
+    public void addOnGPSStateChangedListener(OnGPSStateChangedListener listener) {
+        gpsStateChangedListeners.add(listener);
+    }
+
+    /**
+     * Removes observer from the listeners list.
+     *
+     * @param listener - {@link OnGPSStateChangedListener} listener instance to remove.
+     */
+    public void removeOnGPSStateChangedListener(OnGPSStateChangedListener listener) {
+        gpsStateChangedListeners.remove(listener);
     }
 }

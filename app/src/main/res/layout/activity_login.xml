@@ -8,26 +8,36 @@
     android:background="@android:color/black"
     tools:context="com.severenity.view.activities.LoginActivity">
 
-    <RelativeLayout
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tvConnectionState"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:gravity="center"
+        android:padding="4dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_marginTop="24dp"
+            android:id="@+id/ivAppLogo"
+            android:src="@drawable/ic_launcher_big"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="256dp"
+            android:layout_height="256dp" />
+
+        <ImageView
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/ivAppLogo"
             android:id="@+id/ivAppTitle"
             android:src="@drawable/app_title"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-        <ImageView
-            android:layout_marginTop="8dp"
-            android:layout_below="@id/ivAppTitle"
-            android:src="@drawable/ic_launcher_big"
-            android:layout_centerHorizontal="true"
-            android:layout_width="256dp"
-            android:layout_height="256dp" />
     </RelativeLayout>
 
     <com.facebook.login.widget.LoginButton
