@@ -858,9 +858,10 @@ public class LocationManager implements LocationListener {
      * @return the position where the last update has happened
      */
     private Location updateSquarePointsForFilteringLocations() {
-
-        mWestSouthPoint = Utils.getPositionInMeter(Utils.latLngFromLocation(currentLocation), 100, Constants.WS_DIRECTION);
-        mNorthEastPoint = Utils.getPositionInMeter(Utils.latLngFromLocation(currentLocation), 100, Constants.EN_DIRECTION);
+        if (currentLocation != null) {
+            mWestSouthPoint = Utils.getPositionInMeter(Utils.latLngFromLocation(currentLocation), 100, Constants.WS_DIRECTION);
+            mNorthEastPoint = Utils.getPositionInMeter(Utils.latLngFromLocation(currentLocation), 100, Constants.EN_DIRECTION);
+        }
 
         return currentLocation;
     }
