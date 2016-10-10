@@ -94,6 +94,7 @@
 		7E0F9D101D964C440038D11D /* facebook_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_login.png; sourceTree = "<group>"; };
 		7E0F9D111D964C440038D11D /* facebook_logout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_logout.png; sourceTree = "<group>"; };
 		7E0F9D141D96524F0038D11D /* DeepSpace.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DeepSpace.png; sourceTree = "<group>"; };
+		7E3C7E691DABA21600775896 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../../../Library/Developer/Xcode/DerivedData/Severenity-cvyxtfubhkwxrcgxcwrtzgoagxlu/Build/Products/Debug-iphonesimulator/Alamofire/Alamofire.framework"; sourceTree = "<group>"; };
 		B3AAAE59B41ABFF884BC13C0 /* Pods_Severenity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Severenity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -243,6 +244,7 @@
 		80D382F60247FFE0365B0D4A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7E3C7E691DABA21600775896 /* Alamofire.framework */,
 				5223A0E81D8AEBED009A0EC7 /* FBSDKCoreKit.framework */,
 				5223A0E91D8AEBED009A0EC7 /* FBSDKLoginKit.framework */,
 				5223A0EA1D8AEBED009A0EC7 /* FBSDKShareKit.framework */,
@@ -345,6 +347,7 @@
 					};
 					52787BDB1D86AA35009D17F5 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = P8K6Z5UGBL;
 						LastSwiftMigration = 0800;
 					};
 				};
@@ -416,7 +419,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		B21832CE1A90FAFFD17B9784 /* [CP] Copy Pods Resources */ = {
@@ -673,6 +676,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = P8K6Z5UGBL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
@@ -691,6 +695,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = P8K6Z5UGBL;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",

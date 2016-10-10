@@ -71,23 +71,21 @@ class ListViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
         return dataForList.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var c: UITableViewCell
-        if let c = (tableView.dequeueReusableCell(withIdentifier: "CellInList", for: indexPath) as? ListCell)! {
+        var cell: UITableViewCell
+        if let c = tableView.dequeueReusableCell(withIdentifier: "CellInList", for: indexPath) as? ListCell {
             c.listCellTitle.text = dataForList[(indexPath as NSIndexPath).row]["name"] as? String
+            cell = c
         } else {
-            c = tableView.dequeueReusableCell(withIdentifier: "CellInList", for: indexPath)
+            cell = tableView.dequeueReusableCell(withIdentifier: "CellInList", for: indexPath)
         }
-        return c
+        return cell
     }
-
 }

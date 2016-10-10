@@ -17,22 +17,16 @@ class BusinessObject: Object {
 }
 
 class RealmPlace: BusinessObject {
-    
     dynamic var placeId = ""
     dynamic var name = ""
-    dynamic var locationType = "" // remove
-    dynamic var locationLatitude = 0.0 // rename to latitude or lat // cannot do it now because project is not building
-    dynamic var locationLongtitude = 0.0 // rename to longitude or lng
+    dynamic var lat = 0.0
+    dynamic var lng = 0.0
     dynamic var type = 0.0
     dynamic var createdDate = ""
     var owners = List<RealmPlaceOwner>()
     
-    required init() {
-        
-    }
-    
-    convenience init(place: NSArray) {
-        super.init()
+    convenience init(place: Dictionary<String, Any>) {
+        self.init()
         if let placeId = place["placeId"] as? String {
             self.placeId = placeId
         }
@@ -41,16 +35,17 @@ class RealmPlace: BusinessObject {
             self.name = name
         }
         
-        if let locationType = place["location"]??["type"] as? String {
-            self.locationType = locationType
+        guard let location = place["location"] as? NSDictionary else {
+            print("Cannot find location attribute in response.")
+            return
         }
         
-        if let locationLongtitude = place["location"]??["coordinates"]??[0] as? Double {
-            self.locationLongtitude = locationLongtitude
+        if let lat = (location["coordinates"] as? NSDictionary)?[0] as? Double {
+            self.lat = lat
         }
         
-        if let locationLatitude = place["location"]??["coordinates"]??[1] as? Double {
-            self.locationLatitude = locationLatitude
+        if let lng = (location["coordinates"] as? NSDictionary)?[1] as? Double {
+            self.lng = lng
         }
         
         if let type = place["type"] as? Double {
@@ -63,14 +58,10 @@ class RealmPlace: BusinessObject {
     }
     
     override func addToDB() {
-        struct Tokens { static var token: dispatch_once_t = 0 }
-        dispatch_once(&Tokens.token) {
-            try! self.realm.write {
-                self.realm.add(self)
-            }
+        try! realm?.write {
+            realm?.add(self)
         }
     }
-
 }
 
 class RealmPlaceOwner: Object {

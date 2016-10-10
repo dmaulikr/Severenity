@@ -50,37 +50,36 @@ class LocationsServerManager: NSObject {
      gets JSON response, parse it and set to Realm. When completed, returns to provideData method.*/
     func requestDataFromServer(_ completion: @escaping () -> Void) {
         
-        guard let serverURL = URL.init(string: serverURLString), let serverRequest = URLRequest.init(url: serverURL) else {
-            print("Cannot create url request")
+        guard let serverURL = URL.init(string: serverURLString) else {
+            print("Cannot create server url")
             return
         }
         
+        let serverRequest = URLRequest.init(url: serverURL)
+        
         Alamofire.request(serverRequest).responseJSON { response in
 
-            guard let places = response.result.value as? NSArray else {
+            guard let places = response.result.value as? [[String: Any]] else {
                 print("Response does not contain places.")
                 return
             }
             
             for place in places {
-                guard let owners = place["owners"] as? NSArray else {
+                guard let owners = place["owners"] as? [String] else {
                     print("Can't find owners in place item.")
                     return
                 }
                 
-                for owner in owners where owner.isEqualToString("931974540209503") { //should be Facebook token userID
+                for owner in owners where owner == "931974540209503" { //should be Facebook token userID
                     // Adding data to Realm DB
-                    let placeInRealm = RealmPlace(place)
+                    let placeInRealm = RealmPlace(place: place)
                     
                     for object in owners {
-                        if let owner = object as? String {
-                            let placeOwner = RealmPlaceOwner()
-                            placeOwner.owner = owner
-                            placeInRealm.owners.append(placeOwner)
-                        }
+                        let placeOwner = RealmPlaceOwner()
+                        placeOwner.owner = object
+                        placeInRealm.owners.append(placeOwner)
                     }
                     
-                    databaseManager.addToDB(placeInRealm)
                     placeInRealm.addToDB()
                 }
             }
@@ -111,9 +110,8 @@ class LocationsServerManager: NSObject {
                     "type" : place.type as AnyObject,
                     "createdDate" : place.createdDate as AnyObject,
                     "owners" : ownersArray as AnyObject,
-                    "locationType" : place.locationType as AnyObject,
-                    "locationLatitude" : place.locationLatitude as AnyObject,
-                    "locationLongtitude" : place.locationLongtitude as AnyObject
+                    "lat" : place.lat as AnyObject,
+                    "lng" : place.lng as AnyObject
                 ]
                 dataFromRealm.append(dictionaryWithPlace as AnyObject)
             }
