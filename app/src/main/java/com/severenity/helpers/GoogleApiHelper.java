@@ -3,16 +3,22 @@ package com.severenity.helpers;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.severenity.App;
 import com.severenity.utils.common.Constants;
 
 /**
+ * Helps with creation of the google api client and managing APIs + connection state.
+ *
  * Created by Novosad on 3/24/16.
  */
 public class GoogleApiHelper implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -54,6 +60,8 @@ public class GoogleApiHelper implements GoogleApiClient.ConnectionCallbacks, Goo
                 .addApi(LocationServices.API)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
+                .addApi(Fitness.SENSORS_API)
+                .addScope(new Scope(Scopes.FITNESS_LOCATION_READ))
                 .build();
     }
 
@@ -76,10 +84,15 @@ public class GoogleApiHelper implements GoogleApiClient.ConnectionCallbacks, Goo
         Log.d(TAG, "onConnectionSuspended: googleApiClient.connect()");
         mGoogleApiClient.connect();
 
+        if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST) {
+            Log.i(TAG, "Connection lost.  Cause: Network Lost.");
+        } else if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED) {
+            Log.i(TAG, "Connection lost.  Reason: Service Disconnected");
+        }
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed: connectionResult.toString() = " + connectionResult.toString());
     }
 }
