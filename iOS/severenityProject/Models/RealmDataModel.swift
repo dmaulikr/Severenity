@@ -58,8 +58,10 @@ class RealmPlace: BusinessObject {
     }
     
     override func addToDB() {
-        try! realm?.write {
-            realm?.add(self)
+        DispatchQueue(label: "background").async {
+            try! self.realm?.write {
+                self.realm?.add(self)
+            }
         }
     }
 }

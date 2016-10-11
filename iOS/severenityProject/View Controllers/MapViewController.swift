@@ -29,6 +29,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
         mapView.isMyLocationEnabled = true
         self.view = mapView
+        
         let marker = GMSMarker()
         marker.position = recievedLocationCoordinates
         if let markerTitle = recievedLocation["name"] as? String {

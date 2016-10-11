@@ -26,16 +26,16 @@ class LocationsServerManager: NSObject {
         
         if checkIfRealmIsEmpty() {
             print("Realm is empty, asking server for data")
-            requestDataFromServer({ 
-                self.getDataFromRealm({ (data) in
+            requestDataFromServer {
+                self.getDataFromRealm { data in
                     completion(data)
-                })
-            })
+                }
+            }
         } else {
             print("Realm is not empty, loading data")
-            getDataFromRealm({ (data) in
+            getDataFromRealm { data in
                 completion(data)
-            })
+            }
         }
         
     }
@@ -123,9 +123,9 @@ class LocationsServerManager: NSObject {
     
     // Try to drop data by type 'Location' etc., not all data
     fileprivate func dropDataInRealm() {
-       try! self.realm.write {
-          self.realm.deleteAll()
-       }
+        try! self.realm.write {
+            self.realm.deleteAll()
+        }
     }
 
     
