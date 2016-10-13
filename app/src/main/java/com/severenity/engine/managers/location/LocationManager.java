@@ -284,7 +284,9 @@ public class LocationManager implements LocationListener {
      * Resets current camera position to current location
      */
     public void resetCameraLocation() {
-        fixCameraAtLocation(Utils.latLngFromLocation(currentLocation));
+        if (currentLocation != null) {
+            fixCameraAtLocation(Utils.latLngFromLocation(currentLocation));
+        }
         isCameraFixed = false;
         mIsUpdatingLocationProcessStopped = false;
         if (mTempUsersPlaceMarker != null) {

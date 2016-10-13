@@ -7,9 +7,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
@@ -60,8 +58,8 @@ public class GoogleApiHelper implements GoogleApiClient.ConnectionCallbacks, Goo
                 .addApi(LocationServices.API)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
-                .addApi(Fitness.SENSORS_API)
-                .addScope(new Scope(Scopes.FITNESS_LOCATION_READ))
+//                .addApi(Fitness.SENSORS_API)
+//                .addScope(Fitness.SCOPE_LOCATION_READ)
                 .build();
     }
 
