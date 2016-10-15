@@ -7,16 +7,21 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.facebook.AccessToken;
+import com.facebook.GraphResponse;
 import com.severenity.App;
 import com.severenity.engine.managers.messaging.GCMManager;
+import com.severenity.engine.managers.messaging.RegistrationIntentService;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.User;
+import com.severenity.utils.FacebookUtils;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.activities.MainActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,22 +30,25 @@ import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_CREATED
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_CREDITS;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_DISTANCE;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_EMAIL;
+import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_ENERGY;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_EXPERIENCE;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_ID;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_IMMUNITY;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_IMPLANT_HP;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_ENERGY;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_LEVEL;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_MAX_IMMUNITY;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_MAX_ENERGY;
+import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_MAX_IMMUNITY;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_MAX_IMPLANT_HP;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_NAME;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_NULLABLE;
+import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_VIEW_RADIUS;
 import static com.severenity.entity.contracts.UserContract.DBUser.TABLE_USERS;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
 
 /**
+ * Responsible for handling operations related to all users and current user.
+ * Handles local database and appropriate APIs to the server.
+ *
  * Created by Novosad on 2/17/16.
  */
 public class UserManager extends DataManager {
@@ -86,6 +94,12 @@ public class UserManager extends DataManager {
         }
     }
 
+    /**
+     * Returns user from local database based on id.
+     *
+     * @param id - id of the user to find.
+     * @return - {@link User} user object if found, null otherwise.
+     */
     public User getUserById(String id) {
         if (id == null || id.isEmpty()) {
             Log.e(Constants.TAG, "UserManager: user id specified in query must not be empty.");
@@ -135,6 +149,12 @@ public class UserManager extends DataManager {
         }
     }
 
+    /**
+     * Returns user from local database based on {@link User} object.
+     *
+     * @param user - user to find.
+     * @return - {@link User} user object if found, null otherwise.
+     */
     public User getUser(User user) {
         if (checkIfNull(user)) {
             return getUserById(user.getId());
@@ -143,32 +163,11 @@ public class UserManager extends DataManager {
         }
     }
 
-    public void updateCurrentUserLocally() {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_DISTANCE, currentUser.getDistance());
-        values.put(COLUMN_EXPERIENCE, currentUser.getExperience());
-        values.put(COLUMN_LEVEL, currentUser.getLevel());
-        values.put(COLUMN_ENERGY, currentUser.getEnergy());
-        values.put(COLUMN_MAX_ENERGY, currentUser.getMaxEnergy());
-        values.put(COLUMN_IMMUNITY, currentUser.getImmunity());
-        values.put(COLUMN_MAX_IMMUNITY, currentUser.getMaxImmunity());
-        values.put(COLUMN_IMPLANT_HP, currentUser.getImplantHP());
-        values.put(COLUMN_MAX_IMPLANT_HP, currentUser.getMaxImplantHP());
-        values.put(COLUMN_CREDITS, currentUser.getCredits());
-        values.put(COLUMN_TEAM, currentUser.getTeam());
-
-        db.update(TABLE_USERS, values, "id = ?", new String[]{currentUser.getId()});
-        db.close();
-
-        retrieveCurrentUser();
-    }
-
     /**
      * Updates current user.
      *
      * @param columns - specifies the array of columns to be updated
-     * @param values - specifies the value of the columns
+     * @param values  - specifies the value of the columns
      */
     public void updateCurrentUser(String[] columns, String[] values) {
         if (columns.length != values.length) {
@@ -179,7 +178,7 @@ public class UserManager extends DataManager {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues ctValues = new ContentValues();
         int i = 0;
-        for(String column: columns) {
+        for (String column : columns) {
             ctValues.put(column, values[i]);
             i++;
         }
@@ -190,6 +189,11 @@ public class UserManager extends DataManager {
         retrieveCurrentUser();
     }
 
+    /**
+     * Updates current user locally based on data from user specified.
+     *
+     * @param user - {@link User} object to update current user data with.
+     */
     public void updateCurrentUserLocallyWithUser(User user) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -214,24 +218,26 @@ public class UserManager extends DataManager {
             Utils.sendNotification(Constants.NOTIFICATION_MSG_LEVEL_UP + user.getLevel(), context, levelUpIntent, 0);
         }
 
-        db.update(TABLE_USERS, values, "id = ?", new String[]{ user.getId() == null ? currentUser.getId() : user.getId() });
+        db.update(TABLE_USERS, values, "id = ?", new String[]{user.getId() == null ? currentUser.getId() : user.getId()});
         db.close();
 
         retrieveCurrentUser();
     }
 
-    private void retrieveCurrentUser() {
+    private User retrieveCurrentUser() {
+        User user;
         if (AccessToken.getCurrentAccessToken() == null) {
             Log.i(Constants.TAG, "No access token found, new user is created.");
-            currentUser = new User();
+            user = new User();
         } else {
-            currentUser = getUserById(AccessToken.getCurrentAccessToken().getUserId());
+            user = getUserById(AccessToken.getCurrentAccessToken().getUserId());
         }
+        return user;
     }
 
     public User getCurrentUser() {
         if (currentUser == null) {
-            retrieveCurrentUser();
+            currentUser = retrieveCurrentUser();
         }
         return currentUser;
     }
@@ -268,7 +274,7 @@ public class UserManager extends DataManager {
     /**
      * Sends a request to create a speicified {@link User} on the server.
      *
-     * @param user - user to create on the server.
+     * @param user     - user to create on the server.
      * @param callback - callback to execute with response.
      */
     public void createUser(User user, RequestCallback callback) {
@@ -300,7 +306,7 @@ public class UserManager extends DataManager {
      * Sends distance passed update to the server in order to update experience,
      * distance and level.
      *
-     * @param userId - id of the user which has to be updated.
+     * @param userId       - id of the user which has to be updated.
      * @param metersPassed - last meters passed update.
      */
     public void updateCurrentUserProgress(String userId, int metersPassed) {
@@ -313,5 +319,153 @@ public class UserManager extends DataManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void authorizeCurrentUser() {
+        App.getUserManager().authorizeUser(AccessToken.getCurrentAccessToken().getUserId(), new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
+                Intent intent = new Intent(Constants.INTENT_FILTER_AUTHENTICATION);
+                try {
+                    String result = response.getString("result");
+                    intent.putExtra("result", result);
+
+                    switch (result) {
+                        case "success":
+                            final JSONObject userObject = response.getJSONObject("user");
+                            JSONArray devices = userObject.getJSONArray("devices");
+                            String userId = userObject.getString("userId");
+
+                            // If device was not registered to the user - start registration service
+                            if (devices.length() == 0) {
+                                startDeviceRegistrationService(userId);
+                            } else {
+                                if (!checkDeviceRegistrationToken(devices.getJSONObject(0).getString("registrationId"))) {
+                                    startDeviceRegistrationService(userId);
+                                    return;
+                                }
+
+                                App.getUserManager().createCurrentUserAndNotify(userObject, intent);
+                            }
+                            break;
+                        case "continue":
+                            if (response.getInt("reason") == 1) {
+                                createUser();
+                            } else {
+                                Log.e(Constants.TAG, "Unknown reason value.");
+                            }
+                            App.getLocalBroadcastManager().sendBroadcast(intent);
+                            break;
+                        case "error":
+                            Log.e(Constants.TAG, "Error handling is not implemented yet.");
+                            App.getLocalBroadcastManager().sendBroadcast(intent);
+                            break;
+                        default:
+                            Log.e(Constants.TAG, "Unknown result value.");
+                            break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    intent.putExtra("result", "error");
+                    App.getLocalBroadcastManager().sendBroadcast(intent);
+                }
+            }
+
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+                Log.e(Constants.TAG, response != null ? response.toString() : "Response is null");
+            }
+        });
+    }
+
+    /**
+     * Triggers user creation on the server and stores
+     * newly created user in local db.
+     */
+    private void createUser() {
+        FacebookUtils.getFacebookUserById(AccessToken.getCurrentAccessToken().getUserId(), "id,name,email", new FacebookUtils.Callback() {
+            @Override
+            public void onResponse(GraphResponse response) {
+                final User user = new User();
+                user.setId(AccessToken.getCurrentAccessToken().getUserId());
+                try {
+                    JSONObject data = response.getJSONObject();
+                    if (data.has("name") && data.has("id")) {
+                        if (data.has("email")) {
+                            user.setEmail(data.getString("email"));
+                        }
+
+                        user.setName(data.getString("name"));
+
+                        App.getUserManager().createUser(user, new RequestCallback() {
+                            @Override
+                            public void onResponseCallback(JSONObject response) {
+                                if (response != null) {
+                                    Log.d(Constants.TAG, response.toString());
+
+                                    User newUser = Utils.createUserFromJSON(response);
+                                    if (newUser != null) {
+                                        App.getUserManager().setCurrentUser(newUser);
+                                        authorizeCurrentUser();
+                                    }
+                                } else {
+                                    Log.e(Constants.TAG, "User create has null response.");
+                                }
+                            }
+
+                            @Override
+                            public void onErrorCallback(NetworkResponse response) {
+                                if (response != null) {
+                                    Log.e(Constants.TAG, response.toString());
+                                } else {
+                                    Log.e(Constants.TAG, "User create error has null response.");
+                                }
+                            }
+                        });
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Starts {@link RegistrationIntentService} to register current device.
+     *
+     * @param userId - id of the user to bind device to.
+     */
+    private void startDeviceRegistrationService(String userId) {
+        Intent intent = new Intent(context, RegistrationIntentService.class);
+        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_ID, Utils.getDeviceId(context));
+        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_NAME, Utils.getDeviceName());
+        intent.putExtra(Constants.INTENT_EXTRA_USER_ID, userId);
+        intent.putExtra(Constants.INTENT_EXTRA_REGISTRATION_ID, App.getCurrentFCMToken());
+        context.startService(intent);
+    }
+
+    /**
+     * Checks current device token against one used on the server.
+     *
+     * @param token - token of the current device assigned to user
+     * @return true if token is the same as current, false otherwise.
+     */
+    private boolean checkDeviceRegistrationToken(String token) {
+        return token.equals(App.getCurrentFCMToken());
+    }
+
+    /**
+     * Creates current user in local db or updates it depending on response.
+     *
+     * @param userObject - {@link JSONObject} object for the user to create.
+     */
+    public void createCurrentUserAndNotify(JSONObject userObject, Intent intent) {
+        User user = Utils.createUserFromJSON(userObject);
+        if (App.getUserManager().getUser(user) != null) {
+            updateCurrentUserLocallyWithUser(user);
+        } else {
+            setCurrentUser(App.getUserManager().addUser(user));
+        }
+        App.getLocalBroadcastManager().sendBroadcast(intent);
     }
 }

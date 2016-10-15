@@ -61,15 +61,12 @@ public class RegistrationIntentService extends IntentService {
             @Override
             public void onResponseCallback(JSONObject response) {
                 try {
-                    Intent intent = new Intent(GCMManager.REGISTRATION_PROCESS);
+                    Intent intent = new Intent(Constants.INTENT_FILTER_AUTHENTICATION);
                     intent.putExtra("result", response.getString("result"));
 
-                    // TODO: Oleg add user data send in intent
                     JSONObject userObject = response.getJSONObject("data");
-                    User user = Utils.createUserFromJSON(userObject);
-                    App.getUserManager().setCurrentUser(user);
 
-                    App.getLocalBroadcastManager().sendBroadcast(intent);
+                    App.getUserManager().createCurrentUserAndNotify(userObject, intent);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -31,6 +32,11 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.fitness.Fitness;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.MapsInitializer;
 import com.severenity.App;
 import com.severenity.R;
@@ -39,11 +45,7 @@ import com.severenity.engine.managers.location.LocationManager;
 import com.severenity.engine.managers.messaging.FCMListener;
 import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.engine.network.NetworkManager;
-import com.severenity.entity.GamePlace;
 import com.severenity.entity.User;
-import com.severenity.entity.quest.CaptureQuest;
-import com.severenity.entity.quest.CollectQuest;
-import com.severenity.entity.quest.DistanceQuest;
 import com.severenity.entity.quest.Quest;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
@@ -64,7 +66,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.OnRelocateMapListener {
+public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.OnRelocateMapListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+    private GoogleApiClient googleApiClient;
+
     private SplitToolbar toolbarBottom;
     private Toolbar toolbarTop;
 
@@ -121,8 +125,10 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         mRecoveryManager = new EnergyRecoveryManager(getApplicationContext());
         mRecoveryManager.start();
 
-        checkForFirstLaunch();
         toolbarBottom.findViewById(R.id.menu_map).performClick();
+
+        buildGoogleApiClient();
+        App.getGoogleApiHelper().setGoogleApiClient(googleApiClient);
     }
 
     private void checkForFirstLaunch() {
@@ -132,25 +138,67 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             ed.putBoolean("isFirstLaunch", false);
             ed.apply();
             mPreferencesManager.resetAll();
-             AlertDialog.Builder builder = new  android.support.v7.app.AlertDialog.Builder(this);
-                    builder.setTitle("Tutorial")
-                    .setMessage("Wanna watch tutorial?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            showTutorial();
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            // nothing
-                        }
-                    });
-            AlertDialog ad = builder.create();
-            ad.show();
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Tutorial")
+                .setMessage("Wanna watch tutorial?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        showTutorial();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // nothing
+                    }
+                })
+                .create();
+            dialog.show();
         }
+    }
 
+    private void buildGoogleApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addApi(LocationServices.API)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .addApi(Fitness.SENSORS_API)
+                .addApi(Fitness.RECORDING_API)
+                .addApi(Fitness.HISTORY_API)
+                .addApi(Fitness.SESSIONS_API)
+                .addApi(Fitness.BLE_API)
+                .addScope(Fitness.SCOPE_ACTIVITY_READ_WRITE)
+                .addScope(Fitness.SCOPE_LOCATION_READ_WRITE)
+                .addScope(Fitness.SCOPE_BODY_READ_WRITE)
+                .enableAutoManage(this, 0, this)
+                .build();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Intent intent = new Intent(Constants.INTENT_FILTER_GAC);
+        intent.putExtra(Constants.EXTRA_GAC_CONNECTED, App.getGoogleApiClient().isConnected());
+        App.getLocalBroadcastManager().sendBroadcast(intent);
+
+        checkForFirstLaunch();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST) {
+            Log.i(Constants.TAG, "Connection lost.  Cause: Network Lost.");
+        } else if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED) {
+            Log.i(Constants.TAG, "Connection lost.  Reason: Service Disconnected");
+        } else {
+            Log.d(Constants.TAG, "onConnectionSuspended: reason " + i);
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(Constants.TAG, "onConnectionFailed: connectionResult.toString() = " + connectionResult.toString());
     }
 
     /**
@@ -170,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         spotLightViewArr[spotLightCounter].show();
     }
 
-    private SpotlightView.Builder tutorialItem(View view, String usageId, String tvText, String headingTvText){
+    private SpotlightView.Builder tutorialItem(View view, String usageId, String tvText, String headingTvText) {
         return new SpotlightView.Builder(this)
                 .introAnimationDuration(200)
                 .enableRevalAnimation(true)
@@ -283,40 +331,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             String level = intent.getStringExtra("level");
             Utils.showAlertDialog(Constants.NOTIFICATION_MSG_LEVEL_UP + level, this);
         }
-    }
-
-    private Quest getQuestFromIntent(Intent intent) {
-        Quest quest = new Quest();
-        Quest.QuestType type = Quest.QuestType.values()[intent.getIntExtra("type", 0)];
-        quest.setId(intent.getLongExtra("id", 0));
-        quest.setType(type);
-        quest.setTitle(intent.getStringExtra("title"));
-        quest.setStatus(Quest.QuestStatus.values()[intent.getIntExtra("status", 0)]);
-        quest.setExpirationTime(intent.getStringExtra("expirationTime"));
-        quest.setCredits(intent.getLongExtra("credits", 0));
-        quest.setExperience(intent.getLongExtra("experience", 0));
-
-        if (type == Quest.QuestType.Distance) {
-            quest = new DistanceQuest(quest, intent.getIntExtra("distance", 1));
-        } else if (type == Quest.QuestType.Capture) {
-            quest = new CaptureQuest(quest, GamePlace.PlaceType.values()[intent.getIntExtra("placeType", 0)], intent.getIntExtra("placeTypeValue", 0));
-        } else if (type == Quest.QuestType.Collect) {
-            String characteristic = intent.getStringExtra("characteristic");
-            Constants.Characteristic c = Constants.Characteristic.None;
-            if (characteristic.equals(Constants.Characteristic.Level.toString())) {
-                c = Constants.Characteristic.Level;
-            } else if (characteristic.equals(Constants.Characteristic.Experience.toString())) {
-                c = Constants.Characteristic.Experience;
-            } else if (characteristic.equals(Constants.Characteristic.Energy.toString())) {
-                c = Constants.Characteristic.Energy;
-            } else if (characteristic.equals(Constants.Characteristic.Immunity.toString())) {
-                c = Constants.Characteristic.Immunity;
-            }
-
-            quest = new CollectQuest(quest, c, intent.getIntExtra("characteristicAmount", 0));
-        }
-
-        return quest;
     }
 
     private void initFragments() {
@@ -564,7 +578,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
         activityActive = false;
 
-        App.getUserManager().updateCurrentUserLocally();
+        App.getUserManager().updateCurrentUserLocallyWithUser(App.getUserManager().getCurrentUser());
         App.getLocationManager().stopLocationUpdates();
         App.getGoogleApiHelper().disconnect();
 
@@ -622,7 +636,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
      * @param intent - specific new quest intent with quest in extras.
      */
     private void handleQuestIntent(Intent intent) {
-        final Quest q = getQuestFromIntent(intent);
+        final Quest q = App.getQuestManager().getQuestFromIntent(intent);
         final NotificationManager notificationManager =
                 ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE));
         Utils.showPromptDialog(Constants.NOTIFICATION_MSG_NEW_QUEST, MainActivity.this, new Utils.PromptCallback() {
@@ -735,7 +749,6 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                     exit = false;
                 }
             }, 3 * 1000);
-
         }
     }
 }

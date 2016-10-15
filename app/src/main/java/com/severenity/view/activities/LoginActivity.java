@@ -15,13 +15,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.android.volley.NetworkResponse;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
@@ -32,18 +30,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.severenity.App;
 import com.severenity.R;
-import com.severenity.engine.managers.messaging.GCMManager;
-import com.severenity.engine.managers.messaging.RegistrationIntentService;
 import com.severenity.engine.network.NetworkManager;
-import com.severenity.engine.network.RequestCallback;
-import com.severenity.entity.User;
-import com.severenity.utils.FacebookUtils;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -137,8 +126,8 @@ public class LoginActivity extends AppCompatActivity {
         App.getNetworkManager().addOnConnectionChangedListener(onConnectionChangedListener);
 
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(GCMManager.REGISTRATION_PROCESS);
-        App.getLocalBroadcastManager().registerReceiver(gcmReceiver, intentFilter);
+        intentFilter.addAction(Constants.INTENT_FILTER_AUTHENTICATION);
+        App.getLocalBroadcastManager().registerReceiver(authenticationReceiver, intentFilter);
     }
 
     private boolean playServicesAvailable() {
@@ -156,6 +145,9 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Requests permission to proceed with application (GPS, Internet etc.)
+     */
     private void requestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(
@@ -183,8 +175,8 @@ public class LoginActivity extends AppCompatActivity {
         int fineLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
 
         result =
-            phoneState == PackageManager.PERMISSION_GRANTED &&
-            fineLocation == PackageManager.PERMISSION_GRANTED;
+                phoneState == PackageManager.PERMISSION_GRANTED &&
+                fineLocation == PackageManager.PERMISSION_GRANTED;
 
         return result;
     }
@@ -209,158 +201,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        // Unregisters BroadcastReceiver when app is destroyed.
-        App.getLocalBroadcastManager().unregisterReceiver(gcmReceiver);
+        App.getLocalBroadcastManager().unregisterReceiver(authenticationReceiver);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        App.getLocalBroadcastManager().unregisterReceiver(gcmReceiver);
-    }
-
-    private void authorizeCurrentUser() {
-        if (checkPermission() && AccessToken.getCurrentAccessToken() != null && !isAuthorizing) {
-            isAuthorizing = true;
-            showProgress(true);
-            App.getUserManager().authorizeUser(AccessToken.getCurrentAccessToken().getUserId(), new RequestCallback() {
-                @Override
-                public void onResponseCallback(JSONObject response) {
-                    try {
-                        String result = response.getString("result");
-
-                        switch (result) {
-                            case "success":
-                                JSONObject userObject = response.getJSONObject("user");
-                                JSONArray devices = userObject.getJSONArray("devices");
-                                String userId = userObject.getString("userId");
-
-                                // If device was not registered to the user - start registration service
-                                if (devices.length() == 0) {
-                                    startDeviceRegistrationService(userId);
-                                } else {
-                                    if (!checkDeviceRegistrationToken(devices.getJSONObject(0).getString("registrationId"))) {
-                                        startDeviceRegistrationService(userId);
-                                        return;
-                                    }
-
-                                    isAuthorizing = false;
-
-                                    User userFromJson = Utils.createUserFromJSON(userObject);
-                                    if (App.getUserManager().getUser(userFromJson) != null) {
-                                        App.getUserManager().updateCurrentUserLocallyWithUser(userFromJson);
-                                    } else {
-                                        App.getUserManager().setCurrentUser(App.getUserManager().addUser(userFromJson));
-                                    }
-
-                                    App.getWebSocketManager().sendAuthenticatedToServer();
-                                    App.getNetworkManager().removeOnConnectionChangedListener(onConnectionChangedListener);
-                                    startActivity(mMainActivityIntent);
-                                }
-                                break;
-                            case "continue":
-                                isAuthorizing = false;
-                                if (response.getInt("reason") == 1) {
-                                    createUser();
-                                } else {
-                                    Log.e(Constants.TAG, "Unknown reason value.");
-                                }
-                                break;
-                            case "error":
-                                Log.e(Constants.TAG, "Error handling is not implemented yet.");
-                                break;
-                            default:
-                                Log.e(Constants.TAG, "Unknown result value.");
-                                break;
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onErrorCallback(NetworkResponse response) {
-                    Log.e(Constants.TAG, response != null ? response.toString() : "Response is null");
-                }
-            });
-        }
-    }
-
-    /**
-     * Triggers user creation on the server and stores
-     * newly created user in local db.
-     */
-    private void createUser() {
-        FacebookUtils.getFacebookUserById(AccessToken.getCurrentAccessToken().getUserId(), "id,name,email", new FacebookUtils.Callback() {
-            @Override
-            public void onResponse(GraphResponse response) {
-                final User user = new User();
-                user.setId(AccessToken.getCurrentAccessToken().getUserId());
-                try {
-                    JSONObject data = response.getJSONObject();
-                    if (data.has("name") && data.has("id")) {
-                        if (data.has("email")) {
-                            user.setEmail(data.getString("email"));
-                        }
-
-                        user.setName(data.getString("name"));
-
-                        App.getUserManager().createUser(user, new RequestCallback() {
-                            @Override
-                            public void onResponseCallback(JSONObject response) {
-                                if (response != null) {
-                                    Log.d(Constants.TAG, response.toString());
-
-                                    User newUser = Utils.createUserFromJSON(response);
-                                    if (newUser != null) {
-                                        App.getUserManager().setCurrentUser(newUser);
-                                        authorizeCurrentUser();
-                                    }
-                                } else {
-                                    Log.e(Constants.TAG, "User create has null response.");
-                                }
-                            }
-
-                            @Override
-                            public void onErrorCallback(NetworkResponse response) {
-                                if (response != null) {
-                                    Log.e(Constants.TAG, response.toString());
-                                } else {
-                                    Log.e(Constants.TAG, "User create error has null response.");
-                                }
-                            }
-                        });
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    /**
-     * Starts {@link RegistrationIntentService} to register current device.
-     *
-     * @param userId - id of the user to bind device to.
-     */
-    private void startDeviceRegistrationService(String userId) {
-        Intent intent = new Intent(LoginActivity.this, RegistrationIntentService.class);
-        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_ID, Utils.getDeviceId(this));
-        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_NAME, Utils.getDeviceName());
-        intent.putExtra(Constants.INTENT_EXTRA_USER_ID, userId);
-        intent.putExtra(Constants.INTENT_EXTRA_REGISTRATION_ID, App.getCurrentFCMToken());
-        startService(intent);
-    }
-
-    /**
-     * Checks current device token against one used on the server.
-     *
-     * @param token - token of the current device assigned to user
-     * @return true if token is the same as current, false otherwise.
-     */
-    private boolean checkDeviceRegistrationToken(String token) {
-        return token.equals(App.getCurrentFCMToken());
+        App.getLocalBroadcastManager().unregisterReceiver(authenticationReceiver);
     }
 
     /**
@@ -376,6 +223,14 @@ public class LoginActivity extends AppCompatActivity {
             tvConnectionState.setText(getResources().getString(R.string.disconnected));
             tvConnectionState.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
             Utils.expandOrCollapse(tvConnectionState, true, false);
+        }
+    }
+
+    private void authorizeCurrentUser() {
+        if (checkPermission() && AccessToken.getCurrentAccessToken() != null && !isAuthorizing) {
+            isAuthorizing = true;
+            showProgress(true);
+            App.getUserManager().authorizeCurrentUser();
         }
     }
 
@@ -426,18 +281,22 @@ public class LoginActivity extends AppCompatActivity {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private BroadcastReceiver gcmReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver authenticationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(GCMManager.REGISTRATION_PROCESS)) {
+            if (intent.getAction().equals(Constants.INTENT_FILTER_AUTHENTICATION)) {
                 showProgress(false);
                 isAuthorizing = false;
 
                 String result = intent.getStringExtra("result");
-                if (result.equals("success")) {
+                if (result.equalsIgnoreCase("success")) {
                     App.getWebSocketManager().sendAuthenticatedToServer();
                     App.getNetworkManager().removeOnConnectionChangedListener(onConnectionChangedListener);
                     startActivity(mMainActivityIntent);
+                } else if (result.equalsIgnoreCase("continue")) {
+                    // Add continue authentication feedback
+                } else if (result.equalsIgnoreCase("error")) {
+                    // Add error authentication feedback
                 } else {
                     Log.wtf(Constants.TAG, "Critical error on the server.");
                 }

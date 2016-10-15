@@ -98,8 +98,6 @@ public class MessagesAdapter extends BaseAdapter {
 
         ImageView ivProfileImage = (ImageView) messageView.findViewById(R.id.messageAvatar);
         Picasso.with(messageView.getContext()).load("https://graph.facebook.com/" + message.getUserID() + "/picture?type=normal").into(ivProfileImage);
-
-
         return messageView;
     }
 

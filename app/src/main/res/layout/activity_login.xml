@@ -6,6 +6,7 @@
     android:paddingTop="32dp"
     android:paddingBottom="32dp"
     android:background="@android:color/black"
+    android:id="@+id/loginActivityView"
     tools:context="com.severenity.view.activities.LoginActivity">
 
     <TextView

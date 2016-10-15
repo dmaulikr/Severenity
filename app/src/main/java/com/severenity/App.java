@@ -8,6 +8,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.severenity.engine.managers.data.MessageManager;
 import com.severenity.engine.managers.data.PlacesManager;
 import com.severenity.engine.managers.data.QuestManager;
@@ -58,7 +59,7 @@ public class App extends MultiDexApplication {
 
         mInstance = this;
         Context mContext = getApplicationContext();
-        googleApiHelper = new GoogleApiHelper(mContext);
+        googleApiHelper = new GoogleApiHelper();
         locationManager = new LocationManager(mContext);
         localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
         userManager = new UserManager(mContext);
@@ -66,7 +67,7 @@ public class App extends MultiDexApplication {
         webSocketManager = new WebSocketManager();
         restManager = new RestManager(mContext);
         questManager = new QuestManager(mContext);
-        gcmManager = new GCMManager(mContext);
+        gcmManager = new GCMManager();
         msgManager = new MessageManager(mContext);
         mNetworkManager = new NetworkManager(mContext);
 
@@ -99,6 +100,10 @@ public class App extends MultiDexApplication {
 
     public static synchronized App getInstance() {
         return mInstance;
+    }
+
+    public static GoogleApiClient getGoogleApiClient() {
+        return getInstance().googleApiHelper.getGoogleApiClient();
     }
 
     public static GoogleApiHelper getGoogleApiHelper() {

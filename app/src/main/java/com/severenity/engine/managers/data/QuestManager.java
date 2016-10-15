@@ -414,9 +414,7 @@ public class QuestManager extends DataManager {
      * Renew quests list with quests received from the server.
      */
     public void refreshWithQuestsFromServer() {
-        if (App.getUserManager().getCurrentUser() != null) {
-            getQuestsFromServer(App.getUserManager().getCurrentUser().getId());
-        }
+        getQuestsFromServer(App.getUserManager().getCurrentUser().getId());
     }
 
     /**
@@ -573,5 +571,45 @@ public class QuestManager extends DataManager {
                 }
             }
         });
+    }
+
+    /**
+     * Finds quest object in specific intent received from notification.
+     *
+     * @param intent - intent containing quest.
+     * @return - {@link Quest} object.
+     */
+    public Quest getQuestFromIntent(Intent intent) {
+        Quest quest = new Quest();
+        Quest.QuestType type = Quest.QuestType.values()[intent.getIntExtra("type", 0)];
+        quest.setId(intent.getLongExtra("id", 0));
+        quest.setType(type);
+        quest.setTitle(intent.getStringExtra("title"));
+        quest.setStatus(Quest.QuestStatus.values()[intent.getIntExtra("status", 0)]);
+        quest.setExpirationTime(intent.getStringExtra("expirationTime"));
+        quest.setCredits(intent.getLongExtra("credits", 0));
+        quest.setExperience(intent.getLongExtra("experience", 0));
+
+        if (type == Quest.QuestType.Distance) {
+            quest = new DistanceQuest(quest, intent.getIntExtra("distance", 1));
+        } else if (type == Quest.QuestType.Capture) {
+            quest = new CaptureQuest(quest, GamePlace.PlaceType.values()[intent.getIntExtra("placeType", 0)], intent.getIntExtra("placeTypeValue", 0));
+        } else if (type == Quest.QuestType.Collect) {
+            String characteristic = intent.getStringExtra("characteristic");
+            Constants.Characteristic c = Constants.Characteristic.None;
+            if (characteristic.equals(Constants.Characteristic.Level.toString())) {
+                c = Constants.Characteristic.Level;
+            } else if (characteristic.equals(Constants.Characteristic.Experience.toString())) {
+                c = Constants.Characteristic.Experience;
+            } else if (characteristic.equals(Constants.Characteristic.Energy.toString())) {
+                c = Constants.Characteristic.Energy;
+            } else if (characteristic.equals(Constants.Characteristic.Immunity.toString())) {
+                c = Constants.Characteristic.Immunity;
+            }
+
+            quest = new CollectQuest(quest, c, intent.getIntExtra("characteristicAmount", 0));
+        }
+
+        return quest;
     }
 }

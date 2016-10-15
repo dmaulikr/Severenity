@@ -22,7 +22,6 @@ import android.widget.ImageView;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -83,7 +82,6 @@ public class LocationManager implements LocationListener {
 
     private Location previousLocation, currentLocation, mLocationOfLastSquareUpdate, mLocationOfLastPlacesUpdateFromGoogle;
     private Context context;
-    private GoogleApiClient googleApiClient;
     private float currentZoom = (Constants.MAX_ZOOM_LEVEL + Constants.MIN_ZOOM_LEVEL) / 2 + 1.0f;
 
     private Marker currentUserMarker, mTempUsersPlaceMarker;
@@ -107,7 +105,6 @@ public class LocationManager implements LocationListener {
 
     public LocationManager(Context context) {
         this.context = context;
-        this.googleApiClient = App.getGoogleApiHelper().getGoogleApiClient();
         createLocationRequest();
 
         checkDistanceHandler.postDelayed(new Runnable() {
@@ -117,8 +114,6 @@ public class LocationManager implements LocationListener {
                 checkDistanceHandler.postDelayed(this, interval);
             }
         }, interval);
-
-
     }
 
     /**
@@ -142,7 +137,7 @@ public class LocationManager implements LocationListener {
             Log.e(Constants.TAG, "Can't find style.", e);
         }
 
-        googleMap.setMyLocationEnabled(true);
+        map.setMyLocationEnabled(false);
         googleMap.getUiSettings().setMyLocationButtonEnabled(false);
         googleMap.getUiSettings().setScrollGesturesEnabled(false);
         googleMap.getUiSettings().setTiltGesturesEnabled(false);
@@ -213,7 +208,7 @@ public class LocationManager implements LocationListener {
                                 return false;
                             }
 
-                            if (App.getUserManager().getCurrentUser() != null && Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
+                            if (Utils.distanceBetweenLocations(Utils.latLngFromLocation(currentLocation), place.getPlacePos()) <=
                                     App.getUserManager().getCurrentUser().getActionRadius()) {
                                 intent = new Intent(Constants.INTENT_FILTER_SHOW_USER_ACTIONS);
                                 intent.putExtra(Constants.OBJECT_TYPE_IDENTIFIER, Constants.TYPE_PLACE);
@@ -275,9 +270,6 @@ public class LocationManager implements LocationListener {
                 App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
             }
         });
-
-        // remove blue circle around location
-        map.setMyLocationEnabled(false);
     }
 
     /**
@@ -342,7 +334,6 @@ public class LocationManager implements LocationListener {
         }
 
         if (!mOtherUsersList.containsKey(user.getId())) {
-
             Location userLocation = new Location("user");
             userLocation.setLatitude(latLng.latitude);
             userLocation.setLongitude(latLng.longitude);
@@ -479,15 +470,15 @@ public class LocationManager implements LocationListener {
             createLocationRequest();
         }
 
-        if (isRequestingLocationUpdates() || !googleApiClient.isConnected()) {
+        if (isRequestingLocationUpdates() || !App.getGoogleApiClient().isConnected()) {
             Log.e(Constants.TAG, "Location request not created: "
                     + "\nRequesting location updates: " + isRequestingLocationUpdates()
-                    + "\nGoogle api client connected: " + googleApiClient.isConnected());
+                    + "\nGoogle api client connected: " + App.getGoogleApiClient().isConnected());
             return;
         }
 
         LocationServices.FusedLocationApi.requestLocationUpdates(
-                googleApiClient, locationRequest, this);
+                App.getGoogleApiClient(), locationRequest, this);
         requestingLocationUpdates = true;
 
         App.getWebSocketManager().subscribeForLocationEvent();
@@ -499,12 +490,12 @@ public class LocationManager implements LocationListener {
      * updates.
      */
     public void stopLocationUpdates() {
-        if (!googleApiClient.isConnected()) {
+        if (!App.getGoogleApiClient().isConnected()) {
             requestingLocationUpdates = false;
             return;
         }
 
-        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+        LocationServices.FusedLocationApi.removeLocationUpdates(App.getGoogleApiClient(), this);
         requestingLocationUpdates = false;
 
         App.getWebSocketManager().unSubscribeFromLocationEvents();
@@ -573,7 +564,7 @@ public class LocationManager implements LocationListener {
             displayPlaceMarkerFromDB(true);
         }
 
-        if (mLocationOfLastPlacesUpdateFromGoogle != null && App.getUserManager().getCurrentUser() != null &&
+        if (mLocationOfLastPlacesUpdateFromGoogle != null &&
                 location.distanceTo(mLocationOfLastPlacesUpdateFromGoogle) >= App.getUserManager().getCurrentUser().getViewRadius()) {
 
             mLocationOfLastPlacesUpdateFromGoogle = currentLocation;
@@ -664,7 +655,7 @@ public class LocationManager implements LocationListener {
             boolean googleApiClientConnected = intent.getBooleanExtra(Constants.EXTRA_GAC_CONNECTED, false);
             if (googleApiClientConnected) {
                 startLocationUpdates();
-                currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                currentLocation = LocationServices.FusedLocationApi.getLastLocation(App.getGoogleApiClient());
                 if (currentLocation != null) {
                     mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
                     mLocationOfLastPlacesUpdateFromGoogle = mLocationOfLastSquareUpdate;
@@ -826,7 +817,6 @@ public class LocationManager implements LocationListener {
         }
 
         if (mViewCircle == null) {
-
             CircleOptions viewCircle = new CircleOptions()
                     .fillColor(Constants.VIEW_CIRCLE_SHADE_COLOR)
                     .strokeColor(Constants.VIEW_CIRCLE_STOKE_COLOR)
@@ -912,6 +902,12 @@ public class LocationManager implements LocationListener {
                         .snippet(place.getJSONPlaceInfo())));
     }
 
+    /**
+     * Returns resource id of the image for place type.
+     *
+     * @param place - instance of {@link GamePlace} place
+     * @return - id of the resource image to be displayed on the place location.
+     */
     private int getPlaceResourceImage(GamePlace place) {
         int resourceId = R.drawable.place_experience_violet;
         boolean hasOwner = place.hasOwner(App.getUserManager().getCurrentUser().getId());
