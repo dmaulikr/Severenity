@@ -3,14 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		5223A0E11D8AE821009A0EC7 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */; };
-		5223A0EB1D8AEBED009A0EC7 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5223A0E81D8AEBED009A0EC7 /* FBSDKCoreKit.framework */; };
-		5223A0EC1D8AEBED009A0EC7 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5223A0E91D8AEBED009A0EC7 /* FBSDKLoginKit.framework */; };
-		5223A0ED1D8AEBED009A0EC7 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5223A0EA1D8AEBED009A0EC7 /* FBSDKShareKit.framework */; };
 		523828751D89331500F55364 /* severenityProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828741D89331500F55364 /* severenityProjectTests.swift */; };
 		523828831D89332D00F55364 /* severenityProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828821D89332D00F55364 /* severenityProjectUITests.swift */; };
 		5264A7A11D8828B500EE78FC /* LocationsServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7A01D8828B500EE78FC /* LocationsServerManager.swift */; };
@@ -57,12 +54,8 @@
 
 /* Begin PBXFileReference section */
 		32F484CB3F8B329893C92576 /* Pods-Severenity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Severenity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Severenity/Pods-Severenity.release.xcconfig"; sourceTree = "<group>"; };
-		3C9B25F8AB0EE5633501A8A2 /* Pods-severenityProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-severenityProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-severenityProject/Pods-severenityProject.release.xcconfig"; sourceTree = "<group>"; };
 		3EF1D539D2A4755EDFC9C1D5 /* Pods-Severenity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Severenity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Severenity/Pods-Severenity.debug.xcconfig"; sourceTree = "<group>"; };
 		5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialViewController.swift; path = "View Controllers/InitialViewController.swift"; sourceTree = "<group>"; };
-		5223A0E81D8AEBED009A0EC7 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = Frameworks/FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		5223A0E91D8AEBED009A0EC7 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = Frameworks/FBSDKLoginKit.framework; sourceTree = "<group>"; };
-		5223A0EA1D8AEBED009A0EC7 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Frameworks/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		523828721D89331500F55364 /* SeverenityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SeverenityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		523828741D89331500F55364 /* severenityProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = severenityProjectTests.swift; sourceTree = "<group>"; };
 		523828761D89331500F55364 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -89,13 +82,11 @@
 		52787C1A1D86D88D009D17F5 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListViewController.swift; path = "View Controllers/ListViewController.swift"; sourceTree = "<group>"; };
 		52787C201D86EEC6009D17F5 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridViewController.swift; path = "View Controllers/GridViewController.swift"; sourceTree = "<group>"; };
 		527D92B21D8988510059F14F /* RealmDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RealmDataModel.swift; path = Models/RealmDataModel.swift; sourceTree = "<group>"; };
-		78E1B83C8E7B05EED892731A /* Pods-severenityProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-severenityProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-severenityProject/Pods-severenityProject.debug.xcconfig"; sourceTree = "<group>"; };
 		7E0F9D0C1D9649A90038D11D /* app_title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_title.png; sourceTree = "<group>"; };
 		7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_launcher_big.png; sourceTree = "<group>"; };
 		7E0F9D101D964C440038D11D /* facebook_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_login.png; sourceTree = "<group>"; };
 		7E0F9D111D964C440038D11D /* facebook_logout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_logout.png; sourceTree = "<group>"; };
 		7E0F9D141D96524F0038D11D /* DeepSpace.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DeepSpace.png; sourceTree = "<group>"; };
-		7E3C7E691DABA21600775896 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "../../../Library/Developer/Xcode/DerivedData/Severenity-cvyxtfubhkwxrcgxcwrtzgoagxlu/Build/Products/Debug-iphonesimulator/Alamofire/Alamofire.framework"; sourceTree = "<group>"; };
 		B3AAAE59B41ABFF884BC13C0 /* Pods_Severenity.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Severenity.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -118,9 +109,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5223A0EB1D8AEBED009A0EC7 /* FBSDKCoreKit.framework in Frameworks */,
-				5223A0ED1D8AEBED009A0EC7 /* FBSDKShareKit.framework in Frameworks */,
-				5223A0EC1D8AEBED009A0EC7 /* FBSDKLoginKit.framework in Frameworks */,
 				F7F9968E342323C91D242D2A /* Pods_Severenity.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -246,10 +234,6 @@
 		80D382F60247FFE0365B0D4A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7E3C7E691DABA21600775896 /* Alamofire.framework */,
-				5223A0E81D8AEBED009A0EC7 /* FBSDKCoreKit.framework */,
-				5223A0E91D8AEBED009A0EC7 /* FBSDKLoginKit.framework */,
-				5223A0EA1D8AEBED009A0EC7 /* FBSDKShareKit.framework */,
 				B3AAAE59B41ABFF884BC13C0 /* Pods_Severenity.framework */,
 			);
 			name = Frameworks;
@@ -258,8 +242,6 @@
 		A56B052621749CD00A7D7D85 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				78E1B83C8E7B05EED892731A /* Pods-severenityProject.debug.xcconfig */,
-				3C9B25F8AB0EE5633501A8A2 /* Pods-severenityProject.release.xcconfig */,
 				3EF1D539D2A4755EDFC9C1D5 /* Pods-Severenity.debug.xcconfig */,
 				32F484CB3F8B329893C92576 /* Pods-Severenity.release.xcconfig */,
 			);
@@ -349,8 +331,8 @@
 					};
 					52787BDB1D86AA35009D17F5 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = P8K6Z5UGBL;
 						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -360,7 +342,7 @@
 				};
 			};
 			buildConfigurationList = 52787BD71D86AA35009D17F5 /* Build configuration list for PBXProject "Severenity" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -683,15 +665,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Severenity.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = P8K6Z5UGBL;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks",
-				);
+				CODE_SIGN_IDENTITY = "iPhone Developer: yura.yasinskyy@gmail.com (2DL2BUT3N3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = severenityProject/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.severenityProject;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -703,15 +683,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Severenity.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = P8K6Z5UGBL;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Frameworks",
-				);
+				CODE_SIGN_IDENTITY = "iPhone Developer: yura.yasinskyy@gmail.com (2DL2BUT3N3)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = severenityProject/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.severenityProject;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

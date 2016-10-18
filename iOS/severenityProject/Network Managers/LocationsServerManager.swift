@@ -16,14 +16,21 @@ class LocationsServerManager: NSObject {
 
     // Get the default Realm
     // You only need to do this once (per thread)
-    let realm = try! Realm()
+    var realm: Realm?
     // Should put it in AppDelegate
+    
+    override init() {
+        do {
+            self.realm = try Realm()
+        } catch let error as NSError {
+            print("Realm error: \(error.localizedDescription)")
+        }
+    }
     
     /**- This method returns Array with data in callback. 
      It checks whether data is already in Realm. If yes than it goes to getDataFromRealm method
      if no than it calls requestDataFromServer to get data from server.*/
     func provideData(_ completion: @escaping (_ result: NSArray) -> Void) {
-        
         if checkIfRealmIsEmpty() {
             print("Realm is empty, asking server for data")
             requestDataFromServer {
@@ -40,8 +47,8 @@ class LocationsServerManager: NSObject {
     }
     
     func checkIfRealmIsEmpty() -> Bool {
-        let realmReadQuery = self.realm.objects(RealmPlace.self)
-        return realmReadQuery.isEmpty
+        let realmReadQuery = self.realm?.objects(RealmPlace.self)
+        return realmReadQuery?.isEmpty ?? false
     }
     
     
@@ -90,11 +97,16 @@ class LocationsServerManager: NSObject {
      that is than returned in Array. */
     func getDataFromRealm(_ completion: (_ data: NSArray) -> Void) {
         
-        let realmReadQuery = self.realm.objects(RealmPlace.self)
+        let realmReadQuery = self.realm?.objects(RealmPlace.self)
         var dataFromRealm: [AnyObject] = []
         var ownersArray: [AnyObject] = []
         var isRightOwnerFound = false
-        for place in realmReadQuery {
+        
+        guard let query = realmReadQuery else {
+            print("Error creating Realm read query")
+            return
+        }
+        for place in query {
             let tempArray = Array(place.owners)
             for owner in tempArray {
                 ownersArray.append(owner.owner as AnyObject)
@@ -119,8 +131,8 @@ class LocationsServerManager: NSObject {
     
     // Try to drop data by type 'Location' etc., not all data
     fileprivate func dropDataInRealm() {
-        try! self.realm.write {
-            self.realm.deleteAll()
+        try! self.realm?.write {
+            self.realm?.deleteAll()
         }
     }
 
