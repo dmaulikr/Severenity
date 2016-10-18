@@ -36,15 +36,15 @@ class RealmPlace: BusinessObject {
         }
         
         guard let location = place["location"] as? NSDictionary else {
-            print("Cannot find location attribute in response.")
+            print("Cannot find 'location' attribute in response.")
             return
         }
-        
-        if let lat = (location["coordinates"] as? NSDictionary)?[0] as? Double {
+
+        if let lat = (location["coordinates"] as? NSArray)?[1] as? Double {
             self.lat = lat
         }
         
-        if let lng = (location["coordinates"] as? NSDictionary)?[1] as? Double {
+        if let lng = (location["coordinates"] as? NSArray)?[0] as? Double {
             self.lng = lng
         }
         

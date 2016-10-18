@@ -47,17 +47,16 @@ class ListViewController: UITableViewController {
     // MARK: - Table view delegate methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         // probably need to refactor this pyramid of doom with guard statement and get tabs by name, not indexes
         if let mapViewController = self.tabBarController?.viewControllers?[2].childViewControllers.first {
             if let mapVC = mapViewController as? MapViewController {
                 if let dataToPass = dataForList[(indexPath as NSIndexPath).row] as? [String : AnyObject] {
                     mapVC.recievedLocation = dataToPass
+                    print(mapVC.recievedLocation)
                     self.tabBarController?.selectedIndex = 2;
                 }
             }
         }
-
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

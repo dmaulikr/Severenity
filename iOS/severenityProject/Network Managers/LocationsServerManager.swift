@@ -16,7 +16,7 @@ class LocationsServerManager: NSObject {
 
     // Get the default Realm
     // You only need to do this once (per thread)
-    var realm: Realm?
+    fileprivate var realm: Realm?
     // Should put it in AppDelegate
     
     override init() {
