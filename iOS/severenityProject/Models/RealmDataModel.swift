@@ -59,8 +59,13 @@ class RealmPlace: BusinessObject {
     
     override func addToDB() {
         DispatchQueue(label: "background").async {
-            try! self.realm?.write {
-                self.realm?.add(self)
+            do {
+                try self.realm!.write {
+                    self.realm!.add(self)
+                    print("\(self.realm?.objects(RealmPlace.self))")
+                }
+            } catch let error as NSError {
+                print("Realm write error: \(error.localizedDescription)")
             }
         }
     }

@@ -37,7 +37,6 @@ class LocationsServerManager: NSObject {
                 completion(data)
             }
         }
-        
     }
     
     func checkIfRealmIsEmpty() -> Bool {
@@ -71,19 +70,18 @@ class LocationsServerManager: NSObject {
                 }
                 
                 for owner in owners where owner == "931974540209503" { //should be Facebook token userID
+                    
                     // Adding data to Realm DB
                     let placeInRealm = RealmPlace(place: place)
-                    
                     for object in owners {
                         let placeOwner = RealmPlaceOwner()
                         placeOwner.owner = object
                         placeInRealm.owners.append(placeOwner)
+                        
                     }
-                    
                     placeInRealm.addToDB()
                 }
             }
-
             completion()
         }
     }
@@ -96,7 +94,6 @@ class LocationsServerManager: NSObject {
         var dataFromRealm: [AnyObject] = []
         var ownersArray: [AnyObject] = []
         var isRightOwnerFound = false
-        
         for place in realmReadQuery {
             let tempArray = Array(place.owners)
             for owner in tempArray {
@@ -118,7 +115,6 @@ class LocationsServerManager: NSObject {
             ownersArray.removeAll()
         }
         completion(dataFromRealm as NSArray)
-
     }
     
     // Try to drop data by type 'Location' etc., not all data

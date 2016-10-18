@@ -23,7 +23,7 @@ class ListViewController: UITableViewController {
      Each dicitonary is a separate place later displayed in the table.*/
     func provideDataForList() {
         locationsServerManager.provideData { (result) in
-            self.dataForList = (result as! [Any] as AnyObject) as! [AnyObject]
+            self.dataForList = result as [AnyObject]
             self.tableView.reloadData()
         }
     }

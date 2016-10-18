@@ -69,6 +69,7 @@
 		523828801D89332D00F55364 /* SeverenityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SeverenityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		523828821D89332D00F55364 /* severenityProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = severenityProjectUITests.swift; sourceTree = "<group>"; };
 		523828841D89332D00F55364 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		523EF8A51DB521C9002001CD /* Severenity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Severenity.entitlements; sourceTree = SOURCE_ROOT; };
 		5264A7A01D8828B500EE78FC /* LocationsServerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationsServerManager.swift; path = "Network Managers/LocationsServerManager.swift"; sourceTree = "<group>"; };
 		5264A7A41D882F1700EE78FC /* ListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListCell.xib; path = Views/ListCell/ListCell.xib; sourceTree = "<group>"; };
 		5264A7A61D882F2400EE78FC /* GridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GridCell.xib; path = Views/GridCell/GridCell.xib; sourceTree = "<group>"; };
@@ -190,6 +191,7 @@
 		52787BDE1D86AA35009D17F5 /* Severenity */ = {
 			isa = PBXGroup;
 			children = (
+				523EF8A51DB521C9002001CD /* Severenity.entitlements */,
 				5264A7A01D8828B500EE78FC /* LocationsServerManager.swift */,
 				527D92B21D8988510059F14F /* RealmDataModel.swift */,
 				52787C0B1D86C838009D17F5 /* Views */,
@@ -349,6 +351,11 @@
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = P8K6Z5UGBL;
 						LastSwiftMigration = 0800;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -419,7 +426,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		B21832CE1A90FAFFD17B9784 /* [CP] Copy Pods Resources */ = {
@@ -675,6 +682,7 @@
 			baseConfigurationReference = 3EF1D539D2A4755EDFC9C1D5 /* Pods-Severenity.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Severenity.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = P8K6Z5UGBL;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -694,6 +702,7 @@
 			baseConfigurationReference = 32F484CB3F8B329893C92576 /* Pods-Severenity.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Severenity.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = P8K6Z5UGBL;
 				FRAMEWORK_SEARCH_PATHS = (

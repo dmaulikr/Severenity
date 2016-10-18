@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lqx-g2-TFI">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lqx-g2-TFI">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -15,11 +15,11 @@
                         <viewControllerLayoutGuide type="bottom" id="57q-i1-bm7"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fwt-ng-kYQ">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="DeepSpace.png" translatesAutoresizingMaskIntoConstraints="NO" id="KwD-Re-jq2">
-                                <frame key="frameInset" width="768" height="1024"/>
+                                <frame key="frameInset" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_launcher_big.png" translatesAutoresizingMaskIntoConstraints="NO" id="MxS-b6-syE">
@@ -29,30 +29,15 @@
                                     <constraint firstAttribute="width" constant="248" id="yfR-R6-1gx"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app_title.png" translatesAutoresizingMaskIntoConstraints="NO" id="lNo-9w-gtl">
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="375" id="F10-pe-AkP"/>
-                                    <constraint firstAttribute="height" constant="67" id="g2V-hI-5NG"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="67" id="ifo-7O-biF"/>
-                                </constraints>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="app_title.png" translatesAutoresizingMaskIntoConstraints="NO" id="lNo-9w-gtl">
+                                <frame key="frameInset" minX="20" minY="328" width="335" height="68"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uNw-wx-gDx">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="37" id="100-MV-mZI"/>
-                                    <constraint firstAttribute="width" constant="236" id="BcZ-Tj-Zv4"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="37" id="apk-My-O7B"/>
-                                </constraints>
-                                <state key="normal" image="facebook_login.png"/>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="lNo-9w-gtl" firstAttribute="top" secondItem="MxS-b6-syE" secondAttribute="bottom" constant="17" id="BAY-bi-Zf1"/>
-                            <constraint firstItem="uNw-wx-gDx" firstAttribute="centerX" secondItem="lNo-9w-gtl" secondAttribute="centerX" id="V2e-Lq-ue1"/>
                             <constraint firstItem="MxS-b6-syE" firstAttribute="top" secondItem="Gwa-O9-1zc" secondAttribute="bottom" constant="52" id="l0A-rl-uIy"/>
-                            <constraint firstAttribute="bottom" secondItem="uNw-wx-gDx" secondAttribute="bottom" constant="20" symbolic="YES" id="l0L-mK-Por"/>
                             <constraint firstItem="MxS-b6-syE" firstAttribute="centerX" secondItem="fwt-ng-kYQ" secondAttribute="centerX" id="pUy-6I-8Jh"/>
-                            <constraint firstItem="uNw-wx-gDx" firstAttribute="centerX" secondItem="MxS-b6-syE" secondAttribute="centerX" id="psz-LD-MUw"/>
                         </constraints>
                     </view>
                     <connections>
@@ -61,7 +46,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3pC-OE-qlg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1527.34375" y="7.6171874999999991"/>
+            <point key="canvasLocation" x="-1528.8" y="6.746626686656672"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="k07-Uu-xLl">
@@ -98,7 +83,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Ocg-ZE-VF5"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fr4-iS-ZG0">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -106,7 +91,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FLt-nU-vtg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-275.5" y="-1003.5"/>
+            <point key="canvasLocation" x="186" y="-1004"/>
         </scene>
         <!--Upper Bar-->
         <scene sceneID="fJH-eQ-5KW">
@@ -117,7 +102,7 @@
                         <viewControllerLayoutGuide type="bottom" id="2va-fc-Rfa"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="mTF-zQ-Z86">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cmG-zW-xOo">
@@ -152,7 +137,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H3S-A9-rn6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="680.5" y="-790.5"/>
+            <point key="canvasLocation" x="1009" y="-791"/>
         </scene>
         <!--Shop-->
         <scene sceneID="UcC-yR-zd3">
@@ -160,7 +145,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="drd-a5-xUY" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Shop" id="pHm-Y1-UHg"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FLK-8r-Oq0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="FLK-8r-Oq0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -179,7 +164,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ywl-yH-zXU" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" id="eYp-dv-Zms"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="RFw-Uf-Dzy">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="RFw-Uf-Dzy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -201,7 +186,7 @@
                         <viewControllerLayoutGuide type="bottom" id="B4x-8y-x6Y"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="0sg-qu-YPS">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -217,7 +202,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Vji-IS-xEi" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" id="0Ke-hW-7Ea"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xAK-46-bRb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xAK-46-bRb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -239,7 +224,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Y1H-aC-mOA"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="JoI-hB-8OF">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -255,7 +240,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JZ4-CZ-pB3" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Chat" id="DRo-ps-RXW"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PfO-cR-PKb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PfO-cR-PKb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -277,7 +262,7 @@
                         <viewControllerLayoutGuide type="bottom" id="OZa-ad-6z9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="xZ7-4W-OJ3">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -293,7 +278,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jxb-cg-N5J" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Quests" id="H5m-q4-Byt"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LJb-AX-543">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="LJb-AX-543">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -310,7 +295,6 @@
     <resources>
         <image name="DeepSpace.png" width="3000" height="2000"/>
         <image name="app_title.png" width="600" height="98"/>
-        <image name="facebook_login.png" width="362" height="76"/>
         <image name="ic_launcher_big.png" width="512" height="512"/>
     </resources>
 </document>

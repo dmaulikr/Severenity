@@ -13,8 +13,6 @@ import FBSDKLoginKit
 
 class InitialViewController: UIViewController, LoginButtonDelegate {
     
-    @IBOutlet weak var welcomeLabel: UILabel!
-    
     // MARK: - Facebook login button delegate
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
@@ -29,8 +27,6 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
         view.backgroundColor = UIColor.white
         
         loginButton.isHidden = true
-        
-        welcomeLabel.isHidden = true
         
         // Adding login indicator to the view
         let loginIndicator = UIActivityIndicatorView()
@@ -69,8 +65,6 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
         loginButton.delegate = self
         loginButton.center = CGPoint(x: view.center.x, y: view.center.y+100)
         loginButton.isHidden = false
-        
-        welcomeLabel.isHidden = false
         
         view.addSubview(loginButton)
     }
