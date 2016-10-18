@@ -42,6 +42,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
                 marker.title = "Your current location"
             }
             marker.map = mapView
+        } else {
+            let camera = GMSCameraPosition.camera(withLatitude: -33.86,
+                                                              longitude: 151.20, zoom: 6)
+            let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+            self.view = mapView
         }
     }
     
