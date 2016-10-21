@@ -14,7 +14,7 @@ class MapInteractor: NSObject {
     
     override init() {
         super.init()
-        (UIApplication.shared.delegate as! AppDelegate).viperInteractors["MapInteractor"] = self
+        WireFrame.sharedWireFrame.viperInteractors["MapInteractor"] = self
     }
     
     func mapPresenterEvent() {

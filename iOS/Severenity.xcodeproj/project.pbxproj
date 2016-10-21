@@ -29,6 +29,7 @@
 		12EE6B401DB923E600FFC567 /* QuestsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B3F1DB923E600FFC567 /* QuestsInteractor.swift */; };
 		12EE6B421DB9241B00FFC567 /* QuestsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B411DB9241B00FFC567 /* QuestsPresenter.swift */; };
 		12EE6B441DBA0C6800FFC567 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B431DBA0C6800FFC567 /* TabBarController.swift */; };
+		12EE6B461DBA372A00FFC567 /* WireFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B451DBA372A00FFC567 /* WireFrame.swift */; };
 		5223A0E11D8AE821009A0EC7 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */; };
 		523828751D89331500F55364 /* severenityProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828741D89331500F55364 /* severenityProjectTests.swift */; };
 		523828831D89332D00F55364 /* severenityProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828821D89332D00F55364 /* severenityProjectUITests.swift */; };
@@ -98,6 +99,7 @@
 		12EE6B3F1DB923E600FFC567 /* QuestsInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestsInteractor.swift; sourceTree = "<group>"; };
 		12EE6B411DB9241B00FFC567 /* QuestsPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestsPresenter.swift; sourceTree = "<group>"; };
 		12EE6B431DBA0C6800FFC567 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		12EE6B451DBA372A00FFC567 /* WireFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WireFrame.swift; sourceTree = "<group>"; };
 		32F484CB3F8B329893C92576 /* Pods-Severenity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Severenity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Severenity/Pods-Severenity.release.xcconfig"; sourceTree = "<group>"; };
 		3EF1D539D2A4755EDFC9C1D5 /* Pods-Severenity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Severenity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Severenity/Pods-Severenity.debug.xcconfig"; sourceTree = "<group>"; };
 		5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialViewController.swift; path = "View Controllers/InitialViewController.swift"; sourceTree = "<group>"; };
@@ -373,6 +375,7 @@
 				12EE6B0D1DB7B31600FFC567 /* Services */,
 				12EE6B0E1DB7B32100FFC567 /* Entities */,
 				52787BF11D86AAE3009D17F5 /* Supporting Files */,
+				12EE6B451DBA372A00FFC567 /* WireFrame.swift */,
 			);
 			name = Severenity;
 			path = severenityProject;
@@ -660,6 +663,7 @@
 				52787BE01D86AA35009D17F5 /* AppDelegate.swift in Sources */,
 				12EE6B3A1DB9211C00FFC567 /* ChatInteractor.swift in Sources */,
 				12EE6B231DB8C70A00FFC567 /* ProfileInteractor.swift in Sources */,
+				12EE6B461DBA372A00FFC567 /* WireFrame.swift in Sources */,
 				52787C071D86C3BD009D17F5 /* ProfileViewController.swift in Sources */,
 				12EE6B071DB7AD0B00FFC567 /* ShopRouter.swift in Sources */,
 				12EE6B441DBA0C6800FFC567 /* TabBarController.swift in Sources */,
