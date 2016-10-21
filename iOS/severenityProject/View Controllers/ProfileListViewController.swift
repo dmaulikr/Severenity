@@ -8,55 +8,52 @@
 
 import UIKit
 
-class ListViewController: UITableViewController {
+class ProfileListViewController: UITableViewController, ProfileListPresenterDelegate {
     
-    // MARK: - Managing table data
-    
-    fileprivate var dataForList = [AnyObject]()
-    
+    private var presenter: ProfileListPresenter?
+    private var dataForList = [String]()
     weak var activityIndicatorView: UIActivityIndicatorView!
-    let locationsServerManager = LocationsServerManager()
     
-    /**- provideDataForList calls LocationsServerManager's instance
-     and asks it to provide data that should be shown in UITableView.
-     The result is returned in callback as Array with Dictionaries inside.
-     Each dicitonary is a separate place later displayed in the table.*/
-    func provideDataForList() {
-        locationsServerManager.provideData { (result) in
-            self.dataForList = result as [AnyObject]
-            self.tableView.reloadData()
-        }
+    override init(style: UITableViewStyle) {
+        super.init(style: style)
+        presenter = ProfileListPresenter()
+        presenter?.delegate = self
+        print("ProfileList VIPER module init did complete")
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    // MARK: ProfileList Presenter delegate
+    
+    func profileListPresenterDidCallView(withData data: [String]) {
+        print("ProfileList Presenter did call view")
+        dataForList = data
+        tableView.reloadData()
     }
     
     // MARK: - Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(UINib(nibName: "ListCell", bundle: nil), forCellReuseIdentifier: "CellInList")
+        tableView.register(UINib(nibName: "ProfileListCell", bundle: nil), forCellReuseIdentifier: "ProfileCellInList")
         
         // Data loading indicator for the UITableView
         let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
-        activityIndicatorView.color = UIColor.blue
+        activityIndicatorView.color = UIColor.magenta
         tableView.backgroundView = activityIndicatorView
         self.activityIndicatorView = activityIndicatorView
         activityIndicatorView.startAnimating()
 
-        provideDataForList()
+        presenter?.provideProfileListData()
     }
     
     // MARK: - Table view delegate methods
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // probably need to refactor this pyramid of doom with guard statement and get tabs by name, not indexes
-        if let mapViewController = self.tabBarController?.viewControllers?[2].childViewControllers.first {
-            if let mapVC = mapViewController as? MapViewController {
-                if let dataToPass = dataForList[(indexPath as NSIndexPath).row] as? [String : AnyObject] {
-                    mapVC.recievedLocation = dataToPass
-                    print(mapVC.recievedLocation)
-                    self.tabBarController?.selectedIndex = 2;
-                }
-            }
-        }
+        presenter?.profileListCell(selected: indexPath)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -79,11 +76,11 @@ class ListViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell
-        if let c = tableView.dequeueReusableCell(withIdentifier: "CellInList", for: indexPath) as? ListCell {
-            c.listCellTitle.text = dataForList[(indexPath as NSIndexPath).row]["name"] as? String
+        if let c = tableView.dequeueReusableCell(withIdentifier: "ProfileCellInList", for: indexPath) as? ProfileListCell {
+            c.listCellTitle.text = dataForList[(indexPath as NSIndexPath).row]
             cell = c
         } else {
-            cell = tableView.dequeueReusableCell(withIdentifier: "CellInList", for: indexPath)
+            cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCellInList", for: indexPath)
         }
         return cell
     }

@@ -8,12 +8,20 @@
 
 import UIKit
 
-class GridViewController: UICollectionViewController {
+class ProfileGridViewController: UICollectionViewController, ProfileGridPresenterDelegate {
     
     // MARK: - Loading view and init
     
+    
+    private var presenter: ProfileGridPresenter?
+    private var dataForList = [String]()
+    weak var activityIndicatorView: UIActivityIndicatorView!
+    
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
+        presenter = ProfileGridPresenter()
+        presenter?.delegate = self
+        print("ProfileGrid VIPER module init did complete")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -23,8 +31,14 @@ class GridViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     
-        collectionView?.register(UINib(nibName: "GridCell", bundle: nil), forCellWithReuseIdentifier: "CellInGrid")
+        collectionView?.register(UINib(nibName: "ProfileGridCell", bundle: nil), forCellWithReuseIdentifier: "ProfileCellInGrid")
         self.collectionView?.backgroundColor = UIColor.white
+        
+        presenter?.provideProfileGridData()
+    }
+    
+    func profileGridPresenterDidCallView(withData data: [String]) {
+        print("ProfileGrid Presenter did call view")
     }
 
     // MARK: UICollectionViewDataSource
@@ -39,7 +53,7 @@ class GridViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellInGrid", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileCellInGrid", for: indexPath)
         return cell
     }
 }

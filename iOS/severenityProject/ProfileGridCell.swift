@@ -8,6 +8,6 @@
 
 import UIKit
 
-class GridCell: UICollectionViewCell {
+class ProfileGridCell: UICollectionViewCell {
     
 }

@@ -7,14 +7,36 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */; };
+		12EE6B011DB7AB3000FFC567 /* ShopInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */; };
+		12EE6B071DB7AD0B00FFC567 /* ShopRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */; };
+		12EE6B161DB8C50100FFC567 /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B151DB8C50100FFC567 /* ProfilePresenter.swift */; };
+		12EE6B181DB8C51900FFC567 /* ProfileListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B171DB8C51900FFC567 /* ProfileListPresenter.swift */; };
+		12EE6B1A1DB8C52500FFC567 /* ProfileGridPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B191DB8C52500FFC567 /* ProfileGridPresenter.swift */; };
+		12EE6B1F1DB8C6E700FFC567 /* ProfileListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B1E1DB8C6E700FFC567 /* ProfileListInteractor.swift */; };
+		12EE6B211DB8C6F700FFC567 /* ProfileGridInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B201DB8C6F700FFC567 /* ProfileGridInteractor.swift */; };
+		12EE6B231DB8C70A00FFC567 /* ProfileInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B221DB8C70A00FFC567 /* ProfileInteractor.swift */; };
+		12EE6B2A1DB8C76000FFC567 /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B291DB8C76000FFC567 /* ProfileRouter.swift */; };
+		12EE6B2E1DB8C77E00FFC567 /* ProfileListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B2D1DB8C77D00FFC567 /* ProfileListRouter.swift */; };
+		12EE6B301DB8C79000FFC567 /* ProfileGridRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B2F1DB8C79000FFC567 /* ProfileGridRouter.swift */; };
+		12EE6B321DB9100B00FFC567 /* MapPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B311DB9100B00FFC567 /* MapPresenter.swift */; };
+		12EE6B341DB9103100FFC567 /* MapInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B331DB9103100FFC567 /* MapInteractor.swift */; };
+		12EE6B361DB9106F00FFC567 /* MapRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B351DB9106F00FFC567 /* MapRouter.swift */; };
+		12EE6B381DB920E100FFC567 /* ChatRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B371DB920E100FFC567 /* ChatRouter.swift */; };
+		12EE6B3A1DB9211C00FFC567 /* ChatInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B391DB9211C00FFC567 /* ChatInteractor.swift */; };
+		12EE6B3C1DB9215200FFC567 /* ChatPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B3B1DB9215200FFC567 /* ChatPresenter.swift */; };
+		12EE6B3E1DB923A300FFC567 /* QuestsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B3D1DB923A300FFC567 /* QuestsRouter.swift */; };
+		12EE6B401DB923E600FFC567 /* QuestsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B3F1DB923E600FFC567 /* QuestsInteractor.swift */; };
+		12EE6B421DB9241B00FFC567 /* QuestsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B411DB9241B00FFC567 /* QuestsPresenter.swift */; };
+		12EE6B441DBA0C6800FFC567 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B431DBA0C6800FFC567 /* TabBarController.swift */; };
 		5223A0E11D8AE821009A0EC7 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */; };
 		523828751D89331500F55364 /* severenityProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828741D89331500F55364 /* severenityProjectTests.swift */; };
 		523828831D89332D00F55364 /* severenityProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828821D89332D00F55364 /* severenityProjectUITests.swift */; };
-		5264A7A11D8828B500EE78FC /* LocationsServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7A01D8828B500EE78FC /* LocationsServerManager.swift */; };
-		5264A7A51D882F1700EE78FC /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A7A41D882F1700EE78FC /* ListCell.xib */; };
-		5264A7A71D882F2400EE78FC /* GridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A7A61D882F2400EE78FC /* GridCell.xib */; };
-		5264A7A91D882F6700EE78FC /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7A81D882F6700EE78FC /* ListCell.swift */; };
-		5264A7AB1D882F8800EE78FC /* GridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7AA1D882F8800EE78FC /* GridCell.swift */; };
+		5264A7A11D8828B500EE78FC /* PlacesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7A01D8828B500EE78FC /* PlacesService.swift */; };
+		5264A7A51D882F1700EE78FC /* ProfileListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A7A41D882F1700EE78FC /* ProfileListCell.xib */; };
+		5264A7A71D882F2400EE78FC /* ProfileGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A7A61D882F2400EE78FC /* ProfileGridCell.xib */; };
+		5264A7A91D882F6700EE78FC /* ProfileListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7A81D882F6700EE78FC /* ProfileListCell.swift */; };
+		5264A7AB1D882F8800EE78FC /* ProfileGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7AA1D882F8800EE78FC /* ProfileGridCell.swift */; };
 		52787BE01D86AA35009D17F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787BDF1D86AA35009D17F5 /* AppDelegate.swift */; };
 		52787BE51D86AA35009D17F5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE31D86AA35009D17F5 /* Main.storyboard */; };
 		52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE61D86AA35009D17F5 /* Assets.xcassets */; };
@@ -24,8 +46,8 @@
 		52787C081D86C3BD009D17F5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C021D86C3BD009D17F5 /* MapViewController.swift */; };
 		52787C091D86C3BD009D17F5 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C031D86C3BD009D17F5 /* ChatViewController.swift */; };
 		52787C0A1D86C3BD009D17F5 /* QuestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C041D86C3BD009D17F5 /* QuestsViewController.swift */; };
-		52787C1B1D86D88D009D17F5 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C1A1D86D88D009D17F5 /* ListViewController.swift */; };
-		52787C211D86EEC6009D17F5 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C201D86EEC6009D17F5 /* GridViewController.swift */; };
+		52787C1B1D86D88D009D17F5 /* ProfileListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C1A1D86D88D009D17F5 /* ProfileListViewController.swift */; };
+		52787C211D86EEC6009D17F5 /* ProfileGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C201D86EEC6009D17F5 /* ProfileGridViewController.swift */; };
 		527D92B31D8988510059F14F /* RealmDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527D92B21D8988510059F14F /* RealmDataModel.swift */; };
 		7E0F9D0E1D9649A90038D11D /* app_title.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D0C1D9649A90038D11D /* app_title.png */; };
 		7E0F9D0F1D9649A90038D11D /* ic_launcher_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */; };
@@ -54,6 +76,28 @@
 
 /* Begin PBXFileReference section */
 		1293BE2B1DB65AE000658292 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopPresenter.swift; sourceTree = "<group>"; };
+		12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopInteractor.swift; sourceTree = "<group>"; };
+		12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopRouter.swift; sourceTree = "<group>"; };
+		12EE6B151DB8C50100FFC567 /* ProfilePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
+		12EE6B171DB8C51900FFC567 /* ProfileListPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileListPresenter.swift; sourceTree = "<group>"; };
+		12EE6B191DB8C52500FFC567 /* ProfileGridPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileGridPresenter.swift; sourceTree = "<group>"; };
+		12EE6B1E1DB8C6E700FFC567 /* ProfileListInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileListInteractor.swift; sourceTree = "<group>"; };
+		12EE6B201DB8C6F700FFC567 /* ProfileGridInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileGridInteractor.swift; sourceTree = "<group>"; };
+		12EE6B221DB8C70A00FFC567 /* ProfileInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileInteractor.swift; sourceTree = "<group>"; };
+		12EE6B291DB8C76000FFC567 /* ProfileRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
+		12EE6B2D1DB8C77D00FFC567 /* ProfileListRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileListRouter.swift; sourceTree = "<group>"; };
+		12EE6B2F1DB8C79000FFC567 /* ProfileGridRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileGridRouter.swift; sourceTree = "<group>"; };
+		12EE6B311DB9100B00FFC567 /* MapPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPresenter.swift; sourceTree = "<group>"; };
+		12EE6B331DB9103100FFC567 /* MapInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapInteractor.swift; sourceTree = "<group>"; };
+		12EE6B351DB9106F00FFC567 /* MapRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapRouter.swift; sourceTree = "<group>"; };
+		12EE6B371DB920E100FFC567 /* ChatRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRouter.swift; sourceTree = "<group>"; };
+		12EE6B391DB9211C00FFC567 /* ChatInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInteractor.swift; sourceTree = "<group>"; };
+		12EE6B3B1DB9215200FFC567 /* ChatPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatPresenter.swift; sourceTree = "<group>"; };
+		12EE6B3D1DB923A300FFC567 /* QuestsRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestsRouter.swift; sourceTree = "<group>"; };
+		12EE6B3F1DB923E600FFC567 /* QuestsInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestsInteractor.swift; sourceTree = "<group>"; };
+		12EE6B411DB9241B00FFC567 /* QuestsPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestsPresenter.swift; sourceTree = "<group>"; };
+		12EE6B431DBA0C6800FFC567 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		32F484CB3F8B329893C92576 /* Pods-Severenity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Severenity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Severenity/Pods-Severenity.release.xcconfig"; sourceTree = "<group>"; };
 		3EF1D539D2A4755EDFC9C1D5 /* Pods-Severenity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Severenity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Severenity/Pods-Severenity.debug.xcconfig"; sourceTree = "<group>"; };
 		5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialViewController.swift; path = "View Controllers/InitialViewController.swift"; sourceTree = "<group>"; };
@@ -64,11 +108,11 @@
 		523828821D89332D00F55364 /* severenityProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = severenityProjectUITests.swift; sourceTree = "<group>"; };
 		523828841D89332D00F55364 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		523EF8A51DB521C9002001CD /* Severenity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Severenity.entitlements; sourceTree = SOURCE_ROOT; };
-		5264A7A01D8828B500EE78FC /* LocationsServerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationsServerManager.swift; path = "Network Managers/LocationsServerManager.swift"; sourceTree = "<group>"; };
-		5264A7A41D882F1700EE78FC /* ListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListCell.xib; path = Views/ListCell/ListCell.xib; sourceTree = "<group>"; };
-		5264A7A61D882F2400EE78FC /* GridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GridCell.xib; path = Views/GridCell/GridCell.xib; sourceTree = "<group>"; };
-		5264A7A81D882F6700EE78FC /* ListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
-		5264A7AA1D882F8800EE78FC /* GridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridCell.swift; sourceTree = "<group>"; };
+		5264A7A01D8828B500EE78FC /* PlacesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlacesService.swift; path = "Network Managers/PlacesService.swift"; sourceTree = "<group>"; };
+		5264A7A41D882F1700EE78FC /* ProfileListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProfileListCell.xib; path = Views/ListCell/ProfileListCell.xib; sourceTree = "<group>"; };
+		5264A7A61D882F2400EE78FC /* ProfileGridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProfileGridCell.xib; path = Views/GridCell/ProfileGridCell.xib; sourceTree = "<group>"; };
+		5264A7A81D882F6700EE78FC /* ProfileListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileListCell.swift; sourceTree = "<group>"; };
+		5264A7AA1D882F8800EE78FC /* ProfileGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileGridCell.swift; sourceTree = "<group>"; };
 		52787BDC1D86AA35009D17F5 /* Severenity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Severenity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52787BDF1D86AA35009D17F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		52787BE41D86AA35009D17F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -80,8 +124,8 @@
 		52787C021D86C3BD009D17F5 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = "View Controllers/MapViewController.swift"; sourceTree = "<group>"; };
 		52787C031D86C3BD009D17F5 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatViewController.swift; path = "View Controllers/ChatViewController.swift"; sourceTree = "<group>"; };
 		52787C041D86C3BD009D17F5 /* QuestsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuestsViewController.swift; path = "View Controllers/QuestsViewController.swift"; sourceTree = "<group>"; };
-		52787C1A1D86D88D009D17F5 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListViewController.swift; path = "View Controllers/ListViewController.swift"; sourceTree = "<group>"; };
-		52787C201D86EEC6009D17F5 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GridViewController.swift; path = "View Controllers/GridViewController.swift"; sourceTree = "<group>"; };
+		52787C1A1D86D88D009D17F5 /* ProfileListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileListViewController.swift; path = "View Controllers/ProfileListViewController.swift"; sourceTree = "<group>"; };
+		52787C201D86EEC6009D17F5 /* ProfileGridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileGridViewController.swift; path = "View Controllers/ProfileGridViewController.swift"; sourceTree = "<group>"; };
 		527D92B21D8988510059F14F /* RealmDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RealmDataModel.swift; path = Models/RealmDataModel.swift; sourceTree = "<group>"; };
 		7E0F9D0C1D9649A90038D11D /* app_title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_title.png; sourceTree = "<group>"; };
 		7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_launcher_big.png; sourceTree = "<group>"; };
@@ -117,6 +161,146 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		12EE6B0B1DB7B2DE00FFC567 /* Presenters */ = {
+			isa = PBXGroup;
+			children = (
+				12EE6B3B1DB9215200FFC567 /* ChatPresenter.swift */,
+				12EE6B311DB9100B00FFC567 /* MapPresenter.swift */,
+				12EE6B121DB8C4AF00FFC567 /* Profile */,
+				12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */,
+				12EE6B411DB9241B00FFC567 /* QuestsPresenter.swift */,
+			);
+			name = Presenters;
+			sourceTree = "<group>";
+		};
+		12EE6B0C1DB7B2FF00FFC567 /* Interactors */ = {
+			isa = PBXGroup;
+			children = (
+				12EE6B391DB9211C00FFC567 /* ChatInteractor.swift */,
+				12EE6B331DB9103100FFC567 /* MapInteractor.swift */,
+				12EE6B1B1DB8C69A00FFC567 /* Profile */,
+				12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */,
+				12EE6B3F1DB923E600FFC567 /* QuestsInteractor.swift */,
+			);
+			name = Interactors;
+			sourceTree = "<group>";
+		};
+		12EE6B0D1DB7B31600FFC567 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				5264A7A01D8828B500EE78FC /* PlacesService.swift */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
+		12EE6B0E1DB7B32100FFC567 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				527D92B21D8988510059F14F /* RealmDataModel.swift */,
+			);
+			name = Entities;
+			sourceTree = "<group>";
+		};
+		12EE6B101DB7B3DC00FFC567 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				52787C011D86C3BD009D17F5 /* ProfileViewController.swift */,
+				5264A7A21D882ED000EE78FC /* List View */,
+				5264A7A31D882EE000EE78FC /* Grid View */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		12EE6B111DB7B46200FFC567 /* Routers */ = {
+			isa = PBXGroup;
+			children = (
+				12EE6B371DB920E100FFC567 /* ChatRouter.swift */,
+				12EE6B351DB9106F00FFC567 /* MapRouter.swift */,
+				12EE6B281DB8C74F00FFC567 /* Profile */,
+				12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */,
+				12EE6B3D1DB923A300FFC567 /* QuestsRouter.swift */,
+			);
+			name = Routers;
+			sourceTree = "<group>";
+		};
+		12EE6B121DB8C4AF00FFC567 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				12EE6B131DB8C4BE00FFC567 /* List Presenter */,
+				12EE6B141DB8C4D900FFC567 /* Grid Presenter */,
+				12EE6B151DB8C50100FFC567 /* ProfilePresenter.swift */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		12EE6B131DB8C4BE00FFC567 /* List Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				12EE6B171DB8C51900FFC567 /* ProfileListPresenter.swift */,
+			);
+			name = "List Presenter";
+			sourceTree = "<group>";
+		};
+		12EE6B141DB8C4D900FFC567 /* Grid Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				12EE6B191DB8C52500FFC567 /* ProfileGridPresenter.swift */,
+			);
+			name = "Grid Presenter";
+			sourceTree = "<group>";
+		};
+		12EE6B1B1DB8C69A00FFC567 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				12EE6B1C1DB8C6A400FFC567 /* List Interactor */,
+				12EE6B1D1DB8C6BB00FFC567 /* Grid Interactor */,
+				12EE6B221DB8C70A00FFC567 /* ProfileInteractor.swift */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		12EE6B1C1DB8C6A400FFC567 /* List Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				12EE6B1E1DB8C6E700FFC567 /* ProfileListInteractor.swift */,
+			);
+			name = "List Interactor";
+			sourceTree = "<group>";
+		};
+		12EE6B1D1DB8C6BB00FFC567 /* Grid Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				12EE6B201DB8C6F700FFC567 /* ProfileGridInteractor.swift */,
+			);
+			name = "Grid Interactor";
+			sourceTree = "<group>";
+		};
+		12EE6B281DB8C74F00FFC567 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				12EE6B2B1DB8C76400FFC567 /* List Router */,
+				12EE6B2C1DB8C76D00FFC567 /* Grid Router */,
+				12EE6B291DB8C76000FFC567 /* ProfileRouter.swift */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		12EE6B2B1DB8C76400FFC567 /* List Router */ = {
+			isa = PBXGroup;
+			children = (
+				12EE6B2D1DB8C77D00FFC567 /* ProfileListRouter.swift */,
+			);
+			name = "List Router";
+			sourceTree = "<group>";
+		};
+		12EE6B2C1DB8C76D00FFC567 /* Grid Router */ = {
+			isa = PBXGroup;
+			children = (
+				12EE6B2F1DB8C79000FFC567 /* ProfileGridRouter.swift */,
+			);
+			name = "Grid Router";
+			sourceTree = "<group>";
+		};
 		523828731D89331500F55364 /* SeverenityTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -137,22 +321,24 @@
 			path = severenityProjectUITests;
 			sourceTree = "<group>";
 		};
-		5264A7A21D882ED000EE78FC /* ListCell */ = {
+		5264A7A21D882ED000EE78FC /* List View */ = {
 			isa = PBXGroup;
 			children = (
-				5264A7A41D882F1700EE78FC /* ListCell.xib */,
-				5264A7A81D882F6700EE78FC /* ListCell.swift */,
+				5264A7A41D882F1700EE78FC /* ProfileListCell.xib */,
+				5264A7A81D882F6700EE78FC /* ProfileListCell.swift */,
+				52787C1A1D86D88D009D17F5 /* ProfileListViewController.swift */,
 			);
-			name = ListCell;
+			name = "List View";
 			sourceTree = "<group>";
 		};
-		5264A7A31D882EE000EE78FC /* GridCell */ = {
+		5264A7A31D882EE000EE78FC /* Grid View */ = {
 			isa = PBXGroup;
 			children = (
-				5264A7A61D882F2400EE78FC /* GridCell.xib */,
-				5264A7AA1D882F8800EE78FC /* GridCell.swift */,
+				5264A7A61D882F2400EE78FC /* ProfileGridCell.xib */,
+				5264A7AA1D882F8800EE78FC /* ProfileGridCell.swift */,
+				52787C201D86EEC6009D17F5 /* ProfileGridViewController.swift */,
 			);
-			name = GridCell;
+			name = "Grid View";
 			sourceTree = "<group>";
 		};
 		52787BD31D86AA35009D17F5 = {
@@ -180,12 +366,12 @@
 		52787BDE1D86AA35009D17F5 /* Severenity */ = {
 			isa = PBXGroup;
 			children = (
-				523EF8A51DB521C9002001CD /* Severenity.entitlements */,
-				5264A7A01D8828B500EE78FC /* LocationsServerManager.swift */,
-				527D92B21D8988510059F14F /* RealmDataModel.swift */,
 				52787C0B1D86C838009D17F5 /* Views */,
-				52787BF41D86B0B9009D17F5 /* View Controllers */,
-				52787BE31D86AA35009D17F5 /* Main.storyboard */,
+				12EE6B0B1DB7B2DE00FFC567 /* Presenters */,
+				12EE6B0C1DB7B2FF00FFC567 /* Interactors */,
+				12EE6B111DB7B46200FFC567 /* Routers */,
+				12EE6B0D1DB7B31600FFC567 /* Services */,
+				12EE6B0E1DB7B32100FFC567 /* Entities */,
 				52787BF11D86AAE3009D17F5 /* Supporting Files */,
 			);
 			name = Severenity;
@@ -202,32 +388,24 @@
 				7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */,
 				52787BDF1D86AA35009D17F5 /* AppDelegate.swift */,
 				52787BE61D86AA35009D17F5 /* Assets.xcassets */,
-				52787BE81D86AA35009D17F5 /* LaunchScreen.storyboard */,
 				52787BEB1D86AA35009D17F5 /* Info.plist */,
+				523EF8A51DB521C9002001CD /* Severenity.entitlements */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		52787BF41D86B0B9009D17F5 /* View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */,
-				52787C001D86C3BD009D17F5 /* ShopViewController.swift */,
-				52787C011D86C3BD009D17F5 /* ProfileViewController.swift */,
-				52787C021D86C3BD009D17F5 /* MapViewController.swift */,
-				52787C031D86C3BD009D17F5 /* ChatViewController.swift */,
-				52787C041D86C3BD009D17F5 /* QuestsViewController.swift */,
-				52787C1A1D86D88D009D17F5 /* ListViewController.swift */,
-				52787C201D86EEC6009D17F5 /* GridViewController.swift */,
-			);
-			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 		52787C0B1D86C838009D17F5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				5264A7A21D882ED000EE78FC /* ListCell */,
-				5264A7A31D882EE000EE78FC /* GridCell */,
+				5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */,
+				52787C031D86C3BD009D17F5 /* ChatViewController.swift */,
+				52787C021D86C3BD009D17F5 /* MapViewController.swift */,
+				12EE6B101DB7B3DC00FFC567 /* Profile */,
+				52787C001D86C3BD009D17F5 /* ShopViewController.swift */,
+				52787C041D86C3BD009D17F5 /* QuestsViewController.swift */,
+				52787BE31D86AA35009D17F5 /* Main.storyboard */,
+				52787BE81D86AA35009D17F5 /* LaunchScreen.storyboard */,
+				12EE6B431DBA0C6800FFC567 /* TabBarController.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -384,9 +562,9 @@
 			files = (
 				7E0F9D131D964C440038D11D /* facebook_logout.png in Resources */,
 				52787BEA1D86AA35009D17F5 /* LaunchScreen.storyboard in Resources */,
-				5264A7A71D882F2400EE78FC /* GridCell.xib in Resources */,
+				5264A7A71D882F2400EE78FC /* ProfileGridCell.xib in Resources */,
 				7E0F9D0E1D9649A90038D11D /* app_title.png in Resources */,
-				5264A7A51D882F1700EE78FC /* ListCell.xib in Resources */,
+				5264A7A51D882F1700EE78FC /* ProfileListCell.xib in Resources */,
 				7E0F9D0F1D9649A90038D11D /* ic_launcher_big.png in Resources */,
 				52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */,
 				52787BE51D86AA35009D17F5 /* Main.storyboard in Resources */,
@@ -469,16 +647,38 @@
 				52787C061D86C3BD009D17F5 /* ShopViewController.swift in Sources */,
 				5223A0E11D8AE821009A0EC7 /* InitialViewController.swift in Sources */,
 				52787C0A1D86C3BD009D17F5 /* QuestsViewController.swift in Sources */,
+				12EE6B1A1DB8C52500FFC567 /* ProfileGridPresenter.swift in Sources */,
 				52787C081D86C3BD009D17F5 /* MapViewController.swift in Sources */,
+				12EE6B301DB8C79000FFC567 /* ProfileGridRouter.swift in Sources */,
+				12EE6B181DB8C51900FFC567 /* ProfileListPresenter.swift in Sources */,
+				12EE6B421DB9241B00FFC567 /* QuestsPresenter.swift in Sources */,
+				12EE6B1F1DB8C6E700FFC567 /* ProfileListInteractor.swift in Sources */,
+				12EE6B211DB8C6F700FFC567 /* ProfileGridInteractor.swift in Sources */,
+				12EE6B381DB920E100FFC567 /* ChatRouter.swift in Sources */,
+				12EE6B2E1DB8C77E00FFC567 /* ProfileListRouter.swift in Sources */,
+				12EE6B3C1DB9215200FFC567 /* ChatPresenter.swift in Sources */,
 				52787BE01D86AA35009D17F5 /* AppDelegate.swift in Sources */,
+				12EE6B3A1DB9211C00FFC567 /* ChatInteractor.swift in Sources */,
+				12EE6B231DB8C70A00FFC567 /* ProfileInteractor.swift in Sources */,
 				52787C071D86C3BD009D17F5 /* ProfileViewController.swift in Sources */,
-				5264A7A91D882F6700EE78FC /* ListCell.swift in Sources */,
-				52787C1B1D86D88D009D17F5 /* ListViewController.swift in Sources */,
+				12EE6B071DB7AD0B00FFC567 /* ShopRouter.swift in Sources */,
+				12EE6B441DBA0C6800FFC567 /* TabBarController.swift in Sources */,
+				12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */,
+				12EE6B321DB9100B00FFC567 /* MapPresenter.swift in Sources */,
+				12EE6B3E1DB923A300FFC567 /* QuestsRouter.swift in Sources */,
+				5264A7A91D882F6700EE78FC /* ProfileListCell.swift in Sources */,
+				52787C1B1D86D88D009D17F5 /* ProfileListViewController.swift in Sources */,
+				12EE6B341DB9103100FFC567 /* MapInteractor.swift in Sources */,
+				12EE6B011DB7AB3000FFC567 /* ShopInteractor.swift in Sources */,
 				52787C091D86C3BD009D17F5 /* ChatViewController.swift in Sources */,
+				12EE6B2A1DB8C76000FFC567 /* ProfileRouter.swift in Sources */,
+				12EE6B401DB923E600FFC567 /* QuestsInteractor.swift in Sources */,
 				527D92B31D8988510059F14F /* RealmDataModel.swift in Sources */,
-				52787C211D86EEC6009D17F5 /* GridViewController.swift in Sources */,
-				5264A7A11D8828B500EE78FC /* LocationsServerManager.swift in Sources */,
-				5264A7AB1D882F8800EE78FC /* GridCell.swift in Sources */,
+				12EE6B161DB8C50100FFC567 /* ProfilePresenter.swift in Sources */,
+				52787C211D86EEC6009D17F5 /* ProfileGridViewController.swift in Sources */,
+				12EE6B361DB9106F00FFC567 /* MapRouter.swift in Sources */,
+				5264A7A11D8828B500EE78FC /* PlacesService.swift in Sources */,
+				5264A7AB1D882F8800EE78FC /* ProfileGridCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -669,11 +869,11 @@
 				CODE_SIGN_ENTITLEMENTS = Severenity.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: yura.yasinskyy@gmail.com (2DL2BUT3N3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = M7LFA46QZA;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = severenityProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -687,11 +887,11 @@
 				CODE_SIGN_ENTITLEMENTS = Severenity.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: yura.yasinskyy@gmail.com (2DL2BUT3N3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = M7LFA46QZA;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = severenityProject/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

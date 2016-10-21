@@ -9,12 +9,26 @@
 import UIKit
 import GoogleMaps
 
-class MapViewController: UIViewController, CLLocationManagerDelegate {
+class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresenterDelegate {
 
     let locationManager = CLLocationManager()
 
     var recievedLocation: [String: AnyObject] = [:]
     fileprivate var recievedLocationCoordinates: CLLocationCoordinate2D = CLLocationCoordinate2DMake(0, 0)
+    
+    private var presenter: MapPresenter?
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        presenter = MapPresenter()
+        presenter?.delegate = self
+        print("Map VIPER module init did complete")
+    }
+    
+    func mapPresenterDidCallView(with data: Dictionary<String,AnyObject>) {
+        print("MapPresenter did call Map View with data: \(data)")
+        recievedLocation = data
+    }
     
     // MARK: - Loading view
     
@@ -52,6 +66,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("Map tab did load")
         
         self.locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
@@ -59,5 +74,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
             self.locationManager.startUpdatingLocation()
         }
+        
+        presenter?.mapViewEvent()
     }
 }

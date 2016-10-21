@@ -51,11 +51,10 @@
         <!--Tab Bar Controller-->
         <scene sceneID="k07-Uu-xLl">
             <objects>
-                <tabBarController storyboardIdentifier="loggedInController" id="equ-dC-efz" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="JGg-au-fAL">
+                <tabBarController storyboardIdentifier="loggedInController" id="equ-dC-efz" customClass="TabBarController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" barStyle="black" id="JGg-au-fAL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="selectedIndex">
@@ -85,13 +84,27 @@
                     <view key="view" contentMode="scaleToFill" id="fr4-iS-ZG0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dXb-JB-x6a">
+                                <frame key="frameInset" minX="16" minY="258" width="343" height="150"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.2531893824" green="0.16885770829999999" blue="0.32247814120000001" alpha="0.49416813380000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="35"/>
+                                <state key="normal" title="UI interaction test">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="interactionTestButton:" destination="ldY-ZS-q4s" eventType="touchUpInside" id="ncq-SC-saG"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="Upper Bar" id="2Pa-On-Gan"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FLt-nU-vtg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="186" y="-1004"/>
+            <point key="canvasLocation" x="184.80000000000001" y="-1004.3478260869566"/>
         </scene>
         <!--Upper Bar-->
         <scene sceneID="fJH-eQ-5KW">
@@ -145,7 +158,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="drd-a5-xUY" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Shop" id="pHm-Y1-UHg"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FLK-8r-Oq0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="FLK-8r-Oq0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -164,7 +177,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ywl-yH-zXU" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" id="eYp-dv-Zms"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="RFw-Uf-Dzy">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="RFw-Uf-Dzy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -202,7 +215,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Vji-IS-xEi" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" id="0Ke-hW-7Ea"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xAK-46-bRb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xAK-46-bRb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -226,6 +239,20 @@
                     <view key="view" contentMode="scaleToFill" id="JoI-hB-8OF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4bQ-tk-x7A">
+                                <frame key="frameInset" minX="16" minY="258" width="343" height="150"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.2531893824" green="0.16885770829999999" blue="0.32247814120000001" alpha="0.49416813380000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="35"/>
+                                <state key="normal" title="UI interaction test">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="userInteractionTest:" destination="dHU-YV-G28" eventType="touchUpInside" id="5CY-XU-xar"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="Upper Bar" id="irk-3Y-gTP"/>
@@ -240,7 +267,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JZ4-CZ-pB3" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Chat" id="DRo-ps-RXW"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PfO-cR-PKb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PfO-cR-PKb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -264,6 +291,20 @@
                     <view key="view" contentMode="scaleToFill" id="xZ7-4W-OJ3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1rQ-Zm-N3c">
+                                <frame key="frameInset" minX="16" minY="258" width="343" height="150"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.2531893824" green="0.16885770829999999" blue="0.32247814120000001" alpha="0.49416813380000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="35"/>
+                                <state key="normal" title="UI interaction test">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="userInteractionTest:" destination="7qv-Ph-hYD" eventType="touchUpInside" id="ey1-cd-odb"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="Upper Bar" id="y2m-W2-KqG"/>
@@ -278,7 +319,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jxb-cg-N5J" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Quests" id="H5m-q4-Byt"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LJb-AX-543">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="LJb-AX-543">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

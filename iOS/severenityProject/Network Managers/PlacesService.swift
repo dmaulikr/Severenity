@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import RealmSwift
 
-class LocationsServerManager: NSObject {
+class PlacesService: NSObject {
     
     let serverURLString = "https://severenity.herokuapp.com/places/all" // to constants
 

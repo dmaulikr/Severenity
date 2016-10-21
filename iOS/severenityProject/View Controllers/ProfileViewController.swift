@@ -11,10 +11,23 @@ import FacebookLogin
 import FBSDKCoreKit
 import FBSDKLoginKit
 
-class ProfileViewController: UIViewController, LoginButtonDelegate {
+class ProfileViewController: UIViewController, LoginButtonDelegate, ProfilePresenterDelegate {
 
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var contentModeSwitcher: UISegmentedControl!
+    
+    private var presenter: ProfilePresenter?
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        presenter = ProfilePresenter()
+        presenter?.delegate = self
+        print("Profile VIPER module init did complete")
+    }
+    
+    func profilePresenterDidCallView() {
+        print("Shop View is called from Shop Presenter")
+    }
     
     // MARK: - Facebook login button delegate
     
@@ -37,18 +50,17 @@ class ProfileViewController: UIViewController, LoginButtonDelegate {
     // MARK: - Managing view presentation
     
     @IBAction func changeContentMode(_ sender: AnyObject) {
-        
         switch contentModeSwitcher.selectedSegmentIndex {
             case 0:
-                let listViewController = ListViewController()
+                let listViewController = ProfileListViewController(style: UITableViewStyle.plain)
                 self.addChildViewController(listViewController)
                 contentView.subviews.last?.removeFromSuperview()
-                contentView.addSubview(listViewController.view)
+                contentView.addSubview((listViewController.view)!)
                 listViewController.tableView?.frame = contentView.bounds
             case 1:
                 let layout = UICollectionViewFlowLayout()
                 layout.itemSize = CGSize(width: 100, height: 50)
-                let gridViewController = GridViewController(collectionViewLayout: layout)
+                let gridViewController = ProfileGridViewController(collectionViewLayout: layout)
                 self.addChildViewController(gridViewController)
                 contentView.subviews.last?.removeFromSuperview()
                 contentView.addSubview(gridViewController.view)
@@ -56,6 +68,7 @@ class ProfileViewController: UIViewController, LoginButtonDelegate {
             default:
                 return
         }
+        presenter?.profileViewEvent()
     }
     
     override func viewDidLoad() {
