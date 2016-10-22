@@ -6,11 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.TextView;
 
 import com.android.volley.NetworkResponse;
 import com.severenity.App;
 import com.severenity.R;
+import com.severenity.engine.adapters.TeamsListAdapter;
 import com.severenity.engine.adapters.UsersListAdapter;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.Team;
@@ -30,7 +32,6 @@ public class TeamFragment extends Fragment {
     private TextView mTeamName;
     private CustomListView mUsersInTeamList;
     private String mTeamID;
-    private boolean mIsUserModerator = false;
 
     public TeamFragment(String teamID) {
         // Required empty public constructor
@@ -41,18 +42,18 @@ public class TeamFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        requestTeamInfo();
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clans_team, container, false);
 
         mTeamModerator = (TextView)view.findViewById(R.id.teamModeratorText);
         mTeamName = (TextView)view.findViewById(R.id.teamNameText);
 
-        UsersListAdapter searchAdapter = new UsersListAdapter(getContext(), mIsUserModerator);
+        UsersListAdapter searchAdapter = new UsersListAdapter(getContext(), true);
         mUsersInTeamList = (CustomListView)view.findViewById(R.id.usersInTeamList);
         mUsersInTeamList.setAdapter(searchAdapter);
         mUsersInTeamList.showLoadSpinner(false);
+
+        requestTeamInfo();
 
         return view;
     }
@@ -79,11 +80,14 @@ public class TeamFragment extends Fragment {
                             }
                             mTeamModerator.setText(team.getModerator().getName());
                             mTeamName.setText(team.getName());
+                            UsersListAdapter adapter = (UsersListAdapter)mUsersInTeamList.getAdapter();
+                            if (adapter != null &&
+                                    team.getModerator().getId().equals(App.getUserManager().getCurrentUser().getId())) {
+                                adapter.setModeratorID(team.getModerator().getId());
+                            }
+
                             mUsersInTeamList.clearData();
                             mUsersInTeamList.addNewData(team.getMembers());
-                            if (App.getUserManager().getCurrentUser().getId().equals(team.getModerator().getId())) {
-                                mIsUserModerator = true;
-                            }
                         } else {
                             Log.e(Constants.TAG, "Getting team by name fails");
                         }

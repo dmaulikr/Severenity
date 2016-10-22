@@ -61,6 +61,8 @@
     <string name="chat_name">Chat</string>
     <string name="world_chat">Chat</string>
     <string name="world_list">List</string>
+    <string name="yes_button">Yes</string>
+    <string name="no_button">No</string>
 
     <!-- Tutorial -->
     <string name="tutorial_profile">Profile</string>
@@ -100,4 +102,6 @@
     <string name="chip_invisibility">Puts invisibility over the object so it disappears from the map.</string>
     <string name="authentication_in_progress">Wait a second...let me find your resume...</string>
     <string name="authentication">Authentication</string>
+
+    <string name="deleteUser">Are you sure want to delete the user?</string>
 </resources>

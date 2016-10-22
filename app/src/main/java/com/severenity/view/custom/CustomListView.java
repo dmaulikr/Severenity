@@ -63,6 +63,10 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
         this.removeFooterView(mFooter);
     }
 
+    public CustomListArrayAdapterBase getAdapter() {
+        return this.mAdapter;
+    }
+
     /**
      * method used to add additional data to be displayed in the list
      *
@@ -119,4 +123,5 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
     public void onScroll(AbsListView view, int firstVisibleItem,
                          int visibleItemCount, int totalItemCount) {
     }
+
 }
