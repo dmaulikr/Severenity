@@ -15,10 +15,10 @@ import com.severenity.view.fragments.clans.pages.TeamsPage;
 import com.severenity.view.fragments.clans.pages.WorldPage;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
+ * holds world and team fragments.
  */
 public class ClansFragment extends Fragment {
     private TabLayout mTabLayout;

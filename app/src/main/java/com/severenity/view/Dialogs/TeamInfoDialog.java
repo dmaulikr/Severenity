@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
-import com.facebook.internal.Utility;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.network.RequestCallback;
@@ -24,8 +23,6 @@ import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
 
 /**
  * Created by Andriy on 9/5/2016.

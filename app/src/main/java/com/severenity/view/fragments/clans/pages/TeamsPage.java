@@ -45,18 +45,18 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
             showTeamPageFirst = !App.getUserManager().getCurrentUser().getTeam().isEmpty();
         }
 
-        mFragments.put(BUTTONS_ID_OFFSET, new FragmentInfo(new TeamsListFragment(this), "teamsList", "Team list", !showTeamPageFirst));
+        mFragments.put(BUTTONS_ID_OFFSET, new FragmentInfo(new TeamsListFragment(this), "teamsList", mContext.getResources().getString(R.string.team_list), !showTeamPageFirst));
 
         if (showTeamPageFirst) {
-            mFragments.put(BUTTONS_ID_OFFSET + 1, new FragmentInfo(new TeamFragment(App.getUserManager().getCurrentUser().getTeam()), "teamFragment", "Team", showTeamPageFirst));
+            mFragments.put(BUTTONS_ID_OFFSET + 1, new FragmentInfo(new TeamFragment(App.getUserManager().getCurrentUser().getTeam()), "teamFragment", mContext.getResources().getString(R.string.clans_team), showTeamPageFirst));
         }
 
-        mFragments.put(BUTTONS_ID_OFFSET + 2, new FragmentInfo(new ChatFragment(), "chatFragment", "Chat", false));
+        mFragments.put(BUTTONS_ID_OFFSET + 2, new FragmentInfo(new ChatFragment(), "chatFragment", mContext.getResources().getString(R.string.chat), false));
         mWarningContentLayoutID = R.id.warningFragmentContent;
 
         // if users level is lower then 3 we show warning
         if (App.getUserManager().getCurrentUser().getLevel() < 3) {
-            mWarningFragment = new FragmentInfo(new WarningFragment(), "Warning", "Warning", true);
+            mWarningFragment = new FragmentInfo(new WarningFragment(), "warningFragment", mContext.getResources().getString(R.string.warning_fragment), true);
         }
     }
 

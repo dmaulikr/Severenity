@@ -186,7 +186,7 @@ public class UserManager extends DataManager {
         db.update(TABLE_USERS, ctValues, "id = ?", new String[]{currentUser.getId()});
         db.close();
 
-        retrieveCurrentUser();
+        setCurrentUser(retrieveCurrentUser());
     }
 
     /**

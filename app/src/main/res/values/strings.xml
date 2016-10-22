@@ -51,6 +51,7 @@
     <string name="title_team">Team</string>
     <string name="title_world">World</string>
     <!--<string name="owners_string">&d &s own this place:</string>-->
+    <string name="warning_fragment">Warning</string>
 
     <!-- Buttons -->
     <string name="button_send">Send</string>
