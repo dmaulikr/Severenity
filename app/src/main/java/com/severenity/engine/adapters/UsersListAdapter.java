@@ -27,14 +27,10 @@ import java.util.List;
  * Created by Andriy on 8/4/2016.
  */
 
-public class UsersListAdapter extends CustomListArrayAdapterBase<User> implements ButtonClickListener {
+public class UsersListAdapter extends CustomListArrayAdapterBase<User> {
 
-    private boolean mDoConsiderClicks = false;
-    private String mModeratorID = null;
-
-    public UsersListAdapter(Context ctx, boolean considerClick) {
+    public UsersListAdapter(Context ctx) {
         super(ctx, R.layout.usersearch_item_list);
-        mDoConsiderClicks = considerClick;
     }
 
     @Override
@@ -66,65 +62,8 @@ public class UsersListAdapter extends CustomListArrayAdapterBase<User> implement
         TextView userExp = (TextView) result.findViewById(R.id.userExp);
         userExp.setText(Integer.toString(user.getExperience()));
 
-        if (mDoConsiderClicks) {
-            if (mModeratorID != null ) {
-
-                final ButtonClickListener thisFragment = this;
-                result.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View view) {
-                        if (mModeratorID.equals(user.getId())) {
-                            return false;
-                        } else {
-                            CustomAlertDialog dialog = CustomAlertDialog.newInstance(R.string.deleteUser, thisFragment);
-                            dialog.setCancelable(false);
-                            FragmentManager manager = ((FragmentActivity) mContext).getSupportFragmentManager();
-                            dialog.show(manager, "userAction");
-                            return true;
-                        }
-                    }
-                });
-            }
-
-//            result.setOnTouchListener(new View.OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View view, MotionEvent motionEvent) {
-//                    switch (motionEvent.getAction()) {
-//                        case MotionEvent.ACTION_DOWN: {
-//                            view.setBackgroundColor(Color.parseColor("#222222"));
-//                            // if moderator id is NULL it menats that the user which has
-//                            // selected team view is not moderator of that team, so no LongClick
-//                            // event will occur. In such case we need to return false here.
-//                            if (mModeratorID != null ) {
-//                                if (!mModeratorID.equals(user.getId())) {
-//                                    return false;
-//                                }
-//                                else {
-//                                    return true;
-//                                }
-//                            }
-//                        }
-//                        case MotionEvent.ACTION_UP: {
-//                            view.setBackgroundColor(Color.parseColor("#a1a1a1"));
-//                            return true;
-//                        }
-//                    }
-//
-//                    return false;
-//                }
-//            });
-        }
-
         return result;
     }
 
-    public void setModeratorID(String moderatorID){
-        mModeratorID = moderatorID;
-    }
-
-    @Override
-    public void OnYesClicked() {
-        Toast.makeText(getContext(), "going to remove user from the team", Toast.LENGTH_SHORT).show();
-    }
 }
 

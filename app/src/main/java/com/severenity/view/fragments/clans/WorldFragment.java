@@ -45,8 +45,7 @@ public class WorldFragment extends Fragment implements CustomListView.LoadDataLi
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clans_world, container, false);
 
-        boolean isModerator = false;
-        UsersListAdapter searchAdapter = new UsersListAdapter(getContext(), isModerator);
+        UsersListAdapter searchAdapter = new UsersListAdapter(getContext());
 
         mUsersList = (CustomListView) view.findViewById(R.id.usersList);
         mUsersList.setAdapter(searchAdapter);

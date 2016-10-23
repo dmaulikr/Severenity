@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.severenity.App;
@@ -16,8 +18,10 @@ import com.severenity.engine.adapters.TeamsListAdapter;
 import com.severenity.engine.adapters.UsersListAdapter;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.Team;
+import com.severenity.entity.User;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
+import com.severenity.view.Dialogs.CustomAlertDialog;
 import com.severenity.view.custom.CustomListView;
 
 import org.json.JSONException;
@@ -26,12 +30,13 @@ import org.json.JSONObject;
 /**
  * Created by Andriy on 8/25/2016.
  */
-public class TeamFragment extends Fragment {
+public class TeamFragment extends Fragment implements AdapterView.OnItemLongClickListener {
 
     private TextView mTeamModerator;
     private TextView mTeamName;
     private CustomListView mUsersInTeamList;
     private String mTeamID;
+    private TeamFragment TeamFragmentInstance = this;
 
     public TeamFragment(String teamID) {
         // Required empty public constructor
@@ -48,10 +53,12 @@ public class TeamFragment extends Fragment {
         mTeamModerator = (TextView)view.findViewById(R.id.teamModeratorText);
         mTeamName = (TextView)view.findViewById(R.id.teamNameText);
 
-        UsersListAdapter searchAdapter = new UsersListAdapter(getContext(), true);
+        UsersListAdapter searchAdapter = new UsersListAdapter(getContext());
         mUsersInTeamList = (CustomListView)view.findViewById(R.id.usersInTeamList);
         mUsersInTeamList.setAdapter(searchAdapter);
         mUsersInTeamList.showLoadSpinner(false);
+        mUsersInTeamList.setChoiceMode(CustomListView.CHOICE_MODE_SINGLE);
+        mUsersInTeamList.setSelector(R.drawable.item_selector);
 
         requestTeamInfo();
 
@@ -79,13 +86,13 @@ public class TeamFragment extends Fragment {
                                 return;
                             }
                             mTeamModerator.setText(team.getModerator().getName());
-                            mTeamName.setText(team.getName());
-                            UsersListAdapter adapter = (UsersListAdapter)mUsersInTeamList.getAdapter();
-                            if (adapter != null &&
-                                    team.getModerator().getId().equals(App.getUserManager().getCurrentUser().getId())) {
-                                adapter.setModeratorID(team.getModerator().getId());
+                            if (App.getUserManager().getCurrentUser().getId().equals(team.getModerator().getId())) {
+                                Log.i(Constants.TAG, "Current user is moderator for the team. Give ability to delete users");
+                                mUsersInTeamList.setLongClickable(true);
+                                mUsersInTeamList.setOnItemLongClickListener(TeamFragmentInstance);
                             }
-
+                            mTeamModerator.setHint(team.getModerator().getId());
+                            mTeamName.setText(team.getName());
                             mUsersInTeamList.clearData();
                             mUsersInTeamList.addNewData(team.getMembers());
                         } else {
@@ -101,6 +108,20 @@ public class TeamFragment extends Fragment {
                     Log.e(Constants.TAG, "Getting team by name fails");
                 }
             });
+        }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+        User user = (User)mUsersInTeamList.getItemAtPosition(i);
+        String moderatorID = mTeamModerator.getHint().toString();
+        if (!user.getId().equals(moderatorID)) {
+            Toast.makeText(getContext(), "not moderator", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else {
+            Toast.makeText(getContext(), "moderator", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 }

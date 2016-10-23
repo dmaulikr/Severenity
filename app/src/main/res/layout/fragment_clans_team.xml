@@ -138,6 +138,7 @@
         android:background="#a1a1a1"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:choiceMode="singleChoice" />
+        android:choiceMode="singleChoice"
+        android:drawSelectorOnTop="true"/>
 
 </RelativeLayout>
