@@ -86,33 +86,33 @@ public class UsersListAdapter extends CustomListArrayAdapterBase<User> implement
                 });
             }
 
-            result.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    switch (motionEvent.getAction()) {
-                        case MotionEvent.ACTION_DOWN: {
-                            view.setBackgroundColor(Color.parseColor("#222222"));
-                            // if moderator id is NULL it menats that the user which has
-                            // selected team view is not moderator of that team, so no LongClick
-                            // event will occur. In such case we need to return false here.
-                            if (mModeratorID != null ) {
-                                if (!mModeratorID.equals(user.getId())) {
-                                    return false;
-                                }
-                                else {
-                                    return true;
-                                }
-                            }
-                        }
-                        case MotionEvent.ACTION_UP: {
-                            view.setBackgroundColor(Color.parseColor("#a1a1a1"));
-                            return true;
-                        }
-                    }
-
-                    return false;
-                }
-            });
+//            result.setOnTouchListener(new View.OnTouchListener() {
+//                @Override
+//                public boolean onTouch(View view, MotionEvent motionEvent) {
+//                    switch (motionEvent.getAction()) {
+//                        case MotionEvent.ACTION_DOWN: {
+//                            view.setBackgroundColor(Color.parseColor("#222222"));
+//                            // if moderator id is NULL it menats that the user which has
+//                            // selected team view is not moderator of that team, so no LongClick
+//                            // event will occur. In such case we need to return false here.
+//                            if (mModeratorID != null ) {
+//                                if (!mModeratorID.equals(user.getId())) {
+//                                    return false;
+//                                }
+//                                else {
+//                                    return true;
+//                                }
+//                            }
+//                        }
+//                        case MotionEvent.ACTION_UP: {
+//                            view.setBackgroundColor(Color.parseColor("#a1a1a1"));
+//                            return true;
+//                        }
+//                    }
+//
+//                    return false;
+//                }
+//            });
         }
 
         return result;
