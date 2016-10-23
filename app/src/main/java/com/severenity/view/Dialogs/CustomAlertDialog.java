@@ -11,6 +11,17 @@ import com.severenity.R;
 
 public class CustomAlertDialog extends DialogFragment {
 
+    // Object that is going to show this dialog can implement
+    // this interface so it will have callback methods for
+    // monitoring buttons click
+    public interface ButtonClickListener {
+
+        // notifies that Ok/Yes button clicked
+        public void OnOkButtonClick();
+
+        // notifies that cancel button clicked
+        public void OnCancelButtonClick();
+    }
     private ButtonClickListener mListener;
 
     public static CustomAlertDialog newInstance(int title, ButtonClickListener listener) {
@@ -35,15 +46,14 @@ public class CustomAlertDialog extends DialogFragment {
                 .setPositiveButton(getString(R.string.yes_button),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                mListener.OnYesClicked();
-                                dismiss();
+                                mListener.OnOkButtonClick();
                             }
                         }
                 )
                 .setNegativeButton(getString(R.string.cancel),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                dismiss();
+                                mListener.OnCancelButtonClick();
                             }
                         }
                 )

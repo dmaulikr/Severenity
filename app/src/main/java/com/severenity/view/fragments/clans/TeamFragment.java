@@ -2,6 +2,7 @@ package com.severenity.view.fragments.clans;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,13 +31,14 @@ import org.json.JSONObject;
 /**
  * Created by Andriy on 8/25/2016.
  */
-public class TeamFragment extends Fragment implements AdapterView.OnItemLongClickListener {
+public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonClickListener, AdapterView.OnItemLongClickListener {
 
     private TextView mTeamModerator;
     private TextView mTeamName;
     private CustomListView mUsersInTeamList;
     private String mTeamID;
     private TeamFragment TeamFragmentInstance = this;
+    private CustomAlertDialog mMoveUserFromTeamDialog = null;
 
     public TeamFragment(String teamID) {
         // Required empty public constructor
@@ -116,12 +118,26 @@ public class TeamFragment extends Fragment implements AdapterView.OnItemLongClic
         User user = (User)mUsersInTeamList.getItemAtPosition(i);
         String moderatorID = mTeamModerator.getHint().toString();
         if (!user.getId().equals(moderatorID)) {
-            Toast.makeText(getContext(), "not moderator", Toast.LENGTH_SHORT).show();
+            mMoveUserFromTeamDialog = CustomAlertDialog.newInstance(R.string.deleteUser, this);
+            mMoveUserFromTeamDialog.setCancelable(false);
+            FragmentManager fm = getFragmentManager();
+            mMoveUserFromTeamDialog.show(fm, "userRemoveDialog");
             return true;
         }
-        else {
-            Toast.makeText(getContext(), "moderator", Toast.LENGTH_SHORT).show();
-            return false;
+
+        return false;
+    }
+
+    @Override
+    public void OnOkButtonClick() {
+
+    }
+
+    @Override
+    public void OnCancelButtonClick() {
+        if (mMoveUserFromTeamDialog != null) {
+            mMoveUserFromTeamDialog.dismiss();
+            mMoveUserFromTeamDialog = null;
         }
     }
 }

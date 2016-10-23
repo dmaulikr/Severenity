@@ -1,24 +1,15 @@
 package com.severenity.engine.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.severenity.App;
 import com.severenity.R;
 import com.severenity.entity.User;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.Dialogs.ButtonClickListener;
-import com.severenity.view.Dialogs.CustomAlertDialog;
 
 import java.util.Collection;
 import java.util.List;
