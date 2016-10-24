@@ -33,12 +33,13 @@ import org.json.JSONObject;
  */
 public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonClickListener, AdapterView.OnItemLongClickListener {
 
-    private TextView mTeamModerator;
-    private TextView mTeamName;
-    private CustomListView mUsersInTeamList;
-    private String mTeamID;
-    private TeamFragment TeamFragmentInstance = this;
+    private TextView          mTeamModerator;
+    private TextView          mTeamName;
+    private CustomListView    mUsersInTeamList;
+    private String            mTeamID;
+    private TeamFragment      TeamFragmentInstance = this;
     private CustomAlertDialog mMoveUserFromTeamDialog = null;
+    private String            mUserIdToDelete;
 
     public TeamFragment(String teamID) {
         // Required empty public constructor
@@ -118,6 +119,7 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
         User user = (User)mUsersInTeamList.getItemAtPosition(i);
         String moderatorID = mTeamModerator.getHint().toString();
         if (!user.getId().equals(moderatorID)) {
+            mUserIdToDelete = user.getId();
             mMoveUserFromTeamDialog = CustomAlertDialog.newInstance(R.string.deleteUser, this);
             mMoveUserFromTeamDialog.setCancelable(false);
             FragmentManager fm = getFragmentManager();
@@ -130,14 +132,46 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
 
     @Override
     public void OnOkButtonClick() {
-
+        App.getTeamManager().removeUserFromTeam(mUserIdToDelete, mTeamID, teamLeaveCallback);
     }
 
     @Override
     public void OnCancelButtonClick() {
+        mUserIdToDelete = "";
         if (mMoveUserFromTeamDialog != null) {
             mMoveUserFromTeamDialog.dismiss();
             mMoveUserFromTeamDialog = null;
         }
     }
+
+    /**
+     * the callback method which is for handling response to joint the team request.
+     */
+    private RequestCallback teamLeaveCallback = new RequestCallback() {
+        @Override
+        public void onResponseCallback(JSONObject response) {
+            try {
+                if (response.getString("result").equals("success")) {
+                    Log.i(Constants.TAG, "user removed from the team");
+                    requestTeamInfo();
+                    mMoveUserFromTeamDialog.dismiss();
+
+                } else {
+                    // TODO: Error handling
+                    String err = response.getString("data");
+                    Log.e(Constants.TAG, "joining team fail: " + err);
+                    Toast.makeText(getContext(), err, Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onErrorCallback(NetworkResponse response) {
+            // TODO: Error handling
+            Log.e(Constants.TAG, "Joining to team fail: " + (response == null ? "" : response.toString()));
+        }
+    };
 }
+

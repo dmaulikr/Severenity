@@ -71,7 +71,7 @@ public class TeamManager {
     /**
      * Joint the user to the specific team
      *
-     * @param teamID - the ID of the team into wich user is going to be joined
+     * @param teamID - the ID of the team into which user is going to be joined
      * @param userID - users ID who is going to join the team
      * @param callback - callback method to handle response
      */
@@ -90,12 +90,11 @@ public class TeamManager {
     /**
      * Removes user from the team
      *
-     * @param userID - the ID of the user to be removed
-     * @param teamID - the ID of the team from which user to be removed
+     * @param userID   - the ID of the user to be removed
+     * @param teamID   - the ID of the team from which user to be removed
      * @param callback - handling server responses
      */
 
-    // TODO: to be done on the server
     public void removeUserFromTeam(String userID, String teamID, RequestCallback callback) {
         JSONObject requestObject = new JSONObject();
         try {
