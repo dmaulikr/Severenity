@@ -14,7 +14,7 @@ class ProfileInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedWireFrame.viperInteractors["ProfileInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors["ProfileInteractor"] = self
     }
     
     func profilePresenterEvent() {

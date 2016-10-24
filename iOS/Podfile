@@ -16,6 +16,7 @@ target 'Severenity' do
     pod 'GooglePlaces'
     pod 'Realm'
     pod 'RealmSwift'
+    pod 'Socket.IO-Client-Swift', '~> 8.0.2' # Or latest version
 
     post_install do |installer|
         installer.pods_project.targets.each do |target|

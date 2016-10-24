@@ -16,7 +16,7 @@ class ProfileGridInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedWireFrame.viperInteractors["ProfileGridInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors["ProfileGridInteractor"] = self
     }
     
     func profileGridPresenterNeedsData() {

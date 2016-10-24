@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreLocation
+import FBSDKLoginKit
 
 class MapPresenter: NSObject, MapInteractorDelegate {
     
@@ -27,8 +29,11 @@ class MapPresenter: NSObject, MapInteractorDelegate {
         tabBarController.selectedIndex = 2;
     }
     
-    func mapViewEvent() {
-        print("User interacted with Map View, Map Presenter responds.")
-        interactor?.mapPresenterEvent()
+    func userLocationChange(_ newLocation: CLLocation) {
+        print("User changed location, MapPresenter recieved new data.")
+        let currentLocationDictionary: [String:String] = ["lat":"\(newLocation.coordinate.latitude)",
+                                                          "lng":"\(newLocation.coordinate.longitude)",
+                                                          "id":FBSDKAccessToken.current().userID]
+        interactor?.processNewUserLocation(with: currentLocationDictionary)
     }
 }

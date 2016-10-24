@@ -158,7 +158,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="drd-a5-xUY" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Shop" id="pHm-Y1-UHg"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="FLK-8r-Oq0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="FLK-8r-Oq0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -177,7 +177,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ywl-yH-zXU" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" id="eYp-dv-Zms"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="RFw-Uf-Dzy">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="RFw-Uf-Dzy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -215,7 +215,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Vji-IS-xEi" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Map" id="0Ke-hW-7Ea"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="xAK-46-bRb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xAK-46-bRb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -240,26 +240,51 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4bQ-tk-x7A">
-                                <frame key="frameInset" minX="16" minY="258" width="343" height="150"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="REy-Hy-oeP">
+                                <frame key="frameInset" minY="64" width="375" height="523"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.2531893824" green="0.16885770829999999" blue="0.32247814120000001" alpha="0.49416813380000002" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="35"/>
-                                <state key="normal" title="UI interaction test">
+                                <color key="backgroundColor" red="0.10672865507538769" green="0.0" blue="0.26623218912746116" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ctK-jG-zuw">
+                                <frame key="frameInset" minY="588" width="292" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="send"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8QW-g6-4n7">
+                                <frame key="frameInset" minX="300" minY="588" width="75" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.68794527202901556" green="0.2182302735776262" blue="0.42472659159053688" alpha="0.49416813380000002" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
+                                <state key="normal" title="Send">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="userInteractionTest:" destination="dHU-YV-G28" eventType="touchUpInside" id="5CY-XU-xar"/>
+                                    <action selector="sendMessage:" destination="dHU-YV-G28" eventType="touchUpInside" id="wFt-Sl-SNc"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="Upper Bar" id="irk-3Y-gTP"/>
+                    <connections>
+                        <outlet property="chatHistory" destination="REy-Hy-oeP" id="ws9-J4-5G5"/>
+                        <outlet property="newMessage" destination="ctK-jG-zuw" id="5LL-vm-d1X"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nNh-5R-btD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="680.5" y="743.5"/>
+            <point key="canvasLocation" x="860" y="743.47826086956525"/>
         </scene>
         <!--Chat-->
         <scene sceneID="W1f-vY-3ke">
@@ -267,7 +292,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JZ4-CZ-pB3" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Chat" id="DRo-ps-RXW"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="PfO-cR-PKb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="PfO-cR-PKb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -319,7 +344,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jxb-cg-N5J" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Quests" id="H5m-q4-Byt"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LJb-AX-543">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="LJb-AX-543">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

@@ -8,19 +8,19 @@
 
 import UIKit
 
-class ChatViewController: UIViewController, ChatPresenterDelegate {
+class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDelegate {
     
     private var presenter: ChatPresenter?
+    
+    @IBOutlet weak var chatHistory: UITextView!
+    @IBOutlet weak var newMessage: UITextField!
+    
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         presenter = ChatPresenter()
         presenter?.delegate = self
         print("Chat VIPER module init did complete")
-    }
-    
-    @IBAction func userInteractionTest(_ sender: AnyObject) {
-        presenter?.chatViewEvent()
     }
     
     override func viewDidLoad() {
@@ -30,5 +30,16 @@ class ChatViewController: UIViewController, ChatPresenterDelegate {
     
     func chatPresenterDidCallView() {
         print("Chat View is called from Chat Presenter")
+    }
+    
+    // MARK: UITextFieldDelegate
+    
+    @IBAction func sendMessage(_ sender: AnyObject) {
+        presenter?.chatViewEvent()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("")
+        return true
     }
 }

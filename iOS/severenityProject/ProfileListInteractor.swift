@@ -16,7 +16,7 @@ class ProfileListInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedWireFrame.viperInteractors["ProfileListInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors["ProfileListInteractor"] = self
     }
     
     func profileListPresenterNeedsData() {
@@ -26,7 +26,7 @@ class ProfileListInteractor: NSObject {
     
     func profileListPresenterAskForTransition(withParam param: Int) {
         let selector = #selector(MapInteractor.mapInteractorEvent(with:))
-        let _ = WireFrame.sharedWireFrame.viperInteractors["MapInteractor"]?.perform(selector, with: (self.placesData as! Array<Dictionary<String, AnyObject>>)[param])
+        let _ = WireFrame.sharedInstance.viperInteractors["MapInteractor"]?.perform(selector, with: (self.placesData as! Array<Dictionary<String, AnyObject>>)[param])
     }
     
     /**- provideDataForList calls LocationsServerManager's instance

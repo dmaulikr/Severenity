@@ -15,7 +15,7 @@ class ChatInteractor: NSObject {
     override init() {
         super.init()
         //(UIApplication.shared.delegate as! AppDelegate).viperInteractors["ChatInteractor"] = self
-        WireFrame.sharedWireFrame.viperInteractors["ChatInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors["ChatInteractor"] = self
     }
     
     func chatPresenterEvent() {

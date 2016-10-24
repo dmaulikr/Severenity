@@ -12,7 +12,7 @@ class ShopInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedWireFrame.viperInteractors["ShopInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors["ShopInteractor"] = self
     }
     
     weak var delegate: ShopInteractorDelegate?

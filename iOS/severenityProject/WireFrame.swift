@@ -10,10 +10,11 @@ import UIKit
 
 class WireFrame: NSObject {
 
-    static let sharedWireFrame = WireFrame()
+    static let sharedInstance = WireFrame()
     var viperInteractors = [String:AnyObject]()
     
     private override init() {
+        super.init()
         print("WireFrame shared instance init did complete")
     }
 }

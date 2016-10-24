@@ -14,11 +14,12 @@ class MapInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedWireFrame.viperInteractors["MapInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors["MapInteractor"] = self
     }
     
-    func mapPresenterEvent() {
-        print("Map Interactor was called from Map Presenter")
+    func processNewUserLocation(with dictionary: Dictionary<String,String>) {
+        print("Map Interactor was called from Map Presenter to process new user location")
+        SocketService.sharedInstance.sendLocationToServer(with: dictionary)
     }
     
     func mapInteractorEvent(with data: AnyObject) {

@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import RealmSwift
+import FBSDKLoginKit
 
 class PlacesService: NSObject {
     
@@ -76,7 +77,7 @@ class PlacesService: NSObject {
                     return
                 }
                 
-                for owner in owners where owner == "931974540209503" { //should be Facebook token userID
+                for owner in owners where owner == FBSDKAccessToken.current().userID {
                     
                     // Adding data to Realm DB
                     let placeInRealm = RealmPlace(place: place)
@@ -110,7 +111,7 @@ class PlacesService: NSObject {
             let tempArray = Array(place.owners)
             for owner in tempArray {
                 ownersArray.append(owner.owner as AnyObject)
-                isRightOwnerFound = owner.owner == "931974540209503" //should be Facebook token userID
+                isRightOwnerFound = owner.owner == FBSDKAccessToken.current().userID
             }
             if isRightOwnerFound {
                 let dictionaryWithPlace: [String: AnyObject] = [

@@ -74,7 +74,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresent
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
             self.locationManager.startUpdatingLocation()
         }
-        
-        presenter?.mapViewEvent()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //presenter?.userLocationChange(locations.first!)
     }
 }

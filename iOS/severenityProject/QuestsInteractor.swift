@@ -14,7 +14,7 @@ class QuestsInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedWireFrame.viperInteractors["QuestsInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors["QuestsInteractor"] = self
     }
     
     func questsPresenterEvent() {
