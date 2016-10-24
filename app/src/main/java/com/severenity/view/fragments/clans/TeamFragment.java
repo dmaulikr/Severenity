@@ -155,7 +155,7 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
                     Log.i(Constants.TAG, "user removed from the team");
                     requestTeamInfo();
                     mMoveUserFromTeamDialog.dismiss();
-
+                    mUserIdToDelete = "";
                 } else {
                     // TODO: Error handling
                     String err = response.getString("data");
