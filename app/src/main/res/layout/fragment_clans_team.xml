@@ -141,4 +141,25 @@
         android:choiceMode="singleChoice"
         android:drawSelectorOnTop="true"/>
 
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/leaveTeam"
+        android:background="#00333333"
+        android:addStatesFromChildren="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
+        android:layout_margin="0dp">
+
+        <Button
+            android:text="@string/leave_button"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:id="@+id/leaveTeamButton"
+            android:background="#55333333" />
+
+    </FrameLayout>
+
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.severenity.view.fragments.clans;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,14 +27,19 @@ import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.Dialogs.CustomAlertDialog;
 import com.severenity.view.custom.CustomListView;
+import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
+
 /**
  * Created by Andriy on 8/25/2016.
  */
-public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonClickListener, AdapterView.OnItemLongClickListener {
+public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonClickListener,
+        AdapterView.OnItemLongClickListener,
+        View.OnClickListener {
 
     private TextView          mTeamModerator;
     private TextView          mTeamName;
@@ -40,10 +48,18 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     private TeamFragment      TeamFragmentInstance = this;
     private CustomAlertDialog mMoveUserFromTeamDialog = null;
     private String            mUserIdToDelete;
+    private Button            mLeaveButton;
+    private FrameLayout       mLeaveButtonLayout;
+    private boolean           mIsSelfRemoved = false;
 
-    public TeamFragment(String teamID) {
+    // listener that might handle event once team is created
+    private TeamEventsListener mListener;
+
+
+    public TeamFragment(String teamID, TeamEventsListener listener) {
         // Required empty public constructor
         mTeamID = teamID;
+        mListener = listener;
     }
 
     @Override
@@ -62,6 +78,13 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
         mUsersInTeamList.showLoadSpinner(false);
         mUsersInTeamList.setChoiceMode(CustomListView.CHOICE_MODE_SINGLE);
         mUsersInTeamList.setSelector(R.drawable.item_selector);
+        mLeaveButton = (Button)view.findViewById(R.id.leaveTeamButton);
+        mLeaveButton.setOnClickListener(this);
+        mLeaveButtonLayout = (FrameLayout) view.findViewById(R.id.leaveTeam);
+
+        if (!App.getUserManager().getCurrentUser().getTeam().equals(mTeamID)) {
+            mLeaveButtonLayout.setVisibility(View.GONE);
+        }
 
         requestTeamInfo();
 
@@ -93,6 +116,7 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
                                 Log.i(Constants.TAG, "Current user is moderator for the team. Give ability to delete users");
                                 mUsersInTeamList.setLongClickable(true);
                                 mUsersInTeamList.setOnItemLongClickListener(TeamFragmentInstance);
+                                mLeaveButtonLayout.setVisibility(View.GONE);
                             }
                             mTeamModerator.setHint(team.getModerator().getId());
                             mTeamName.setText(team.getName());
@@ -137,6 +161,7 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
 
     @Override
     public void OnCancelButtonClick() {
+        mIsSelfRemoved = false;
         mUserIdToDelete = "";
         if (mMoveUserFromTeamDialog != null) {
             mMoveUserFromTeamDialog.dismiss();
@@ -156,6 +181,11 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
                     requestTeamInfo();
                     mMoveUserFromTeamDialog.dismiss();
                     mUserIdToDelete = "";
+                    if (mIsSelfRemoved) {
+                        mListener.OnTeamLeft();
+                        App.getUserManager().updateCurrentUser(new String[]{COLUMN_TEAM}, new String[]{""});
+                    }
+
                 } else {
                     // TODO: Error handling
                     String err = response.getString("data");
@@ -173,5 +203,15 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
             Log.e(Constants.TAG, "removing user from team fails: " + (response == null ? "" : response.toString()));
         }
     };
+
+    @Override
+    public void onClick(View v) {
+        mIsSelfRemoved = true;
+        mUserIdToDelete = App.getUserManager().getCurrentUser().getId();
+        mMoveUserFromTeamDialog = CustomAlertDialog.newInstance(R.string.deleteUser, this);
+        mMoveUserFromTeamDialog.setCancelable(false);
+        FragmentManager fm = getFragmentManager();
+        mMoveUserFromTeamDialog.show(fm, "userRemoveDialog");
+    }
 }
 

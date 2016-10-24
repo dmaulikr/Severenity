@@ -27,7 +27,8 @@ import java.util.List;
 /**
  * Created by Andriy on 7/28/2016.
  */
-public class TeamsListFragment extends Fragment implements View.OnClickListener, TeamEventsListener,
+public class TeamsListFragment extends Fragment implements View.OnClickListener,
+        TeamEventsListener,
         CustomListView.LoadDataListener{
 
     private View mAddTeamButtonsView = null;
@@ -143,7 +144,12 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void OnTeamLeft() {
-
+        mOffset = 0;
+        mTeamsList.clearData();
+        requestTeams();
+        if (mListener != null) {
+            mListener.OnTeamLeft();
+        }
     }
 
     @Override
@@ -152,6 +158,8 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onHiddenChanged(boolean hidden) {
         if (!hidden) {
+            mOffset = 0;
+            mTeamsList.clearData();
             requestTeams();
         }
     }

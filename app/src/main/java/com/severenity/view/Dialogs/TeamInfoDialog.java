@@ -27,7 +27,8 @@ import org.json.JSONObject;
 /**
  * Created by Andriy on 9/5/2016.
  */
-public class TeamInfoDialog extends DialogFragment implements View.OnClickListener {
+public class TeamInfoDialog extends DialogFragment implements
+        View.OnClickListener, TeamEventsListener {
 
     private TeamFragment mTeamFragment;
     private String mTeamID;
@@ -57,7 +58,7 @@ public class TeamInfoDialog extends DialogFragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.dialog_team_info, null);
         setCancelable(false);
 
-        mTeamFragment = new TeamFragment(mTeamID);
+        mTeamFragment = new TeamFragment(mTeamID, this);
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.teamInfoFragment, mTeamFragment, "TeamInfoFragment");
@@ -121,4 +122,22 @@ public class TeamInfoDialog extends DialogFragment implements View.OnClickListen
             Log.e(Constants.TAG, "Joining to team fail: " + (response == null ? "" : response.toString()));
         }
     };
+
+    @Override
+    public void OnTeamCreated() {
+
+    }
+
+    @Override
+    public void OnTeamJoined() {
+
+    }
+
+    @Override
+    public void OnTeamLeft() {
+        dismiss();
+        if (mListener != null) {
+            mListener.OnTeamLeft();
+        }
+    }
 }

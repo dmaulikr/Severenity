@@ -63,6 +63,7 @@
     <string name="world_list">List</string>
     <string name="yes_button">Yes</string>
     <string name="no_button">No</string>
+    <string name="leave_button">leave</string>
 
     <!-- Tutorial -->
     <string name="tutorial_profile">Profile</string>
