@@ -159,7 +159,7 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
                 } else {
                     // TODO: Error handling
                     String err = response.getString("data");
-                    Log.e(Constants.TAG, "joining team fail: " + err);
+                    Log.e(Constants.TAG, "removing user from team fails: " + err);
                     Toast.makeText(getContext(), err, Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
@@ -170,7 +170,7 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
         @Override
         public void onErrorCallback(NetworkResponse response) {
             // TODO: Error handling
-            Log.e(Constants.TAG, "Joining to team fail: " + (response == null ? "" : response.toString()));
+            Log.e(Constants.TAG, "removing user from team fails: " + (response == null ? "" : response.toString()));
         }
     };
 }

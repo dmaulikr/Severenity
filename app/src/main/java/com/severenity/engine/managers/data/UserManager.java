@@ -221,7 +221,7 @@ public class UserManager extends DataManager {
         db.update(TABLE_USERS, values, "id = ?", new String[]{user.getId() == null ? currentUser.getId() : user.getId()});
         db.close();
 
-        retrieveCurrentUser();
+        setCurrentUser(retrieveCurrentUser());
     }
 
     private User retrieveCurrentUser() {
