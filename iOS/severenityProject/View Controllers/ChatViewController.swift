@@ -25,6 +25,7 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        newMessage.delegate = self
         print("Chat tab did load");
     }
     
@@ -35,11 +36,11 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
     // MARK: UITextFieldDelegate
     
     @IBAction func sendMessage(_ sender: AnyObject) {
-        presenter?.chatViewEvent()
+        presenter?.userSendsMessage(with: newMessage.text!)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("")
+        presenter?.userSendsMessage(with: newMessage.text!)
         return true
     }
 }

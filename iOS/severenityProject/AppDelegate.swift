@@ -26,8 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let _ = WireFrame.sharedInstance
         SocketService.sharedInstance.establishConnection()
-        
-        
+
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     

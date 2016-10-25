@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class MapInteractor: NSObject {
 
@@ -25,5 +26,11 @@ class MapInteractor: NSObject {
     func mapInteractorEvent(with data: AnyObject) {
         print("Map Interactor event happened with data: \(data)")
         delegate?.mapInteractorDidCallPresenter(with: data as! Dictionary)
+    }
+    
+    func processNewUser(with dictionary: Dictionary<String,AnyObject>) {
+        FacebookService.sharedInstance.downloadFBProfilePicture(with: dictionary["id"] as! String) { (image) in
+            self.delegate?.addNewUserToMap(with: image, and: CLLocationCoordinate2DMake(dictionary["lat"] as! CLLocationDegrees, dictionary["lng"] as! CLLocationDegrees))
+        }
     }
 }

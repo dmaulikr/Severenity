@@ -38,6 +38,8 @@ class SocketService: NSObject {
     func addSocketHandlers() {
         socket.on("location") { (data, ack) in
             print("socket location recieved with data: \(data)")
+            let selector = #selector(MapInteractor.processNewUser(with:))
+            let _ = WireFrame.sharedInstance.viperInteractors["MapInteractor"]?.perform(selector, with: data)
         }
         socket.on("chat message") { (data, ack) in
             print("socket message recieved with data: \(data)")

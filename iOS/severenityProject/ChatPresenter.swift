@@ -24,8 +24,8 @@ class ChatPresenter: NSObject, ChatInteractorDelegate {
         delegate?.chatPresenterDidCallView()
     }
     
-    func chatViewEvent() {
+    func userSendsMessage(with text: String) {
         print("User interacted with Chat View. Chat Presenter responds.")
-        interactor?.chatPresenterEvent()
+        //interactor?.sendMessageToServer(with: text)
     }
 }

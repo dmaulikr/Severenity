@@ -9,14 +9,16 @@
 import UIKit
 import GoogleMaps
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresenterDelegate {
-
-    let locationManager = CLLocationManager()
+class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresenterDelegate, GMSMapViewDelegate {
 
     var recievedLocation: [String: AnyObject] = [:]
-    fileprivate var recievedLocationCoordinates: CLLocationCoordinate2D = CLLocationCoordinate2DMake(0, 0)
-    
+    private var recievedLocationCoordinates = CLLocationCoordinate2D()
     private var presenter: MapPresenter?
+    let locationManager = CLLocationManager()
+    
+    @IBOutlet var mapView: GMSMapView!
+    
+    // MARK: - Init
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -25,42 +27,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresent
         print("Map VIPER module init did complete")
     }
     
-    func mapPresenterDidCallView(with data: Dictionary<String,AnyObject>) {
-        print("MapPresenter did call Map View with data: \(data)")
-        recievedLocation = data
-    }
-    
     // MARK: - Loading view
     
     override func viewWillAppear(_ animated: Bool) {
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            if let recievedLocationLatitude = recievedLocation["lat"] as? Double,
-                let recievedLocationLongtitude = recievedLocation["lng"] as? Double {
-                    recievedLocationCoordinates = CLLocationCoordinate2DMake(recievedLocationLatitude, recievedLocationLongtitude)
-                    print("Displaying place with coordinates: \(recievedLocationCoordinates)")
-            } else {
-                if let defaultCoordinates = locationManager.location?.coordinate {
-                    recievedLocationCoordinates = defaultCoordinates
-                }
-            }
-            let camera = GMSCameraPosition.camera(withLatitude: recievedLocationCoordinates.latitude,
-                                                              longitude: recievedLocationCoordinates.longitude, zoom: 15)
-            let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+            let camera = GMSCameraPosition.camera(withLatitude: (locationManager.location?.coordinate.latitude)!,
+                                                              longitude: (locationManager.location?.coordinate.longitude)!, zoom: 15)
+            mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
             mapView.isMyLocationEnabled = true
-            self.view = mapView
-            let marker = GMSMarker()
-            marker.position = recievedLocationCoordinates
-            if let markerTitle = recievedLocation["name"] as? String {
-                marker.title = markerTitle
-            } else {
-                marker.title = "Your current location"
-            }
-            marker.map = mapView
-        } else {
-            let camera = GMSCameraPosition.camera(withLatitude: -33.86,
-                                                              longitude: 151.20, zoom: 6)
-            let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
-            self.view = mapView
+            view = mapView
         }
     }
     
@@ -76,7 +51,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresent
         }
     }
     
+    // MARK: - CLLocationManager delegate
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        //presenter?.userLocationChange(locations.first!)
+        presenter?.userLocationChange(locations.first!)
+    }
+    
+    // MARK: - MapPresenter delegate
+    
+    func mapPresenterDidCallView(with data: Dictionary<String,AnyObject>) {
+        print("MapPresenter did call Map View with data: \(data)")
+        recievedLocation = data
+    }
+    
+    func addNewPinToMap(with image: UIImage, and coordinates: CLLocationCoordinate2D) {
+        let marker = GMSMarker()
+        marker.position = coordinates
+        marker.title = ""
+        marker.snippet = ""
+        marker.icon = image
+        marker.map = mapView
     }
 }

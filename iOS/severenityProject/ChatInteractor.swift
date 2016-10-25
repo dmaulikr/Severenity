@@ -18,8 +18,9 @@ class ChatInteractor: NSObject {
         WireFrame.sharedInstance.viperInteractors["ChatInteractor"] = self
     }
     
-    func chatPresenterEvent() {
+    func sendMessageToServer(with JSON: Dictionary<String, String>) {
         print("Chat Interactor was called from Chat Presenter")
+        
         delegate?.chatInteractorDidCallPresenter()
     }
 }

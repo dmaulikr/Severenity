@@ -17,6 +17,7 @@ target 'Severenity' do
     pod 'Realm'
     pod 'RealmSwift'
     pod 'Socket.IO-Client-Swift', '~> 8.0.2' # Or latest version
+    pod 'AlamofireImage', '~> 3.1'
 
     post_install do |installer|
         installer.pods_project.targets.each do |target|

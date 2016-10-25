@@ -29,6 +29,10 @@ class MapPresenter: NSObject, MapInteractorDelegate {
         tabBarController.selectedIndex = 2;
     }
     
+    func addNewUserToMap(with picture: UIImage, and coordinates: CLLocationCoordinate2D) {
+        delegate?.addNewPinToMap(with: picture, and: coordinates)
+    }
+    
     func userLocationChange(_ newLocation: CLLocation) {
         print("User changed location, MapPresenter recieved new data.")
         let currentLocationDictionary: [String:String] = ["lat":"\(newLocation.coordinate.latitude)",
