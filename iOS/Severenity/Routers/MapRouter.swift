@@ -11,10 +11,10 @@ import CoreLocation
 
 protocol MapPresenterDelegate: class {
     func mapPresenterDidCallView(with data: Dictionary<String,AnyObject>)
-    func addNewPinToMap(with image: UIImage, and coordinates: CLLocationCoordinate2D)
+    func addNewMarkerToMap(with image: UIImage, and coordinates: CLLocationCoordinate2D, and fbUserId: String)
 }
 
 protocol MapInteractorDelegate: class {
     func mapInteractorDidCallPresenter(with data: Dictionary<String,AnyObject>)
-    func addNewUserToMap(with picture: UIImage, and coordinates: CLLocationCoordinate2D)
+    func addNewUserToMap(with picture: UIImage, and coordinates: CLLocationCoordinate2D, and fbUserId: String)
 }

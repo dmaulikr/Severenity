@@ -31,7 +31,6 @@
 		121A656B1DC38FF900A6C6B9 /* ProfileListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65641DC38FF900A6C6B9 /* ProfileListViewController.swift */; };
 		121A656C1DC38FF900A6C6B9 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65651DC38FF900A6C6B9 /* ProfileViewController.swift */; };
 		121A656E1DC390CA00A6C6B9 /* SeverenityTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A656D1DC390CA00A6C6B9 /* SeverenityTest.swift */; };
-		121A65711DC3910D00A6C6B9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 121A656F1DC3910D00A6C6B9 /* Info.plist */; };
 		121A65721DC3910D00A6C6B9 /* SeverenityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65701DC3910D00A6C6B9 /* SeverenityUITests.swift */; };
 		127A2C881DBF55E600CD492F /* FacebookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127A2C871DBF55E600CD492F /* FacebookService.swift */; };
 		12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */; };
@@ -533,7 +532,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				121A65711DC3910D00A6C6B9 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -843,7 +841,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3EF1D539D2A4755EDFC9C1D5 /* Pods-Severenity.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Severenity/Supporting Files/Severenity.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer: yura.yasinskyy@gmail.com (2DL2BUT3N3)";
@@ -862,7 +860,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 32F484CB3F8B329893C92576 /* Pods-Severenity.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Severenity/Supporting Files/Severenity.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer: yura.yasinskyy@gmail.com (2DL2BUT3N3)";

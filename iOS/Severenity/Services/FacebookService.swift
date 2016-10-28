@@ -24,9 +24,9 @@ class FacebookService: NSObject {
     
     // MARK: - Methods
     
-    func getFBProfilePicture(with fbId: String, and completion: @escaping (_ image: Image) -> Void) {
+    func getFBProfilePicture(with fbUserId: String, and completion: @escaping (_ image: Image) -> Void) {
         
-        guard let serverURL = URL.init(string: "https://graph.facebook.com/\(fbId)/picture?type=normal") else {
+        guard let serverURL = URL.init(string: "https://graph.facebook.com/\(fbUserId)/picture?type=normal") else {
             print("Cannot create url for Facebook profile picture")
             return
         }

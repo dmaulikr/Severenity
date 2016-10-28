@@ -27,9 +27,9 @@ class MapPresenter: NSObject, MapInteractorDelegate {
     
     func userLocationChange(_ newLocation: CLLocation) {
         print("User changed location, MapPresenter recieved new data.")
-        let currentLocationDictionary: [String:String] = ["lat":"\(newLocation.coordinate.latitude)",
-            "lng":"\(newLocation.coordinate.longitude)",
-            "id":FBSDKAccessToken.current().userID]
+        let currentLocationDictionary: [String:Any] = ["lat":newLocation.coordinate.latitude,
+            "lng":newLocation.coordinate.longitude,
+            "id":(FBSDKAccessToken.current().userID)!]
         interactor?.processNewUserLocation(with: currentLocationDictionary)
     }
     
@@ -43,7 +43,7 @@ class MapPresenter: NSObject, MapInteractorDelegate {
         tabBarController?.selectedIndex = 2;
     }
     
-    func addNewUserToMap(with picture: UIImage, and coordinates: CLLocationCoordinate2D) {
-        delegate?.addNewPinToMap(with: picture, and: coordinates)
+    func addNewUserToMap(with picture: UIImage, and coordinates: CLLocationCoordinate2D, and fbUserId: String) {
+        delegate?.addNewMarkerToMap(with: picture, and: coordinates, and: fbUserId)
     }
 }

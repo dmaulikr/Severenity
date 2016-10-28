@@ -34,9 +34,12 @@ class SocketService: NSObject {
         print("socket connection closed")
     }
     
-    func sendLocationToServer(with placeJSON: Dictionary<String,String>) {
+    func sendLocationToServer(with placeJSON: Dictionary<String,Any>) {
         socket.emit("location", placeJSON)
         print("socket message: \(placeJSON) was sent to server")
+        
+        let selector = #selector(MapInteractor.processNewUser(with:))
+        let _ = WireFrame.sharedInstance.viperInteractors["MapInteractor"]?.perform(selector, with: placeJSON)
     }
     
     func addSocketHandlers() {

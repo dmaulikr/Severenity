@@ -31,18 +31,17 @@ class MapInteractor: NSObject {
     
     // MARK: - Service interaction
     
-    func processNewUserLocation(with dictionary: Dictionary<String,String>) {
+    func processNewUserLocation(with dictionary: Dictionary<String,Any>) {
         print("MapInteractor was called from MapPresenter to process new user location")
         SocketService.sharedInstance.sendLocationToServer(with: dictionary)
     }
     
-    func processNewUser(with dictionary: Dictionary<String,AnyObject>) {
-
-        if let lat = dictionary["lat"] as? CLLocationDegrees,
-            let lng = dictionary["lng"] as? CLLocationDegrees,
-            let fbId = dictionary["id"] as? String {
-            FacebookService.sharedInstance.getFBProfilePicture(with: fbId) { (image) in
-                self.delegate?.addNewUserToMap(with: image, and: CLLocationCoordinate2DMake(lat, lng))
+    func processNewUser(with dictionary: Dictionary<String,Any>) {
+        if let lat = dictionary["lat"] as? Double,
+            let lng = dictionary["lng"] as? Double,
+            let fbUserId = dictionary["id"] as? String {
+                FacebookService.sharedInstance.getFBProfilePicture(with: fbUserId) { (image) in
+                    self.delegate?.addNewUserToMap(with: image, and: CLLocationCoordinate2DMake(lat, lng), and: fbUserId)
             }
         }
     }
