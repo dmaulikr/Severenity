@@ -59,6 +59,9 @@
 		52787BE01D86AA35009D17F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787BDF1D86AA35009D17F5 /* AppDelegate.swift */; };
 		52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE61D86AA35009D17F5 /* Assets.xcassets */; };
 		527D92B31D8988510059F14F /* RealmDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527D92B21D8988510059F14F /* RealmDataModel.swift */; };
+		52BD55A91DC3EEF90044666E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BD55A81DC3EEF90044666E /* Extensions.swift */; };
+		52BD55AC1DC3F06B0044666E /* NavigationBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 52BD55AB1DC3F06B0044666E /* NavigationBarView.xib */; };
+		52BD55AE1DC3F2470044666E /* NavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BD55AD1DC3F2470044666E /* NavigationBarView.swift */; };
 		7E0F9D0E1D9649A90038D11D /* app_title.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D0C1D9649A90038D11D /* app_title.png */; };
 		7E0F9D0F1D9649A90038D11D /* ic_launcher_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */; };
 		7E0F9D121D964C440038D11D /* facebook_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D101D964C440038D11D /* facebook_login.png */; };
@@ -97,7 +100,7 @@
 		121A654F1DC38FBF00A6C6B9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		121A65501DC38FBF00A6C6B9 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		121A65511DC38FBF00A6C6B9 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
-		121A65521DC38FBF00A6C6B9 /* NavigationBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarController.swift; sourceTree = "<group>"; };
+		121A65521DC38FBF00A6C6B9 /* NavigationBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationBarController.swift; path = "Navigation Bar/NavigationBarController.swift"; sourceTree = "<group>"; };
 		121A65531DC38FBF00A6C6B9 /* QuestsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestsViewController.swift; sourceTree = "<group>"; };
 		121A65541DC38FBF00A6C6B9 /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		121A65551DC38FBF00A6C6B9 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -147,6 +150,9 @@
 		52787BE61D86AA35009D17F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		52787BEB1D86AA35009D17F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		527D92B21D8988510059F14F /* RealmDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmDataModel.swift; sourceTree = "<group>"; };
+		52BD55A81DC3EEF90044666E /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		52BD55AB1DC3F06B0044666E /* NavigationBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NavigationBarView.xib; path = "Navigation Bar/NavigationBarView.xib"; sourceTree = "<group>"; };
+		52BD55AD1DC3F2470044666E /* NavigationBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationBarView.swift; path = "Navigation Bar/NavigationBarView.swift"; sourceTree = "<group>"; };
 		7E0F9D0C1D9649A90038D11D /* app_title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_title.png; sourceTree = "<group>"; };
 		7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_launcher_big.png; sourceTree = "<group>"; };
 		7E0F9D101D964C440038D11D /* facebook_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_login.png; sourceTree = "<group>"; };
@@ -363,6 +369,7 @@
 			isa = PBXGroup;
 			children = (
 				52787BDF1D86AA35009D17F5 /* AppDelegate.swift */,
+				52BD55A81DC3EEF90044666E /* Extensions.swift */,
 				12EE6B451DBA372A00FFC567 /* WireFrame.swift */,
 				52787BEB1D86AA35009D17F5 /* Info.plist */,
 				523EF8A51DB521C9002001CD /* Severenity.entitlements */,
@@ -379,7 +386,7 @@
 				121A654F1DC38FBF00A6C6B9 /* LaunchScreen.storyboard */,
 				121A65501DC38FBF00A6C6B9 /* Main.storyboard */,
 				121A65511DC38FBF00A6C6B9 /* MapViewController.swift */,
-				121A65521DC38FBF00A6C6B9 /* NavigationBarController.swift */,
+				52BD55AA1DC3F02B0044666E /* Navigation Bar */,
 				12EE6B101DB7B3DC00FFC567 /* Profile */,
 				121A65531DC38FBF00A6C6B9 /* QuestsViewController.swift */,
 				121A65541DC38FBF00A6C6B9 /* ShopViewController.swift */,
@@ -387,6 +394,16 @@
 			);
 			name = Views;
 			path = ../Severenity/Views;
+			sourceTree = "<group>";
+		};
+		52BD55AA1DC3F02B0044666E /* Navigation Bar */ = {
+			isa = PBXGroup;
+			children = (
+				121A65521DC38FBF00A6C6B9 /* NavigationBarController.swift */,
+				52BD55AB1DC3F06B0044666E /* NavigationBarView.xib */,
+				52BD55AD1DC3F2470044666E /* NavigationBarView.swift */,
+			);
+			name = "Navigation Bar";
 			sourceTree = "<group>";
 		};
 		80D382F60247FFE0365B0D4A /* Frameworks */ = {
@@ -545,6 +562,7 @@
 				7E0F9D0E1D9649A90038D11D /* app_title.png in Resources */,
 				7E0F9D0F1D9649A90038D11D /* ic_launcher_big.png in Resources */,
 				121A656A1DC38FF900A6C6B9 /* ProfileListCell.xib in Resources */,
+				52BD55AC1DC3F06B0044666E /* NavigationBarView.xib in Resources */,
 				52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */,
 				7E0F9D151D96524F0038D11D /* DeepSpace.png in Resources */,
 				7E0F9D121D964C440038D11D /* facebook_login.png in Resources */,
@@ -646,6 +664,7 @@
 				12EE6B461DBA372A00FFC567 /* WireFrame.swift in Sources */,
 				12EE6B071DB7AD0B00FFC567 /* ShopRouter.swift in Sources */,
 				12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */,
+				52BD55A91DC3EEF90044666E /* Extensions.swift in Sources */,
 				12EE6B321DB9100B00FFC567 /* MapPresenter.swift in Sources */,
 				121A655C1DC38FBF00A6C6B9 /* QuestsViewController.swift in Sources */,
 				12EE6B3E1DB923A300FFC567 /* QuestsRouter.swift in Sources */,
@@ -663,6 +682,7 @@
 				121A655A1DC38FBF00A6C6B9 /* MapViewController.swift in Sources */,
 				12EE6B401DB923E600FFC567 /* QuestsInteractor.swift in Sources */,
 				527D92B31D8988510059F14F /* RealmDataModel.swift in Sources */,
+				52BD55AE1DC3F2470044666E /* NavigationBarView.swift in Sources */,
 				12EE6B161DB8C50100FFC567 /* ProfilePresenter.swift in Sources */,
 				12EE6B361DB9106F00FFC567 /* MapRouter.swift in Sources */,
 				121A656C1DC38FF900A6C6B9 /* ProfileViewController.swift in Sources */,

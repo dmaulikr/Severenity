@@ -12,6 +12,7 @@ import FBSDKLoginKit
 class NavigationBarController: UINavigationController, NavigationBarPresenterDelegate {
     
     private var presenter: NavigationBarPresenter?
+    private var navBarView: NavigationBarView!
     
     // MARK: - Init
     
@@ -38,12 +39,11 @@ class NavigationBarController: UINavigationController, NavigationBarPresenterDel
     
     func navigationBarPresenterDidCallView(with picture: UIImage, and info: Dictionary<String,String>) {
         print("NavigationBarPresenter did call NavigationBarViewController")
-        let profilePictureView = UIImageView.init(frame: CGRect.init(x: 0, y: 0, width: 40, height: 40))
-        profilePictureView.image = picture
-        profilePictureView.center = CGPoint.init(x: navigationBar.center.x, y: 20)
-        profilePictureView.layer.cornerRadius = 20
-        profilePictureView.clipsToBounds = true
-        navigationBar.addSubview(profilePictureView)
-        navigationBar.topItem?.title = info["name"]
+        if self.navBarView == nil, let navBarView = NavigationBarView.loadFromNibNamed(nibNamed: "NavigationBarView") as? NavigationBarView {
+            navBarView.userPicture.image = picture.roundedImageWithBorder(with: 2, and: UIColor.white)
+            navBarView.userName.text = info["name"]
+            self.navBarView = navBarView
+            navigationBar.addSubview(self.navBarView)
+        }
     }
 }
