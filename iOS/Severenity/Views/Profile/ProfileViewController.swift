@@ -42,7 +42,7 @@ class ProfileViewController: UIViewController, ProfilePresenterDelegate {
         switch contentModeSwitcher.selectedSegmentIndex {
         case 0:
             let listViewController = ProfileListViewController(style: UITableViewStyle.plain)
-            self.addChildViewController(listViewController)
+            addChildViewController(listViewController)
             contentView.subviews.last?.removeFromSuperview()
             contentView.addSubview(listViewController.view)
             listViewController.tableView?.frame = contentView.bounds
@@ -50,7 +50,7 @@ class ProfileViewController: UIViewController, ProfilePresenterDelegate {
             let layout = UICollectionViewFlowLayout()
             layout.itemSize = CGSize(width: 100, height: 50)
             let gridViewController = ProfileGridViewController(collectionViewLayout: layout)
-            self.addChildViewController(gridViewController)
+            addChildViewController(gridViewController)
             contentView.subviews.last?.removeFromSuperview()
             contentView.addSubview(gridViewController.view)
             gridViewController.collectionView?.frame = contentView.bounds

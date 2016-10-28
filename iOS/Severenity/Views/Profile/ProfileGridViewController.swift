@@ -33,7 +33,7 @@ class ProfileGridViewController: UICollectionViewController, ProfileGridPresente
         super.viewDidLoad()
     
         collectionView?.register(UINib(nibName: "ProfileGridCell", bundle: nil), forCellWithReuseIdentifier: "ProfileCellInGrid")
-        self.collectionView?.backgroundColor = UIColor.white
+        collectionView?.backgroundColor = UIColor.black
         
         presenter?.provideProfileGridData()
     }

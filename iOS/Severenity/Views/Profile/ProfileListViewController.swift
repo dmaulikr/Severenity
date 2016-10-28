@@ -32,7 +32,9 @@ class ProfileListViewController: UITableViewController, ProfileListPresenterDele
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.register(UINib(nibName: "ProfileListCell", bundle: nil), forCellReuseIdentifier: "ProfileCellInList")
-        
+        tableView.backgroundColor = UIColor.black
+        tableView.separatorColor = UIColor.init(colorLiteralRed: 132.0, green: 87.0, blue: 153.0, alpha: 0.0)
+
         // Loading indicator for the UITableView
         let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         activityIndicatorView.color = UIColor.magenta
@@ -60,7 +62,6 @@ class ProfileListViewController: UITableViewController, ProfileListPresenterDele
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
         if (indexPath as NSIndexPath).row == (tableView.indexPathsForVisibleRows?.last as NSIndexPath?)?.row {
             activityIndicatorView.stopAnimating()
         }
