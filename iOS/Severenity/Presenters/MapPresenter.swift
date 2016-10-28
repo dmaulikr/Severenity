@@ -36,11 +36,11 @@ class MapPresenter: NSObject, MapInteractorDelegate {
     // MARK: - MapInteractor delegate
     
     func mapInteractorDidCallPresenter(with data: Dictionary<String,AnyObject>) {
-        print("Map Presenter is called from Map Interactor with data: \(data)")
+        print("MapPresenter is called from MapInteractor with data: \(data)")
         delegate?.mapPresenterDidCallView(with: data)
-        
-        let tabBarController = ((UIApplication.shared.delegate as! AppDelegate).window?.rootViewController) as! UITabBarController
-        tabBarController.selectedIndex = 2;
+
+        let tabBarController = ((UIApplication.shared.delegate as? AppDelegate)?.window?.rootViewController) as? UITabBarController
+        tabBarController?.selectedIndex = 2;
     }
     
     func addNewUserToMap(with picture: UIImage, and coordinates: CLLocationCoordinate2D) {

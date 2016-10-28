@@ -37,7 +37,7 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
             return
         }
         
-        print("FB access token: \n AppID: \(accessToken.appID) \n userID: \(accessToken.userID) \n token: \(accessToken.tokenString) \n")
+        print("Facebook access token: \n AppID: \(accessToken.appID) \n userID: \(accessToken.userID) \n token: \(accessToken.tokenString) \n")
         
         view.backgroundColor = UIColor.white
         
@@ -65,6 +65,6 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
     }
 
     func loginButtonDidLogOut(_ loginButton: LoginButton) {
-        print("FB login button did logout")
+        print("Facebook login button did logout")
     }
 }

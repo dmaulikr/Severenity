@@ -38,6 +38,6 @@ class ShopViewController: UIViewController, ShopPresenterDelegate {
     // ShopPresenter delegate
     
     func shopPresenterDidCallView() {
-        print("Shop View is called from Shop Presenter")
+        print("ShopViewController is called from ShopPresenter")
     }
 }

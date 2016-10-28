@@ -25,7 +25,7 @@ class ProfileViewController: UIViewController, ProfilePresenterDelegate {
     }
     
     func profilePresenterDidCallView() {
-        print("Shop View is called from Shop Presenter")
+        print("ProfileViewController is called from ProfilePresenter")
         changeContentMode(self)
     }
     
@@ -44,7 +44,7 @@ class ProfileViewController: UIViewController, ProfilePresenterDelegate {
             let listViewController = ProfileListViewController(style: UITableViewStyle.plain)
             self.addChildViewController(listViewController)
             contentView.subviews.last?.removeFromSuperview()
-            contentView.addSubview((listViewController.view)!)
+            contentView.addSubview(listViewController.view)
             listViewController.tableView?.frame = contentView.bounds
         case 1:
             let layout = UICollectionViewFlowLayout()

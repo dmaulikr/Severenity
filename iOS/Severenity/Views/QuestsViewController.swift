@@ -18,7 +18,6 @@ class QuestsViewController: UIViewController, QuestsPresenterDelegate {
         super.init(coder: aDecoder)
         presenter = QuestsPresenter()
         presenter?.delegate = self
-        print("Chat VIPER module init did complete")
         print("Quests VIPER module init did complete")
     }
     
@@ -36,6 +35,6 @@ class QuestsViewController: UIViewController, QuestsPresenterDelegate {
     // MARK: - QuestsPresenter delegate
     
     func questsPresenterDidCallView() {
-        print("Quests View is called from Quests Presenter")
+        print("QuestsViewController is called from QuestsPresenter")
     }
 }

@@ -25,14 +25,14 @@ class ProfileGridPresenter: NSObject, ProfileGridInteractorDelegate {
     // MARK: - ProfileGridViewController events
     
     func provideProfileGridData() {
-        print("ProfileGrid View needs data. ProfileGrid Presenter responds.")
+        print("ProfileGridViewController needs data. ProfileGridPresenter responds.")
         interactor?.profileGridPresenterNeedsData()
     }
     
     // MARK: - ProfileGridInteracor delegate
     
     func profileGridInteractorDidCallPresenter(withData data: Array<Dictionary<String, AnyObject>>) {
-        print("ProfileGrid Interactor did call Presenter")
+        print("ProfileGridInteractor did call ProfileGridPresenter")
         delegate?.profileGridPresenterDidCallView(withData: dataForTheView)
     }
 }

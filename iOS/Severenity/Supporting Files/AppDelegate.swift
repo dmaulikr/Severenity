@@ -24,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
         print("Google Places API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
         
-        let _ = WireFrame.sharedInstance
         SocketService.sharedInstance.establishConnection()
 
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)

@@ -25,21 +25,23 @@ class ProfileListPresenter: NSObject, ProfileListInteractorDelegate {
     // MARK: ProfileListViewController events
     
     func provideProfileListData() {
-        print("ProfileList View needs data. ProfileList Presenter responds.")
+        print("ProfileListViewController needs data. ProfileListPresenter responds.")
         interactor?.profileListPresenterNeedsData()
     }
     
     func profileListCell(selected cell: IndexPath) {
-        print("ProfileList View item was selected. ProfileList Presenter responds.")
+        print("ProfileListViewController item was selected. ProfileListPresenter responds.")
         interactor?.profileListPresenterAskForTransition(withParam: cell.row)
     }
     
     // MARK: ProfileListInteractor delegate
     
     func profileListInteractorDidCallPresenter(withData data: Array<Dictionary<String, AnyObject>>) {
-        print("ProfileList Presenter did call ProfileList Presenter")
+        print("ProfileListInteracor did call ProfileListPresenter")
         for element in data {
-            dataForTheView.append(element["name"] as! String)
+            if let name = element["name"] as? String {
+                dataForTheView.append(name)
+            }
         }
         
         delegate?.profileListPresenterDidCallView(withData: dataForTheView)

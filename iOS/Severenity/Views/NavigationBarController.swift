@@ -37,7 +37,7 @@ class NavigationBarController: UINavigationController, NavigationBarPresenterDel
     // MARK: - NavigationBarPresenter delegate
     
     func navigationBarPresenterDidCallView(with picture: UIImage, and info: Dictionary<String,String>) {
-        print("NavigationBar presenter did call view")
+        print("NavigationBarPresenter did call NavigationBarViewController")
         let profilePictureView = UIImageView.init(frame: CGRect.init(x: 0, y: 0, width: 40, height: 40))
         profilePictureView.image = picture
         profilePictureView.center = CGPoint.init(x: self.navigationBar.center.x, y: 20)

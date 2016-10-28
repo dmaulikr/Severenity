@@ -24,14 +24,14 @@ class ChatPresenter: NSObject, ChatInteractorDelegate {
     // MARK: ChatViewController events
     
     func userSendsMessage(with text: String) {
-        print("User interacted with Chat View. Chat Presenter responds.")
+        print("User interacted with ChatViewController. ChatPresenter responds.")
         //interactor?.sendMessageToServer(with: text)
     }
     
     // MARK: ChatInteractor delegate
     
     func chatInteractorDidCallPresenter() {
-        print("Chat Presenter is called from Chat Interactor")
+        print("ChatPresenter is called from ChatInteractor")
         delegate?.chatPresenterDidCallView()
     }
 }

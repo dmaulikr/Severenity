@@ -16,11 +16,8 @@ class PlacesService: NSObject {
     let serverURLString = "https://severenity.herokuapp.com/places/all" // to constants
 
     // MARK: - Init
-    
-    // Get the default Realm
-    // You only need to do this once (per thread)
-    fileprivate var realm: Realm?
-    // Should put it in AppDelegate
+
+    private var realm: Realm?
     
     override init() {
         do {
@@ -135,11 +132,13 @@ class PlacesService: NSObject {
     }
     
     // Try to drop data by type 'Location' etc., not all data
-    fileprivate func dropDataInRealm() {
-        try! self.realm?.write {
-            self.realm?.deleteAll()
+    private func dropDataInRealm() {
+        do {
+            try self.realm?.write {
+                self.realm?.deleteAll()
+            }
+        } catch let error as NSError {
+            print("Realm error: \(error.localizedDescription)")
         }
     }
-
-    
 }

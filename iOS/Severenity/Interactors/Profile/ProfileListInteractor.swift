@@ -24,13 +24,15 @@ class ProfileListInteractor: NSObject {
     // MARK: - ProfileListPresenter events
     
     func profileListPresenterNeedsData() {
-        print("ProfileList Interactor was called from ProfileList Presenter")
+        print("ProfileListInteractor was called from ProfileListPresenter")
         getPlacesData()
     }
     
     func profileListPresenterAskForTransition(withParam param: Int) {
         let selector = #selector(MapInteractor.mapInteractorEvent(with:))
-        let _ = WireFrame.sharedInstance.viperInteractors["MapInteractor"]?.perform(selector, with: (self.placesData as! Array<Dictionary<String, AnyObject>>)[param])
+        if let places = (self.placesData as? Array<Dictionary<String, AnyObject>>)?[param] {
+            let _ = WireFrame.sharedInstance.viperInteractors["MapInteractor"]?.perform(selector, with: places)
+        }
     }
     
     // MARK: - Service interaction
@@ -42,7 +44,9 @@ class ProfileListInteractor: NSObject {
     private func getPlacesData() {
         locationsServerManager.provideData { (result) in
             self.placesData = result as [AnyObject]
-            self.delegate?.profileListInteractorDidCallPresenter(withData: self.placesData as! Array<Dictionary<String, AnyObject>>)
+            if let places = self.placesData as? Array<Dictionary<String, AnyObject>> {
+                self.delegate?.profileListInteractorDidCallPresenter(withData: places)
+            }
         }
     }
 }

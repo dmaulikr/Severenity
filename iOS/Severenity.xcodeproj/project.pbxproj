@@ -357,8 +357,7 @@
 				52787BF11D86AAE3009D17F5 /* Supporting Files */,
 				121A654C1DC386F300A6C6B9 /* Graphical Resources */,
 			);
-			name = Severenity;
-			path = severenityProject;
+			path = Severenity;
 			sourceTree = "<group>";
 		};
 		52787BF11D86AAE3009D17F5 /* Supporting Files */ = {

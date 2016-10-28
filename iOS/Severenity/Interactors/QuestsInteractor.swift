@@ -22,7 +22,7 @@ class QuestsInteractor: NSObject {
     // MARK: - QuestsPresenter events
     
     func questsPresenterEvent() {
-        print("Quests Interactor was called from Quests Presenter")
+        print("QuestsInteractor was called from QuestsPresenter")
         delegate?.questsInteractorDidCallPresenter()
     }
 }

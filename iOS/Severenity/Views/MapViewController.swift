@@ -30,9 +30,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresent
     // MARK: - Loading view
     
     override func viewWillAppear(_ animated: Bool) {
-        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            let camera = GMSCameraPosition.camera(withLatitude: (locationManager.location?.coordinate.latitude)!,
-                                                              longitude: (locationManager.location?.coordinate.longitude)!, zoom: 15)
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse, let coordinates = locationManager.location?.coordinate {
+            let camera = GMSCameraPosition.camera(withLatitude: coordinates.latitude,
+                                                              longitude: coordinates.longitude, zoom: 15)
             mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
             mapView.isMyLocationEnabled = true
             view = mapView
@@ -54,7 +54,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresent
     // MARK: - MapPresenter delegate
     
     func mapPresenterDidCallView(with data: Dictionary<String,AnyObject>) {
-        print("MapPresenter did call Map View with data: \(data)")
+        print("MapPresenter did call MapViewController with data: \(data)")
         recievedLocation = data
     }
     
@@ -70,6 +70,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresent
     // MARK: - CLLocationManager delegate
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        presenter?.userLocationChange(locations.first!)
+        if let currentLocation = locations.first {
+            presenter?.userLocationChange(currentLocation)
+        }
     }
 }

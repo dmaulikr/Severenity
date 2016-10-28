@@ -16,14 +16,13 @@ class ChatInteractor: NSObject {
     
     override init() {
         super.init()
-        //(UIApplication.shared.delegate as! AppDelegate).viperInteractors["ChatInteractor"] = self
         WireFrame.sharedInstance.viperInteractors["ChatInteractor"] = self
     }
     
     // MARK: - Service interaction
     
     func sendMessageToServer(with JSON: Dictionary<String, String>) {
-        print("Chat Interactor was called from Chat Presenter")
+        print("ChatInteractor was called from ChatPresenter")
         
         delegate?.chatInteractorDidCallPresenter()
     }

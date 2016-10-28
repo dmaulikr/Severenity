@@ -19,7 +19,6 @@ class TabBarController: UITabBarController, TabBarPresenterDelegate {
         presenter = TabBarPresenter()
         presenter?.delegate = self
         print("TabBar VIPER module init did complete")
-        print("TabBar VIPER module init did complete")
     }
     
     // MARK: - Loading view
@@ -32,6 +31,6 @@ class TabBarController: UITabBarController, TabBarPresenterDelegate {
     // MARK: - TabBarPresenter delegate
     
     func tabBarPresenterDidCallView() {
-        print("TabBar View is called from TabBar Presenter")
+        print("TabBarController is called from TabBarPresenter")
     }
 }

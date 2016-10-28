@@ -22,7 +22,7 @@ class ShopInteractor: NSObject {
     // MARK: - ShopPresenter events
     
     func shopPresenterEvent() {
-        print("Shop Interactor was called from Shop Presenter")
+        print("ShopInteractor was called from ShopPresenter")
         delegate?.shopInteractorDidCallPresenter()
     }
 }

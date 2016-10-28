@@ -27,7 +27,7 @@ class FacebookService: NSObject {
     func getFBProfilePicture(with fbId: String, and completion: @escaping (_ image: Image) -> Void) {
         
         guard let serverURL = URL.init(string: "https://graph.facebook.com/\(fbId)/picture?type=normal") else {
-            print("Cannot create url for FB picture")
+            print("Cannot create url for Facebook profile picture")
             return
         }
         let serverRequest = URLRequest.init(url: serverURL)
@@ -35,7 +35,7 @@ class FacebookService: NSObject {
         Alamofire.request(serverRequest).responseImage { response in
             
             if let image = response.result.value {
-                print("FB profile picture downloaded")
+                print("Facebook profile picture downloaded")
                 completion(image)
             }
         }
@@ -44,8 +44,9 @@ class FacebookService: NSObject {
     func getFBProfileInfo(with completion: @escaping (_ info: Dictionary<String,String>) -> Void){
         FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, relationship_status"]).start(completionHandler: { (connection, result, error) -> Void in
             if (error == nil){
-                let fbDetails = result as! NSDictionary
-                completion(fbDetails as! Dictionary<String, String>)
+                if let fbDetails = result as? Dictionary<String, String> {
+                    completion(fbDetails)
+                }
             }
         })
     }

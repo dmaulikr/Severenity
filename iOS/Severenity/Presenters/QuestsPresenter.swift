@@ -24,14 +24,14 @@ class QuestsPresenter: NSObject, QuestsInteractorDelegate {
     // MARK: - QuestsViewController events
     
     func questsViewEvent() {
-        print("User interacted with Quests View. Quests Presenter responds.")
+        print("User interacted with QuestsViewController. QuestsPresenter responds.")
         interactor?.questsPresenterEvent()
     }
     
     // MARK: - QuestsInteractor delegate
     
     func questsInteractorDidCallPresenter() {
-        print("Quests Presenter is called from Quests Interactor")
+        print("QuestsPresenter is called from QuestsInteractor")
         delegate?.questsPresenterDidCallView()
     }
 }

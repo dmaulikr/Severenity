@@ -41,7 +41,7 @@ class ProfileGridViewController: UICollectionViewController, ProfileGridPresente
    // MARK: - ProfileGridPresenter delegate
     
     func profileGridPresenterDidCallView(withData data: [String]) {
-        print("ProfileGrid Presenter did call view")
+        print("ProfileGridPresenter did call ProfileGridViewController")
     }
 
     // MARK: UICollectionView data source

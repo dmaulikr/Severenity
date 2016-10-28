@@ -24,14 +24,14 @@ class ProfilePresenter: NSObject, ProfileInteractorDelegate {
     // MARK: - ProfileViewController events
     
     func profileViewEvent() {
-        print("User interacted with Profile View. Profile Presenter responds.")
+        print("User interacted with ProfileViewController. ProfilePresenter responds.")
         interactor?.profilePresenterEvent()
     }
     
     // MARK: - ProfileInteractor delegate
     
     func profileInteractorDidCallPresenter() {
-        print("Profile Presenter is called from Profile Interactor")
+        print("ProfilePresenter is called from ProfileInteractor")
         delegate?.profilePresenterDidCallView()
     }
 }

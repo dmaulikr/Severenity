@@ -22,7 +22,7 @@ class TabBarInteractor: NSObject {
     // MARK: - TabBarPresetner events
     
     func tabBarPresenterEvent() {
-        print("TabBar Interactor was called from TabBar Presenter")
+        print("TabBarInteractor was called from TabBarPresenter")
         delegate?.tabBarInteractorDidCallPresenter()
     }
 }

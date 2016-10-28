@@ -23,7 +23,7 @@ class NavigationBarInteractor: NSObject {
     // MARK: - NavigationBarPresenter events
     
     func navigationBarPresenterNeedsData() {
-        print("NavigationBar Interactor was called from NavigationBar Presenter")
+        print("NavigationBarInteractor was called from NavigationBarPresenter")
         
         FacebookService.sharedInstance.getFBProfilePicture(with: (FBSDKAccessToken.current().userID)!) { (image) in
             FacebookService.sharedInstance.getFBProfileInfo { (info) in

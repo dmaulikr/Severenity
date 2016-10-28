@@ -24,14 +24,14 @@ class TabBarPresenter: NSObject, TabBarInteractorDelegate {
     // MARK: - TabBarViewController events
     
     func tabBarViewEvent() {
-        print("User interacted with TabBar View. TabBar Presenter responds.")
+        print("User interacted with TabBarController. TabBarPresenter responds.")
         interactor?.tabBarPresenterEvent()
     }
     
     // MARK: - TabBarInteractor delegate
     
     func tabBarInteractorDidCallPresenter() {
-        print("TabBar Presenter is called from TabBar Interactor")
+        print("TabBarPresenter is called from TabBarInteractor")
         delegate?.tabBarPresenterDidCallView()
     }
 }

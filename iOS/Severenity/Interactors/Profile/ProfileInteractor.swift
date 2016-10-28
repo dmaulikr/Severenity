@@ -22,7 +22,7 @@ class ProfileInteractor: NSObject {
     // MARK: - ProfilePresenter events
     
     func profilePresenterEvent() {
-        print("Profile Interactor was called from Profile Presenter")
+        print("ProfileInteractor was called from ProfilePresenter")
         delegate?.profileInteractorDidCallPresenter()
     }
 }

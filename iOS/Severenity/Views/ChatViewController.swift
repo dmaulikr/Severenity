@@ -35,7 +35,7 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
     // MARK: - ChatPresenter delegate
     
     func chatPresenterDidCallView() {
-        print("Chat View is called from Chat Presenter")
+        print("ChatViewController is called from ChatPresenter")
     }
     
     // MARK: UITextField delegate

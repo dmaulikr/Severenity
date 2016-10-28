@@ -46,7 +46,7 @@ class ProfileListViewController: UITableViewController, ProfileListPresenterDele
     // MARK: ProfileListPresenter delegate
     
     func profileListPresenterDidCallView(withData data: [String]) {
-        print("ProfileList Presenter did call view")
+        print("ProfileListPresenter did call ProfileListViewController")
         dataForList = data
         tableView.reloadData()
     }

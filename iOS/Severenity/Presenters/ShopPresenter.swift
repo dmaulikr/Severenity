@@ -24,14 +24,14 @@ class ShopPresenter: NSObject, ShopInteractorDelegate {
     // MARK: - ShopViewController events
     
     func shopViewEvent() {
-        print("User interacted with Shop View. Shop Presenter responds.")
+        print("User interacted with ShopViewController. ShopPresenter responds.")
         interactor?.shopPresenterEvent()
     }
     
     // MARK: - ShopInteractor delegate
     
     func shopInteractorDidCallPresenter() {
-        print("Shop Presenter is called from Shop Interactor")
+        print("ShopPresenter is called from ShopInteractor")
         delegate?.shopPresenterDidCallView()
     }
 }
