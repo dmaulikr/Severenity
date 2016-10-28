@@ -8,6 +8,31 @@
 
 /* Begin PBXBuildFile section */
 		121328771DBE45F700FED50E /* SocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121328761DBE45F700FED50E /* SocketService.swift */; };
+		121A65411DC3678B00A6C6B9 /* NavigationBarPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65401DC3678B00A6C6B9 /* NavigationBarPresenter.swift */; };
+		121A65431DC367A100A6C6B9 /* NavigationBarInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65421DC367A100A6C6B9 /* NavigationBarInteractor.swift */; };
+		121A65451DC367BC00A6C6B9 /* NavigationBarRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65441DC367BC00A6C6B9 /* NavigationBarRouter.swift */; };
+		121A65471DC37BA500A6C6B9 /* TabBarRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65461DC37BA500A6C6B9 /* TabBarRouter.swift */; };
+		121A65491DC37C0300A6C6B9 /* TabBarInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65481DC37C0300A6C6B9 /* TabBarInteractor.swift */; };
+		121A654B1DC37C5000A6C6B9 /* TabBarPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A654A1DC37C5000A6C6B9 /* TabBarPresenter.swift */; };
+		121A65561DC38FBF00A6C6B9 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A654D1DC38FBF00A6C6B9 /* ChatViewController.swift */; };
+		121A65571DC38FBF00A6C6B9 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A654E1DC38FBF00A6C6B9 /* InitialViewController.swift */; };
+		121A65581DC38FBF00A6C6B9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 121A654F1DC38FBF00A6C6B9 /* LaunchScreen.storyboard */; };
+		121A65591DC38FBF00A6C6B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 121A65501DC38FBF00A6C6B9 /* Main.storyboard */; };
+		121A655A1DC38FBF00A6C6B9 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65511DC38FBF00A6C6B9 /* MapViewController.swift */; };
+		121A655B1DC38FBF00A6C6B9 /* NavigationBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65521DC38FBF00A6C6B9 /* NavigationBarController.swift */; };
+		121A655C1DC38FBF00A6C6B9 /* QuestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65531DC38FBF00A6C6B9 /* QuestsViewController.swift */; };
+		121A655D1DC38FBF00A6C6B9 /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65541DC38FBF00A6C6B9 /* ShopViewController.swift */; };
+		121A655E1DC38FBF00A6C6B9 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65551DC38FBF00A6C6B9 /* TabBarController.swift */; };
+		121A65661DC38FF900A6C6B9 /* ProfileGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A655F1DC38FF900A6C6B9 /* ProfileGridCell.swift */; };
+		121A65671DC38FF900A6C6B9 /* ProfileGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121A65601DC38FF900A6C6B9 /* ProfileGridCell.xib */; };
+		121A65681DC38FF900A6C6B9 /* ProfileGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65611DC38FF900A6C6B9 /* ProfileGridViewController.swift */; };
+		121A65691DC38FF900A6C6B9 /* ProfileListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65621DC38FF900A6C6B9 /* ProfileListCell.swift */; };
+		121A656A1DC38FF900A6C6B9 /* ProfileListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121A65631DC38FF900A6C6B9 /* ProfileListCell.xib */; };
+		121A656B1DC38FF900A6C6B9 /* ProfileListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65641DC38FF900A6C6B9 /* ProfileListViewController.swift */; };
+		121A656C1DC38FF900A6C6B9 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65651DC38FF900A6C6B9 /* ProfileViewController.swift */; };
+		121A656E1DC390CA00A6C6B9 /* SeverenityTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A656D1DC390CA00A6C6B9 /* SeverenityTest.swift */; };
+		121A65711DC3910D00A6C6B9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 121A656F1DC3910D00A6C6B9 /* Info.plist */; };
+		121A65721DC3910D00A6C6B9 /* SeverenityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65701DC3910D00A6C6B9 /* SeverenityUITests.swift */; };
 		127A2C881DBF55E600CD492F /* FacebookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127A2C871DBF55E600CD492F /* FacebookService.swift */; };
 		12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */; };
 		12EE6B011DB7AB3000FFC567 /* ShopInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */; };
@@ -30,27 +55,10 @@
 		12EE6B3E1DB923A300FFC567 /* QuestsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B3D1DB923A300FFC567 /* QuestsRouter.swift */; };
 		12EE6B401DB923E600FFC567 /* QuestsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B3F1DB923E600FFC567 /* QuestsInteractor.swift */; };
 		12EE6B421DB9241B00FFC567 /* QuestsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B411DB9241B00FFC567 /* QuestsPresenter.swift */; };
-		12EE6B441DBA0C6800FFC567 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B431DBA0C6800FFC567 /* TabBarController.swift */; };
 		12EE6B461DBA372A00FFC567 /* WireFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B451DBA372A00FFC567 /* WireFrame.swift */; };
-		5223A0E11D8AE821009A0EC7 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */; };
-		523828751D89331500F55364 /* severenityProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828741D89331500F55364 /* severenityProjectTests.swift */; };
-		523828831D89332D00F55364 /* severenityProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523828821D89332D00F55364 /* severenityProjectUITests.swift */; };
 		5264A7A11D8828B500EE78FC /* PlacesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7A01D8828B500EE78FC /* PlacesService.swift */; };
-		5264A7A51D882F1700EE78FC /* ProfileListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A7A41D882F1700EE78FC /* ProfileListCell.xib */; };
-		5264A7A71D882F2400EE78FC /* ProfileGridCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5264A7A61D882F2400EE78FC /* ProfileGridCell.xib */; };
-		5264A7A91D882F6700EE78FC /* ProfileListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7A81D882F6700EE78FC /* ProfileListCell.swift */; };
-		5264A7AB1D882F8800EE78FC /* ProfileGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7AA1D882F8800EE78FC /* ProfileGridCell.swift */; };
 		52787BE01D86AA35009D17F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787BDF1D86AA35009D17F5 /* AppDelegate.swift */; };
-		52787BE51D86AA35009D17F5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE31D86AA35009D17F5 /* Main.storyboard */; };
 		52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE61D86AA35009D17F5 /* Assets.xcassets */; };
-		52787BEA1D86AA35009D17F5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE81D86AA35009D17F5 /* LaunchScreen.storyboard */; };
-		52787C061D86C3BD009D17F5 /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C001D86C3BD009D17F5 /* ShopViewController.swift */; };
-		52787C071D86C3BD009D17F5 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C011D86C3BD009D17F5 /* ProfileViewController.swift */; };
-		52787C081D86C3BD009D17F5 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C021D86C3BD009D17F5 /* MapViewController.swift */; };
-		52787C091D86C3BD009D17F5 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C031D86C3BD009D17F5 /* ChatViewController.swift */; };
-		52787C0A1D86C3BD009D17F5 /* QuestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C041D86C3BD009D17F5 /* QuestsViewController.swift */; };
-		52787C1B1D86D88D009D17F5 /* ProfileListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C1A1D86D88D009D17F5 /* ProfileListViewController.swift */; };
-		52787C211D86EEC6009D17F5 /* ProfileGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787C201D86EEC6009D17F5 /* ProfileGridViewController.swift */; };
 		527D92B31D8988510059F14F /* RealmDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527D92B21D8988510059F14F /* RealmDataModel.swift */; };
 		7E0F9D0E1D9649A90038D11D /* app_title.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D0C1D9649A90038D11D /* app_title.png */; };
 		7E0F9D0F1D9649A90038D11D /* ic_launcher_big.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */; };
@@ -79,6 +87,31 @@
 
 /* Begin PBXFileReference section */
 		121328761DBE45F700FED50E /* SocketService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketService.swift; sourceTree = "<group>"; };
+		121A65401DC3678B00A6C6B9 /* NavigationBarPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarPresenter.swift; sourceTree = "<group>"; };
+		121A65421DC367A100A6C6B9 /* NavigationBarInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarInteractor.swift; sourceTree = "<group>"; };
+		121A65441DC367BC00A6C6B9 /* NavigationBarRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarRouter.swift; sourceTree = "<group>"; };
+		121A65461DC37BA500A6C6B9 /* TabBarRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarRouter.swift; sourceTree = "<group>"; };
+		121A65481DC37C0300A6C6B9 /* TabBarInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarInteractor.swift; sourceTree = "<group>"; };
+		121A654A1DC37C5000A6C6B9 /* TabBarPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarPresenter.swift; sourceTree = "<group>"; };
+		121A654D1DC38FBF00A6C6B9 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		121A654E1DC38FBF00A6C6B9 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
+		121A654F1DC38FBF00A6C6B9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		121A65501DC38FBF00A6C6B9 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		121A65511DC38FBF00A6C6B9 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		121A65521DC38FBF00A6C6B9 /* NavigationBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarController.swift; sourceTree = "<group>"; };
+		121A65531DC38FBF00A6C6B9 /* QuestsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestsViewController.swift; sourceTree = "<group>"; };
+		121A65541DC38FBF00A6C6B9 /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
+		121A65551DC38FBF00A6C6B9 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		121A655F1DC38FF900A6C6B9 /* ProfileGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileGridCell.swift; sourceTree = "<group>"; };
+		121A65601DC38FF900A6C6B9 /* ProfileGridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileGridCell.xib; sourceTree = "<group>"; };
+		121A65611DC38FF900A6C6B9 /* ProfileGridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileGridViewController.swift; sourceTree = "<group>"; };
+		121A65621DC38FF900A6C6B9 /* ProfileListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileListCell.swift; sourceTree = "<group>"; };
+		121A65631DC38FF900A6C6B9 /* ProfileListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileListCell.xib; sourceTree = "<group>"; };
+		121A65641DC38FF900A6C6B9 /* ProfileListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileListViewController.swift; sourceTree = "<group>"; };
+		121A65651DC38FF900A6C6B9 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		121A656D1DC390CA00A6C6B9 /* SeverenityTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeverenityTest.swift; sourceTree = "<group>"; };
+		121A656F1DC3910D00A6C6B9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		121A65701DC3910D00A6C6B9 /* SeverenityUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeverenityUITests.swift; sourceTree = "<group>"; };
 		127A2C871DBF55E600CD492F /* FacebookService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookService.swift; sourceTree = "<group>"; };
 		1293BE2B1DB65AE000658292 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopPresenter.swift; sourceTree = "<group>"; };
@@ -102,37 +135,19 @@
 		12EE6B3D1DB923A300FFC567 /* QuestsRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestsRouter.swift; sourceTree = "<group>"; };
 		12EE6B3F1DB923E600FFC567 /* QuestsInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestsInteractor.swift; sourceTree = "<group>"; };
 		12EE6B411DB9241B00FFC567 /* QuestsPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestsPresenter.swift; sourceTree = "<group>"; };
-		12EE6B431DBA0C6800FFC567 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		12EE6B451DBA372A00FFC567 /* WireFrame.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WireFrame.swift; sourceTree = "<group>"; };
 		32F484CB3F8B329893C92576 /* Pods-Severenity.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Severenity.release.xcconfig"; path = "Pods/Target Support Files/Pods-Severenity/Pods-Severenity.release.xcconfig"; sourceTree = "<group>"; };
 		3EF1D539D2A4755EDFC9C1D5 /* Pods-Severenity.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Severenity.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Severenity/Pods-Severenity.debug.xcconfig"; sourceTree = "<group>"; };
-		5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InitialViewController.swift; path = "View Controllers/InitialViewController.swift"; sourceTree = "<group>"; };
 		523828721D89331500F55364 /* SeverenityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SeverenityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		523828741D89331500F55364 /* severenityProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = severenityProjectTests.swift; sourceTree = "<group>"; };
 		523828761D89331500F55364 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		523828801D89332D00F55364 /* SeverenityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SeverenityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		523828821D89332D00F55364 /* severenityProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = severenityProjectUITests.swift; sourceTree = "<group>"; };
-		523828841D89332D00F55364 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		523EF8A51DB521C9002001CD /* Severenity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Severenity.entitlements; sourceTree = SOURCE_ROOT; };
-		5264A7A01D8828B500EE78FC /* PlacesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PlacesService.swift; path = "Network Managers/PlacesService.swift"; sourceTree = "<group>"; };
-		5264A7A41D882F1700EE78FC /* ProfileListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProfileListCell.xib; path = Views/ListCell/ProfileListCell.xib; sourceTree = "<group>"; };
-		5264A7A61D882F2400EE78FC /* ProfileGridCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ProfileGridCell.xib; path = Views/GridCell/ProfileGridCell.xib; sourceTree = "<group>"; };
-		5264A7A81D882F6700EE78FC /* ProfileListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileListCell.swift; sourceTree = "<group>"; };
-		5264A7AA1D882F8800EE78FC /* ProfileGridCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileGridCell.swift; sourceTree = "<group>"; };
+		523EF8A51DB521C9002001CD /* Severenity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Severenity.entitlements; path = "Severenity/Supporting Files/Severenity.entitlements"; sourceTree = SOURCE_ROOT; };
+		5264A7A01D8828B500EE78FC /* PlacesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesService.swift; sourceTree = "<group>"; };
 		52787BDC1D86AA35009D17F5 /* Severenity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Severenity.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52787BDF1D86AA35009D17F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		52787BE41D86AA35009D17F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		52787BE61D86AA35009D17F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		52787BE91D86AA35009D17F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		52787BEB1D86AA35009D17F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		52787C001D86C3BD009D17F5 /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ShopViewController.swift; path = "View Controllers/ShopViewController.swift"; sourceTree = "<group>"; };
-		52787C011D86C3BD009D17F5 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileViewController.swift; path = "View Controllers/ProfileViewController.swift"; sourceTree = "<group>"; };
-		52787C021D86C3BD009D17F5 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = "View Controllers/MapViewController.swift"; sourceTree = "<group>"; };
-		52787C031D86C3BD009D17F5 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatViewController.swift; path = "View Controllers/ChatViewController.swift"; sourceTree = "<group>"; };
-		52787C041D86C3BD009D17F5 /* QuestsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuestsViewController.swift; path = "View Controllers/QuestsViewController.swift"; sourceTree = "<group>"; };
-		52787C1A1D86D88D009D17F5 /* ProfileListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileListViewController.swift; path = "View Controllers/ProfileListViewController.swift"; sourceTree = "<group>"; };
-		52787C201D86EEC6009D17F5 /* ProfileGridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileGridViewController.swift; path = "View Controllers/ProfileGridViewController.swift"; sourceTree = "<group>"; };
-		527D92B21D8988510059F14F /* RealmDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RealmDataModel.swift; path = Models/RealmDataModel.swift; sourceTree = "<group>"; };
+		527D92B21D8988510059F14F /* RealmDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmDataModel.swift; sourceTree = "<group>"; };
 		7E0F9D0C1D9649A90038D11D /* app_title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_title.png; sourceTree = "<group>"; };
 		7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_launcher_big.png; sourceTree = "<group>"; };
 		7E0F9D101D964C440038D11D /* facebook_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_login.png; sourceTree = "<group>"; };
@@ -167,16 +182,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		121A654C1DC386F300A6C6B9 /* Graphical Resources */ = {
+			isa = PBXGroup;
+			children = (
+				7E0F9D141D96524F0038D11D /* DeepSpace.png */,
+				7E0F9D101D964C440038D11D /* facebook_login.png */,
+				7E0F9D111D964C440038D11D /* facebook_logout.png */,
+				7E0F9D0C1D9649A90038D11D /* app_title.png */,
+				7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */,
+				52787BE61D86AA35009D17F5 /* Assets.xcassets */,
+			);
+			name = "Graphical Resources";
+			path = "../Severenity/Graphical Resources";
+			sourceTree = "<group>";
+		};
 		12EE6B0B1DB7B2DE00FFC567 /* Presenters */ = {
 			isa = PBXGroup;
 			children = (
 				12EE6B3B1DB9215200FFC567 /* ChatPresenter.swift */,
 				12EE6B311DB9100B00FFC567 /* MapPresenter.swift */,
+				121A65401DC3678B00A6C6B9 /* NavigationBarPresenter.swift */,
 				12EE6B121DB8C4AF00FFC567 /* Profile */,
-				12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */,
 				12EE6B411DB9241B00FFC567 /* QuestsPresenter.swift */,
+				12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */,
+				121A654A1DC37C5000A6C6B9 /* TabBarPresenter.swift */,
 			);
 			name = Presenters;
+			path = ../Severenity/Presenters;
 			sourceTree = "<group>";
 		};
 		12EE6B0C1DB7B2FF00FFC567 /* Interactors */ = {
@@ -184,11 +216,14 @@
 			children = (
 				12EE6B391DB9211C00FFC567 /* ChatInteractor.swift */,
 				12EE6B331DB9103100FFC567 /* MapInteractor.swift */,
+				121A65421DC367A100A6C6B9 /* NavigationBarInteractor.swift */,
 				12EE6B1B1DB8C69A00FFC567 /* Profile */,
-				12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */,
 				12EE6B3F1DB923E600FFC567 /* QuestsInteractor.swift */,
+				12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */,
+				121A65481DC37C0300A6C6B9 /* TabBarInteractor.swift */,
 			);
 			name = Interactors;
+			path = ../Severenity/Interactors;
 			sourceTree = "<group>";
 		};
 		12EE6B0D1DB7B31600FFC567 /* Services */ = {
@@ -199,6 +234,7 @@
 				121328761DBE45F700FED50E /* SocketService.swift */,
 			);
 			name = Services;
+			path = ../Severenity/Services;
 			sourceTree = "<group>";
 		};
 		12EE6B0E1DB7B32100FFC567 /* Entities */ = {
@@ -207,16 +243,21 @@
 				527D92B21D8988510059F14F /* RealmDataModel.swift */,
 			);
 			name = Entities;
+			path = ../Severenity/Entities;
 			sourceTree = "<group>";
 		};
 		12EE6B101DB7B3DC00FFC567 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				52787C011D86C3BD009D17F5 /* ProfileViewController.swift */,
-				5264A7A21D882ED000EE78FC /* List View */,
-				5264A7A31D882EE000EE78FC /* Grid View */,
+				121A65651DC38FF900A6C6B9 /* ProfileViewController.swift */,
+				121A65631DC38FF900A6C6B9 /* ProfileListCell.xib */,
+				121A65621DC38FF900A6C6B9 /* ProfileListCell.swift */,
+				121A65641DC38FF900A6C6B9 /* ProfileListViewController.swift */,
+				121A65601DC38FF900A6C6B9 /* ProfileGridCell.xib */,
+				121A655F1DC38FF900A6C6B9 /* ProfileGridCell.swift */,
+				121A65611DC38FF900A6C6B9 /* ProfileGridViewController.swift */,
 			);
-			name = Profile;
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		12EE6B111DB7B46200FFC567 /* Routers */ = {
@@ -224,129 +265,62 @@
 			children = (
 				12EE6B371DB920E100FFC567 /* ChatRouter.swift */,
 				12EE6B351DB9106F00FFC567 /* MapRouter.swift */,
+				121A65441DC367BC00A6C6B9 /* NavigationBarRouter.swift */,
 				12EE6B281DB8C74F00FFC567 /* Profile */,
-				12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */,
 				12EE6B3D1DB923A300FFC567 /* QuestsRouter.swift */,
+				12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */,
+				121A65461DC37BA500A6C6B9 /* TabBarRouter.swift */,
 			);
 			name = Routers;
+			path = ../Severenity/Routers;
 			sourceTree = "<group>";
 		};
 		12EE6B121DB8C4AF00FFC567 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				12EE6B131DB8C4BE00FFC567 /* List Presenter */,
-				12EE6B141DB8C4D900FFC567 /* Grid Presenter */,
+				12EE6B171DB8C51900FFC567 /* ProfileListPresenter.swift */,
+				12EE6B191DB8C52500FFC567 /* ProfileGridPresenter.swift */,
 				12EE6B151DB8C50100FFC567 /* ProfilePresenter.swift */,
 			);
-			name = Profile;
-			sourceTree = "<group>";
-		};
-		12EE6B131DB8C4BE00FFC567 /* List Presenter */ = {
-			isa = PBXGroup;
-			children = (
-				12EE6B171DB8C51900FFC567 /* ProfileListPresenter.swift */,
-			);
-			name = "List Presenter";
-			sourceTree = "<group>";
-		};
-		12EE6B141DB8C4D900FFC567 /* Grid Presenter */ = {
-			isa = PBXGroup;
-			children = (
-				12EE6B191DB8C52500FFC567 /* ProfileGridPresenter.swift */,
-			);
-			name = "Grid Presenter";
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		12EE6B1B1DB8C69A00FFC567 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				12EE6B1C1DB8C6A400FFC567 /* List Interactor */,
-				12EE6B1D1DB8C6BB00FFC567 /* Grid Interactor */,
+				12EE6B1E1DB8C6E700FFC567 /* ProfileListInteractor.swift */,
+				12EE6B201DB8C6F700FFC567 /* ProfileGridInteractor.swift */,
 				12EE6B221DB8C70A00FFC567 /* ProfileInteractor.swift */,
 			);
-			name = Profile;
-			sourceTree = "<group>";
-		};
-		12EE6B1C1DB8C6A400FFC567 /* List Interactor */ = {
-			isa = PBXGroup;
-			children = (
-				12EE6B1E1DB8C6E700FFC567 /* ProfileListInteractor.swift */,
-			);
-			name = "List Interactor";
-			sourceTree = "<group>";
-		};
-		12EE6B1D1DB8C6BB00FFC567 /* Grid Interactor */ = {
-			isa = PBXGroup;
-			children = (
-				12EE6B201DB8C6F700FFC567 /* ProfileGridInteractor.swift */,
-			);
-			name = "Grid Interactor";
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		12EE6B281DB8C74F00FFC567 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				12EE6B2B1DB8C76400FFC567 /* List Router */,
-				12EE6B2C1DB8C76D00FFC567 /* Grid Router */,
+				12EE6B2D1DB8C77D00FFC567 /* ProfileListRouter.swift */,
+				12EE6B2F1DB8C79000FFC567 /* ProfileGridRouter.swift */,
 				12EE6B291DB8C76000FFC567 /* ProfileRouter.swift */,
 			);
-			name = Profile;
-			sourceTree = "<group>";
-		};
-		12EE6B2B1DB8C76400FFC567 /* List Router */ = {
-			isa = PBXGroup;
-			children = (
-				12EE6B2D1DB8C77D00FFC567 /* ProfileListRouter.swift */,
-			);
-			name = "List Router";
-			sourceTree = "<group>";
-		};
-		12EE6B2C1DB8C76D00FFC567 /* Grid Router */ = {
-			isa = PBXGroup;
-			children = (
-				12EE6B2F1DB8C79000FFC567 /* ProfileGridRouter.swift */,
-			);
-			name = "Grid Router";
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		523828731D89331500F55364 /* SeverenityTests */ = {
 			isa = PBXGroup;
 			children = (
-				523828741D89331500F55364 /* severenityProjectTests.swift */,
+				121A656D1DC390CA00A6C6B9 /* SeverenityTest.swift */,
 				523828761D89331500F55364 /* Info.plist */,
 			);
-			name = SeverenityTests;
-			path = severenityProjectTests;
+			path = SeverenityTests;
 			sourceTree = "<group>";
 		};
 		523828811D89332D00F55364 /* SeverenityUITests */ = {
 			isa = PBXGroup;
 			children = (
-				523828821D89332D00F55364 /* severenityProjectUITests.swift */,
-				523828841D89332D00F55364 /* Info.plist */,
+				121A656F1DC3910D00A6C6B9 /* Info.plist */,
+				121A65701DC3910D00A6C6B9 /* SeverenityUITests.swift */,
 			);
-			name = SeverenityUITests;
-			path = severenityProjectUITests;
-			sourceTree = "<group>";
-		};
-		5264A7A21D882ED000EE78FC /* List View */ = {
-			isa = PBXGroup;
-			children = (
-				5264A7A41D882F1700EE78FC /* ProfileListCell.xib */,
-				5264A7A81D882F6700EE78FC /* ProfileListCell.swift */,
-				52787C1A1D86D88D009D17F5 /* ProfileListViewController.swift */,
-			);
-			name = "List View";
-			sourceTree = "<group>";
-		};
-		5264A7A31D882EE000EE78FC /* Grid View */ = {
-			isa = PBXGroup;
-			children = (
-				5264A7A61D882F2400EE78FC /* ProfileGridCell.xib */,
-				5264A7AA1D882F8800EE78FC /* ProfileGridCell.swift */,
-				52787C201D86EEC6009D17F5 /* ProfileGridViewController.swift */,
-			);
-			name = "Grid View";
+			path = SeverenityUITests;
 			sourceTree = "<group>";
 		};
 		52787BD31D86AA35009D17F5 = {
@@ -377,11 +351,11 @@
 				52787C0B1D86C838009D17F5 /* Views */,
 				12EE6B0B1DB7B2DE00FFC567 /* Presenters */,
 				12EE6B0C1DB7B2FF00FFC567 /* Interactors */,
-				12EE6B111DB7B46200FFC567 /* Routers */,
 				12EE6B0D1DB7B31600FFC567 /* Services */,
+				12EE6B111DB7B46200FFC567 /* Routers */,
 				12EE6B0E1DB7B32100FFC567 /* Entities */,
 				52787BF11D86AAE3009D17F5 /* Supporting Files */,
-				12EE6B451DBA372A00FFC567 /* WireFrame.swift */,
+				121A654C1DC386F300A6C6B9 /* Graphical Resources */,
 			);
 			name = Severenity;
 			path = severenityProject;
@@ -390,33 +364,31 @@
 		52787BF11D86AAE3009D17F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				7E0F9D141D96524F0038D11D /* DeepSpace.png */,
-				7E0F9D101D964C440038D11D /* facebook_login.png */,
-				7E0F9D111D964C440038D11D /* facebook_logout.png */,
-				7E0F9D0C1D9649A90038D11D /* app_title.png */,
-				7E0F9D0D1D9649A90038D11D /* ic_launcher_big.png */,
 				52787BDF1D86AA35009D17F5 /* AppDelegate.swift */,
-				52787BE61D86AA35009D17F5 /* Assets.xcassets */,
+				12EE6B451DBA372A00FFC567 /* WireFrame.swift */,
 				52787BEB1D86AA35009D17F5 /* Info.plist */,
 				523EF8A51DB521C9002001CD /* Severenity.entitlements */,
 			);
 			name = "Supporting Files";
+			path = "../Severenity/Supporting Files";
 			sourceTree = "<group>";
 		};
 		52787C0B1D86C838009D17F5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				5223A0E01D8AE821009A0EC7 /* InitialViewController.swift */,
-				52787C031D86C3BD009D17F5 /* ChatViewController.swift */,
-				52787C021D86C3BD009D17F5 /* MapViewController.swift */,
+				121A654D1DC38FBF00A6C6B9 /* ChatViewController.swift */,
+				121A654E1DC38FBF00A6C6B9 /* InitialViewController.swift */,
+				121A654F1DC38FBF00A6C6B9 /* LaunchScreen.storyboard */,
+				121A65501DC38FBF00A6C6B9 /* Main.storyboard */,
+				121A65511DC38FBF00A6C6B9 /* MapViewController.swift */,
+				121A65521DC38FBF00A6C6B9 /* NavigationBarController.swift */,
 				12EE6B101DB7B3DC00FFC567 /* Profile */,
-				52787C001D86C3BD009D17F5 /* ShopViewController.swift */,
-				52787C041D86C3BD009D17F5 /* QuestsViewController.swift */,
-				52787BE31D86AA35009D17F5 /* Main.storyboard */,
-				52787BE81D86AA35009D17F5 /* LaunchScreen.storyboard */,
-				12EE6B431DBA0C6800FFC567 /* TabBarController.swift */,
+				121A65531DC38FBF00A6C6B9 /* QuestsViewController.swift */,
+				121A65541DC38FBF00A6C6B9 /* ShopViewController.swift */,
+				121A65551DC38FBF00A6C6B9 /* TabBarController.swift */,
 			);
 			name = Views;
+			path = ../Severenity/Views;
 			sourceTree = "<group>";
 		};
 		80D382F60247FFE0365B0D4A /* Frameworks */ = {
@@ -562,6 +534,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				121A65711DC3910D00A6C6B9 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,16 +542,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				121A65581DC38FBF00A6C6B9 /* LaunchScreen.storyboard in Resources */,
+				121A65591DC38FBF00A6C6B9 /* Main.storyboard in Resources */,
 				7E0F9D131D964C440038D11D /* facebook_logout.png in Resources */,
-				52787BEA1D86AA35009D17F5 /* LaunchScreen.storyboard in Resources */,
-				5264A7A71D882F2400EE78FC /* ProfileGridCell.xib in Resources */,
 				7E0F9D0E1D9649A90038D11D /* app_title.png in Resources */,
-				5264A7A51D882F1700EE78FC /* ProfileListCell.xib in Resources */,
 				7E0F9D0F1D9649A90038D11D /* ic_launcher_big.png in Resources */,
+				121A656A1DC38FF900A6C6B9 /* ProfileListCell.xib in Resources */,
 				52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */,
-				52787BE51D86AA35009D17F5 /* Main.storyboard in Resources */,
 				7E0F9D151D96524F0038D11D /* DeepSpace.png in Resources */,
 				7E0F9D121D964C440038D11D /* facebook_login.png in Resources */,
+				121A65671DC38FF900A6C6B9 /* ProfileGridCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -637,7 +610,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				523828751D89331500F55364 /* severenityProjectTests.swift in Sources */,
+				121A656E1DC390CA00A6C6B9 /* SeverenityTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,7 +618,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				523828831D89332D00F55364 /* severenityProjectUITests.swift in Sources */,
+				121A65721DC3910D00A6C6B9 /* SeverenityUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -653,44 +626,51 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52787C061D86C3BD009D17F5 /* ShopViewController.swift in Sources */,
-				5223A0E11D8AE821009A0EC7 /* InitialViewController.swift in Sources */,
-				52787C0A1D86C3BD009D17F5 /* QuestsViewController.swift in Sources */,
 				12EE6B1A1DB8C52500FFC567 /* ProfileGridPresenter.swift in Sources */,
-				52787C081D86C3BD009D17F5 /* MapViewController.swift in Sources */,
 				127A2C881DBF55E600CD492F /* FacebookService.swift in Sources */,
 				12EE6B301DB8C79000FFC567 /* ProfileGridRouter.swift in Sources */,
+				121A655E1DC38FBF00A6C6B9 /* TabBarController.swift in Sources */,
 				12EE6B181DB8C51900FFC567 /* ProfileListPresenter.swift in Sources */,
+				121A65471DC37BA500A6C6B9 /* TabBarRouter.swift in Sources */,
+				121A65451DC367BC00A6C6B9 /* NavigationBarRouter.swift in Sources */,
 				12EE6B421DB9241B00FFC567 /* QuestsPresenter.swift in Sources */,
 				12EE6B1F1DB8C6E700FFC567 /* ProfileListInteractor.swift in Sources */,
+				121A65491DC37C0300A6C6B9 /* TabBarInteractor.swift in Sources */,
+				121A656B1DC38FF900A6C6B9 /* ProfileListViewController.swift in Sources */,
 				12EE6B211DB8C6F700FFC567 /* ProfileGridInteractor.swift in Sources */,
 				12EE6B381DB920E100FFC567 /* ChatRouter.swift in Sources */,
 				12EE6B2E1DB8C77E00FFC567 /* ProfileListRouter.swift in Sources */,
 				12EE6B3C1DB9215200FFC567 /* ChatPresenter.swift in Sources */,
 				52787BE01D86AA35009D17F5 /* AppDelegate.swift in Sources */,
 				12EE6B3A1DB9211C00FFC567 /* ChatInteractor.swift in Sources */,
+				121A65691DC38FF900A6C6B9 /* ProfileListCell.swift in Sources */,
+				121A65571DC38FBF00A6C6B9 /* InitialViewController.swift in Sources */,
 				12EE6B231DB8C70A00FFC567 /* ProfileInteractor.swift in Sources */,
 				12EE6B461DBA372A00FFC567 /* WireFrame.swift in Sources */,
-				52787C071D86C3BD009D17F5 /* ProfileViewController.swift in Sources */,
 				12EE6B071DB7AD0B00FFC567 /* ShopRouter.swift in Sources */,
-				12EE6B441DBA0C6800FFC567 /* TabBarController.swift in Sources */,
 				12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */,
 				12EE6B321DB9100B00FFC567 /* MapPresenter.swift in Sources */,
+				121A655C1DC38FBF00A6C6B9 /* QuestsViewController.swift in Sources */,
 				12EE6B3E1DB923A300FFC567 /* QuestsRouter.swift in Sources */,
-				5264A7A91D882F6700EE78FC /* ProfileListCell.swift in Sources */,
-				52787C1B1D86D88D009D17F5 /* ProfileListViewController.swift in Sources */,
+				121A655D1DC38FBF00A6C6B9 /* ShopViewController.swift in Sources */,
+				121A65561DC38FBF00A6C6B9 /* ChatViewController.swift in Sources */,
 				12EE6B341DB9103100FFC567 /* MapInteractor.swift in Sources */,
 				12EE6B011DB7AB3000FFC567 /* ShopInteractor.swift in Sources */,
-				52787C091D86C3BD009D17F5 /* ChatViewController.swift in Sources */,
+				121A65661DC38FF900A6C6B9 /* ProfileGridCell.swift in Sources */,
+				121A65411DC3678B00A6C6B9 /* NavigationBarPresenter.swift in Sources */,
 				12EE6B2A1DB8C76000FFC567 /* ProfileRouter.swift in Sources */,
 				121328771DBE45F700FED50E /* SocketService.swift in Sources */,
+				121A655B1DC38FBF00A6C6B9 /* NavigationBarController.swift in Sources */,
+				121A654B1DC37C5000A6C6B9 /* TabBarPresenter.swift in Sources */,
+				121A65681DC38FF900A6C6B9 /* ProfileGridViewController.swift in Sources */,
+				121A655A1DC38FBF00A6C6B9 /* MapViewController.swift in Sources */,
 				12EE6B401DB923E600FFC567 /* QuestsInteractor.swift in Sources */,
 				527D92B31D8988510059F14F /* RealmDataModel.swift in Sources */,
 				12EE6B161DB8C50100FFC567 /* ProfilePresenter.swift in Sources */,
-				52787C211D86EEC6009D17F5 /* ProfileGridViewController.swift in Sources */,
 				12EE6B361DB9106F00FFC567 /* MapRouter.swift in Sources */,
+				121A656C1DC38FF900A6C6B9 /* ProfileViewController.swift in Sources */,
+				121A65431DC367A100A6C6B9 /* NavigationBarInteractor.swift in Sources */,
 				5264A7A11D8828B500EE78FC /* PlacesService.swift in Sources */,
-				5264A7AB1D882F8800EE78FC /* ProfileGridCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -709,34 +689,17 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		52787BE31D86AA35009D17F5 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				52787BE41D86AA35009D17F5 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		52787BE81D86AA35009D17F5 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				52787BE91D86AA35009D17F5 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		523828791D89331500F55364 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = severenityProjectTests/Info.plist;
+				CLANG_ENABLE_MODULES = YES;
+				INFOPLIST_FILE = SeverenityTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.severenityProjectTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.SeverenityTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Severenity.app/Severenity";
 			};
@@ -746,9 +709,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = severenityProjectTests/Info.plist;
+				CLANG_ENABLE_MODULES = YES;
+				INFOPLIST_FILE = SeverenityTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.severenityProjectTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.SeverenityTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Severenity.app/Severenity";
@@ -758,24 +722,27 @@
 		523828881D89332D00F55364 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = severenityProjectUITests/Info.plist;
+				CLANG_ENABLE_MODULES = YES;
+				INFOPLIST_FILE = SeverenityUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.severenityProjectUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.severenityUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
-				TEST_TARGET_NAME = severenityProject;
+				TEST_TARGET_NAME = Severenity;
 			};
 			name = Debug;
 		};
 		523828891D89332D00F55364 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				INFOPLIST_FILE = severenityProjectUITests/Info.plist;
+				CLANG_ENABLE_MODULES = YES;
+				INFOPLIST_FILE = SeverenityUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.severenityProjectUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.severenityUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TEST_TARGET_NAME = severenityProject;
+				TEST_TARGET_NAME = Severenity;
 			};
 			name = Release;
 		};
@@ -879,12 +846,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Severenity.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Severenity/Supporting Files/Severenity.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer: yura.yasinskyy@gmail.com (2DL2BUT3N3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = M7LFA46QZA;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = severenityProject/Info.plist;
+				INFOPLIST_FILE = "Severenity/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -898,12 +865,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Severenity.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Severenity/Supporting Files/Severenity.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer: yura.yasinskyy@gmail.com (2DL2BUT3N3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = M7LFA46QZA;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = severenityProject/Info.plist;
+				INFOPLIST_FILE = "Severenity/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
 				PRODUCT_NAME = "$(TARGET_NAME)";
