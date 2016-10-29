@@ -9,9 +9,9 @@
 import UIKit
 
 protocol ChatPresenterDelegate: class {
-    func chatPresenterDidCallView()
+    func displayNewMessage(with dictionary: Dictionary<String,String>)
 }
 
 protocol ChatInteractorDelegate: class {
-    func chatInteractorDidCallPresenter()
+    func newMessageDidArrive(with dictionary: Dictionary<String,String>)
 }

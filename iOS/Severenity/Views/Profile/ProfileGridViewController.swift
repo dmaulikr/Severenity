@@ -12,7 +12,6 @@ class ProfileGridViewController: UICollectionViewController, ProfileGridPresente
     
     private var presenter: ProfileGridPresenter?
     private var dataForList = [String]()
-    weak var activityIndicatorView: UIActivityIndicatorView!
     
     // MARK: - Init
     

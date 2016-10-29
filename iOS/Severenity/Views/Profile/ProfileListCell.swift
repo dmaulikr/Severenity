@@ -12,6 +12,8 @@ class ProfileListCell: UITableViewCell {
     
     @IBOutlet weak var listCellTitle: UILabel!
     
+    // MARK: - Init
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         listCellTitle.text = ""

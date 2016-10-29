@@ -9,11 +9,11 @@
 import UIKit
 
 class ProfileViewController: UIViewController, ProfilePresenterDelegate {
+    
+    private var presenter: ProfilePresenter?
 
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var contentModeSwitcher: UISegmentedControl!
-    
-    private var presenter: ProfilePresenter?
     
     // MARK: - Init
     

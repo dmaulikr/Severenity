@@ -23,7 +23,10 @@ class ChatInteractor: NSObject {
     
     func sendMessageToServer(with JSON: Dictionary<String, String>) {
         print("ChatInteractor was called from ChatPresenter")
-        
-        delegate?.chatInteractorDidCallPresenter()
+    }
+    
+    func recieveMessage(with dictionary: Dictionary<String,String>) {
+        print("message recieved: \(dictionary)")
+        delegate?.newMessageDidArrive(with: dictionary)
     }
 }

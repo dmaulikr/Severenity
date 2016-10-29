@@ -43,3 +43,42 @@ extension UIView {
             ).instantiate(withOwner: nil, options: nil)[0] as? UIView
     }
 }
+
+extension UIViewController {
+    
+    var activityIndicatorTag: Int { return 999998 }
+    var coverViewTag: Int { return 999999 }
+    
+    func startActivityIndicator(
+        style: UIActivityIndicatorViewStyle = .whiteLarge,
+        location: CGPoint? = nil) {
+        let loc = location ?? self.view.center
+        DispatchQueue.main.async(execute: {
+            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: style)
+            activityIndicator.color = UIColor.magenta
+            activityIndicator.tag = self.activityIndicatorTag
+            activityIndicator.center = loc
+            activityIndicator.hidesWhenStopped = true
+            activityIndicator.startAnimating()
+            let coverView = UIView.init(frame: self.view.frame)
+            coverView.backgroundColor = self.view.backgroundColor
+            coverView.tag = self.coverViewTag
+            self.view.addSubview(coverView)
+            self.view.addSubview(activityIndicator)
+        })
+    }
+    
+    func stopActivityIndicator() {
+        DispatchQueue.main.async(execute: {
+            if let activityIndicator = self.view.subviews.filter(
+                { $0.tag == self.activityIndicatorTag}).first as? UIActivityIndicatorView {
+                activityIndicator.stopAnimating()
+                activityIndicator.removeFromSuperview()
+            }
+            if let coverView = self.view.subviews.filter(
+                { $0.tag == self.coverViewTag}).first {
+                coverView.removeFromSuperview()
+            }
+        })
+    }
+}

@@ -20,28 +20,30 @@ class MapInteractor: NSObject {
         WireFrame.sharedInstance.viperInteractors["MapInteractor"] = self
     }
     
-    // MARK: - MapPresenter events
+    // MARK: - Other events
     
-    func mapInteractorEvent(with data: AnyObject) {
-        print("MapInteractor event happened with data: \(data)")
-        if let recievedData = data as? Dictionary<String,AnyObject> {
-            delegate?.mapInteractorDidCallPresenter(with: recievedData as Dictionary<String, AnyObject>)
+    func profileListViewEvent(with data: AnyObject) {
+        print("MapInteractor event happened from ProfileListView with data: \(data)")
+        if let recievedData = data as? Dictionary<String,Any> {
+            delegate?.displayPlace(with: recievedData as Dictionary<String, Any>)
         }
     }
     
     // MARK: - Service interaction
     
-    func processNewUserLocation(with dictionary: Dictionary<String,Any>) {
+    func processUserLocationUpdate(with dictionary: Dictionary<String,Any>) {
         print("MapInteractor was called from MapPresenter to process new user location")
         SocketService.sharedInstance.sendLocationToServer(with: dictionary)
     }
     
-    func processNewUser(with dictionary: Dictionary<String,Any>) {
+    func processNewPlayerLocation(with dictionary: Dictionary<String,Any>) {
         if let lat = dictionary["lat"] as? Double,
             let lng = dictionary["lng"] as? Double,
             let fbUserId = dictionary["id"] as? String {
                 FacebookService.sharedInstance.getFBProfilePicture(with: fbUserId) { (image) in
-                    self.delegate?.addNewUserToMap(with: image, and: CLLocationCoordinate2DMake(lat, lng), and: fbUserId)
+                    FacebookService.sharedInstance.getFBProfileInfo(with: fbUserId, and: { (info) in
+                        self.delegate?.displayPlayer(with: image, and: CLLocationCoordinate2DMake(lat, lng), and: info)
+                    })
             }
         }
     }

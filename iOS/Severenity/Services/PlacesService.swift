@@ -12,13 +12,11 @@ import RealmSwift
 import FBSDKLoginKit
 
 class PlacesService: NSObject {
-    
-    let serverURLString = "https://severenity.herokuapp.com/places/all" // to constants
-
-    // MARK: - Init
 
     private var realm: Realm?
     
+    // MARK: - Init
+
     override init() {
         do {
             self.realm = try Realm()
@@ -48,7 +46,7 @@ class PlacesService: NSObject {
         }
     }
     
-    func checkIfRealmIsEmpty() -> Bool {
+    private func checkIfRealmIsEmpty() -> Bool {
         let realmReadQuery = self.realm?.objects(RealmPlace.self)
         return realmReadQuery?.isEmpty ?? false
     }
@@ -56,9 +54,9 @@ class PlacesService: NSObject {
     
     /**- requestDataFromServer gets called when Realm is empty. It than perform request to server,
      gets JSON response, parse it and set to Realm. When completed, returns to provideData method.*/
-    func requestDataFromServer(_ completion: @escaping () -> Void) {
+    private func requestDataFromServer(_ completion: @escaping () -> Void) {
         
-        guard let serverURL = URL.init(string: serverURLString) else {
+        guard let serverURL = URL.init(string: kPlacesServerURL) else {
             print("Cannot create server url")
             return
         }
@@ -97,7 +95,7 @@ class PlacesService: NSObject {
     
     /**- This method makes query to Realm data model and gets all needed data
      that is than returned in Array. */
-    func getDataFromRealm(_ completion: (_ data: NSArray) -> Void) {
+    private func getDataFromRealm(_ completion: (_ data: NSArray) -> Void) {
         
         let realmReadQuery = self.realm?.objects(RealmPlace.self)
         var dataFromRealm: [AnyObject] = []

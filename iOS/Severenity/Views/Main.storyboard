@@ -162,7 +162,7 @@
         <scene sceneID="UcC-yR-zd3">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="drd-a5-xUY" customClass="NavigationBarController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Shop" id="pHm-Y1-UHg"/>
+                    <tabBarItem key="tabBarItem" title="Shop" image="menu_shop.png" selectedImage="menu_shop_selected.png" id="pHm-Y1-UHg"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="FLK-8r-Oq0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -185,7 +185,7 @@
         <scene sceneID="0mz-lo-PeW">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ywl-yH-zXU" customClass="NavigationBarController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Profile" id="eYp-dv-Zms"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="menu_profile.png" selectedImage="menu_profile_selected.png" id="eYp-dv-Zms"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="RFw-Uf-Dzy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -229,7 +229,7 @@
         <scene sceneID="vS6-pR-KRm">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Vji-IS-xEi" customClass="NavigationBarController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Map" id="0Ke-hW-7Ea"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="menu_map.png" selectedImage="menu_map_selected.png" id="0Ke-hW-7Ea"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="xAK-46-bRb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -259,46 +259,35 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="REy-Hy-oeP">
-                                <frame key="frameInset" width="375" height="523"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cOe-3C-dgx">
+                                <frame key="frameInset" width="375" height="508"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.51764705882352935" green="0.3411764705882353" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ctK-jG-zuw">
-                                <frame key="frameInset" minY="524" width="292" height="30"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mi5-sR-QVy">
+                                <frame key="frameInset" minX="16" minY="516" width="265" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="send"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8QW-g6-4n7">
-                                <frame key="frameInset" minX="300" minY="524" width="75" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hYx-cn-aaf">
+                                <frame key="frameInset" minX="289" minY="516" width="70" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.68794527202901556" green="0.2182302735776262" blue="0.42472659159053688" alpha="0.49416813380000002" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
                                 <state key="normal" title="Send">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" red="0.50196081400000003" green="0.0" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="sendMessage:" destination="dHU-YV-G28" eventType="touchUpInside" id="wFt-Sl-SNc"/>
+                                    <action selector="sendMessageButtonTap:" destination="dHU-YV-G28" eventType="touchUpInside" id="hhl-Ds-dh2"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="irk-3Y-gTP"/>
                     <connections>
-                        <outlet property="chatHistory" destination="REy-Hy-oeP" id="ws9-J4-5G5"/>
-                        <outlet property="newMessage" destination="ctK-jG-zuw" id="5LL-vm-d1X"/>
+                        <outlet property="messagesTableView" destination="cOe-3C-dgx" id="qei-2u-d9b"/>
+                        <outlet property="newMessageTextField" destination="mi5-sR-QVy" id="nNI-rt-fDF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nNh-5R-btD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -309,7 +298,7 @@
         <scene sceneID="W1f-vY-3ke">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JZ4-CZ-pB3" customClass="NavigationBarController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Chat" id="DRo-ps-RXW"/>
+                    <tabBarItem key="tabBarItem" title="Chat" image="menu_chat.png" selectedImage="menu_chat_selected.png" id="DRo-ps-RXW"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="PfO-cR-PKb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -364,7 +353,7 @@
         <scene sceneID="uQP-9P-OUr">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jxb-cg-N5J" customClass="NavigationBarController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Quests" id="H5m-q4-Byt"/>
+                    <tabBarItem key="tabBarItem" title="Quests" image="menu_quests.png" selectedImage="menu_quests_selected.png" id="H5m-q4-Byt"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="LJb-AX-543">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -387,5 +376,15 @@
         <image name="DeepSpace.png" width="3000" height="2000"/>
         <image name="app_title.png" width="600" height="98"/>
         <image name="ic_launcher_big.png" width="512" height="512"/>
+        <image name="menu_chat.png" width="60" height="60"/>
+        <image name="menu_chat_selected.png" width="60" height="60"/>
+        <image name="menu_map.png" width="40" height="40"/>
+        <image name="menu_map_selected.png" width="40" height="40"/>
+        <image name="menu_profile.png" width="40" height="40"/>
+        <image name="menu_profile_selected.png" width="40" height="40"/>
+        <image name="menu_quests.png" width="60" height="60"/>
+        <image name="menu_quests_selected.png" width="96" height="96"/>
+        <image name="menu_shop.png" width="60" height="60"/>
+        <image name="menu_shop_selected.png" width="60" height="60"/>
     </resources>
 </document>

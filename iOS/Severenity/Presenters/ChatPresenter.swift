@@ -30,8 +30,8 @@ class ChatPresenter: NSObject, ChatInteractorDelegate {
     
     // MARK: ChatInteractor delegate
     
-    func chatInteractorDidCallPresenter() {
+    func newMessageDidArrive(with dictionary: Dictionary<String,String>) {
         print("ChatPresenter is called from ChatInteractor")
-        delegate?.chatPresenterDidCallView()
+        delegate?.displayNewMessage(with: dictionary)
     }
 }

@@ -12,7 +12,7 @@ import SocketIO
 class SocketService: NSObject {
     
     static let sharedInstance = SocketService()
-    var socket: SocketIOClient = SocketIOClient(socketURL: URL(string: "https://severenity.herokuapp.com")!)
+    var socket: SocketIOClient = SocketIOClient(socketURL: URL(string: kSocketServerURL)!)
     
     // MARK: - Init
     
@@ -38,18 +38,20 @@ class SocketService: NSObject {
         socket.emit("location", placeJSON)
         print("socket message: \(placeJSON) was sent to server")
         
-        let selector = #selector(MapInteractor.processNewUser(with:))
+        let selector = #selector(MapInteractor.processNewPlayerLocation(with:))
         let _ = WireFrame.sharedInstance.viperInteractors["MapInteractor"]?.perform(selector, with: placeJSON)
     }
     
     func addSocketHandlers() {
         socket.on("location") { (data, ack) in
             print("socket 'location' recieved with data: \(data)")
-            let selector = #selector(MapInteractor.processNewUser(with:))
+            let selector = #selector(MapInteractor.processNewPlayerLocation(with:))
             let _ = WireFrame.sharedInstance.viperInteractors["MapInteractor"]?.perform(selector, with: data)
         }
         socket.on("chat message") { (data, ack) in
             print("socket 'chat message' recieved with data: \(data)")
+            let selector = #selector(ChatInteractor.recieveMessage(with:))
+            let _ = WireFrame.sharedInstance.viperInteractors["ChatInteractor"]?.perform(selector, with: data)
         }
     }
 }

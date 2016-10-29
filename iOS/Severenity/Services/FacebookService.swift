@@ -41,8 +41,8 @@ class FacebookService: NSObject {
         }
     }
     
-    func getFBProfileInfo(with completion: @escaping (_ info: Dictionary<String,String>) -> Void){
-        FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, name, first_name, last_name, relationship_status"]).start(completionHandler: { (connection, result, error) -> Void in
+    func getFBProfileInfo(with fbUserID: String, and completion: @escaping (_ info: Dictionary<String,String>) -> Void){
+        FBSDKGraphRequest(graphPath: fbUserID, parameters: ["fields": "id, name, first_name, last_name, relationship_status"]).start(completionHandler: { (connection, result, error) -> Void in
             if (error == nil){
                 if let fbDetails = result as? Dictionary<String, String> {
                     completion(fbDetails)

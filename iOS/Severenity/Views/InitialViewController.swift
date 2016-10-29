@@ -9,7 +9,6 @@
 import UIKit
 import FacebookLogin
 import FBSDKCoreKit
-import FBSDKLoginKit
 
 class InitialViewController: UIViewController, LoginButtonDelegate {
     

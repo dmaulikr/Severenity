@@ -25,25 +25,25 @@ class MapPresenter: NSObject, MapInteractorDelegate {
     
     // MARK: - MapViewController events
     
-    func userLocationChange(_ newLocation: CLLocation) {
+    func userLocationUpdate(_ newLocation: CLLocation) {
         print("User changed location, MapPresenter recieved new data.")
         let currentLocationDictionary: [String:Any] = ["lat":newLocation.coordinate.latitude,
             "lng":newLocation.coordinate.longitude,
             "id":(FBSDKAccessToken.current().userID)!]
-        interactor?.processNewUserLocation(with: currentLocationDictionary)
+        interactor?.processUserLocationUpdate(with: currentLocationDictionary)
     }
     
     // MARK: - MapInteractor delegate
     
-    func mapInteractorDidCallPresenter(with data: Dictionary<String,AnyObject>) {
+    func displayPlace(with data: Dictionary<String,Any>) {
         print("MapPresenter is called from MapInteractor with data: \(data)")
-        delegate?.mapPresenterDidCallView(with: data)
+        delegate?.addNewPlaceToMap(with: data)
 
         let tabBarController = ((UIApplication.shared.delegate as? AppDelegate)?.window?.rootViewController) as? UITabBarController
         tabBarController?.selectedIndex = 2;
     }
     
-    func addNewUserToMap(with picture: UIImage, and coordinates: CLLocationCoordinate2D, and fbUserId: String) {
-        delegate?.addNewMarkerToMap(with: picture, and: coordinates, and: fbUserId)
+    func displayPlayer(with picture: UIImage, and coordinates: CLLocationCoordinate2D, and info: Dictionary<String,String>) {
+        delegate?.addNewPlayerToMap(with: picture, and: coordinates, and: info)
     }
 }

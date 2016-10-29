@@ -29,8 +29,8 @@ class ProfileListInteractor: NSObject {
     }
     
     func profileListPresenterAskForTransition(withParam param: Int) {
-        let selector = #selector(MapInteractor.mapInteractorEvent(with:))
-        if let places = (placesData as? Array<Dictionary<String, AnyObject>>)?[param] {
+        let selector = #selector(MapInteractor.profileListViewEvent(with:))
+        if let places = (placesData as? Array<Dictionary<String, Any>>)?[param] {
             let _ = WireFrame.sharedInstance.viperInteractors["MapInteractor"]?.perform(selector, with: places)
         }
     }
