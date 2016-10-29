@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import FBSDKLoginKit
 
-class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDelegate, UITableViewDelegate {
+class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
     private var presenter: ChatPresenter?
-    private var messages: Dictionary<String,Dictionary<String,Any>> = [:]
+    private var messages = [Dictionary<String,Any>]()
     
     @IBOutlet weak var messagesTableView: UITableView!
     @IBOutlet weak var newMessageTextField: UITextField!
@@ -30,24 +31,30 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
     override func viewDidLoad() {
         super.viewDidLoad()
         messagesTableView.delegate = self
+        messagesTableView.dataSource = self
         newMessageTextField.delegate = self
         messagesTableView.register(UINib(nibName: "MessageView", bundle: nil), forCellReuseIdentifier: "MessageView")
         messagesTableView.backgroundColor = UIColor.black
-        messagesTableView.separatorColor = UIColor.magenta
+        messagesTableView.separatorColor = UIColor.clear
         print("Chat tab did load");
     }
     
     @IBAction func sendMessageButtonTap(_ sender: AnyObject) {
-        presenter?.userSendsMessage(with: newMessageTextField.text!)
+        if newMessageTextField.text != "" {
+            let messageToSend = ["messageId":"999999999999",
+                                 "senderName":"User Name",
+                                 "senderId":(FBSDKAccessToken.current().userID)!,
+                                 "text":newMessageTextField.text!,
+                                 "timestamp":"2016-10-29"] as [String : Any]
+            presenter?.userSendsMessage(with: messageToSend)
+        }
     }
     
     // MARK: - ChatPresenter delegate
     
     func displayNewMessage(with dictionary: Dictionary<String,String>) {
         print("ChatViewController is called from ChatPresenter with message: \(dictionary)")
-        if let messageId = dictionary["messageId"] {
-            messages[messageId] = dictionary
-        }
+        messages.append(dictionary)
         messagesTableView.reloadData()
     }
     // MARK: - UITableView delegate
@@ -57,7 +64,7 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70.0
+        return 105.0
     }
     
     // MARK: - UITableView data source
@@ -70,10 +77,17 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
         return messages.count
     }
     
-    private func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell
         if let c = tableView.dequeueReusableCell(withIdentifier: "MessageView", for: indexPath) as? MessageView {
-            c.messageText.text = "TRTRTR"
+            let message = messages[(indexPath as NSIndexPath).row]
+            c.infoLabel.text = "\((message["senderName"] as! String?)!), \((message["timestamp"] as! String?)!)"
+            c.messageText.text = message["text"] as! String!
+            if let senderFbId = message["senderId"]{
+                FacebookService.sharedInstance.getFBProfilePicture(with: senderFbId as! String, and: { (image) in
+                    c.profilePicture.image = image
+                })
+            }
             cell = c
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: "MessageView", for: indexPath)
@@ -84,7 +98,14 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
     // MARK: UITextField delegate
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        presenter?.userSendsMessage(with: newMessageTextField.text!)
+        if newMessageTextField.text != "" {
+            let messageToSend = ["messageId":"999999999999",
+                                 "senderName":"User Name",
+                                 "senderId":(FBSDKAccessToken.current().userID)!,
+                                 "text":newMessageTextField.text!,
+                                 "timestamp":"2016-10-29"] as [String : Any]
+            presenter?.userSendsMessage(with: messageToSend)
+        }
         return true
     }
 }

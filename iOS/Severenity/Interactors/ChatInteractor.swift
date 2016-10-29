@@ -21,7 +21,8 @@ class ChatInteractor: NSObject {
     
     // MARK: - Service interaction
     
-    func sendMessageToServer(with JSON: Dictionary<String, String>) {
+    func sendMessageToServer(with JSON: Dictionary<String, Any>) {
+        SocketService.sharedInstance.sendMessageToServer(with: JSON)
         print("ChatInteractor was called from ChatPresenter")
     }
     

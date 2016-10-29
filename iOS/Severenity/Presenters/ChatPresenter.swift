@@ -23,15 +23,15 @@ class ChatPresenter: NSObject, ChatInteractorDelegate {
     
     // MARK: ChatViewController events
     
-    func userSendsMessage(with text: String) {
+    func userSendsMessage(with dictionary: Dictionary<String,Any>) {
         print("User interacted with ChatViewController. ChatPresenter responds.")
-        //interactor?.sendMessageToServer(with: text)
+        interactor?.sendMessageToServer(with: dictionary)
     }
     
     // MARK: ChatInteractor delegate
     
     func newMessageDidArrive(with dictionary: Dictionary<String,String>) {
-        print("ChatPresenter is called from ChatInteractor")
+        print("ChatPresenter is called from ChatInteractor with message: \(dictionary)")
         delegate?.displayNewMessage(with: dictionary)
     }
 }
