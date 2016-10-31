@@ -44,7 +44,7 @@ class SocketService: NSObject {
         }
         socket.on("chat message") { (data, ack) in
             print("socket 'chat message' recieved with data: \(data)")
-            let selector = #selector(ChatInteractor.recieveMessage(with:))
+            let selector = #selector(ChatInteractor.recieveChatMessage(with:))
             let _ = WireFrame.sharedInstance.viperInteractors["ChatInteractor"]?.perform(selector, with: data.first)
         }
     }
@@ -54,7 +54,6 @@ class SocketService: NSObject {
     func sendLocationToServer(with placeJSON: Dictionary<String,Any>) {
         socket.emit("location", placeJSON)
         print("socket message: \(placeJSON) was sent to server")
-        
         let selector = #selector(MapInteractor.processNewPlayerLocation(with:))
         let _ = WireFrame.sharedInstance.viperInteractors["MapInteractor"]?.perform(selector, with: placeJSON)
     }

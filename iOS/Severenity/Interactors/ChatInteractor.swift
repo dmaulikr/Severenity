@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FBSDKLoginKit
 
 class ChatInteractor: NSObject {
     
@@ -19,14 +20,23 @@ class ChatInteractor: NSObject {
         WireFrame.sharedInstance.viperInteractors["ChatInteractor"] = self
     }
     
+
+    
     // MARK: - Service interaction
     
-    func sendMessageToServer(with JSON: Dictionary<String, Any>) {
-        SocketService.sharedInstance.sendMessageToServer(with: JSON)
-        print("ChatInteractor was called from ChatPresenter")
+    func sendChatMessage(with text: String) {
+        FacebookService.sharedInstance.getFBProfileInfo(with: (FBSDKAccessToken.current().userID)!, and: { (info) in
+            let messageJSON = ["senderName":info["name"] ?? "",
+                               "senderId":(FBSDKAccessToken.current().userID)!,
+                               "text":text,
+                               "timestamp":self.currentTimeStamp] as [String:Any]
+            SocketService.sharedInstance.sendMessageToServer(with: messageJSON)
+            
+        })
+        print("ChatInteractor was called from ChatPresenter to send message")
     }
     
-    func recieveMessage(with dictionary: Dictionary<String,String>) {
+    func recieveChatMessage(with dictionary: Dictionary<String,String>) {
         print("message recieved: \(dictionary)")
         delegate?.newMessageDidArrive(with: dictionary)
     }

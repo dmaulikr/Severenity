@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MessageView: UITableViewCell {
+class MessageOutView: UITableViewCell {
     
     @IBOutlet weak var profilePicture: UIImageView!
     @IBOutlet weak var messageText: UITextView!
@@ -24,5 +24,4 @@ class MessageView: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
 }

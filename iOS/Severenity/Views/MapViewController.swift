@@ -39,7 +39,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresent
             locationManager.startUpdatingLocation()
         }
         if CLLocationManager.authorizationStatus() == .denied {
-            let locationAlertController = UIAlertController(title: "Hello user!", message: "Unfortunately Severenity needs access to location services to continue. Please turn it manually in Settings and come back. App will now exit", preferredStyle: .alert)
+            let locationAlertController = UIAlertController(title: "Hello dear user!", message: kNeedsLocationServicesAccess, preferredStyle: .alert)
             let defaultAction = UIAlertAction.init(title: "Ok", style: .default, handler: { (action) in
                 exit(0)
             })

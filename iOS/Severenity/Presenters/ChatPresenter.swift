@@ -23,9 +23,9 @@ class ChatPresenter: NSObject, ChatInteractorDelegate {
     
     // MARK: ChatViewController events
     
-    func userSendsMessage(with dictionary: Dictionary<String,Any>) {
-        print("User interacted with ChatViewController. ChatPresenter responds.")
-        interactor?.sendMessageToServer(with: dictionary)
+    func userWantsToSendMessage(with text: String) {
+        print("User wants to send message from with ChatViewController. ChatPresenter responds.")
+        interactor?.sendChatMessage(with: text)
     }
     
     // MARK: ChatInteractor delegate

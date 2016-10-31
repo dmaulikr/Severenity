@@ -82,3 +82,9 @@ extension UIViewController {
         })
     }
 }
+
+extension NSObject {
+    var currentTimeStamp: String {
+        return "\(NSDate().timeIntervalSince1970 * 1000)"
+    }
+}
