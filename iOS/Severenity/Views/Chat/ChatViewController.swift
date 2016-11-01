@@ -49,6 +49,7 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
         if newMessageTextField.text != "" {
             presenter?.userWantsToSendMessage(with: newMessageTextField.text!)
             newMessageTextField.text = ""
+            newMessageTextField.resignFirstResponder()
         }
     }
     
@@ -57,16 +58,15 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
     func keyboardWillShow(notification: NSNotification) {
         print(self.view.frame.origin)
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            self.newMessageTextField.frame.origin.y -= keyboardSize.height - 49 // magical number
-            self.sendMessageButton.frame.origin.y -= keyboardSize.height - 49 // magical number
+            newMessageTextField.frame.origin.y -= keyboardSize.height - 50 // magical number
+            sendMessageButton.frame.origin.y -= keyboardSize.height - 50
         }
     }
     
     func keyboardWillHide(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y != 0 {
-                self.view.frame.origin.y += keyboardSize.height
-            }
+            newMessageTextField.frame.origin.y += keyboardSize.height - 50
+            sendMessageButton.frame.origin.y += keyboardSize.height - 50
         }
     }
     
@@ -148,6 +148,7 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
             if newMessageTextField.text != "" {
                 presenter?.userWantsToSendMessage(with: newMessageTextField.text!)
                 newMessageTextField.text = ""
+                newMessageTextField.resignFirstResponder()
             }
         }
         return true
