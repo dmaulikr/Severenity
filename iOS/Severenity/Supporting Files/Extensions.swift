@@ -51,8 +51,9 @@ extension UIViewController {
     
     func startActivityIndicator(
         style: UIActivityIndicatorViewStyle = .whiteLarge,
-        location: CGPoint? = nil) {
-        let loc = location ?? self.view.center
+        location: CGPoint? = nil,
+        view: UIView) {
+        let loc = location ?? view.center
         DispatchQueue.main.async(execute: {
             let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: style)
             activityIndicator.color = UIColor.magenta
@@ -60,22 +61,22 @@ extension UIViewController {
             activityIndicator.center = loc
             activityIndicator.hidesWhenStopped = true
             activityIndicator.startAnimating()
-            let coverView = UIView.init(frame: self.view.frame)
-            coverView.backgroundColor = self.view.backgroundColor
+            let coverView = UIView.init(frame: view.frame)
+            coverView.backgroundColor = view.backgroundColor
             coverView.tag = self.coverViewTag
-            self.view.addSubview(coverView)
-            self.view.addSubview(activityIndicator)
+            view.addSubview(coverView)
+            view.addSubview(activityIndicator)
         })
     }
     
-    func stopActivityIndicator() {
+    func stopActivityIndicator(view: UIView) {
         DispatchQueue.main.async(execute: {
-            if let activityIndicator = self.view.subviews.filter(
+            if let activityIndicator = view.subviews.filter(
                 { $0.tag == self.activityIndicatorTag}).first as? UIActivityIndicatorView {
                 activityIndicator.stopAnimating()
                 activityIndicator.removeFromSuperview()
             }
-            if let coverView = self.view.subviews.filter(
+            if let coverView = view.subviews.filter(
                 { $0.tag == self.coverViewTag}).first {
                 coverView.removeFromSuperview()
             }

@@ -26,8 +26,8 @@ class NavigationBarController: UINavigationController, NavigationBarPresenterDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        startActivityIndicator(location: CGPoint.init(x: navigationBar.frame.width/2, y: 35), view: navigationBar)
         print("NavigationBarController did load")
-        startActivityIndicator(location: CGPoint.init(x: self.view.frame.width/2, y: 55))
     }
     
     override func viewWillLayoutSubviews() {
@@ -39,12 +39,13 @@ class NavigationBarController: UINavigationController, NavigationBarPresenterDel
     
     func navigationBarPresenterDidCallView(with picture: UIImage, and info: Dictionary<String,String>) {
         print("NavigationBarPresenter did call NavigationBarViewController")
+        
         if self.navBarView == nil, let navBarView = NavigationBarView.loadFromNibNamed(nibNamed: "NavigationBarView") as? NavigationBarView {
             navBarView.userPicture.image = picture.roundedImageWithBorder(with: 4, and: #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1))
             navBarView.userName.text = info["name"]
             self.navBarView = navBarView
+            stopActivityIndicator(view: navigationBar)
             navigationBar.addSubview(self.navBarView)
         }
-        stopActivityIndicator()
     }
 }

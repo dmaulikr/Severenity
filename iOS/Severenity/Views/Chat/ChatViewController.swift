@@ -107,7 +107,7 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
             cell = UITableViewCell()
             return cell
         }
-
+        
         if message["senderId"] as! String != (FBSDKAccessToken.current().userID)! {
             if let c = tableView.dequeueReusableCell(withIdentifier: "MessageInView", for: indexPath) as? MessageInView {
                 c.infoLabel.text = "\(senderName), \(timestamp)"

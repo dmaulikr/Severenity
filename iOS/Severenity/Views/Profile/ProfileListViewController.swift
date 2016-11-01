@@ -35,7 +35,7 @@ class ProfileListViewController: UITableViewController, ProfileListPresenterDele
         tableView.backgroundColor = UIColor.black
         tableView.separatorColor = #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1)
         
-        startActivityIndicator(location: CGPoint.init(x: self.view.frame.width/2, y: self.view.frame.height/2 - 100))
+        startActivityIndicator(location: CGPoint.init(x: self.view.frame.width/2, y: self.view.frame.height/2 - 100), view: tableView)
         
         presenter?.provideProfileListData()
     }
@@ -58,7 +58,7 @@ class ProfileListViewController: UITableViewController, ProfileListPresenterDele
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if (indexPath as NSIndexPath).row == (tableView.indexPathsForVisibleRows?.last as NSIndexPath?)?.row {
-            stopActivityIndicator()
+            stopActivityIndicator(view: tableView)
         }
     }
 
