@@ -1,6 +1,5 @@
 package com.severenity.engine.network;
 
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Handler;
@@ -351,9 +350,9 @@ public class WebSocketManager {
                     try {
                         JSONObject jsonObject = (JSONObject) arg;
                         final Message message = new Message();
-                        message.setUserID(jsonObject.getString("id"));
+                        message.setUserID(jsonObject.getString("senderId"));
                         message.setMessage(jsonObject.getString("text"));
-                        message.setUsername(jsonObject.getString("name"));
+                        message.setUsername(jsonObject.getString("senderName"));
                         message.setTimestamp(jsonObject.getString("timestamp"));
 
                         Handler handler = new Handler(Looper.getMainLooper());

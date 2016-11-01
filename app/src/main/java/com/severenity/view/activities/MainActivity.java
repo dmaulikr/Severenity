@@ -382,6 +382,12 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         toolbarBottom.inflateMenu(R.menu.toolbar_menu);
         tvConnectionState = (TextView) findViewById(R.id.tvConnectionStateMainActivity);
         ivGPSState = (ImageView) toolbarTop.findViewById(R.id.ivGPSStateMainActivity);
+        ivGPSState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                App.getUserManager().updateCurrentUserProgress(AccessToken.getCurrentAccessToken().getUserId(), 100);
+            }
+        });
 
         shopItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_shop);
         chatItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_chat);

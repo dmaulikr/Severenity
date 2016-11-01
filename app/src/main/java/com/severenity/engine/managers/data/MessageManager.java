@@ -141,10 +141,11 @@ public class MessageManager extends DataManager {
         }
 
         User user = App.getUserManager().getCurrentUser();
-        if (user != null && msg.getUserID().equals(user.getId()))
+        if (user != null && msg.getUserID().equals(user.getId())) {
             return;
-        else
+        } else {
             addMessage(msg);
+        }
 
         Intent intent = new Intent(Constants.INTENT_FILTER_NEW_MESSAGE);
         intent.putExtra(COLUMN_MESSAGE, msg.getMessage());

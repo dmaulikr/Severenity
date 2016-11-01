@@ -4,18 +4,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/ivMarkerMask"
-        android:layout_width="74dp"
-        android:layout_height="74dp"
-        android:src="@drawable/marker_mask"
-        android:contentDescription="@null" />
-
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:src="@drawable/com_facebook_profile_picture_blank_square"
-        android:layout_marginStart="13dp"
         android:id="@+id/ivPhotoMarker"
+        android:layout_gravity="center"
         android:layout_width="48dp"
         android:layout_height="48dp"
         app:civ_border_width="2dp"
