@@ -14,14 +14,14 @@ class SocketService: NSObject {
     static let sharedInstance = SocketService()
     var socket: SocketIOClient = SocketIOClient(socketURL: URL(string: kSocketServerURL)!)
     
-    // MARK: - Init
+    // MARK: Init
     
     private override init() {
         super.init()
         print("SocketService shared instance init did complete")
     }
     
-    // MARK: - Managing connection
+    // MARK: Managing connection
     
     func establishConnection() {
         socket.connect()
@@ -34,7 +34,7 @@ class SocketService: NSObject {
         print("socket connection closed")
     }
     
-    // MARK: - Handlers
+    // MARK: Handlers
     
     func addSocketHandlers() {
         socket.on("location") { (data, ack) in
@@ -49,7 +49,7 @@ class SocketService: NSObject {
         }
     }
     
-    // MARK: - Methods
+    // MARK: Methods
     
     func sendLocationToServer(with placeJSON: Dictionary<String,Any>) {
         socket.emit("location", placeJSON)

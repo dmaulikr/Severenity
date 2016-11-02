@@ -8,14 +8,13 @@
 
 import UIKit
 import CoreLocation
-import FBSDKLoginKit
 
-class MapPresenter: NSObject, MapInteractorDelegate {
+class MapPresenter: NSObject {
     
-    private var interactor: MapInteractor?
+    internal var interactor: MapInteractor?
     weak var delegate: MapPresenterDelegate?
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
@@ -23,22 +22,32 @@ class MapPresenter: NSObject, MapInteractorDelegate {
         interactor?.delegate = self
     }
     
-    // MARK: - MapViewController events
+    // MARK: MapViewController events
     
     func userLocationUpdate(_ newLocation: CLLocation) {
         print("User changed location, MapPresenter recieved new data.")
+        
+        guard let fbUserID = FacebookService.sharedInstance.accessTokenUserID else {
+            print("Cannot process user location update")
+            return
+        }
+        
         let currentLocationDictionary: [String:Any] = ["lat":newLocation.coordinate.latitude,
-            "lng":newLocation.coordinate.longitude,
-            "id":(FBSDKAccessToken.current().userID)!]
+                                                       "lng":newLocation.coordinate.longitude,
+                                                       "id":fbUserID]
         interactor?.processUserLocationUpdate(with: currentLocationDictionary)
     }
     
-    // MARK: - MapInteractor delegate
+}
+
+// MARK: MapInteractor delegate
+
+extension MapPresenter: MapInteractorDelegate {
     
     func displayPlace(with data: Dictionary<String,Any>) {
         print("MapPresenter is called from MapInteractor with data: \(data)")
         delegate?.addNewPlaceToMap(with: data)
-
+        
         let tabBarController = ((UIApplication.shared.delegate as? AppDelegate)?.window?.rootViewController) as? UITabBarController
         tabBarController?.selectedIndex = 2;
     }
@@ -46,4 +55,5 @@ class MapPresenter: NSObject, MapInteractorDelegate {
     func displayPlayer(with picture: UIImage, and coordinates: CLLocationCoordinate2D, and info: Dictionary<String,String>) {
         delegate?.addNewPlayerToMap(with: picture, and: coordinates, and: info)
     }
+    
 }

@@ -12,14 +12,14 @@ class QuestsInteractor: NSObject {
 
     weak var delegate: QuestsInteractorDelegate?
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
         WireFrame.sharedInstance.viperInteractors["QuestsInteractor"] = self
     }
     
-    // MARK: - QuestsPresenter events
+    // MARK: QuestsPresenter events
     
     func questsPresenterEvent() {
         print("QuestsInteractor was called from QuestsPresenter")

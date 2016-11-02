@@ -11,11 +11,11 @@
 
 import UIKit
 
-class ShopViewController: UIViewController, ShopPresenterDelegate {
+class ShopViewController: UIViewController {
     
-    private var presenter: ShopPresenter?
+    internal var presenter: ShopPresenter?
 
-    // MARK: - Init
+    // MARK: Init
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -24,7 +24,7 @@ class ShopViewController: UIViewController, ShopPresenterDelegate {
         print("Shop VIPER module init did complete")
     }
     
-    // MARK: - Loading view
+    // MARK: Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,10 +34,15 @@ class ShopViewController: UIViewController, ShopPresenterDelegate {
     @IBAction func interactionTestButton(_ sender: AnyObject) {
         presenter?.shopViewEvent()
     }
-    
-    // ShopPresenter delegate
+
+}
+
+// MARK: ShopPresenter delegate
+
+extension ShopViewController: ShopPresenterDelegate {
     
     func shopPresenterDidCallView() {
         print("ShopViewController is called from ShopPresenter")
     }
+    
 }

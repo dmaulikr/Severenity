@@ -51,6 +51,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Severenity needs HealthKit information to provide some fitness features</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Severenity needs your GPS information to load the map</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -62,6 +64,7 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
+		<string>healthkit</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>

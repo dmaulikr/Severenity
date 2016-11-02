@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ProfileGridViewController: UICollectionViewController, ProfileGridPresenterDelegate {
+class ProfileGridViewController: UICollectionViewController {
     
-    private var presenter: ProfileGridPresenter?
-    private var dataForList = [String]()
+    internal var presenter: ProfileGridPresenter?
+    internal var dataForList = [String]()
     
-    // MARK: - Init
+    // MARK: Init
     
     override init(collectionViewLayout layout: UICollectionViewLayout) {
         super.init(collectionViewLayout: layout)
@@ -26,7 +26,7 @@ class ProfileGridViewController: UICollectionViewController, ProfileGridPresente
         super.init(coder: aDecoder)
     }
     
-    // MARK: - Loading view
+    // MARK: Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,12 +35,6 @@ class ProfileGridViewController: UICollectionViewController, ProfileGridPresente
         collectionView?.backgroundColor = UIColor.black
         
         presenter?.provideProfileGridData()
-    }
-    
-   // MARK: - ProfileGridPresenter delegate
-    
-    func profileGridPresenterDidCallView(withData data: [String]) {
-        print("ProfileGridPresenter did call ProfileGridViewController")
     }
 
     // MARK: UICollectionView data source
@@ -58,4 +52,14 @@ class ProfileGridViewController: UICollectionViewController, ProfileGridPresente
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProfileCellInGrid", for: indexPath)
         return cell
     }
+}
+
+// MARK: ProfileGridPresenter delegate
+
+extension ProfileGridViewController: ProfileGridPresenterDelegate {
+    
+    func profileGridPresenterDidCallView(withData data: [String]) {
+        print("ProfileGridPresenter did call ProfileGridViewController")
+    }
+    
 }

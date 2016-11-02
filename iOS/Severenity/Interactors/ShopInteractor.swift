@@ -12,14 +12,14 @@ class ShopInteractor: NSObject {
     
     weak var delegate: ShopInteractorDelegate?
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
         WireFrame.sharedInstance.viperInteractors["ShopInteractor"] = self
     }
     
-    // MARK: - ShopPresenter events
+    // MARK: ShopPresenter events
     
     func shopPresenterEvent() {
         print("ShopInteractor was called from ShopPresenter")

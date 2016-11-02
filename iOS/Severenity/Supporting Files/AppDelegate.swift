@@ -11,7 +11,6 @@ import FBSDKCoreKit
 import FBSDKLoginKit
 import GoogleMaps
 import GooglePlaces
-import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        print("Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
-        print("Google Places API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
+        print("Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyAIaCk4s7pq90-rawgaZXA8qHhkOhk-iFQ"))")
+        print("Google Places API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyAIaCk4s7pq90-rawgaZXA8qHhkOhk-iFQ"))")
         
         SocketService.sharedInstance.establishConnection()
 
@@ -77,6 +76,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         loginManager.logOut()
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
 }
-

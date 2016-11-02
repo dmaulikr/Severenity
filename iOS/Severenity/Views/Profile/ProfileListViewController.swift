@@ -8,13 +8,13 @@
 
 import UIKit
 
-class ProfileListViewController: UITableViewController, ProfileListPresenterDelegate {
+class ProfileListViewController: UITableViewController {
     
-    private var presenter: ProfileListPresenter?
-    private var dataForList = [String]()
+    internal var presenter: ProfileListPresenter?
+    internal var dataForList = [String]()
     weak var activityIndicatorView: UIActivityIndicatorView!
     
-    // MARK: - Init
+    // MARK: Init
     
     override init(style: UITableViewStyle) {
         super.init(style: style)
@@ -27,7 +27,7 @@ class ProfileListViewController: UITableViewController, ProfileListPresenterDele
         super.init(coder: aDecoder)
     }
     
-    // MARK: - Loading view
+    // MARK: Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,15 +40,7 @@ class ProfileListViewController: UITableViewController, ProfileListPresenterDele
         presenter?.provideProfileListData()
     }
     
-    // MARK: ProfileListPresenter delegate
-    
-    func profileListPresenterDidCallView(withData data: [String]) {
-        print("ProfileListPresenter did call ProfileListViewController")
-        dataForList = data
-        tableView.reloadData()
-    }
-    
-    // MARK: - UITableView delegate
+    // MARK: UITableView delegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // probably need to refactor this pyramid of doom with guard statement and get tabs by name, not indexes
@@ -62,7 +54,7 @@ class ProfileListViewController: UITableViewController, ProfileListPresenterDele
         }
     }
 
-    // MARK: - UITableView data source
+    // MARK: UITableView data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -82,4 +74,16 @@ class ProfileListViewController: UITableViewController, ProfileListPresenterDele
         }
         return cell
     }
+}
+
+// MARK: ProfileListPresenter delegate
+
+extension ProfileListViewController: ProfileListPresenterDelegate {
+    
+    func profileListPresenterDidCallView(withData data: [String]) {
+        print("ProfileListPresenter did call ProfileListViewController")
+        dataForList = data
+        tableView.reloadData()
+    }
+    
 }

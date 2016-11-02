@@ -8,12 +8,12 @@
 
 import UIKit
 
-class NavigationBarController: UINavigationController, NavigationBarPresenterDelegate {
+class NavigationBarController: UINavigationController {
     
-    private var presenter: NavigationBarPresenter?
-    private var navBarView: NavigationBarView!
+    internal var presenter: NavigationBarPresenter?
+    internal var navBarView: NavigationBarView!
     
-    // MARK: - Init
+    // MARK: Init
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -22,7 +22,7 @@ class NavigationBarController: UINavigationController, NavigationBarPresenterDel
         print("NavigationBar VIPER module init did complete")
     }
     
-    // MARK: - Loading view
+    // MARK: Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,8 +35,13 @@ class NavigationBarController: UINavigationController, NavigationBarPresenterDel
         navigationBar.frame.size.height = 70
     }
     
-    // MARK: - NavigationBarPresenter delegate
-    
+
+}
+
+// MARK: NavigationBarPresenter delegate
+
+extension NavigationBarController: NavigationBarPresenterDelegate {
+
     func navigationBarPresenterDidCallView(with picture: UIImage, and info: Dictionary<String,String>) {
         print("NavigationBarPresenter did call NavigationBarViewController")
         
@@ -48,4 +53,5 @@ class NavigationBarController: UINavigationController, NavigationBarPresenterDel
             navigationBar.addSubview(self.navBarView)
         }
     }
+    
 }

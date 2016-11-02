@@ -8,13 +8,13 @@
 
 import UIKit
 
-class ProfileListPresenter: NSObject, ProfileListInteractorDelegate {
+class ProfileListPresenter: NSObject {
     
-    private var interactor: ProfileListInteractor?
-    private var dataForTheView = [String]()
+    internal var interactor: ProfileListInteractor?
+    internal var dataForTheView = [String]()
     weak var delegate: ProfileListPresenterDelegate?
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
@@ -33,8 +33,12 @@ class ProfileListPresenter: NSObject, ProfileListInteractorDelegate {
         print("ProfileListViewController item was selected. ProfileListPresenter responds.")
         interactor?.profileListPresenterAskForTransition(withParam: cell.row)
     }
-    
-    // MARK: ProfileListInteractor delegate
+
+}
+
+// MARK: ProfileListInteractor delegate
+
+extension ProfileListPresenter: ProfileListInteractorDelegate {
     
     func profileListInteractorDidCallPresenter(withData data: Array<Dictionary<String, AnyObject>>) {
         print("ProfileListInteracor did call ProfileListPresenter")
@@ -46,4 +50,5 @@ class ProfileListPresenter: NSObject, ProfileListInteractorDelegate {
         
         delegate?.profileListPresenterDidCallView(withData: dataForTheView)
     }
+    
 }

@@ -8,13 +8,13 @@
 
 import UIKit
 
-class ProfileGridPresenter: NSObject, ProfileGridInteractorDelegate {
+class ProfileGridPresenter: NSObject {
     
-    private var interactor: ProfileGridInteractor?
-    private var dataForTheView = [String]()
+    internal var interactor: ProfileGridInteractor?
+    internal var dataForTheView = [String]()
     weak var delegate: ProfileGridPresenterDelegate?
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
@@ -22,14 +22,20 @@ class ProfileGridPresenter: NSObject, ProfileGridInteractorDelegate {
         interactor?.delegate = self
     }
     
-    // MARK: - ProfileGridViewController events
+    // MARK: ProfileGridViewController events
     
     func provideProfileGridData() {
         print("ProfileGridViewController needs data. ProfileGridPresenter responds.")
         interactor?.profileGridPresenterNeedsData()
     }
     
-    // MARK: - ProfileGridInteracor delegate
+
+}
+
+
+// MARK: ProfileGridInteracor delegate
+
+extension ProfileGridPresenter: ProfileGridInteractorDelegate {
     
     func profileGridInteractorDidCallPresenter(withData data: Array<Dictionary<String, AnyObject>>) {
         print("ProfileGridInteractor did call ProfileGridPresenter")

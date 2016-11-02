@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ProfilePresenter: NSObject, ProfileInteractorDelegate {
+class ProfilePresenter: NSObject {
     
-    private var interactor: ProfileInteractor?
+    internal var interactor: ProfileInteractor?
     weak var delegate: ProfilePresenterDelegate?
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
@@ -21,17 +21,22 @@ class ProfilePresenter: NSObject, ProfileInteractorDelegate {
         interactor?.delegate = self
     }
     
-    // MARK: - ProfileViewController events
+    // MARK: ProfileViewController events
     
     func profileViewEvent() {
         print("User interacted with ProfileViewController. ProfilePresenter responds.")
         interactor?.profilePresenterEvent()
     }
     
-    // MARK: - ProfileInteractor delegate
+}
+
+// MARK: ProfileInteractor delegate
+
+extension ProfilePresenter: ProfileInteractorDelegate {
     
     func profileInteractorDidCallPresenter() {
         print("ProfilePresenter is called from ProfileInteractor")
         delegate?.profilePresenterDidCallView()
     }
+    
 }

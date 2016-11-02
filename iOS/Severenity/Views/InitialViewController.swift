@@ -10,24 +10,28 @@ import UIKit
 import FacebookLogin
 import FBSDKCoreKit
 
-class InitialViewController: UIViewController, LoginButtonDelegate {
+class InitialViewController: UIViewController {
     
-    // MARK: - Loading view
+    // MARK: Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         print("Facebook SDK version: \(FBSDKSettings.sdkVersion())")
         
-        let loginButton = LoginButton(readPermissions: [ .publicProfile ])
+        let loginButton = LoginButton(readPermissions: [ .publicProfile, .userFriends, .email ])
         loginButton.delegate = self
-        loginButton.center = CGPoint(x: view.center.x, y: view.center.y+100)
+        loginButton.center = CGPoint(x: view.center.x, y: view.center.y + 100)
         loginButton.isHidden = false
         
         view.addSubview(loginButton)
     }
     
-    // MARK: - Facebook login button delegate
+}
+
+// MARK: Facebook login button delegate
+
+extension InitialViewController: LoginButtonDelegate {
     
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         
@@ -42,14 +46,7 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
         
         loginButton.isHidden = true
         
-        // Adding login indicator to the view
-        let loginIndicator = UIActivityIndicatorView()
-        loginIndicator.color = UIColor.blue
-        loginIndicator.hidesWhenStopped = true
-        loginIndicator.center = view.center
-        loginIndicator.startAnimating()
-        
-        view.addSubview(loginIndicator)
+        startActivityIndicator(view: view)
         
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -58,12 +55,12 @@ class InitialViewController: UIViewController, LoginButtonDelegate {
             appDelegate.window?.rootViewController = vc
         }
         
-        loginIndicator.stopAnimating()
-        loginIndicator.removeFromSuperview()
+        stopActivityIndicator(view: view)
         
     }
-
+    
     func loginButtonDidLogOut(_ loginButton: LoginButton) {
         print("Facebook login button did logout")
     }
+    
 }

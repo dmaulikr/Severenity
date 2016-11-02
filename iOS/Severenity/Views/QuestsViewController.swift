@@ -8,11 +8,11 @@
 
 import UIKit
 
-class QuestsViewController: UIViewController, QuestsPresenterDelegate {
+class QuestsViewController: UIViewController {
     
-    private var presenter: QuestsPresenter?
+    internal var presenter: QuestsPresenter?
     
-    // MARK: - Init
+    // MARK: Init
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -21,7 +21,7 @@ class QuestsViewController: UIViewController, QuestsPresenterDelegate {
         print("Quests VIPER module init did complete")
     }
     
-    // MARK: - Loading view
+    // MARK: Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +32,14 @@ class QuestsViewController: UIViewController, QuestsPresenterDelegate {
         presenter?.questsViewEvent()
     }
     
-    // MARK: - QuestsPresenter delegate
+}
+
+// MARK: QuestsPresenter delegate
+
+extension QuestsViewController: QuestsPresenterDelegate {
     
     func questsPresenterDidCallView() {
         print("QuestsViewController is called from QuestsPresenter")
     }
+    
 }

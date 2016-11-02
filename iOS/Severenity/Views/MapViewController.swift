@@ -9,15 +9,15 @@
 import UIKit
 import GoogleMaps
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresenterDelegate, GMSMapViewDelegate {
+class MapViewController: UIViewController {
 
-    private var presenter: MapPresenter?
-    private var markers: [String: GMSMarker] = [:]
+    internal var presenter: MapPresenter?
+    internal var markers: [String: GMSMarker] = [:]
     let locationManager = CLLocationManager()
     
     @IBOutlet var mapView: GMSMapView!
     
-    // MARK: - Init
+    // MARK: Init
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -26,7 +26,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresent
         print("Map VIPER module init did complete")
     }
     
-    // MARK: - Loading view
+    // MARK: Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,8 +45,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresent
             })
             locationAlertController.addAction(defaultAction)
             present(locationAlertController, animated: true, completion: nil)
-        }
-        else {
+        } else {
             mapView.delegate = self
             view = mapView
             mapView.isMyLocationEnabled = false
@@ -54,26 +53,23 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresent
     }
     
     /**- Calling this method simply adjust Google Map to see all markers */
-    private func showAllMarkersOnMap() {
-        let firstPlace = markers.first?.value.position
-        var bounds = GMSCoordinateBounds.init(coordinate: firstPlace!, coordinate: firstPlace!)
+    internal func showAllMarkersOnMap() {
+        guard let firstPlace = markers.first?.value.position else {
+            print("Cannot zoom map to see all markers")
+            return
+        }
+        var bounds = GMSCoordinateBounds.init(coordinate: firstPlace, coordinate: firstPlace)
         for marker in markers {
             bounds = bounds.includingCoordinate(marker.value.position)
         }
         mapView.animate(with: GMSCameraUpdate.fit(bounds, with: UIEdgeInsetsMake(50, 50, 50, 50)))
     }
-    
-    // MARK: - GMSMapViewDelegate
-    
-    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
-        mapView.moveCamera(GMSCameraUpdate.setCamera(GMSCameraPosition.camera(withLatitude: marker.position.latitude,
-                                                                              longitude: marker.position.longitude,
-                                                                              zoom: 18)))
-        mapView.selectedMarker = marker
-        return true
-    }
-    
-    // MARK: - MapPresenter delegate
+
+}
+
+// MARK: MapPresenter delegate
+
+extension MapViewController: MapPresenterDelegate {
     
     func addNewPlaceToMap(with data: Dictionary<String,Any>) {
         print("MapPresenter did call MapViewController with data: \(data)")
@@ -90,55 +86,53 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MapPresent
         showAllMarkersOnMap()
     }
     
-    
-    func maskImage(image: UIImage, withMask maskImage: UIImage) -> UIImage {
-        let maskRef = maskImage.cgImage
-        let mask = CGImage(
-            maskWidth: maskRef!.width,
-            height: maskRef!.height,
-            bitsPerComponent: maskRef!.bitsPerComponent,
-            bitsPerPixel: maskRef!.bitsPerPixel,
-            bytesPerRow: maskRef!.bytesPerRow,
-            provider: maskRef!.dataProvider!,
-            decode: nil,
-            shouldInterpolate: false)
-        let masked = image.cgImage!.masking(mask!)
-        let maskedImage = UIImage(cgImage: masked!)
-        // No need to release. Core Foundation objects are automatically memory managed.
-        return maskedImage
-    }
-    
     func addNewPlayerToMap(with image: UIImage, and coordinates: CLLocationCoordinate2D, and info: Dictionary<String,String>) {
-        guard let userId = info["id"], let userName = info["name"] else {
+        guard let userID = info["id"], let userName = info["name"] else {
             print("Cannot add player marker to map with recieved info")
             return
         }
-        if markers[userId] != nil {
-            var customImage = image.roundedImageWithBorder(with: 5, and: #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1))
-            customImage = customImage?.imageResize(sizeChange: CGSize.init(width: 45, height: 45))
-            markers[userId]?.icon = customImage
-            markers[userId]?.position = coordinates
-            markers[userId]?.title = userName
+        var customImage = image.roundedImageWithBorder(with: 5, and: #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1))
+        customImage = customImage?.imageResize(sizeChange: CGSize.init(width: 45, height: 45))
+        if markers[userID] != nil {
+            markers[userID]?.icon = customImage
+            markers[userID]?.position = coordinates
+            markers[userID]?.title = userName
             print("Recieved player marker is already on the map. Coordinates were updated.")
-        }
-        else {
+        } else {
             let marker = GMSMarker()
             marker.position = coordinates
             marker.title = userName
-            var customImage = image.roundedImageWithBorder(with: 5, and: #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1))
-            customImage = customImage?.imageResize(sizeChange: CGSize.init(width: 45, height: 45))
             marker.icon = customImage
             marker.map = mapView
-            markers[userId] = marker
+            markers[userID] = marker
             print("New player marker added to the map")
         }
     }
     
-    // MARK: - CLLocationManager delegate
+}
+
+// MARK: GMSMapViewDelegate
+
+extension MapViewController: GMSMapViewDelegate {
+    
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        mapView.moveCamera(GMSCameraUpdate.setCamera(GMSCameraPosition.camera(withLatitude: marker.position.latitude,
+                                                                              longitude: marker.position.longitude,
+                                                                              zoom: 18)))
+        mapView.selectedMarker = marker
+        return true
+    }
+    
+}
+
+// MARK: CLLocationManager delegate
+
+extension MapViewController: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let currentLocation = locations.first {
             presenter?.userLocationUpdate(currentLocation)
         }
     }
+    
 }

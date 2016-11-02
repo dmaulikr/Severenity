@@ -13,23 +13,23 @@ class MapInteractor: NSObject {
 
     weak var delegate: MapInteractorDelegate?
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
         WireFrame.sharedInstance.viperInteractors["MapInteractor"] = self
     }
     
-    // MARK: - Other events
+    // MARK: Other events
     
     func profileListViewEvent(with data: AnyObject) {
         print("MapInteractor event happened from ProfileListView with data: \(data)")
         if let recievedData = data as? Dictionary<String,Any> {
-            delegate?.displayPlace(with: recievedData as Dictionary<String, Any>)
+            delegate?.displayPlace(with: recievedData)
         }
     }
     
-    // MARK: - Service interaction
+    // MARK: Service interaction
     
     func processUserLocationUpdate(with dictionary: Dictionary<String,Any>) {
         print("MapInteractor was called from MapPresenter to process new user location")
@@ -39,9 +39,9 @@ class MapInteractor: NSObject {
     func processNewPlayerLocation(with dictionary: Dictionary<String,Any>) {
         if let lat = dictionary["lat"] as? Double,
             let lng = dictionary["lng"] as? Double,
-            let fbUserId = dictionary["id"] as? String {
-                FacebookService.sharedInstance.getFBProfilePicture(with: fbUserId) { (image) in
-                    FacebookService.sharedInstance.getFBProfileInfo(with: fbUserId, and: { (info) in
+            let fbUserID = dictionary["id"] as? String {
+                FacebookService.sharedInstance.getFBProfilePicture(with: fbUserID) { (image) in
+                    FacebookService.sharedInstance.getFBProfileInfo(with: fbUserID, and: { (info) in
                         self.delegate?.displayPlayer(with: image, and: CLLocationCoordinate2DMake(lat, lng), and: info)
                     })
             }

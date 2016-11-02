@@ -35,6 +35,8 @@
 		121D55421DC76AC900294742 /* MessageInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121D55411DC76AC900294742 /* MessageInView.xib */; };
 		121D55441DC76AEF00294742 /* MessageInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D55431DC76AEF00294742 /* MessageInView.swift */; };
 		12698F111DC7856F000F4601 /* starting_background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 12698F101DC7856F000F4601 /* starting_background@2x.jpg */; };
+		1270DD1C1DC90009002E1139 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1270DD1B1DC90009002E1139 /* HealthKit.framework */; };
+		1270DD1E1DC9FB86002E1139 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1270DD1D1DC9FB86002E1139 /* HealthKitService.swift */; };
 		127A2C881DBF55E600CD492F /* FacebookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127A2C871DBF55E600CD492F /* FacebookService.swift */; };
 		12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */; };
 		12EE6B011DB7AB3000FFC567 /* ShopInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */; };
@@ -69,7 +71,6 @@
 		52BD55AE1DC3F2470044666E /* NavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BD55AD1DC3F2470044666E /* NavigationBarView.swift */; };
 		52ED3BA51DC4D8B400BE2B50 /* Consts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ED3BA41DC4D8B400BE2B50 /* Consts.swift */; };
 		52ED3BB31DC4DF7A00BE2B50 /* icon_send_message_violet.png in Resources */ = {isa = PBXBuildFile; fileRef = 52ED3BA61DC4DF7A00BE2B50 /* icon_send_message_violet.png */; };
-		52ED3BB41DC4DF7A00BE2B50 /* marker_mask.png in Resources */ = {isa = PBXBuildFile; fileRef = 52ED3BA71DC4DF7A00BE2B50 /* marker_mask.png */; };
 		52ED3BB51DC4DF7A00BE2B50 /* menu_chat_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 52ED3BA81DC4DF7A00BE2B50 /* menu_chat_selected.png */; };
 		52ED3BB61DC4DF7A00BE2B50 /* menu_chat.png in Resources */ = {isa = PBXBuildFile; fileRef = 52ED3BA91DC4DF7A00BE2B50 /* menu_chat.png */; };
 		52ED3BB71DC4DF7A00BE2B50 /* menu_map_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 52ED3BAA1DC4DF7A00BE2B50 /* menu_map_selected.png */; };
@@ -135,6 +136,8 @@
 		121D55411DC76AC900294742 /* MessageInView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MessageInView.xib; path = Chat/MessageInView.xib; sourceTree = "<group>"; };
 		121D55431DC76AEF00294742 /* MessageInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageInView.swift; path = Chat/MessageInView.swift; sourceTree = "<group>"; };
 		12698F101DC7856F000F4601 /* starting_background@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "starting_background@2x.jpg"; sourceTree = "<group>"; };
+		1270DD1B1DC90009002E1139 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		1270DD1D1DC9FB86002E1139 /* HealthKitService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
 		127A2C871DBF55E600CD492F /* FacebookService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookService.swift; sourceTree = "<group>"; };
 		1293BE2B1DB65AE000658292 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopPresenter.swift; sourceTree = "<group>"; };
@@ -178,7 +181,6 @@
 		52BD55AD1DC3F2470044666E /* NavigationBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationBarView.swift; sourceTree = "<group>"; };
 		52ED3BA41DC4D8B400BE2B50 /* Consts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Consts.swift; sourceTree = "<group>"; };
 		52ED3BA61DC4DF7A00BE2B50 /* icon_send_message_violet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_send_message_violet.png; sourceTree = "<group>"; };
-		52ED3BA71DC4DF7A00BE2B50 /* marker_mask.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_mask.png; sourceTree = "<group>"; };
 		52ED3BA81DC4DF7A00BE2B50 /* menu_chat_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_chat_selected.png; sourceTree = "<group>"; };
 		52ED3BA91DC4DF7A00BE2B50 /* menu_chat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_chat.png; sourceTree = "<group>"; };
 		52ED3BAA1DC4DF7A00BE2B50 /* menu_map_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu_map_selected.png; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7F9968E342323C91D242D2A /* Pods_Severenity.framework in Frameworks */,
+				1270DD1C1DC90009002E1139 /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,7 +232,6 @@
 				52787BE61D86AA35009D17F5 /* Assets.xcassets */,
 				12698F101DC7856F000F4601 /* starting_background@2x.jpg */,
 				52ED3BA61DC4DF7A00BE2B50 /* icon_send_message_violet.png */,
-				52ED3BA71DC4DF7A00BE2B50 /* marker_mask.png */,
 				52ED3BA81DC4DF7A00BE2B50 /* menu_chat_selected.png */,
 				52ED3BA91DC4DF7A00BE2B50 /* menu_chat.png */,
 				52ED3BAA1DC4DF7A00BE2B50 /* menu_map_selected.png */,
@@ -284,6 +286,7 @@
 			isa = PBXGroup;
 			children = (
 				127A2C871DBF55E600CD492F /* FacebookService.swift */,
+				1270DD1D1DC9FB86002E1139 /* HealthKitService.swift */,
 				5264A7A01D8828B500EE78FC /* PlacesService.swift */,
 				121328761DBE45F700FED50E /* SocketService.swift */,
 			);
@@ -332,9 +335,9 @@
 		12EE6B121DB8C4AF00FFC567 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				12EE6B151DB8C50100FFC567 /* ProfilePresenter.swift */,
 				12EE6B171DB8C51900FFC567 /* ProfileListPresenter.swift */,
 				12EE6B191DB8C52500FFC567 /* ProfileGridPresenter.swift */,
-				12EE6B151DB8C50100FFC567 /* ProfilePresenter.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -342,9 +345,9 @@
 		12EE6B1B1DB8C69A00FFC567 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				12EE6B221DB8C70A00FFC567 /* ProfileInteractor.swift */,
 				12EE6B1E1DB8C6E700FFC567 /* ProfileListInteractor.swift */,
 				12EE6B201DB8C6F700FFC567 /* ProfileGridInteractor.swift */,
-				12EE6B221DB8C70A00FFC567 /* ProfileInteractor.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -352,9 +355,9 @@
 		12EE6B281DB8C74F00FFC567 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				12EE6B291DB8C76000FFC567 /* ProfileRouter.swift */,
 				12EE6B2D1DB8C77D00FFC567 /* ProfileListRouter.swift */,
 				12EE6B2F1DB8C79000FFC567 /* ProfileGridRouter.swift */,
-				12EE6B291DB8C76000FFC567 /* ProfileRouter.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -471,6 +474,7 @@
 		80D382F60247FFE0365B0D4A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1270DD1B1DC90009002E1139 /* HealthKit.framework */,
 				1293BE2B1DB65AE000658292 /* CoreLocation.framework */,
 				B3AAAE59B41ABFF884BC13C0 /* Pods_Severenity.framework */,
 			);
@@ -572,6 +576,9 @@
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
 							com.apple.Keychain = {
 								enabled = 1;
 							};
@@ -639,7 +646,6 @@
 				7E0F9D151D96524F0038D11D /* DeepSpace.png in Resources */,
 				7E0F9D121D964C440038D11D /* facebook_login.png in Resources */,
 				52ED3BB61DC4DF7A00BE2B50 /* menu_chat.png in Resources */,
-				52ED3BB41DC4DF7A00BE2B50 /* marker_mask.png in Resources */,
 				121A65671DC38FF900A6C6B9 /* ProfileGridCell.xib in Resources */,
 				52ED3BBD1DC4DF7A00BE2B50 /* menu_shop_selected.png in Resources */,
 				52ED3BB31DC4DF7A00BE2B50 /* icon_send_message_violet.png in Resources */,
@@ -741,6 +747,7 @@
 				121A65571DC38FBF00A6C6B9 /* InitialViewController.swift in Sources */,
 				12EE6B231DB8C70A00FFC567 /* ProfileInteractor.swift in Sources */,
 				12EE6B461DBA372A00FFC567 /* WireFrame.swift in Sources */,
+				1270DD1E1DC9FB86002E1139 /* HealthKitService.swift in Sources */,
 				12EE6B071DB7AD0B00FFC567 /* ShopRouter.swift in Sources */,
 				12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */,
 				52BD55A91DC3EEF90044666E /* Extensions.swift in Sources */,
@@ -941,16 +948,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3EF1D539D2A4755EDFC9C1D5 /* Pods-Severenity.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Severenity/Supporting Files/Severenity.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer: yura.yasinskyy@gmail.com (2DL2BUT3N3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = M7LFA46QZA;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Severenity/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -960,16 +967,16 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 32F484CB3F8B329893C92576 /* Pods-Severenity.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Severenity/Supporting Files/Severenity.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer: yura.yasinskyy@gmail.com (2DL2BUT3N3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = M7LFA46QZA;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Severenity/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

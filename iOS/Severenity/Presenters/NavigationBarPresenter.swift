@@ -8,12 +8,12 @@
 
 import UIKit
 
-class NavigationBarPresenter: NSObject, NavigationBarInteractorDelegate {
+class NavigationBarPresenter: NSObject {
 
-    private var interactor: NavigationBarInteractor?
+    internal var interactor: NavigationBarInteractor?
     weak var delegate: NavigationBarPresenterDelegate?
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
@@ -21,14 +21,19 @@ class NavigationBarPresenter: NSObject, NavigationBarInteractorDelegate {
         interactor?.delegate = self
     }
     
-    // MARK: - NavigationBarViewController events
+    // MARK: NavigationBarViewController events
     
     func navigationBarViewNeedsData() {
         print("User interacted with NavigationBarController. NavigationBarPresenter responds.")
         interactor?.navigationBarPresenterNeedsData()
     }
-    
-    // MARK: - NavigationBarInteractor delegate
+
+}
+
+
+// MARK: NavigationBarInteractor delegate
+
+extension NavigationBarPresenter: NavigationBarInteractorDelegate {
     
     func navigationBarInteractorDidCallPresenter(with picture: UIImage, and info: Dictionary<String,String>) {
         print("NavigationBarPresenter is called from NavigationBarInteractor")

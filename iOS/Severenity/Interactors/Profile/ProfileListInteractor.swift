@@ -14,14 +14,14 @@ class ProfileListInteractor: NSObject {
     private let locationsServerManager = PlacesService()
     private var placesData = [AnyObject]()
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
         WireFrame.sharedInstance.viperInteractors["ProfileListInteractor"] = self
     }
     
-    // MARK: - ProfileListPresenter events
+    // MARK: ProfileListPresenter events
     
     func profileListPresenterNeedsData() {
         print("ProfileListInteractor was called from ProfileListPresenter")
@@ -35,7 +35,7 @@ class ProfileListInteractor: NSObject {
         }
     }
     
-    // MARK: - Service interaction
+    // MARK: Service interaction
     
     /**- provideDataForList calls LocationsServerManager's instance
      and asks it to provide data that should be shown in UITableView.
@@ -43,8 +43,8 @@ class ProfileListInteractor: NSObject {
      Each dicitonary is a separate place later displayed in the table.*/
     private func getPlacesData() {
         locationsServerManager.provideData { (result) in
-            self.placesData = result as [AnyObject]
-            if let places = self.placesData as? Array<Dictionary<String, AnyObject>> {
+            if let places = result as? Array<Dictionary<String, AnyObject>> {
+                self.placesData = places as [AnyObject]
                 self.delegate?.profileListInteractorDidCallPresenter(withData: places)
             }
         }

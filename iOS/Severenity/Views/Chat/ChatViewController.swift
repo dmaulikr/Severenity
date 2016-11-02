@@ -7,18 +7,17 @@
 //
 
 import UIKit
-import FBSDKLoginKit
 
-class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
+class ChatViewController: UIViewController {
     
-    private var presenter: ChatPresenter?
-    private var messages = [Dictionary<String,Any>]()
+    internal var presenter: ChatPresenter?
+    internal var messages = [Dictionary<String,Any>]()
     
     @IBOutlet weak var messagesTableView: UITableView!
     @IBOutlet weak var newMessageTextField: UITextField!
     @IBOutlet weak var sendMessageButton: UIButton!
     
-    // MARK: - Init
+    // MARK: Init
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -27,7 +26,7 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
         print("Chat VIPER module init did complete")
     }
     
-    // MARK: - Loading view
+    // MARK: Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +45,10 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
     }
     
     @IBAction func sendMessageButtonTap(_ sender: AnyObject) {
+        sendMessage()
+    }
+    
+    func sendMessage() {
         if newMessageTextField.text != "" {
             presenter?.userWantsToSendMessage(with: newMessageTextField.text!)
             newMessageTextField.text = ""
@@ -53,7 +56,7 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
         }
     }
     
-    // MARK: - Managing view layout on keyboard appear/disappear
+    // MARK: Managing view layout on keyboard appear/disappear
     
     func keyboardWillShow(notification: NSNotification) {
         print(self.view.frame.origin)
@@ -70,14 +73,23 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
         }
     }
     
-    // MARK: - ChatPresenter delegate
+}
+
+// MARK: ChatPresenter delegate
+
+extension ChatViewController: ChatPresenterDelegate {
     
     func displayNewMessage(with dictionary: Dictionary<String,String>) {
         print("ChatViewController is called from ChatPresenter with message: \(dictionary)")
         messages.append(dictionary)
         messagesTableView.reloadData()
     }
-    // MARK: - UITableView delegate
+    
+}
+
+extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    // MARK: UITableView delegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -87,7 +99,7 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
         return 105.0 // size of the cell xib
     }
     
-    // MARK: - UITableView data source
+    // MARK: UITableView data source
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -102,26 +114,25 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
         let message = messages[(indexPath as NSIndexPath).row]
         
         guard let senderName = message["senderName"] as? String, let timestamp = message["timestamp"] as? String,
-            let messageText = message["text"] as? String, let senderFbId = message["senderId"] as? String else {
-            print("Cannot create chat message cell")
-            cell = UITableViewCell()
-            return cell
+            let messageText = message["text"] as? String, let senderFbId = message["senderId"] as? String,
+            let currentUserFbID = FacebookService.sharedInstance.accessTokenUserID else {
+                print("Cannot create chat message cell")
+                cell = UITableViewCell()
+                return cell
         }
         
-        if message["senderId"] as! String != (FBSDKAccessToken.current().userID)! {
+        if senderFbId != currentUserFbID {
             if let c = tableView.dequeueReusableCell(withIdentifier: "MessageInView", for: indexPath) as? MessageInView {
                 c.infoLabel.text = "\(senderName), \(timestamp)"
                 c.messageText.text = messageText
                 FacebookService.sharedInstance.getFBProfilePicture(with: senderFbId, and: { (image) in
-                        c.profilePicture.image = image
-                    })
+                    c.profilePicture.image = image
+                })
                 cell = c
-            }
-            else {
+            } else {
                 cell = tableView.dequeueReusableCell(withIdentifier: "MessageInView", for: indexPath)
             }
-        }
-        else {
+        } else {
             if let c = tableView.dequeueReusableCell(withIdentifier: "MessageOutView", for: indexPath) as? MessageOutView {
                 c.infoLabel.text = "\(senderName), \(timestamp)"
                 c.messageText.text = messageText
@@ -129,28 +140,26 @@ class ChatViewController: UIViewController, ChatPresenterDelegate, UITextFieldDe
                     c.profilePicture.image = image
                 })
                 cell = c
-            }
-            else {
+            } else {
                 cell = tableView.dequeueReusableCell(withIdentifier: "MessageOutView", for: indexPath)
             }
         }
         cell.backgroundColor = UIColor.clear
         
         tableView.scrollToRow(at: NSIndexPath.init(row: messages.count-1, section: 0) as IndexPath, at: .bottom, animated: true)
-            
+        
         return cell
     }
     
-    // MARK: UITextField delegate
+}
 
+// MARK: UITextField delegate
+
+extension ChatViewController: UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if newMessageTextField.text != "" {
-            if newMessageTextField.text != "" {
-                presenter?.userWantsToSendMessage(with: newMessageTextField.text!)
-                newMessageTextField.text = ""
-                newMessageTextField.resignFirstResponder()
-            }
-        }
+        sendMessage()
         return true
     }
+    
 }

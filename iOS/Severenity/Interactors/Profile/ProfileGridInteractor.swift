@@ -14,14 +14,14 @@ class ProfileGridInteractor: NSObject {
     private let locationsServerManager = PlacesService()
     private var placesData = [AnyObject]()
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
         WireFrame.sharedInstance.viperInteractors["ProfileGridInteractor"] = self
     }
     
-    // MARK: - ProfileGridPresenter events
+    // MARK: ProfileGridPresenter events
     
     func profileGridPresenterNeedsData() {
         print("ProfileListInteractor was called from ProfileListPresenter")

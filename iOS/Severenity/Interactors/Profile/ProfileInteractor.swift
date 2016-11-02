@@ -12,14 +12,14 @@ class ProfileInteractor: NSObject {
     
     weak var delegate: ProfileInteractorDelegate?
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
         WireFrame.sharedInstance.viperInteractors["ProfileInteractor"] = self
     }
     
-    // MARK: - ProfilePresenter events
+    // MARK: ProfilePresenter events
     
     func profilePresenterEvent() {
         print("ProfileInteractor was called from ProfilePresenter")

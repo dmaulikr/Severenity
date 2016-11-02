@@ -12,14 +12,14 @@ class TabBarInteractor: NSObject {
     
     weak var delegate: TabBarInteractorDelegate?
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
         WireFrame.sharedInstance.viperInteractors["TabBarInteractor"] = self
     }
     
-    // MARK: - TabBarPresetner events
+    // MARK: TabBarPresetner events
     
     func tabBarPresenterEvent() {
         print("TabBarInteractor was called from TabBarPresenter")

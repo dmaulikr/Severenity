@@ -15,18 +15,24 @@ class FacebookService: NSObject {
     
     static let sharedInstance = FacebookService()
     
-    // MARK: - Init
+    var accessTokenUserID: String?
+    
+    // MARK: Init
     
     private override init() {
         super.init()
+        
+        if let fbUserID = FBSDKAccessToken.current().userID {
+            accessTokenUserID = fbUserID
+        }
         print("SocketService shared instance init did complete")
     }
     
-    // MARK: - Methods
+    // MARK: Methods
     
-    func getFBProfilePicture(with fbUserId: String, and completion: @escaping (_ image: Image) -> Void) {
+    func getFBProfilePicture(with fbUserID: String, and completion: @escaping (_ image: Image) -> Void) {
         
-        guard let serverURL = URL.init(string: "https://graph.facebook.com/\(fbUserId)/picture?type=normal") else {
+        guard let serverURL = URL.init(string: "https://graph.facebook.com/\(fbUserID)/picture?type=normal") else {
             print("Cannot create url for Facebook profile picture")
             return
         }
@@ -41,16 +47,14 @@ class FacebookService: NSObject {
         }
     }
     
-    func getFBProfileInfo(with fbUserID: String, and completion: @escaping (_ info: Dictionary<String,String>) -> Void){
-        FBSDKGraphRequest(graphPath: fbUserID, parameters: ["fields": "id, name, first_name, last_name, relationship_status"]).start(completionHandler: { (connection, result, error) -> Void in
-            if (error == nil){
-                if let fbDetails = result as? Dictionary<String, String> {
-                    completion(fbDetails)
-                }
+    func getFBProfileInfo(with fbUserID: String, and completion: @escaping (_ info: Dictionary<String,String>) -> Void) {
+        FBSDKGraphRequest(graphPath: fbUserID, parameters: ["fields": "id, name, first_name, last_name, email"]).start(completionHandler: { (connection, result, error) -> Void in
+            guard error == nil, let fbDetails = result as? Dictionary<String, String> else {
+                print("Cannot get Facebook profile info: \(error)")
+                return
             }
+            completion(fbDetails)
         })
     }
-    
-    
     
 }

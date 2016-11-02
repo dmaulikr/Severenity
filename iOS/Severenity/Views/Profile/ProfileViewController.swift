@@ -8,14 +8,14 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, ProfilePresenterDelegate {
+class ProfileViewController: UIViewController {
     
-    private var presenter: ProfilePresenter?
+    internal var presenter: ProfilePresenter?
 
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var contentModeSwitcher: UISegmentedControl!
     
-    // MARK: - Init
+    // MARK: Init
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -29,14 +29,14 @@ class ProfileViewController: UIViewController, ProfilePresenterDelegate {
         changeContentMode(self)
     }
     
-    // MARK:  - Loading view
+    // MARK:  Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.profileViewEvent()
     }
     
-    // MARK: - Managing view presentation
+    // MARK: Managing view presentation
     
     @IBAction func changeContentMode(_ sender: AnyObject) {
         switch contentModeSwitcher.selectedSegmentIndex {
@@ -58,4 +58,8 @@ class ProfileViewController: UIViewController, ProfilePresenterDelegate {
             return
         }
     }
+}
+
+extension ProfileViewController: ProfilePresenterDelegate {
+    
 }

@@ -8,9 +8,9 @@
 
 import UIKit
 
-class ChatPresenter: NSObject, ChatInteractorDelegate {
+class ChatPresenter: NSObject {
     
-    private var interactor: ChatInteractor?
+    internal var interactor: ChatInteractor?
     weak var delegate: ChatPresenterDelegate?
     
     // MARK: Init
@@ -27,11 +27,16 @@ class ChatPresenter: NSObject, ChatInteractorDelegate {
         print("User wants to send message from with ChatViewController. ChatPresenter responds.")
         interactor?.sendChatMessage(with: text)
     }
-    
-    // MARK: ChatInteractor delegate
+
+}
+
+// MARK: ChatInteractor delegate
+
+extension ChatPresenter: ChatInteractorDelegate {
     
     func newMessageDidArrive(with dictionary: Dictionary<String,String>) {
         print("ChatPresenter is called from ChatInteractor with message: \(dictionary)")
         delegate?.displayNewMessage(with: dictionary)
     }
+    
 }

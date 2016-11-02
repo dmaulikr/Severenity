@@ -17,4 +17,5 @@ class WireFrame: NSObject {
         super.init()
         print("WireFrame shared instance init did complete")
     }
+    
 }

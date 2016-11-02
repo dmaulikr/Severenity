@@ -6,11 +6,11 @@
 //  Copyright © 2016 severenity. All rights reserved.
 //
 
-// MARK: - Servers adresses
+// MARK: Servers adresses
 
 let kPlacesServerURL = "https://severenity.herokuapp.com/places/all"
 let kSocketServerURL = "https://severenity.herokuapp.com"
 
-// MARK: - Alerts
+// MARK: Alerts
 
 let kNeedsLocationServicesAccess = "Unfortunately Severenity needs access to location services to continue. Please turn it manually in Settings and come back. App will now exit"

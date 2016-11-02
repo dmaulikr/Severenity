@@ -15,17 +15,17 @@ class PlacesService: NSObject {
 
     private var realm: Realm?
     
-    // MARK: - Init
+    // MARK: Init
 
     override init() {
         do {
-            self.realm = try Realm()
+            realm = try Realm()
         } catch let error as NSError {
             print("Realm error: \(error.localizedDescription)")
         }
     }
     
-    // MARK: - Methods
+    // MARK: Methods
     
     /**- This method returns Array with data in callback. 
      It checks whether data is already in Realm. If yes than it goes to getDataFromRealm method
@@ -47,7 +47,7 @@ class PlacesService: NSObject {
     }
     
     private func checkIfRealmIsEmpty() -> Bool {
-        let realmReadQuery = self.realm?.objects(RealmPlace.self)
+        let realmReadQuery = realm?.objects(RealmPlace.self)
         return realmReadQuery?.isEmpty ?? false
     }
     
@@ -97,7 +97,7 @@ class PlacesService: NSObject {
      that is than returned in Array. */
     private func getDataFromRealm(_ completion: (_ data: NSArray) -> Void) {
         
-        let realmReadQuery = self.realm?.objects(RealmPlace.self)
+        let realmReadQuery = realm?.objects(RealmPlace.self)
         var dataFromRealm: [AnyObject] = []
         var ownersArray: [AnyObject] = []
         var isRightOwnerFound = false
@@ -132,8 +132,8 @@ class PlacesService: NSObject {
     // Try to drop data by type 'Location' etc., not all data
     private func dropDataInRealm() {
         do {
-            try self.realm?.write {
-                self.realm?.deleteAll()
+            try realm?.write {
+                realm?.deleteAll()
             }
         } catch let error as NSError {
             print("Realm error: \(error.localizedDescription)")

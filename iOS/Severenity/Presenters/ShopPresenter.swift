@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ShopPresenter: NSObject, ShopInteractorDelegate {
+class ShopPresenter: NSObject {
     
-    private var interactor: ShopInteractor?
+    internal var interactor: ShopInteractor?
     weak var delegate: ShopPresenterDelegate?
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
@@ -21,17 +21,22 @@ class ShopPresenter: NSObject, ShopInteractorDelegate {
         interactor?.delegate = self
     }
     
-    // MARK: - ShopViewController events
+    // MARK: ShopViewController events
     
     func shopViewEvent() {
         print("User interacted with ShopViewController. ShopPresenter responds.")
         interactor?.shopPresenterEvent()
     }
-    
-    // MARK: - ShopInteractor delegate
+
+}
+
+// MARK: ShopInteractor delegate
+
+extension ShopPresenter: ShopInteractorDelegate {
     
     func shopInteractorDidCallPresenter() {
         print("ShopPresenter is called from ShopInteractor")
         delegate?.shopPresenterDidCallView()
     }
+    
 }

@@ -8,12 +8,12 @@
 
 import UIKit
 
-class TabBarPresenter: NSObject, TabBarInteractorDelegate {
+class TabBarPresenter: NSObject {
 
-    private var interactor: TabBarInteractor?
+    internal var interactor: TabBarInteractor?
     weak var delegate: TabBarPresenterDelegate?
     
-    // MARK: - Init
+    // MARK: Init
     
     override init() {
         super.init()
@@ -21,17 +21,22 @@ class TabBarPresenter: NSObject, TabBarInteractorDelegate {
         interactor?.delegate = self
     }
     
-    // MARK: - TabBarViewController events
+    // MARK: TabBarViewController events
     
     func tabBarViewEvent() {
         print("User interacted with TabBarController. TabBarPresenter responds.")
         interactor?.tabBarPresenterEvent()
     }
     
-    // MARK: - TabBarInteractor delegate
+}
+
+// MARK: TabBarInteractor delegate
+
+extension TabBarPresenter: TabBarInteractorDelegate {
     
     func tabBarInteractorDidCallPresenter() {
         print("TabBarPresenter is called from TabBarInteractor")
         delegate?.tabBarPresenterDidCallView()
     }
+    
 }

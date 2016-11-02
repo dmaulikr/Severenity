@@ -8,11 +8,11 @@
 
 import UIKit
 
-class TabBarController: UITabBarController, TabBarPresenterDelegate {
+class TabBarController: UITabBarController {
     
-    private var presenter: TabBarPresenter?
+    internal var presenter: TabBarPresenter?
     
-    // MARK: - Init
+    // MARK: Init
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -21,16 +21,21 @@ class TabBarController: UITabBarController, TabBarPresenterDelegate {
         print("TabBar VIPER module init did complete")
     }
     
-    // MARK: - Loading view
+    // MARK: Loading view
 
     override func viewDidLoad() {
         super.viewDidLoad()
         print("TabBarController did load")
     }
-    
-    // MARK: - TabBarPresenter delegate
+
+}
+
+// MARK: TabBarPresenter delegate
+
+extension TabBarController: TabBarPresenterDelegate {
     
     func tabBarPresenterDidCallView() {
         print("TabBarController is called from TabBarPresenter")
     }
+    
 }
