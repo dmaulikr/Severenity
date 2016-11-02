@@ -35,7 +35,7 @@ class ProfileListViewController: UITableViewController {
         tableView.backgroundColor = UIColor.black
         tableView.separatorColor = #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1)
         
-        startActivityIndicator(location: CGPoint.init(x: self.view.frame.width/2, y: self.view.frame.height/2 - 100), view: tableView)
+        startActivityIndicator(location: CGPoint.init(x: view.frame.width/2, y: view.frame.height/2 - 100), view: tableView)
         
         presenter?.provideProfileListData()
     }

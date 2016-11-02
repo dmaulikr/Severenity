@@ -38,8 +38,8 @@ class ChatViewController: UIViewController {
         messagesTableView.backgroundColor = UIColor.black
         messagesTableView.separatorColor = UIColor.clear
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         print("Chat tab did load");
     }
@@ -59,7 +59,6 @@ class ChatViewController: UIViewController {
     // MARK: Managing view layout on keyboard appear/disappear
     
     func keyboardWillShow(notification: NSNotification) {
-        print(self.view.frame.origin)
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             newMessageTextField.frame.origin.y -= keyboardSize.height - 50 // magical number
             sendMessageButton.frame.origin.y -= keyboardSize.height - 50

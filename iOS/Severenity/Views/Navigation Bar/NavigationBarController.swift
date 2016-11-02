@@ -45,12 +45,12 @@ extension NavigationBarController: NavigationBarPresenterDelegate {
     func navigationBarPresenterDidCallView(with picture: UIImage, and info: Dictionary<String,String>) {
         print("NavigationBarPresenter did call NavigationBarViewController")
         
-        if self.navBarView == nil, let navBarView = NavigationBarView.loadFromNibNamed(nibNamed: "NavigationBarView") as? NavigationBarView {
+        if navBarView == nil, let viewForNavBar = NavigationBarView.loadFromNibNamed(nibNamed: "NavigationBarView") as? NavigationBarView {
             navBarView.userPicture.image = picture.roundedImageWithBorder(with: 4, and: #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1))
             navBarView.userName.text = info["name"]
-            self.navBarView = navBarView
+            navBarView = viewForNavBar
             stopActivityIndicator(view: navigationBar)
-            navigationBar.addSubview(self.navBarView)
+            navigationBar.addSubview(navBarView)
         }
     }
     

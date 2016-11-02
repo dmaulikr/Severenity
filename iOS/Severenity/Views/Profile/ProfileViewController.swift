@@ -29,7 +29,7 @@ class ProfileViewController: UIViewController {
         changeContentMode(self)
     }
     
-    // MARK:  Loading view
+    // MARK: Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()

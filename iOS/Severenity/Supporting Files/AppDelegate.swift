@@ -58,14 +58,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
         let fbToken = FBSDKAccessToken.current()
-        if ((fbToken) != nil) {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if (fbToken != nil) {
             let vc = storyboard.instantiateViewController(withIdentifier: "loggedInController")
-            self.window?.rootViewController = vc
+            window?.rootViewController = vc
         } else {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "loginController")
-            self.window?.rootViewController = vc
+            window?.rootViewController = vc
         }
 
         FBSDKAppEvents.activateApp()
