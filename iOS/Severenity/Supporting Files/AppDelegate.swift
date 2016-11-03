@@ -19,9 +19,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        let keychain = Keychain()
+        let kGoogleAPIKey = keychain["kGoogleAPIKey"] ?? ""
         
-        print("Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyAIaCk4s7pq90-rawgaZXA8qHhkOhk-iFQ"))")
-        print("Google Places API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyAIaCk4s7pq90-rawgaZXA8qHhkOhk-iFQ"))")
+        print("Google Maps API key provided: \(GMSServices.provideAPIKey(kGoogleAPIKey))")
+        print("Google Places API key provided: \(GMSPlacesClient.provideAPIKey(kGoogleAPIKey))")
         
         SocketService.sharedInstance.establishConnection()
 
