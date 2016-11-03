@@ -49,10 +49,15 @@ class MapViewController: UIViewController {
             mapView.delegate = self
             view = mapView
             mapView.isMyLocationEnabled = false
+            if let currentLatitude = locationManager.location?.coordinate.latitude, let currentLongitude = locationManager.location?.coordinate.longitude {
+                mapView.moveCamera(GMSCameraUpdate.setCamera(GMSCameraPosition.camera(withLatitude: currentLatitude,
+                                                                                      longitude: currentLongitude,
+                                                                                      zoom: 4)))
+            }
         }
     }
     
-    /**- Calling this method simply adjust Google Map to see all markers */
+    /**- Calling this method simply adjust GoogleMap to see all markers */
     internal func showAllMarkersOnMap() {
         guard let firstPlace = markers.first?.value.position else {
             print("Cannot zoom map to see all markers")
@@ -83,6 +88,7 @@ extension MapViewController: MapPresenterDelegate {
             markers[placeId] = marker
         }
         print("New place marker added to the map")
+        tabBarController?.selectedIndex = 2
         showAllMarkersOnMap()
     }
     
@@ -108,7 +114,6 @@ extension MapViewController: MapPresenterDelegate {
             print("New player marker added to the map")
         }
     }
-    
 }
 
 // MARK: GMSMapViewDelegate

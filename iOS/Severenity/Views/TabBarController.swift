@@ -25,6 +25,7 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        selectedIndex = 2
         print("TabBarController did load")
     }
 

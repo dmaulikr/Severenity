@@ -23,8 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let keychain = Keychain()
         let kGoogleAPIKey = keychain["kGoogleAPIKey"] ?? ""
         
-        print("Google Maps API key provided: \(GMSServices.provideAPIKey(kGoogleAPIKey))")
-        print("Google Places API key provided: \(GMSPlacesClient.provideAPIKey(kGoogleAPIKey))")
+        // In next two calls we can easily use kGoogleAPIKey but just for some testing purposes I use my own key for now
+        // Feel free to use kGoogleAPIKey
+        print("Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
+        print("Google Places API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
         
         SocketService.sharedInstance.establishConnection()
 

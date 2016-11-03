@@ -47,9 +47,6 @@ extension MapPresenter: MapInteractorDelegate {
     func displayPlace(with data: Dictionary<String,Any>) {
         print("MapPresenter is called from MapInteractor with data: \(data)")
         delegate?.addNewPlaceToMap(with: data)
-        
-        let tabBarController = ((UIApplication.shared.delegate as? AppDelegate)?.window?.rootViewController) as? UITabBarController
-        tabBarController?.selectedIndex = 2;
     }
     
     func displayPlayer(with picture: UIImage, and coordinates: CLLocationCoordinate2D, and info: Dictionary<String,String>) {
