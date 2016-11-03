@@ -13,6 +13,14 @@ import FBSDKLoginKit
 
 class FacebookService: NSObject {
     
+    enum ProfilePictureSize: String {
+        case small = "small"
+        case normal = "normal"
+        case album = "album"
+        case large = "large"
+        case square = "square"
+    }
+    
     static let sharedInstance = FacebookService()
     
     var accessTokenUserID: String?
@@ -30,9 +38,9 @@ class FacebookService: NSObject {
     
     // MARK: Methods
     
-    func getFBProfilePicture(with fbUserID: String, and completion: @escaping (_ image: Image) -> Void) {
+    func getFBProfilePicture(for fbUserID: String, size: ProfilePictureSize, completion: @escaping (_ image: Image) -> Void) {
         
-        guard let serverURL = URL.init(string: "https://graph.facebook.com/\(fbUserID)/picture?type=normal") else {
+        guard let serverURL = URL.init(string: "https://graph.facebook.com/\(fbUserID)/picture?type=\(size.rawValue)") else {
             print("Cannot create url for Facebook profile picture")
             return
         }

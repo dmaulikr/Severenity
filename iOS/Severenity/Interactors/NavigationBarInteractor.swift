@@ -28,7 +28,7 @@ class NavigationBarInteractor: NSObject {
             print("Cannot send chat message")
             return
         }
-        FacebookService.sharedInstance.getFBProfilePicture(with: fbUserID, and: { (image) in
+        FacebookService.sharedInstance.getFBProfilePicture(for: fbUserID, size: .normal, completion: { (image) in
             FacebookService.sharedInstance.getFBProfileInfo (with: "me", and: { (info) in
                     self.delegate?.navigationBarInteractorDidCallPresenter(with: image, and: info)
             })

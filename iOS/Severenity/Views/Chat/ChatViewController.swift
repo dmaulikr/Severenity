@@ -119,12 +119,12 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
                 cell = UITableViewCell()
                 return cell
         }
-        
+
         if senderFbId != currentUserFbID {
             if let c = tableView.dequeueReusableCell(withIdentifier: "MessageInView", for: indexPath) as? MessageInView {
                 c.infoLabel.text = "\(senderName), \(timestamp)"
                 c.messageText.text = messageText
-                FacebookService.sharedInstance.getFBProfilePicture(with: senderFbId, and: { (image) in
+                FacebookService.sharedInstance.getFBProfilePicture(for: senderFbId, size: .normal, completion: { (image) in
                     c.profilePicture.image = image
                 })
                 cell = c
@@ -135,7 +135,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
             if let c = tableView.dequeueReusableCell(withIdentifier: "MessageOutView", for: indexPath) as? MessageOutView {
                 c.infoLabel.text = "\(senderName), \(timestamp)"
                 c.messageText.text = messageText
-                FacebookService.sharedInstance.getFBProfilePicture(with: senderFbId, and: { (image) in
+                FacebookService.sharedInstance.getFBProfilePicture(for: senderFbId, size: .normal, completion: { (image) in
                     c.profilePicture.image = image
                 })
                 cell = c

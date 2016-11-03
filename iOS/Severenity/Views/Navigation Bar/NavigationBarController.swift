@@ -46,8 +46,8 @@ extension NavigationBarController: NavigationBarPresenterDelegate {
         print("NavigationBarPresenter did call NavigationBarViewController")
         
         if navBarView == nil, let viewForNavBar = NavigationBarView.loadFromNibNamed(nibNamed: "NavigationBarView") as? NavigationBarView {
-            navBarView.userPicture.image = picture.roundedImageWithBorder(with: 4, and: #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1))
-            navBarView.userName.text = info["name"]
+            viewForNavBar.userPicture.image = picture.roundedImageWithBorder(with: 4, and: #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1))
+            viewForNavBar.userName.text = info["name"]
             navBarView = viewForNavBar
             stopActivityIndicator(view: navigationBar)
             navigationBar.addSubview(navBarView)

@@ -40,7 +40,7 @@ class MapInteractor: NSObject {
         if let lat = dictionary["lat"] as? Double,
             let lng = dictionary["lng"] as? Double,
             let fbUserID = dictionary["id"] as? String {
-                FacebookService.sharedInstance.getFBProfilePicture(with: fbUserID) { (image) in
+            FacebookService.sharedInstance.getFBProfilePicture(for: fbUserID, size: .normal) { (image) in
                     FacebookService.sharedInstance.getFBProfileInfo(with: fbUserID, and: { (info) in
                         self.delegate?.displayPlayer(with: image, and: CLLocationCoordinate2DMake(lat, lng), and: info)
                     })
