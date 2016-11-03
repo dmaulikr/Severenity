@@ -958,11 +958,11 @@
 				CODE_SIGN_ENTITLEMENTS = "Severenity/Supporting Files/Severenity.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer: yura.yasinskyy@gmail.com (2DL2BUT3N3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = M7LFA46QZA;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Severenity/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -982,11 +982,11 @@
 				CODE_SIGN_ENTITLEMENTS = "Severenity/Supporting Files/Severenity.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer: yura.yasinskyy@gmail.com (2DL2BUT3N3)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = M7LFA46QZA;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Severenity/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";

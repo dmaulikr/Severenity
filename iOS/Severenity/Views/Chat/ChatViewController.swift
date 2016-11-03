@@ -32,11 +32,11 @@ class ChatViewController: UIViewController {
         super.viewDidLoad()
         messagesTableView.delegate = self
         messagesTableView.dataSource = self
-        newMessageTextField.delegate = self
         messagesTableView.register(UINib(nibName: "MessageOutView", bundle: nil), forCellReuseIdentifier: "MessageOutView")
         messagesTableView.register(UINib(nibName: "MessageInView", bundle: nil), forCellReuseIdentifier: "MessageInView")
         messagesTableView.backgroundColor = UIColor.black
         messagesTableView.separatorColor = UIColor.clear
+        newMessageTextField.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)

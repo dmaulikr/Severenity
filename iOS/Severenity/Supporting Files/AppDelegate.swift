@@ -65,13 +65,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let fbToken = FBSDKAccessToken.current()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if (fbToken != nil) {
-            let vc = storyboard.instantiateViewController(withIdentifier: "loggedInController")
-            window?.rootViewController = vc
+            window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "loggedInController")
         } else {
-            let vc = storyboard.instantiateViewController(withIdentifier: "loginController")
-            window?.rootViewController = vc
+            window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "loginController")
         }
-
+        
         FBSDKAppEvents.activateApp()
     }
 
