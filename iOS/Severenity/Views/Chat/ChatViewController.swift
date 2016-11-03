@@ -51,8 +51,11 @@ class ChatViewController: UIViewController {
     func sendMessage() {
         if newMessageTextField.text != "" {
             presenter?.userWantsToSendMessage(with: newMessageTextField.text!)
-            newMessageTextField.text = ""
             newMessageTextField.resignFirstResponder()
+            newMessageTextField.text = ""
+            if messages.count > 0 {
+                messagesTableView.scrollToRow(at: NSIndexPath.init(row: messages.count-1, section: 0) as IndexPath, at: .bottom, animated: true)
+            }
         }
     }
     
@@ -62,6 +65,9 @@ class ChatViewController: UIViewController {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             newMessageTextField.frame.origin.y -= keyboardSize.height - 50 // magical number
             sendMessageButton.frame.origin.y -= keyboardSize.height - 50
+            if messages.count > 3 {
+                messagesTableView.frame.origin.y -= keyboardSize.height - 50
+            }
         }
     }
     
@@ -69,6 +75,9 @@ class ChatViewController: UIViewController {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             newMessageTextField.frame.origin.y += keyboardSize.height - 50
             sendMessageButton.frame.origin.y += keyboardSize.height - 50
+            if messages.count > 3 {
+                messagesTableView.frame.origin.y += keyboardSize.height - 50
+            }
         }
     }
     
@@ -89,10 +98,6 @@ extension ChatViewController: ChatPresenterDelegate {
 extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     
     // MARK: UITableView delegate
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 105.0 // size of the cell xib
@@ -144,8 +149,6 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         cell.backgroundColor = UIColor.clear
-        
-        tableView.scrollToRow(at: NSIndexPath.init(row: messages.count-1, section: 0) as IndexPath, at: .bottom, animated: true)
         
         return cell
     }
