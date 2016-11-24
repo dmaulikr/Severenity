@@ -23,7 +23,7 @@ class MapInteractor: NSObject {
     // MARK: Other events
     
     func profileListViewEvent(with data: AnyObject) {
-        print("MapInteractor event happened from ProfileListView with data: \(data)")
+        Log.info(message: "MapInteractor event happened from ProfileListView with data: \(data)")
         if let recievedData = data as? Dictionary<String,Any> {
             delegate?.displayPlace(with: recievedData)
         }
@@ -32,7 +32,7 @@ class MapInteractor: NSObject {
     // MARK: Service interaction
     
     func processUserLocationUpdate(with dictionary: Dictionary<String,Any>) {
-        print("MapInteractor was called from MapPresenter to process new user location")
+        Log.info(message: "MapInteractor was called from MapPresenter to process new user location")
         SocketService.sharedInstance.sendLocationToServer(with: dictionary)
     }
     

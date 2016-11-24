@@ -20,7 +20,7 @@ class ProfileListViewController: UITableViewController {
         super.init(style: style)
         presenter = ProfileListPresenter()
         presenter?.delegate = self
-        print("ProfileList VIPER module init did complete")
+        Log.info(message: "ProfileList VIPER module init did complete")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -81,7 +81,7 @@ class ProfileListViewController: UITableViewController {
 extension ProfileListViewController: ProfileListPresenterDelegate {
     
     func profileListPresenterDidCallView(withData data: [String]) {
-        print("ProfileListPresenter did call ProfileListViewController")
+        Log.info(message: "ProfileListPresenter did call ProfileListViewController")
         dataForList = data
         tableView.reloadData()
     }

@@ -23,7 +23,7 @@ class ChatViewController: UIViewController {
         super.init(coder: aDecoder)
         presenter = ChatPresenter()
         presenter?.delegate = self
-        print("Chat VIPER module init did complete")
+        Log.info(message: "Chat VIPER module init did complete")
     }
     
     // MARK: Loading view
@@ -41,7 +41,7 @@ class ChatViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        print("Chat tab did load");
+        Log.info(message: "Chat tab did load");
     }
     
     @IBAction func sendMessageButtonTap(_ sender: AnyObject) {
@@ -88,7 +88,7 @@ class ChatViewController: UIViewController {
 extension ChatViewController: ChatPresenterDelegate {
     
     func displayNewMessage(with dictionary: Dictionary<String,String>) {
-        print("ChatViewController is called from ChatPresenter with message: \(dictionary)")
+        Log.info(message: "ChatViewController is called from ChatPresenter with message: \(dictionary)")
         messages.append(dictionary)
         messagesTableView.reloadData()
     }
@@ -120,7 +120,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         guard let senderName = message["senderName"] as? String, let timestamp = message["timestamp"] as? String,
             let messageText = message["text"] as? String, let senderFbId = message["senderId"] as? String,
             let currentUserFbID = FacebookService.sharedInstance.accessTokenUserID else {
-                print("Cannot create chat message cell")
+                Log.error(message: "Cannot create chat message cell")
                 cell = UITableViewCell()
                 return cell
         }

@@ -19,7 +19,7 @@ class ProfileGridViewController: UICollectionViewController {
         super.init(collectionViewLayout: layout)
         presenter = ProfileGridPresenter()
         presenter?.delegate = self
-        print("ProfileGrid VIPER module init did complete")
+        Log.info(message: "ProfileGrid VIPER module init did complete")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -59,7 +59,7 @@ class ProfileGridViewController: UICollectionViewController {
 extension ProfileGridViewController: ProfileGridPresenterDelegate {
     
     func profileGridPresenterDidCallView(withData data: [String]) {
-        print("ProfileGridPresenter did call ProfileGridViewController")
+        Log.info(message: "ProfileGridPresenter did call ProfileGridViewController")
     }
     
 }

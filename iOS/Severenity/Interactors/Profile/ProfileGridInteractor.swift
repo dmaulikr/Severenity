@@ -24,7 +24,7 @@ class ProfileGridInteractor: NSObject {
     // MARK: ProfileGridPresenter events
     
     func profileGridPresenterNeedsData() {
-        print("ProfileListInteractor was called from ProfileListPresenter")
+        Log.info(message: "ProfileListInteractor was called from ProfileListPresenter")
         delegate?.profileGridInteractorDidCallPresenter(withData: [["key":"value" as AnyObject]])
     }
 }

@@ -23,8 +23,8 @@ class HealthKitService: NSObject {
             healthStore = HKHealthStore()
         }
         else {
-            print("HealthKit is not available")
+            Log.info(message: "HealthKit is not available")
         }
-        print("HealthKitService shared instance init did complete")
+        Log.info(message: "HealthKitService shared instance init did complete")
     }
 }

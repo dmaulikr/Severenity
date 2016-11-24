@@ -18,14 +18,14 @@ class QuestsViewController: UIViewController {
         super.init(coder: aDecoder)
         presenter = QuestsPresenter()
         presenter?.delegate = self
-        print("Quests VIPER module init did complete")
+        Log.info(message: "Quests VIPER module init did complete")
     }
     
     // MARK: Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Quests tab did load");
+        Log.info(message: "Quests tab did load");
     }
     
     @IBAction func userInteractionTest(_ sender: AnyObject) {
@@ -39,7 +39,7 @@ class QuestsViewController: UIViewController {
 extension QuestsViewController: QuestsPresenterDelegate {
     
     func questsPresenterDidCallView() {
-        print("QuestsViewController is called from QuestsPresenter")
+        Log.info(message: "QuestsViewController is called from QuestsPresenter")
     }
     
 }

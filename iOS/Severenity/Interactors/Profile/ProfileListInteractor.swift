@@ -24,7 +24,7 @@ class ProfileListInteractor: NSObject {
     // MARK: ProfileListPresenter events
     
     func profileListPresenterNeedsData() {
-        print("ProfileListInteractor was called from ProfileListPresenter")
+        Log.info(message: "ProfileListInteractor was called from ProfileListPresenter")
         getPlacesData()
     }
     

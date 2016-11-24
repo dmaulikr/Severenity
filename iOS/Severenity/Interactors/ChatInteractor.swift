@@ -22,9 +22,9 @@ class ChatInteractor: NSObject {
     // MARK: Service interaction
     
     func sendChatMessage(with text: String) {
-        print("ChatInteractor was called from ChatPresenter to send message")
+        Log.info(message: "ChatInteractor was called from ChatPresenter to send message")
         guard let fbUserID = FacebookService.sharedInstance.accessTokenUserID else {
-            print("Cannot send chat message")
+            Log.error(message: "Cannot send chat message")
             return
         }
         
@@ -38,7 +38,7 @@ class ChatInteractor: NSObject {
     }
     
     func recieveChatMessage(with dictionary: Dictionary<String,String>) {
-        print("message recieved: \(dictionary)")
+        Log.info(message: "message recieved: \(dictionary)")
         delegate?.newMessageDidArrive(with: dictionary)
     }
 }

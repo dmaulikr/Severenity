@@ -21,11 +21,11 @@ class ProfileViewController: UIViewController {
         super.init(coder: aDecoder)
         presenter = ProfilePresenter()
         presenter?.delegate = self
-        print("Profile VIPER module init did complete")
+        Log.info(message: "Profile VIPER module init did complete")
     }
     
     func profilePresenterDidCallView() {
-        print("ProfileViewController is called from ProfilePresenter")
+        Log.info(message: "ProfileViewController is called from ProfilePresenter")
         changeContentMode(self)
     }
     

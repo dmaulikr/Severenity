@@ -22,10 +22,10 @@ class NavigationBarInteractor: NSObject {
     // MARK: NavigationBarPresenter events
     
     func navigationBarPresenterNeedsData() {
-        print("NavigationBarInteractor was called from NavigationBarPresenter")
+        Log.info(message: "NavigationBarInteractor was called from NavigationBarPresenter")
         
         guard let fbUserID = FacebookService.sharedInstance.accessTokenUserID else {
-            print("Cannot send chat message")
+            Log.error(message: "Cannot send chat message")
             return
         }
         FacebookService.sharedInstance.getFBProfilePicture(for: fbUserID, size: .normal, completion: { (image) in

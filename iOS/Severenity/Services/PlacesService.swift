@@ -21,7 +21,7 @@ class PlacesService: NSObject {
         do {
             realm = try Realm()
         } catch let error as NSError {
-            print("Realm error: \(error.localizedDescription)")
+            Log.error(message: "Realm error: \(error.localizedDescription)")
         }
     }
     
@@ -32,14 +32,14 @@ class PlacesService: NSObject {
      if no than it calls requestDataFromServer to get data from server.*/
     func provideData(_ completion: @escaping (_ result: NSArray) -> Void) {
         if checkIfRealmIsEmpty() {
-            print("Realm is empty, asking server for data")
+            Log.info(message: "Realm is empty, asking server for data")
             requestDataFromServer {
                 self.getDataFromRealm { data in
                     completion(data)
                 }
             }
         } else {
-            print("Realm is not empty, loading data")
+            Log.info(message: "Realm is not empty, loading data")
             getDataFromRealm { data in
                 completion(data)
             }
@@ -57,7 +57,7 @@ class PlacesService: NSObject {
     private func requestDataFromServer(_ completion: @escaping () -> Void) {
         
         guard let serverURL = URL.init(string: kPlacesServerURL) else {
-            print("Cannot create server url")
+            Log.error(message: "Cannot create server url")
             return
         }
         
@@ -72,7 +72,7 @@ class PlacesService: NSObject {
             
             for place in places {
                 guard let owners = place["owners"] as? [String] else {
-                    print("Can't find owners in place item.")
+                    Log.error(message: "Can't find owners in place item.")
                     return
                 }
                 
@@ -103,7 +103,7 @@ class PlacesService: NSObject {
         var isRightOwnerFound = false
         
         guard let query = realmReadQuery else {
-            print("Error creating Realm read query")
+            Log.error(message: "Error creating Realm read query")
             return
         }
         for place in query {
@@ -136,7 +136,7 @@ class PlacesService: NSObject {
                 realm?.deleteAll()
             }
         } catch let error as NSError {
-            print("Realm error: \(error.localizedDescription)")
+            Log.error(message: "Realm error: \(error.localizedDescription)")
         }
     }
 }

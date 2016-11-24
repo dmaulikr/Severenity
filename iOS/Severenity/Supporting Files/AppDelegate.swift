@@ -17,18 +17,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        let keychain = Keychain()
-        let kGoogleAPIKey = keychain["kGoogleAPIKey"] ?? ""
+        //let keychain = Keychain()
+        //let kGoogleAPIKey = keychain["kGoogleAPIKey"] ?? ""
         
-        // In next two calls we can easily use kGoogleAPIKey but just for some testing purposes I use my own key for now
+        // In next two calls we can easily use kGoogleAPIKey but just for some test purposes I use my own key for now
         // Feel free to use kGoogleAPIKey
-        print("Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
-        print("Google Places API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
+        Log.info(message: "Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
+        Log.info(message: "Google Places API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
         
         SocketService.sharedInstance.establishConnection()
+        
+        Log.info(message: "trtrtr", sender: NSStringFromClass(type(of: self)))
 
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }

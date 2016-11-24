@@ -24,7 +24,7 @@ class ShopPresenter: NSObject {
     // MARK: ShopViewController events
     
     func shopViewEvent() {
-        print("User interacted with ShopViewController. ShopPresenter responds.")
+        Log.info(message: "User interacted with ShopViewController. ShopPresenter responds.")
         interactor?.shopPresenterEvent()
     }
 
@@ -35,7 +35,7 @@ class ShopPresenter: NSObject {
 extension ShopPresenter: ShopInteractorDelegate {
     
     func shopInteractorDidCallPresenter() {
-        print("ShopPresenter is called from ShopInteractor")
+        Log.info(message: "ShopPresenter is called from ShopInteractor")
         delegate?.shopPresenterDidCallView()
     }
     
