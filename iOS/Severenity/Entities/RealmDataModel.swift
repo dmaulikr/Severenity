@@ -36,7 +36,7 @@ class RealmPlace: BusinessObject {
         }
         
         guard let location = place["location"] as? NSDictionary else {
-            Log.error(message: "Cannot find 'location' attribute in response.")
+            Log.error(message: "Cannot find 'location' attribute in response.", sender: self)
             return
         }
 
@@ -63,8 +63,8 @@ class RealmPlace: BusinessObject {
             try realm.write {
                 realm.add(self)
             }
-        } catch let error as NSError {
-            Log.error(message: "Realm error: \(error.localizedDescription)")
+        } catch {
+            Log.error(message: "Realm error: \(error.localizedDescription)", sender: self)
         }
     }
 }

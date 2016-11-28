@@ -24,7 +24,7 @@ class NavigationBarPresenter: NSObject {
     // MARK: NavigationBarViewController events
     
     func navigationBarViewNeedsData() {
-        Log.info(message: "User interacted with NavigationBarController. NavigationBarPresenter responds.")
+        Log.info(message: "User interacted with NavigationBarController. NavigationBarPresenter responds.", sender: self)
         interactor?.navigationBarPresenterNeedsData()
     }
 
@@ -36,7 +36,7 @@ class NavigationBarPresenter: NSObject {
 extension NavigationBarPresenter: NavigationBarInteractorDelegate {
     
     func navigationBarInteractorDidCallPresenter(with picture: UIImage, and info: Dictionary<String,String>) {
-        Log.info(message: "NavigationBarPresenter is called from NavigationBarInteractor")
+        Log.info(message: "NavigationBarPresenter is called from NavigationBarInteractor", sender: self)
         delegate?.navigationBarPresenterDidCallView(with: picture, and: info)
     }
 }

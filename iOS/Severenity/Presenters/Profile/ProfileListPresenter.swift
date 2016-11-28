@@ -25,12 +25,12 @@ class ProfileListPresenter: NSObject {
     // MARK: ProfileListViewController events
     
     func provideProfileListData() {
-        Log.info(message: "ProfileListViewController needs data. ProfileListPresenter responds.")
+        Log.info(message: "ProfileListViewController needs data. ProfileListPresenter responds.", sender: self)
         interactor?.profileListPresenterNeedsData()
     }
     
     func profileListCell(selected cell: IndexPath) {
-        Log.info(message: "ProfileListViewController item was selected. ProfileListPresenter responds.")
+        Log.info(message: "ProfileListViewController item was selected. ProfileListPresenter responds.", sender: self)
         interactor?.profileListPresenterAskForTransition(withParam: cell.row)
     }
 
@@ -41,7 +41,7 @@ class ProfileListPresenter: NSObject {
 extension ProfileListPresenter: ProfileListInteractorDelegate {
     
     func profileListInteractorDidCallPresenter(withData data: Array<Dictionary<String, AnyObject>>) {
-        Log.info(message: "ProfileListInteracor did call ProfileListPresenter")
+        Log.info(message: "ProfileListInteracor did call ProfileListPresenter", sender: self)
         for element in data {
             if let name = element["name"] as? String {
                 dataForTheView.append(name)

@@ -24,7 +24,7 @@ class QuestsPresenter: NSObject {
     // MARK: QuestsViewController events
     
     func questsViewEvent() {
-        Log.info(message: "User interacted with QuestsViewController. QuestsPresenter responds.")
+        Log.info(message: "User interacted with QuestsViewController. QuestsPresenter responds.", sender: self)
         interactor?.questsPresenterEvent()
     }
 
@@ -35,7 +35,7 @@ class QuestsPresenter: NSObject {
 extension QuestsPresenter: QuestsInteractorDelegate {
     
     func questsInteractorDidCallPresenter() {
-        Log.info(message: "QuestsPresenter is called from QuestsInteractor")
+        Log.info(message: "QuestsPresenter is called from QuestsInteractor", sender: self)
         delegate?.questsPresenterDidCallView()
     }
     

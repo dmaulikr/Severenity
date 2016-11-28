@@ -18,20 +18,20 @@ class ProfileListInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedInstance.viperInteractors["ProfileListInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors[kProfileListInteractor] = self
     }
     
     // MARK: ProfileListPresenter events
     
     func profileListPresenterNeedsData() {
-        Log.info(message: "ProfileListInteractor was called from ProfileListPresenter")
+        Log.info(message: "ProfileListInteractor was called from ProfileListPresenter", sender: self)
         getPlacesData()
     }
     
     func profileListPresenterAskForTransition(withParam param: Int) {
         let selector = #selector(MapInteractor.profileListViewEvent(with:))
         if let places = (placesData as? Array<Dictionary<String, Any>>)?[param] {
-            let _ = WireFrame.sharedInstance.viperInteractors["MapInteractor"]?.perform(selector, with: places)
+            let _ = WireFrame.sharedInstance.viperInteractors[kMapInteractor]?.perform(selector, with: places)
         }
     }
     

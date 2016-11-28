@@ -17,13 +17,13 @@ class MapInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedInstance.viperInteractors["MapInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors[kMapInteractor] = self
     }
     
     // MARK: Other events
     
     func profileListViewEvent(with data: AnyObject) {
-        Log.info(message: "MapInteractor event happened from ProfileListView with data: \(data)")
+        Log.info(message: "MapInteractor event happened from ProfileListView with data: \(data)", sender: self)
         if let recievedData = data as? Dictionary<String,Any> {
             delegate?.displayPlace(with: recievedData)
         }
@@ -32,7 +32,7 @@ class MapInteractor: NSObject {
     // MARK: Service interaction
     
     func processUserLocationUpdate(with dictionary: Dictionary<String,Any>) {
-        Log.info(message: "MapInteractor was called from MapPresenter to process new user location")
+        Log.info(message: "MapInteractor was called from MapPresenter to process new user location", sender: self)
         SocketService.sharedInstance.sendLocationToServer(with: dictionary)
     }
     

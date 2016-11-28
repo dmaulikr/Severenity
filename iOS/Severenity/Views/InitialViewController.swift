@@ -17,7 +17,7 @@ class InitialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Log.info(message: "Facebook SDK version: \(FBSDKSettings.sdkVersion())")
+        Log.info(message: "Facebook SDK version: \(FBSDKSettings.sdkVersion())", sender: self)
         
         let loginButton = LoginButton(readPermissions: [ .publicProfile, .userFriends, .email ])
         loginButton.delegate = self
@@ -36,11 +36,11 @@ extension InitialViewController: LoginButtonDelegate {
     func loginButtonDidCompleteLogin(_ loginButton: LoginButton, result: LoginResult) {
         
         guard let accessToken = FBSDKAccessToken.current() else {
-            Log.info(message: "Facebook login did complete with result: \(result)")
+            Log.info(message: "Facebook login did complete with result: \(result)", sender: self)
             return
         }
         
-        Log.info(message: "Facebook access token: \n AppID: \(accessToken.appID) \n userID: \(accessToken.userID) \n token: \(accessToken.tokenString) \n")
+        Log.info(message: "Facebook access token: \n AppID: \(accessToken.appID) \n userID: \(accessToken.userID) \n token: \(accessToken.tokenString) \n", sender: self)
         
         view.backgroundColor = UIColor.white
         
@@ -60,7 +60,7 @@ extension InitialViewController: LoginButtonDelegate {
     }
     
     func loginButtonDidLogOut(_ loginButton: LoginButton) {
-        Log.info(message: "Facebook login button did logout")
+        Log.info(message: "Facebook login button did logout", sender: self)
     }
     
 }

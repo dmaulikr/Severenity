@@ -26,12 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // In next two calls we can easily use kGoogleAPIKey but just for some test purposes I use my own key for now
         // Feel free to use kGoogleAPIKey
-        Log.info(message: "Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
-        Log.info(message: "Google Places API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))")
+        Log.info(message: "Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))", sender: self)
+        Log.info(message: "Google Places API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))", sender: self)
         
         SocketService.sharedInstance.establishConnection()
-        
-        Log.info(message: "trtrtr", sender: NSStringFromClass(type(of: self)))
 
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }

@@ -18,10 +18,11 @@ class PlacesService: NSObject {
     // MARK: Init
 
     override init() {
+        super.init()
         do {
             realm = try Realm()
-        } catch let error as NSError {
-            Log.error(message: "Realm error: \(error.localizedDescription)")
+        } catch {
+            Log.error(message: "Realm error: \(error.localizedDescription)", sender: self)
         }
     }
     
@@ -32,14 +33,14 @@ class PlacesService: NSObject {
      if no than it calls requestDataFromServer to get data from server.*/
     func provideData(_ completion: @escaping (_ result: NSArray) -> Void) {
         if checkIfRealmIsEmpty() {
-            Log.info(message: "Realm is empty, asking server for data")
+            Log.info(message: "Realm is empty, asking server for data", sender: self)
             requestDataFromServer {
                 self.getDataFromRealm { data in
                     completion(data)
                 }
             }
         } else {
-            Log.info(message: "Realm is not empty, loading data")
+            Log.info(message: "Realm is not empty, loading data", sender: self)
             getDataFromRealm { data in
                 completion(data)
             }
@@ -57,7 +58,7 @@ class PlacesService: NSObject {
     private func requestDataFromServer(_ completion: @escaping () -> Void) {
         
         guard let serverURL = URL.init(string: kPlacesServerURL) else {
-            Log.error(message: "Cannot create server url")
+            Log.error(message: "Cannot create server url", sender: self)
             return
         }
         
@@ -66,13 +67,13 @@ class PlacesService: NSObject {
         Alamofire.request(serverRequest).responseJSON { response in
 
             guard let places = response.result.value as? [[String: Any]] else {
-                print("Response does not contain places.")
+                Log.error(message: "Response does not contain places.", sender: self)
                 return
             }
             
             for place in places {
                 guard let owners = place["owners"] as? [String] else {
-                    Log.error(message: "Can't find owners in place item.")
+                    Log.error(message: "Can't find owners in place item.", sender: self)
                     return
                 }
                 
@@ -103,7 +104,7 @@ class PlacesService: NSObject {
         var isRightOwnerFound = false
         
         guard let query = realmReadQuery else {
-            Log.error(message: "Error creating Realm read query")
+            Log.error(message: "Error creating Realm read query", sender: self)
             return
         }
         for place in query {
@@ -135,8 +136,8 @@ class PlacesService: NSObject {
             try realm?.write {
                 realm?.deleteAll()
             }
-        } catch let error as NSError {
-            Log.error(message: "Realm error: \(error.localizedDescription)")
+        } catch {
+            Log.error(message: "Realm error: \(error.localizedDescription)", sender: self)
         }
     }
 }

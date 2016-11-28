@@ -24,7 +24,7 @@ class ChatPresenter: NSObject {
     // MARK: ChatViewController events
     
     func userWantsToSendMessage(with text: String) {
-        Log.info(message: "User wants to send message from with ChatViewController. ChatPresenter responds.")
+        Log.info(message: "User wants to send message from with ChatViewController. ChatPresenter responds.", sender: self)
         interactor?.sendChatMessage(with: text)
     }
 
@@ -35,7 +35,7 @@ class ChatPresenter: NSObject {
 extension ChatPresenter: ChatInteractorDelegate {
     
     func newMessageDidArrive(with dictionary: Dictionary<String,String>) {
-        Log.info(message: "ChatPresenter is called from ChatInteractor with message: \(dictionary)")
+        Log.info(message: "ChatPresenter is called from ChatInteractor with message: \(dictionary)", sender: self)
         delegate?.displayNewMessage(with: dictionary)
     }
     

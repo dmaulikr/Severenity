@@ -16,13 +16,13 @@ class ProfileInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedInstance.viperInteractors["ProfileInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors[kProfileInteractor] = self
     }
     
     // MARK: ProfilePresenter events
     
     func profilePresenterEvent() {
-        Log.info(message: "ProfileInteractor was called from ProfilePresenter")
+        Log.info(message: "ProfileInteractor was called from ProfilePresenter", sender: self)
         delegate?.profileInteractorDidCallPresenter()
     }
 }

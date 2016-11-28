@@ -16,13 +16,13 @@ class TabBarInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedInstance.viperInteractors["TabBarInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors[kTabBarInteractor] = self
     }
     
     // MARK: TabBarPresetner events
     
     func tabBarPresenterEvent() {
-        Log.info(message: "TabBarInteractor was called from TabBarPresenter")
+        Log.info(message: "TabBarInteractor was called from TabBarPresenter", sender: self)
         delegate?.tabBarInteractorDidCallPresenter()
     }
 }

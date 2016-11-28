@@ -16,15 +16,15 @@ class ChatInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedInstance.viperInteractors["ChatInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors[kChatInteractor] = self
     }
     
     // MARK: Service interaction
     
     func sendChatMessage(with text: String) {
-        Log.info(message: "ChatInteractor was called from ChatPresenter to send message")
+        Log.info(message: "ChatInteractor was called from ChatPresenter to send message", sender: self)
         guard let fbUserID = FacebookService.sharedInstance.accessTokenUserID else {
-            Log.error(message: "Cannot send chat message")
+            Log.error(message: "Cannot send chat message", sender: self)
             return
         }
         
@@ -32,13 +32,13 @@ class ChatInteractor: NSObject {
             let messageJSON = ["senderName":info["name"] ?? "",
                                "senderId":fbUserID,
                                "text":text,
-                               "timestamp":self.currentTimeStamp] as [String:Any]
+                               "timestamp":Date().iso8601] as [String:Any]
             SocketService.sharedInstance.sendMessageToServer(with: messageJSON)
         })
     }
     
     func recieveChatMessage(with dictionary: Dictionary<String,String>) {
-        Log.info(message: "message recieved: \(dictionary)")
+        Log.info(message: "message recieved: \(dictionary)", sender: self)
         delegate?.newMessageDidArrive(with: dictionary)
     }
 }

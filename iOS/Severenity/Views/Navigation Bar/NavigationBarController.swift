@@ -19,7 +19,7 @@ class NavigationBarController: UINavigationController {
         super.init(coder: aDecoder)
         presenter = NavigationBarPresenter()
         presenter?.delegate = self
-        Log.info(message: "NavigationBar VIPER module init did complete")
+        Log.info(message: "NavigationBar VIPER module init did complete", sender: self)
     }
     
     // MARK: Loading view
@@ -27,7 +27,7 @@ class NavigationBarController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         startActivityIndicator(location: CGPoint.init(x: navigationBar.frame.width/2, y: 35), view: navigationBar)
-        Log.info(message: "NavigationBarController did load")
+        Log.info(message: "NavigationBarController did load", sender: self)
     }
     
     override func viewWillLayoutSubviews() {
@@ -43,7 +43,7 @@ class NavigationBarController: UINavigationController {
 extension NavigationBarController: NavigationBarPresenterDelegate {
 
     func navigationBarPresenterDidCallView(with picture: UIImage, and info: Dictionary<String,String>) {
-        Log.info(message: "NavigationBarPresenter did call NavigationBarViewController")
+        Log.info(message: "NavigationBarPresenter did call NavigationBarViewController", sender: self)
         
         if navBarView == nil, let viewForNavBar = NavigationBarView.loadFromNibNamed(nibNamed: "NavigationBarView") as? NavigationBarView {
             viewForNavBar.userPicture.image = picture.roundedImageWithBorder(with: 4, and: #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1))

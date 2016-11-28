@@ -25,10 +25,10 @@ class MapPresenter: NSObject {
     // MARK: MapViewController events
     
     func userLocationUpdate(_ newLocation: CLLocation) {
-        Log.info(message: "User changed location, MapPresenter recieved new data.")
+        Log.info(message: "User changed location, MapPresenter recieved new data.", sender: self)
         
         guard let fbUserID = FacebookService.sharedInstance.accessTokenUserID else {
-            Log.error(message: "Cannot process user location update")
+            Log.error(message: "Cannot process user location update", sender: self)
             return
         }
         
@@ -45,7 +45,7 @@ class MapPresenter: NSObject {
 extension MapPresenter: MapInteractorDelegate {
     
     func displayPlace(with data: Dictionary<String,Any>) {
-        Log.info(message: "MapPresenter is called from MapInteractor with data: \(data)")
+        Log.info(message: "MapPresenter is called from MapInteractor with data: \(data)", sender: self)
         delegate?.addNewPlaceToMap(with: data)
     }
     

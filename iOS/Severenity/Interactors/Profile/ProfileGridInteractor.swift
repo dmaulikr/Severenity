@@ -18,13 +18,13 @@ class ProfileGridInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedInstance.viperInteractors["ProfileGridInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors[kProfileGridInteractor] = self
     }
     
     // MARK: ProfileGridPresenter events
     
     func profileGridPresenterNeedsData() {
-        Log.info(message: "ProfileListInteractor was called from ProfileListPresenter")
+        Log.info(message: "ProfileListInteractor was called from ProfileListPresenter", sender: self)
         delegate?.profileGridInteractorDidCallPresenter(withData: [["key":"value" as AnyObject]])
     }
 }

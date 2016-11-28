@@ -21,14 +21,14 @@ class ShopViewController: UIViewController {
         super.init(coder: aDecoder)
         presenter = ShopPresenter()
         presenter?.delegate = self
-        Log.info(message: "Shop VIPER module init did complete")
+        Log.info(message: "Shop VIPER module init did complete", sender: self)
     }
     
     // MARK: Loading view
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Log.info(message: "Shop Tab did load");
+        Log.info(message: "Shop Tab did load", sender: self);
     }
     
     @IBAction func interactionTestButton(_ sender: AnyObject) {
@@ -42,7 +42,7 @@ class ShopViewController: UIViewController {
 extension ShopViewController: ShopPresenterDelegate {
     
     func shopPresenterDidCallView() {
-        Log.info(message: "ShopViewController is called from ShopPresenter")
+        Log.info(message: "ShopViewController is called from ShopPresenter", sender: self)
     }
     
 }

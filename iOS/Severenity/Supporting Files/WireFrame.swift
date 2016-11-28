@@ -15,7 +15,7 @@ class WireFrame: NSObject {
     
     private override init() {
         super.init()
-        Log.info(message: "WireFrame shared instance init did complete")
+        Log.info(message: "WireFrame shared instance init did complete", sender: self)
     }
     
 }

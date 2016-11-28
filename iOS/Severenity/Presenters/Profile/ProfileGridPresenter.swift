@@ -25,7 +25,7 @@ class ProfileGridPresenter: NSObject {
     // MARK: ProfileGridViewController events
     
     func provideProfileGridData() {
-        Log.info(message: "ProfileGridViewController needs data. ProfileGridPresenter responds.")
+        Log.info(message: "ProfileGridViewController needs data. ProfileGridPresenter responds.", sender: self)
         interactor?.profileGridPresenterNeedsData()
     }
     
@@ -38,7 +38,7 @@ class ProfileGridPresenter: NSObject {
 extension ProfileGridPresenter: ProfileGridInteractorDelegate {
     
     func profileGridInteractorDidCallPresenter(withData data: Array<Dictionary<String, AnyObject>>) {
-        Log.info(message: "ProfileGridInteractor did call ProfileGridPresenter")
+        Log.info(message: "ProfileGridInteractor did call ProfileGridPresenter", sender: self)
         delegate?.profileGridPresenterDidCallView(withData: dataForTheView)
     }
 }

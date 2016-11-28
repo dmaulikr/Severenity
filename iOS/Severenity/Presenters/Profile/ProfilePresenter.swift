@@ -24,7 +24,7 @@ class ProfilePresenter: NSObject {
     // MARK: ProfileViewController events
     
     func profileViewEvent() {
-        Log.info(message: "User interacted with ProfileViewController. ProfilePresenter responds.")
+        Log.info(message: "User interacted with ProfileViewController. ProfilePresenter responds.", sender: self)
         interactor?.profilePresenterEvent()
     }
     
@@ -35,7 +35,7 @@ class ProfilePresenter: NSObject {
 extension ProfilePresenter: ProfileInteractorDelegate {
     
     func profileInteractorDidCallPresenter() {
-        Log.info(message: "ProfilePresenter is called from ProfileInteractor")
+        Log.info(message: "ProfilePresenter is called from ProfileInteractor", sender: self)
         delegate?.profilePresenterDidCallView()
     }
     

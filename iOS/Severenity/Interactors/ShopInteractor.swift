@@ -16,13 +16,13 @@ class ShopInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedInstance.viperInteractors["ShopInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors[kShopInteractor] = self
     }
     
     // MARK: ShopPresenter events
     
     func shopPresenterEvent() {
-        Log.info(message: "ShopInteractor was called from ShopPresenter")
+        Log.info(message: "ShopInteractor was called from ShopPresenter", sender: self)
         delegate?.shopInteractorDidCallPresenter()
     }
 }

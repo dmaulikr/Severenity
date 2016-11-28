@@ -16,13 +16,13 @@ class QuestsInteractor: NSObject {
     
     override init() {
         super.init()
-        WireFrame.sharedInstance.viperInteractors["QuestsInteractor"] = self
+        WireFrame.sharedInstance.viperInteractors[kQuestsInteractor] = self
     }
     
     // MARK: QuestsPresenter events
     
     func questsPresenterEvent() {
-        Log.info(message: "QuestsInteractor was called from QuestsPresenter")
+        Log.info(message: "QuestsInteractor was called from QuestsPresenter", sender: self)
         delegate?.questsInteractorDidCallPresenter()
     }
 }

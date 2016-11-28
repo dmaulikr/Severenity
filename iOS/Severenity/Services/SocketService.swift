@@ -18,7 +18,7 @@ class SocketService: NSObject {
     
     private override init() {
         super.init()
-        Log.info(message: "SocketService shared instance init did complete")
+        Log.info(message: "SocketService shared instance init did complete", sender: self)
     }
     
     // MARK: Managing connection
@@ -26,26 +26,26 @@ class SocketService: NSObject {
     func establishConnection() {
         socket.connect()
         addSocketHandlers()
-        Log.info(message: "socket connection established")
+        Log.info(message: "socket connection established", sender: self)
     }
     
     func closeConnection() {
         socket.disconnect()
-        Log.info(message: "socket connection closed")
+        Log.info(message: "socket connection closed", sender: self)
     }
     
     // MARK: Handlers
     
     func addSocketHandlers() {
         socket.on("location") { (data, ack) in
-            Log.info(message: "socket 'location' recieved with data: \(data)")
+            Log.info(message: "socket 'location' recieved with data: \(data)", sender: self)
             let selector = #selector(MapInteractor.processNewPlayerLocation(with:))
-            let _ = WireFrame.sharedInstance.viperInteractors["MapInteractor"]?.perform(selector, with: data.first)
+            let _ = WireFrame.sharedInstance.viperInteractors[kMapInteractor]?.perform(selector, with: data.first)
         }
         socket.on("chat message") { (data, ack) in
-            Log.info(message: "socket 'chat message' recieved with data: \(data)")
+            Log.info(message: "socket 'chat message' recieved with data: \(data)", sender: self)
             let selector = #selector(ChatInteractor.recieveChatMessage(with:))
-            let _ = WireFrame.sharedInstance.viperInteractors["ChatInteractor"]?.perform(selector, with: data.first)
+            let _ = WireFrame.sharedInstance.viperInteractors[kChatInteractor]?.perform(selector, with: data.first)
         }
     }
     
@@ -53,13 +53,13 @@ class SocketService: NSObject {
     
     func sendLocationToServer(with placeJSON: Dictionary<String,Any>) {
         socket.emit("location", placeJSON)
-        Log.info(message: "socket message: \(placeJSON) was sent to server")
+        Log.info(message: "socket message: \(placeJSON) was sent to server", sender: self)
         let selector = #selector(MapInteractor.processNewPlayerLocation(with:))
-        let _ = WireFrame.sharedInstance.viperInteractors["MapInteractor"]?.perform(selector, with: placeJSON)
+        let _ = WireFrame.sharedInstance.viperInteractors[kMapInteractor]?.perform(selector, with: placeJSON)
     }
     
     func sendMessageToServer(with messageJSON: Dictionary<String,Any>) {
         socket.emit("chat message", messageJSON)
-        Log.info(message: "socket message: \(messageJSON) was sent to server")
+        Log.info(message: "socket message: \(messageJSON) was sent to server", sender: self)
     }
 }

@@ -24,7 +24,7 @@ class TabBarPresenter: NSObject {
     // MARK: TabBarViewController events
     
     func tabBarViewEvent() {
-        Log.info(message: "User interacted with TabBarController. TabBarPresenter responds.")
+        Log.info(message: "User interacted with TabBarController. TabBarPresenter responds.", sender: self)
         interactor?.tabBarPresenterEvent()
     }
     
@@ -35,7 +35,7 @@ class TabBarPresenter: NSObject {
 extension TabBarPresenter: TabBarInteractorDelegate {
     
     func tabBarInteractorDidCallPresenter() {
-        Log.info(message: "TabBarPresenter is called from TabBarInteractor")
+        Log.info(message: "TabBarPresenter is called from TabBarInteractor", sender: self)
         delegate?.tabBarPresenterDidCallView()
     }
     

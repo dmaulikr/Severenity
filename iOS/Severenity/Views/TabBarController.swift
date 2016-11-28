@@ -18,7 +18,7 @@ class TabBarController: UITabBarController {
         super.init(coder: aDecoder)
         presenter = TabBarPresenter()
         presenter?.delegate = self
-        Log.info(message: "TabBar VIPER module init did complete")
+        Log.info(message: "TabBar VIPER module init did complete", sender: self)
     }
     
     // MARK: Loading view
@@ -27,7 +27,7 @@ class TabBarController: UITabBarController {
         super.viewDidLoad()
         delegate = self
         selectedIndex = 2
-        Log.info(message: "TabBarController did load")
+        Log.info(message: "TabBarController did load", sender: self)
     }
 
 }
@@ -37,7 +37,7 @@ class TabBarController: UITabBarController {
 extension TabBarController: TabBarPresenterDelegate {
     
     func tabBarPresenterDidCallView() {
-        Log.info(message: "TabBarController is called from TabBarPresenter")
+        Log.info(message: "TabBarController is called from TabBarPresenter", sender: self)
     }
     
 }
