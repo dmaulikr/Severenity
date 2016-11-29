@@ -57,7 +57,6 @@ class Log: NSObject {
                     let fileHandle = try FileHandle(forWritingTo: file)
                     fileHandle.seekToEndOfFile()
                     fileHandle.write(data)
-                    fileHandle.closeFile()
                 } catch {
                     print("ERROR: Writing log to file failed: \(error)")
                 }
