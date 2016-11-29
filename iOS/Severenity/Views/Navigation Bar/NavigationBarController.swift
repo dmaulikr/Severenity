@@ -36,7 +36,7 @@ class NavigationBarController: UINavigationController {
     }
     
     func settingsButtonTouch() {
-        let settingsViewController = SettingsViewController()
+        let settingsViewController = SettingsViewController(nibName: "SettingsView", bundle: nil)
         present(settingsViewController, animated: true, completion: nil)
     }
 
