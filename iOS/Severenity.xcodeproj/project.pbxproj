@@ -40,6 +40,9 @@
 		127A2C881DBF55E600CD492F /* FacebookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127A2C871DBF55E600CD492F /* FacebookService.swift */; };
 		12B3F7A61DCB955A00386093 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3F7A51DCB955A00386093 /* Keychain.swift */; };
 		12C185881DE7028E0053A7CF /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C185871DE7028E0053A7CF /* Logger.swift */; };
+		12C1858B1DEDA1390053A7CF /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 12C1858A1DEDA1390053A7CF /* settings.png */; };
+		12C1858F1DEDA2720053A7CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C1858D1DEDA2720053A7CF /* SettingsViewController.swift */; };
+		12C185901DEDA2720053A7CF /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C1858E1DEDA2720053A7CF /* SettingsView.xib */; };
 		12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */; };
 		12EE6B011DB7AB3000FFC567 /* ShopInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */; };
 		12EE6B071DB7AD0B00FFC567 /* ShopRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */; };
@@ -144,6 +147,9 @@
 		1293BE2B1DB65AE000658292 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		12B3F7A51DCB955A00386093 /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		12C185871DE7028E0053A7CF /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		12C1858A1DEDA1390053A7CF /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
+		12C1858D1DEDA2720053A7CF /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Views/Settings/SettingsViewController.swift; sourceTree = "<group>"; };
+		12C1858E1DEDA2720053A7CF /* SettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingsView.xib; path = Views/Settings/SettingsView.xib; sourceTree = "<group>"; };
 		12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopPresenter.swift; sourceTree = "<group>"; };
 		12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopInteractor.swift; sourceTree = "<group>"; };
 		12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopRouter.swift; sourceTree = "<group>"; };
@@ -233,6 +239,7 @@
 		121A654C1DC386F300A6C6B9 /* Graphical Resources */ = {
 			isa = PBXGroup;
 			children = (
+				12C1858A1DEDA1390053A7CF /* settings.png */,
 				52787BE61D86AA35009D17F5 /* Assets.xcassets */,
 				12698F101DC7856F000F4601 /* starting_background@2x.jpg */,
 				52ED3BA61DC4DF7A00BE2B50 /* icon_send_message_violet.png */,
@@ -254,6 +261,25 @@
 			);
 			name = "Graphical Resources";
 			path = "../Severenity/Graphical Resources";
+			sourceTree = "<group>";
+		};
+		12C185891DED94030053A7CF /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				12C185871DE7028E0053A7CF /* Logger.swift */,
+				12B3F7A51DCB955A00386093 /* Keychain.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		12C1858C1DEDA23E0053A7CF /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				12C1858D1DEDA2720053A7CF /* SettingsViewController.swift */,
+				12C1858E1DEDA2720053A7CF /* SettingsView.xib */,
+			);
+			name = Settings;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		12EE6B0B1DB7B2DE00FFC567 /* Presenters */ = {
@@ -415,9 +441,9 @@
 				12EE6B0D1DB7B31600FFC567 /* Services */,
 				12EE6B111DB7B46200FFC567 /* Routers */,
 				12EE6B0E1DB7B32100FFC567 /* Entities */,
-				121A654C1DC386F300A6C6B9 /* Graphical Resources */,
+				12C185891DED94030053A7CF /* Utilities */,
 				52787BF11D86AAE3009D17F5 /* Supporting Files */,
-				12C185871DE7028E0053A7CF /* Logger.swift */,
+				121A654C1DC386F300A6C6B9 /* Graphical Resources */,
 			);
 			path = Severenity;
 			sourceTree = "<group>";
@@ -428,7 +454,6 @@
 				52787BDF1D86AA35009D17F5 /* AppDelegate.swift */,
 				52ED3BA41DC4D8B400BE2B50 /* Consts.swift */,
 				52BD55A81DC3EEF90044666E /* Extensions.swift */,
-				12B3F7A51DCB955A00386093 /* Keychain.swift */,
 				12EE6B451DBA372A00FFC567 /* WireFrame.swift */,
 				52787BEB1D86AA35009D17F5 /* Info.plist */,
 				523EF8A51DB521C9002001CD /* Severenity.entitlements */,
@@ -450,6 +475,7 @@
 				121A65531DC38FBF00A6C6B9 /* QuestsViewController.swift */,
 				121A65541DC38FBF00A6C6B9 /* ShopViewController.swift */,
 				121A65551DC38FBF00A6C6B9 /* TabBarController.swift */,
+				12C1858C1DEDA23E0053A7CF /* Settings */,
 			);
 			name = Views;
 			path = ../Severenity/Views;
@@ -641,6 +667,7 @@
 				52ED3BB71DC4DF7A00BE2B50 /* menu_map_selected.png in Resources */,
 				121A65591DC38FBF00A6C6B9 /* Main.storyboard in Resources */,
 				7E0F9D131D964C440038D11D /* facebook_logout.png in Resources */,
+				12C1858B1DEDA1390053A7CF /* settings.png in Resources */,
 				7E0F9D0E1D9649A90038D11D /* app_title.png in Resources */,
 				7E0F9D0F1D9649A90038D11D /* ic_launcher_big.png in Resources */,
 				121A656A1DC38FF900A6C6B9 /* ProfileListCell.xib in Resources */,
@@ -649,6 +676,7 @@
 				52ED3BBE1DC4DF7A00BE2B50 /* menu_shop.png in Resources */,
 				52BD55AC1DC3F06B0044666E /* NavigationBarView.xib in Resources */,
 				52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */,
+				12C185901DEDA2720053A7CF /* SettingsView.xib in Resources */,
 				7E0F9D151D96524F0038D11D /* DeepSpace.png in Resources */,
 				7E0F9D121D964C440038D11D /* facebook_login.png in Resources */,
 				52ED3BB61DC4DF7A00BE2B50 /* menu_chat.png in Resources */,
@@ -783,6 +811,7 @@
 				121A65431DC367A100A6C6B9 /* NavigationBarInteractor.swift in Sources */,
 				5264A7A11D8828B500EE78FC /* PlacesService.swift in Sources */,
 				121D55441DC76AEF00294742 /* MessageInView.swift in Sources */,
+				12C1858F1DEDA2720053A7CF /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

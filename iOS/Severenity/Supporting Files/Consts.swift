@@ -6,6 +6,8 @@
 //  Copyright © 2016 severenity. All rights reserved.
 //
 
+import Foundation
+
 // MARK: Servers adresses
 
 let kPlacesServerURL = "https://severenity.herokuapp.com/places/all"
@@ -29,5 +31,8 @@ let kTabBarInteractor = "TabBarInteractor"
 
 // MARK: Log file name
 
-let kLogFile = "log.txt"
-		
+let kLogFileName = "log.txt"
+
+// MARK: Documents directory path
+
+let kDocumentDirPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first

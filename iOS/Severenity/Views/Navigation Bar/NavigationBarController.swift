@@ -35,6 +35,10 @@ class NavigationBarController: UINavigationController {
         navigationBar.frame.size.height = 70
     }
     
+    func settingsButtonTouch() {
+        let settingsViewController = SettingsViewController()
+        present(settingsViewController, animated: true, completion: nil)
+    }
 
 }
 
@@ -51,6 +55,7 @@ extension NavigationBarController: NavigationBarPresenterDelegate {
             navBarView = viewForNavBar
             stopActivityIndicator(view: navigationBar)
             navigationBar.addSubview(navBarView)
+            navBarView.settingsButton.addTarget(self, action: #selector(settingsButtonTouch), for: UIControlEvents.touchUpInside)
         }
     }
     
