@@ -98,6 +98,11 @@
                                 <state key="normal" title="UI interaction test">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="interactionTestButton:" destination="ldY-ZS-q4s" eventType="touchUpInside" id="ncq-SC-saG"/>
                                 </connections>
@@ -166,7 +171,7 @@
         <scene sceneID="BYK-K1-8dF">
             <objects>
                 <navigationController restorationIdentifier="loggedInController" storyboardIdentifier="loggedInController" id="G6W-Qu-AF4" customClass="NavigationBarController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="fBU-C4-8ry">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="fBU-C4-8ry">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -282,6 +287,11 @@
                                 <state key="normal" title="UI interaction test">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="userInteractionTest:" destination="7qv-Ph-hYD" eventType="touchUpInside" id="ey1-cd-odb"/>
                                 </connections>
