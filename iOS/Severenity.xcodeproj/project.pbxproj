@@ -44,6 +44,9 @@
 		12C1858F1DEDA2720053A7CF /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C1858D1DEDA2720053A7CF /* SettingsViewController.swift */; };
 		12C185901DEDA2720053A7CF /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12C1858E1DEDA2720053A7CF /* SettingsView.xib */; };
 		12C185981DEDDE930053A7CF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12C185971DEDDE930053A7CF /* MessageUI.framework */; };
+		12C1859A1DEED85E0053A7CF /* SettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C185991DEED85E0053A7CF /* SettingsRouter.swift */; };
+		12C1859C1DEED8BD0053A7CF /* SettingsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C1859B1DEED8BD0053A7CF /* SettingsInteractor.swift */; };
+		12C1859E1DEED93C0053A7CF /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C1859D1DEED93C0053A7CF /* SettingsPresenter.swift */; };
 		12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */; };
 		12EE6B011DB7AB3000FFC567 /* ShopInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */; };
 		12EE6B071DB7AD0B00FFC567 /* ShopRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */; };
@@ -153,6 +156,9 @@
 		12C1858E1DEDA2720053A7CF /* SettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingsView.xib; path = Views/Settings/SettingsView.xib; sourceTree = "<group>"; };
 		12C185951DEDDD460053A7CF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		12C185971DEDDE930053A7CF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		12C185991DEED85E0053A7CF /* SettingsRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsRouter.swift; sourceTree = "<group>"; };
+		12C1859B1DEED8BD0053A7CF /* SettingsInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsInteractor.swift; sourceTree = "<group>"; };
+		12C1859D1DEED93C0053A7CF /* SettingsPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPresenter.swift; sourceTree = "<group>"; };
 		12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopPresenter.swift; sourceTree = "<group>"; };
 		12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopInteractor.swift; sourceTree = "<group>"; };
 		12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopRouter.swift; sourceTree = "<group>"; };
@@ -294,6 +300,7 @@
 				121A65401DC3678B00A6C6B9 /* NavigationBarPresenter.swift */,
 				12EE6B121DB8C4AF00FFC567 /* Profile */,
 				12EE6B411DB9241B00FFC567 /* QuestsPresenter.swift */,
+				12C1859D1DEED93C0053A7CF /* SettingsPresenter.swift */,
 				12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */,
 				121A654A1DC37C5000A6C6B9 /* TabBarPresenter.swift */,
 			);
@@ -309,6 +316,7 @@
 				121A65421DC367A100A6C6B9 /* NavigationBarInteractor.swift */,
 				12EE6B1B1DB8C69A00FFC567 /* Profile */,
 				12EE6B3F1DB923E600FFC567 /* QuestsInteractor.swift */,
+				12C1859B1DEED8BD0053A7CF /* SettingsInteractor.swift */,
 				12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */,
 				121A65481DC37C0300A6C6B9 /* TabBarInteractor.swift */,
 			);
@@ -359,6 +367,7 @@
 				121A65441DC367BC00A6C6B9 /* NavigationBarRouter.swift */,
 				12EE6B281DB8C74F00FFC567 /* Profile */,
 				12EE6B3D1DB923A300FFC567 /* QuestsRouter.swift */,
+				12C185991DEED85E0053A7CF /* SettingsRouter.swift */,
 				12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */,
 				121A65461DC37BA500A6C6B9 /* TabBarRouter.swift */,
 			);
@@ -442,8 +451,8 @@
 				52787C0B1D86C838009D17F5 /* Views */,
 				12EE6B0B1DB7B2DE00FFC567 /* Presenters */,
 				12EE6B0C1DB7B2FF00FFC567 /* Interactors */,
-				12EE6B0D1DB7B31600FFC567 /* Services */,
 				12EE6B111DB7B46200FFC567 /* Routers */,
+				12EE6B0D1DB7B31600FFC567 /* Services */,
 				12EE6B0E1DB7B32100FFC567 /* Entities */,
 				12C185891DED94030053A7CF /* Utilities */,
 				52787BF11D86AAE3009D17F5 /* Supporting Files */,
@@ -768,9 +777,11 @@
 				52ED3BA51DC4D8B400BE2B50 /* Consts.swift in Sources */,
 				127A2C881DBF55E600CD492F /* FacebookService.swift in Sources */,
 				12EE6B301DB8C79000FFC567 /* ProfileGridRouter.swift in Sources */,
+				12C1859A1DEED85E0053A7CF /* SettingsRouter.swift in Sources */,
 				121A655E1DC38FBF00A6C6B9 /* TabBarController.swift in Sources */,
 				12EE6B181DB8C51900FFC567 /* ProfileListPresenter.swift in Sources */,
 				121A65471DC37BA500A6C6B9 /* TabBarRouter.swift in Sources */,
+				12C1859E1DEED93C0053A7CF /* SettingsPresenter.swift in Sources */,
 				121A65451DC367BC00A6C6B9 /* NavigationBarRouter.swift in Sources */,
 				12EE6B421DB9241B00FFC567 /* QuestsPresenter.swift in Sources */,
 				12EE6B1F1DB8C6E700FFC567 /* ProfileListInteractor.swift in Sources */,
@@ -794,6 +805,7 @@
 				52BD55A91DC3EEF90044666E /* Extensions.swift in Sources */,
 				12EE6B321DB9100B00FFC567 /* MapPresenter.swift in Sources */,
 				121A655C1DC38FBF00A6C6B9 /* QuestsViewController.swift in Sources */,
+				12C1859C1DEED8BD0053A7CF /* SettingsInteractor.swift in Sources */,
 				12EE6B3E1DB923A300FFC567 /* QuestsRouter.swift in Sources */,
 				121A655D1DC38FBF00A6C6B9 /* ShopViewController.swift in Sources */,
 				121A65561DC38FBF00A6C6B9 /* ChatViewController.swift in Sources */,

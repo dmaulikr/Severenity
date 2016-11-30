@@ -28,6 +28,7 @@ let kProfileGridInteractor = "ProfileGridInteractor"
 let kQuestsInteractor = "QuestsInteractor"
 let kShopInteractor = "ShopInteractor"
 let kTabBarInteractor = "TabBarInteractor"
+let kSettingsInteractor = "SettingsInteractor"
 
 // MARK: Log file name
 

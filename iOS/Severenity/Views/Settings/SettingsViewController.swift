@@ -11,6 +11,21 @@ import MessageUI
 
 class SettingsViewController: UIViewController {
     
+    internal var presenter: SettingsPresenter?
+    
+    // MARK: Init
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        presenter = SettingsPresenter()
+        presenter?.delegate = self
+        Log.info(message: "Settings VIPER module init did complete", sender: self)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     // MARK: Loading view
     
     override func viewDidLoad() {
@@ -26,45 +41,23 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func shareLogFile(_ sender: Any) {
-        sendEmail()
+        presenter?.userWantsToSendLogFile()
     }
     
 }
 
-extension SettingsViewController: MFMailComposeViewControllerDelegate {
+// MARK: ShopPresenter delegate
+
+extension SettingsViewController: SettingsPresenterDelegate {
     
-    func sendEmail() {
-        let emailController = MFMailComposeViewController()
-        emailController.mailComposeDelegate = self
-        if MFMailComposeViewController.canSendMail(), let filePath = kDocumentDirPath?.appendingPathComponent(kLogFileName) {
-            emailController.setSubject("Severenity")
-            emailController.setMessageBody("Severenity log file", isHTML: false)
-            emailController.setToRecipients(["severenity@herokuapp.com"])
-            do {
-                let fileData = try Data.init(contentsOf: filePath)
-                let mimeType = "text/txt"
-                emailController.addAttachmentData(fileData, mimeType: mimeType, fileName: "log")
-            } catch {
-                Log.error(message: "Cannot find log file", sender: self)
-            }
-            present(emailController, animated: true, completion: nil)
-        } else {
-            Log.error(message: "Email service is not set up on device", sender: self)
-        }
+    func present(emailController: MFMailComposeViewController) {
+        present(emailController, animated: true, completion: nil)
+        Log.info(message: "SettingsViewController is called from SettingsPresenter to present MFMailComposeViewController", sender: self)
     }
     
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        switch result {
-        case .sent:
-            Log.info(message: "Email with log file was sent", sender: self)
-        case .saved:
-            Log.info(message: "Email with log file was saved", sender: self)
-        case .cancelled:
-            Log.info(message: "Email with log file was canceled", sender: self)
-        case .failed:
-            Log.error(message: "Failed to send email with log fiel", sender: self)
-        }
+    func dismissEmailController() {
         dismiss(animated: true, completion: nil)
+        Log.info(message: "SettingsViewController is called from SettingsPresenter to dismiss MFMailComposeViewController", sender: self)
     }
     
 }
