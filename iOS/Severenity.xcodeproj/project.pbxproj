@@ -73,7 +73,7 @@
 		5264A7A11D8828B500EE78FC /* PlacesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7A01D8828B500EE78FC /* PlacesService.swift */; };
 		52787BE01D86AA35009D17F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787BDF1D86AA35009D17F5 /* AppDelegate.swift */; };
 		52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE61D86AA35009D17F5 /* Assets.xcassets */; };
-		527D92B31D8988510059F14F /* RealmDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527D92B21D8988510059F14F /* RealmDataModel.swift */; };
+		527D92B31D8988510059F14F /* RealmPlaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527D92B21D8988510059F14F /* RealmPlaces.swift */; };
 		5296E0B81DC4FDF400255FF2 /* MessageOutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5296E0B71DC4FDF400255FF2 /* MessageOutView.xib */; };
 		5296E0BA1DC4FF2300255FF2 /* MessageOutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5296E0B91DC4FF2300255FF2 /* MessageOutView.swift */; };
 		52BD55A91DC3EEF90044666E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BD55A81DC3EEF90044666E /* Extensions.swift */; };
@@ -194,7 +194,7 @@
 		52787BDF1D86AA35009D17F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		52787BE61D86AA35009D17F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		52787BEB1D86AA35009D17F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		527D92B21D8988510059F14F /* RealmDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmDataModel.swift; sourceTree = "<group>"; };
+		527D92B21D8988510059F14F /* RealmPlaces.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmPlaces.swift; sourceTree = "<group>"; };
 		5296E0B71DC4FDF400255FF2 /* MessageOutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MessageOutView.xib; path = Chat/MessageOutView.xib; sourceTree = "<group>"; };
 		5296E0B91DC4FF2300255FF2 /* MessageOutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageOutView.swift; path = Chat/MessageOutView.swift; sourceTree = "<group>"; };
 		52BD55A81DC3EEF90044666E /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -342,7 +342,7 @@
 		12EE6B0E1DB7B32100FFC567 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				527D92B21D8988510059F14F /* RealmDataModel.swift */,
+				527D92B21D8988510059F14F /* RealmPlaces.swift */,
 			);
 			name = Entities;
 			path = ../Severenity/Entities;
@@ -825,7 +825,7 @@
 				12B3F7A61DCB955A00386093 /* Keychain.swift in Sources */,
 				121A655A1DC38FBF00A6C6B9 /* MapViewController.swift in Sources */,
 				12EE6B401DB923E600FFC567 /* QuestsInteractor.swift in Sources */,
-				527D92B31D8988510059F14F /* RealmDataModel.swift in Sources */,
+				527D92B31D8988510059F14F /* RealmPlaces.swift in Sources */,
 				52BD55AE1DC3F2470044666E /* NavigationBarView.swift in Sources */,
 				12EE6B161DB8C50100FFC567 /* ProfilePresenter.swift in Sources */,
 				12EE6B361DB9106F00FFC567 /* MapRouter.swift in Sources */,
