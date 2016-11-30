@@ -34,6 +34,7 @@
 		121A65721DC3910D00A6C6B9 /* SeverenityUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121A65701DC3910D00A6C6B9 /* SeverenityUITests.swift */; };
 		121D55421DC76AC900294742 /* MessageInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 121D55411DC76AC900294742 /* MessageInView.xib */; };
 		121D55441DC76AEF00294742 /* MessageInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121D55431DC76AEF00294742 /* MessageInView.swift */; };
+		12650EC51DEEF3BE00B45DCE /* Regex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12650EC41DEEF3BE00B45DCE /* Regex.swift */; };
 		12698F111DC7856F000F4601 /* starting_background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 12698F101DC7856F000F4601 /* starting_background@2x.jpg */; };
 		1270DD1C1DC90009002E1139 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1270DD1B1DC90009002E1139 /* HealthKit.framework */; };
 		1270DD1E1DC9FB86002E1139 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1270DD1D1DC9FB86002E1139 /* HealthKitService.swift */; };
@@ -144,6 +145,7 @@
 		121A65701DC3910D00A6C6B9 /* SeverenityUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeverenityUITests.swift; sourceTree = "<group>"; };
 		121D55411DC76AC900294742 /* MessageInView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MessageInView.xib; path = Chat/MessageInView.xib; sourceTree = "<group>"; };
 		121D55431DC76AEF00294742 /* MessageInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageInView.swift; path = Chat/MessageInView.swift; sourceTree = "<group>"; };
+		12650EC41DEEF3BE00B45DCE /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		12698F101DC7856F000F4601 /* starting_background@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "starting_background@2x.jpg"; sourceTree = "<group>"; };
 		1270DD1B1DC90009002E1139 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		1270DD1D1DC9FB86002E1139 /* HealthKitService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
@@ -276,8 +278,9 @@
 		12C185891DED94030053A7CF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				12C185871DE7028E0053A7CF /* Logger.swift */,
 				12B3F7A51DCB955A00386093 /* Keychain.swift */,
+				12C185871DE7028E0053A7CF /* Logger.swift */,
+				12650EC41DEEF3BE00B45DCE /* Regex.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -788,6 +791,7 @@
 				121A65491DC37C0300A6C6B9 /* TabBarInteractor.swift in Sources */,
 				121A656B1DC38FF900A6C6B9 /* ProfileListViewController.swift in Sources */,
 				5296E0BA1DC4FF2300255FF2 /* MessageOutView.swift in Sources */,
+				12650EC51DEEF3BE00B45DCE /* Regex.swift in Sources */,
 				12EE6B211DB8C6F700FFC567 /* ProfileGridInteractor.swift in Sources */,
 				12EE6B381DB920E100FFC567 /* ChatRouter.swift in Sources */,
 				12EE6B2E1DB8C77E00FFC567 /* ProfileListRouter.swift in Sources */,

@@ -13,38 +13,40 @@ class Log: NSObject {
     /// Logs info message
     class func info(message: String, sender: Any, detailed: Bool = false) {
         DispatchQueue.global(qos: .background).async {
-        var logContent = ""
-        if detailed {
-            logContent = "----------------------------------------" +
-                    "INFO: \(message)" +
-                    "EXECUTOR: \(#file) :\(#line)" +
-                    "CALLER: \(String(describing: sender)) :\(#column)" +
-                    "TIMESTAMP: \(Date().iso8601)" +
-                    "----------------------------------------"
-        } else {
-            logContent = "INFO: \(message) FROM: \(String(describing: sender))"
-        }
-        print(logContent)
-        toFile(content: logContent)
+            let log = Regex.check(text: message, with: [kEmailRegexPattern])
+            var logContent = ""
+            if detailed {
+                logContent = "----------------------------------------" +
+                        "INFO: \(log)" +
+                        "EXECUTOR: \(#file) :\(#line)" +
+                        "CALLER: \(String(describing: sender)) :\(#column)" +
+                        "TIMESTAMP: \(Date().iso8601)" +
+                        "----------------------------------------"
+            } else {
+                logContent = "INFO: \(log) FROM: \(String(describing: sender))"
+            }
+            print(logContent)
+            toFile(content: logContent)
         }
     }
     
     /// Logs error message
     class func error(message: String, sender: Any, detailed: Bool = false) {
         DispatchQueue.global(qos: .background).async {
-        var logContent = ""
-        if detailed {
-            logContent = "----------------------------------------" +
-                    "ERROR: \(message)" +
-                    "EXECUTOR: \(#file) :\(#line)" +
-                    "CALLER: \(String(describing: sender)) :\(#column)" +
-                    "TIMESTAMP: \(Date().iso8601)" +
-                    "----------------------------------------"
-        } else {
-            logContent = "ERROR: \(message) FROM: \(String(describing: sender))"
-        }
-        print(logContent)
-        toFile(content: logContent)
+            let log = Regex.check(text: message, with: [kEmailRegexPattern])
+            var logContent = ""
+            if detailed {
+                logContent = "----------------------------------------" +
+                        "ERROR: \(log)" +
+                        "EXECUTOR: \(#file) :\(#line)" +
+                        "CALLER: \(String(describing: sender)) :\(#column)" +
+                        "TIMESTAMP: \(Date().iso8601)" +
+                        "----------------------------------------"
+            } else {
+                logContent = "ERROR: \(log) FROM: \(String(describing: sender))"
+            }
+            print(logContent)
+            toFile(content: logContent)
         }
     }
     

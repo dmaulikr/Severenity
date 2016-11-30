@@ -43,7 +43,7 @@ extension SettingsInteractor: MFMailComposeViewControllerDelegate {
             do {
                 let fileData = try Data.init(contentsOf: filePath)
                 let mimeType = "text/txt"
-                emailController.addAttachmentData(fileData, mimeType: mimeType, fileName: "log")
+                emailController.addAttachmentData(fileData, mimeType: mimeType, fileName: "log.txt")
             } catch {
                 Log.error(message: "Cannot find log file", sender: self)
             }

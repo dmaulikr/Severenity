@@ -37,3 +37,7 @@ let kLogFileName = "log.txt"
 // MARK: Documents directory path
 
 let kDocumentDirPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+
+// MARK: Regex patterns
+
+let kEmailRegexPattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
