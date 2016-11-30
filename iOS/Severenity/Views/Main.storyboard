@@ -166,7 +166,7 @@
         <scene sceneID="BYK-K1-8dF">
             <objects>
                 <navigationController restorationIdentifier="loggedInController" storyboardIdentifier="loggedInController" id="G6W-Qu-AF4" customClass="NavigationBarController" customModule="Severenity" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" translucent="NO" id="fBU-C4-8ry">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" translucent="NO" id="fBU-C4-8ry">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -219,7 +219,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Send a message..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mi5-sR-QVy">
-                                <rect key="frame" x="0.0" y="507" width="375" height="46"/>
+                                <rect key="frame" x="0.0" y="507" width="313" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="textColor"/>
@@ -302,15 +302,15 @@
         <image name="app_title.png" width="600" height="98"/>
         <image name="ic_launcher_big.png" width="512" height="512"/>
         <image name="menu_chat.png" width="60" height="60"/>
-        <image name="menu_chat_selected.png" width="60" height="60"/>
+        <image name="menu_chat_selected.png" width="80" height="80"/>
         <image name="menu_map.png" width="40" height="40"/>
-        <image name="menu_map_selected.png" width="40" height="40"/>
+        <image name="menu_map_selected.png" width="45" height="45"/>
         <image name="menu_profile.png" width="40" height="40"/>
-        <image name="menu_profile_selected.png" width="40" height="40"/>
+        <image name="menu_profile_selected.png" width="50" height="50"/>
         <image name="menu_quests.png" width="60" height="60"/>
         <image name="menu_quests_selected.png" width="96" height="96"/>
         <image name="menu_shop.png" width="60" height="60"/>
-        <image name="menu_shop_selected.png" width="60" height="60"/>
+        <image name="menu_shop_selected.png" width="70" height="70"/>
     </resources>
     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
 </document>
