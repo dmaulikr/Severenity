@@ -12,6 +12,7 @@ class Log: NSObject {
     
     /// Logs info message
     class func info(message: String, sender: Any, detailed: Bool = false) {
+        DispatchQueue.global(qos: .background).async {
         var logContent = ""
         if detailed {
             logContent = "----------------------------------------" +
@@ -25,10 +26,12 @@ class Log: NSObject {
         }
         print(logContent)
         toFile(content: logContent)
+        }
     }
     
     /// Logs error message
     class func error(message: String, sender: Any, detailed: Bool = false) {
+        DispatchQueue.global(qos: .background).async {
         var logContent = ""
         if detailed {
             logContent = "----------------------------------------" +
@@ -42,6 +45,7 @@ class Log: NSObject {
         }
         print(logContent)
         toFile(content: logContent)
+        }
     }
     
     // MARK: Working with file
