@@ -33,7 +33,7 @@ class FacebookService: NSObject {
         if let fbUserID = FBSDKAccessToken.current().userID {
             accessTokenUserID = fbUserID
         }
-        Log.info(message: "SocketService shared instance init did complete", sender: self)
+        Log.info(message: "FacebookService shared instance init did complete", sender: self)
     }
     
     // MARK: Methods
