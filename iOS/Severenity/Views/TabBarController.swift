@@ -47,6 +47,8 @@ extension TabBarController: TabBarPresenterDelegate {
 extension TabBarController: UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        let tapticEngine = UIImpactFeedbackGenerator(style: .light)
+        tapticEngine.prepare()
         let fromView: UIView = tabBarController.selectedViewController!.view
         let toView: UIView = viewController.view
         if fromView == toView {
@@ -54,6 +56,8 @@ extension TabBarController: UITabBarControllerDelegate {
         }
         UIView.transition(from: fromView, to: toView, duration: 0.3, options: UIViewAnimationOptions.transitionCrossDissolve) { (finished:Bool) in
         }
+        
+        tapticEngine.impactOccurred()
         return true
     }
     

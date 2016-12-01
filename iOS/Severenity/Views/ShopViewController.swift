@@ -32,7 +32,10 @@ class ShopViewController: UIViewController {
     }
     
     @IBAction func interactionTestButton(_ sender: AnyObject) {
+        let tapticEngine = UIImpactFeedbackGenerator(style: .heavy)
+        tapticEngine.prepare()
         presenter?.shopViewEvent()
+        tapticEngine.impactOccurred()
     }
 
 }

@@ -29,7 +29,10 @@ class QuestsViewController: UIViewController {
     }
     
     @IBAction func userInteractionTest(_ sender: AnyObject) {
+        let tapticEngine = UIImpactFeedbackGenerator(style: .heavy)
+        tapticEngine.prepare()
         presenter?.questsViewEvent()
+        tapticEngine.impactOccurred()
     }
     
 }
