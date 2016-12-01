@@ -38,6 +38,7 @@
 		12650ECC1DEF1EE000B45DCE /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 12650ECB1DEF1EE000B45DCE /* NotificationCenter.framework */; };
 		12650ED21DEF1EE000B45DCE /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 12650ED01DEF1EE000B45DCE /* MainInterface.storyboard */; };
 		12650ED61DEF1EE100B45DCE /* SeverenityWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 12650ECA1DEF1EE000B45DCE /* SeverenityWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		12650F4F1DF03E5800B45DCE /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12650F4E1DF03E5800B45DCE /* TodayViewController.swift */; };
 		12698F111DC7856F000F4601 /* starting_background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 12698F101DC7856F000F4601 /* starting_background@2x.jpg */; };
 		1270DD1C1DC90009002E1139 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1270DD1B1DC90009002E1139 /* HealthKit.framework */; };
 		1270DD1E1DC9FB86002E1139 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1270DD1D1DC9FB86002E1139 /* HealthKitService.swift */; };
@@ -172,7 +173,6 @@
 		12650EC41DEEF3BE00B45DCE /* Regex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regex.swift; sourceTree = "<group>"; };
 		12650ECA1DEF1EE000B45DCE /* SeverenityWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SeverenityWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		12650ECB1DEF1EE000B45DCE /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
-		12650ECE1DEF1EE000B45DCE /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		12650ED11DEF1EE000B45DCE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		12650ED31DEF1EE100B45DCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12650EDB1DEF24AE00B45DCE /* SeverenityWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SeverenityWidget.entitlements; sourceTree = "<group>"; };
@@ -188,6 +188,8 @@
 		12650EF21DF031BF00B45DCE /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../Library/Developer/Xcode/DerivedData/Severenity-ecbdyoolaxqlrhgzvhuoqfhdlddg/Build/Products/Debug-iphonesimulator/FBSDKCoreKit/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		12650EF31DF031BF00B45DCE /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../../../Library/Developer/Xcode/DerivedData/Severenity-ecbdyoolaxqlrhgzvhuoqfhdlddg/Build/Products/Debug-iphonesimulator/FBSDKLoginKit/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		12650EF41DF031BF00B45DCE /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../../../Library/Developer/Xcode/DerivedData/Severenity-ecbdyoolaxqlrhgzvhuoqfhdlddg/Build/Products/Debug-iphonesimulator/FBSDKShareKit/FBSDKShareKit.framework"; sourceTree = "<group>"; };
+		12650F4D1DF03E5700B45DCE /* SeverenityWidget-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SeverenityWidget-Bridging-Header.h"; sourceTree = "<group>"; };
+		12650F4E1DF03E5800B45DCE /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		12698F101DC7856F000F4601 /* starting_background@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "starting_background@2x.jpg"; sourceTree = "<group>"; };
 		1270DD1B1DC90009002E1139 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		1270DD1D1DC9FB86002E1139 /* HealthKitService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
@@ -329,10 +331,11 @@
 		12650ECD1DEF1EE000B45DCE /* SeverenityWidget */ = {
 			isa = PBXGroup;
 			children = (
-				12650ECE1DEF1EE000B45DCE /* TodayViewController.swift */,
+				12650F4E1DF03E5800B45DCE /* TodayViewController.swift */,
 				12650ED01DEF1EE000B45DCE /* MainInterface.storyboard */,
 				12650ED31DEF1EE100B45DCE /* Info.plist */,
 				12650EDB1DEF24AE00B45DCE /* SeverenityWidget.entitlements */,
+				12650F4D1DF03E5700B45DCE /* SeverenityWidget-Bridging-Header.h */,
 			);
 			path = SeverenityWidget;
 			sourceTree = SOURCE_ROOT;
@@ -708,6 +711,7 @@
 				TargetAttributes = {
 					12650EC91DEF1EE000B45DCE = {
 						CreatedOnToolsVersion = 8.1;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -878,6 +882,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12650F4F1DF03E5800B45DCE /* TodayViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -997,6 +1002,7 @@
 		12650ED81DEF1EE100B45DCE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_ENTITLEMENTS = SeverenityWidget/SeverenityWidget.entitlements;
@@ -1010,6 +1016,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "SeverenityWidget/SeverenityWidget-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -1017,6 +1025,7 @@
 		12650ED91DEF1EE100B45DCE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CODE_SIGN_ENTITLEMENTS = SeverenityWidget/SeverenityWidget.entitlements;
@@ -1029,6 +1038,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni.SeverenityWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "SeverenityWidget/SeverenityWidget-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -1187,6 +1197,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3EF1D539D2A4755EDFC9C1D5 /* Pods-Severenity.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Severenity/Supporting Files/Severenity.entitlements";
@@ -1210,6 +1221,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 32F484CB3F8B329893C92576 /* Pods-Severenity.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "Severenity/Supporting Files/Severenity.entitlements";
