@@ -28,7 +28,7 @@ class ShopViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Log.info(message: "Shop Tab did load", sender: self);
+        Log.info(message: "Shop Tab did load", sender: self)
     }
     
     @IBAction func interactionTestButton(_ sender: AnyObject) {

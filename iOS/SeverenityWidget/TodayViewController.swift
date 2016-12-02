@@ -45,7 +45,11 @@ extension TodayViewController {
         if let data = userDefaults?.dictionary(forKey: "profileData"), let name = data["name"] as? String,
             let imageData = userDefaults?.object(forKey: "profilePicture") as? Data {
             nameLabel.text = name
-            levelLabel.text = levelLabel.text?.appending("100501. Father of Severenity. God of software development. Has infinite powers.")
+            if nameLabel.text == "Oleg Novosad" {
+                levelLabel.text = levelLabel.text?.appending("100501. Father of Severenity. God of software development. Has infinite powers.")
+            } else {
+                levelLabel.text = levelLabel.text?.appending("1. Unknown hero.")
+            }
             profilePicture.image = UIImage(data: imageData)?.roundedImageWithBorder(with: 4, and: #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1))
         }
     }
@@ -53,6 +57,7 @@ extension TodayViewController {
 }
 
 extension UIImage {
+    
     func roundedImageWithBorder(with width: CGFloat, and color: UIColor) -> UIImage? {
         let square = CGSize(width: min(size.width, size.height) + width * 2, height: min(size.width, size.height) + width * 2)
         let imageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: square))
