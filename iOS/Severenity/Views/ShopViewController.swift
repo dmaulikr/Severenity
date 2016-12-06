@@ -37,7 +37,7 @@ class ShopViewController: UIViewController {
         presenter?.shopViewEvent()
         tapticEngine.impactOccurred()
     }
-
+    
 }
 
 // MARK: ShopPresenter delegate

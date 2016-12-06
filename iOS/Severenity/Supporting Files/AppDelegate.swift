@@ -31,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         SocketService.sharedInstance.establishConnection()
 
+        getHealthKitData()
+        
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
@@ -89,5 +91,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let loginManager: FBSDKLoginManager = FBSDKLoginManager()
         loginManager.logOut()
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    // MARK: Get HealthKit data
+    
+    private func getHealthKitData() {
+        let today = Date()
+        let calendar = Calendar.current
+        let startDate = calendar.date(byAdding: .day, value: -90, to: today)
+        
+        var stepsCount = 0.0
+        HealthService.sharedInstance.retrieveStepsCount(startDate: startDate!, endDate: today) { result in
+            stepsCount = result
+            
+            // IMPORTANT: For testing purposes it's okey to have this log here but in any other case it should be removed because it's PHI data
+            Log.info(message: "Total steps retrieved from HealthKit: \(stepsCount)", sender: self)
+        }
+        
+        var totalDistance = 0.0
+        HealthService.sharedInstance.retrieveWalkRunDistance(startDate: startDate!, endDate: today) { result in
+            totalDistance = result
+            
+            // IMPORTANT: For testing purposes it's okey to have this log here but in any other case it should be removed because it's PHI data
+            Log.info(message: "Total distance walked/run retrieved from HealthKit: \(totalDistance) miles", sender: self)
+        }
+        
     }
 }
