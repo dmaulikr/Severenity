@@ -64,10 +64,10 @@ public class MessagesAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         Message message = getItem(position);
-        if (message == null)
+        if (message == null) {
             return null;
+        }
 
         View messageView = convertView;
 
@@ -78,17 +78,17 @@ public class MessagesAdapter extends BaseAdapter {
 
             if (itemViewType == OUTER_MESSAGE_DELIVERED) {
                 messageView = inflater.inflate(R.layout.message_item_left_alligment, parent, false);
-            }
-            else {
+            } else {
                 messageView = inflater.inflate(R.layout.message_item_right_alligment, parent, false);
             }
         }
 
         TextView tvTime = (TextView) messageView.findViewById(R.id.messageDate);
-        if (DateUtils.isToday(message.getTimestamp()))
+        if (DateUtils.isToday(message.getTimestamp())) {
             tvTime.setText(DateUtils.getTimeFromTimestamp(message.getTimestamp()));
-        else
+        } else {
             tvTime.setText(DateUtils.getDateFromTimestamp(message.getTimestamp()));
+        }
 
         TextView tvUserName = (TextView) messageView.findViewById(R.id.messageUsername);
         tvUserName.setText(message.getUsername());
@@ -101,8 +101,18 @@ public class MessagesAdapter extends BaseAdapter {
         return messageView;
     }
 
-    public void addItem(Message msg) {
+    public void addItem(Message message) {
+        if (!exists(message)) {
+            mMessages.add(message);
+        }
+    }
 
-        mMessages.add(msg);
+    private boolean exists(Message message) {
+        for (Message msg : mMessages) {
+            if (msg.getMessageId() != null && msg.getMessageId().equalsIgnoreCase(message.getMessageId())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

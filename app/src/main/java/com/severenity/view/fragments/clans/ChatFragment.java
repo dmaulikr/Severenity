@@ -24,6 +24,7 @@ import com.severenity.entity.Message;
 import com.severenity.entity.User;
 import com.severenity.utils.DateUtils;
 import com.severenity.utils.common.Constants;
+import com.severenity.view.activities.MainActivity;
 
 import java.util.ArrayList;
 
@@ -148,6 +149,10 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             setMessageAdapter(msg);
         }
 
+        Intent updateStatusLabel = new Intent(Constants.INTENT_FILTER_UPDATE_STATUS_LABEL);
+        updateStatusLabel.putExtra("text", "Updating...");
+        updateStatusLabel.putExtra("show", true);
+        App.getLocalBroadcastManager().sendBroadcast(updateStatusLabel);
         App.getMessageManager().getMessagesFromServer();
     }
 
@@ -167,21 +172,20 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     private BroadcastReceiver newMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             Bundle extra = intent.getExtras();
-            Message msg = new Message();
-            msg.setMessage(extra.getString(COLUMN_MESSAGE));
-            msg.setTimestamp(extra.getString(COLUMN_TIMESTAMP));
-            msg.setUsername(extra.getString(COLUMN_USER_NAME));
-            msg.setUserID(extra.getString(COLUMN_USER_ID));
+            Message message = new Message();
+            message.setMessage(extra.getString(COLUMN_MESSAGE));
+            message.setTimestamp(extra.getString(COLUMN_TIMESTAMP));
+            message.setUsername(extra.getString(COLUMN_USER_NAME));
+            message.setUserID(extra.getString(COLUMN_USER_ID));
 
             if (mMessageAdapter != null) {
-                mMessageAdapter.addItem(msg);
+                mMessageAdapter.addItem(message);
                 mMessageAdapter.notifyDataSetChanged();
                 mMessagesList.setSelection(mMessageAdapter.getCount() - 1);
             } else {
                 ArrayList<Message> messages = new ArrayList<>();
-                messages.add(msg);
+                messages.add(message);
                 setMessageAdapter(messages);
             }
         }

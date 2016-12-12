@@ -13,9 +13,10 @@ import com.android.volley.Request;
 import com.severenity.App;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.Message;
-import com.severenity.entity.User;
 import com.severenity.utils.common.Constants;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -26,7 +27,6 @@ import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_USER_ID;
 import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_USER_NAME;
 import static com.severenity.entity.contracts.MsgContract.DBMsg.TABLE_MESSAGE;
 
-
 /**
  * Created by Andriy on 4/27/2016.
  */
@@ -36,14 +36,13 @@ public class MessageManager extends DataManager {
         super(context);
     }
 
-    public boolean addMessage(Message msg) {
-
+    private boolean addMessage(Message message) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_ID,   msg.getUserID());
-        values.put(COLUMN_MESSAGE,   msg.getMessage());
-        values.put(COLUMN_TIMESTAMP, msg.getTimestamp());
-        values.put(COLUMN_USER_NAME, msg.getUsername());
+        values.put(COLUMN_USER_ID,   message.getUserID());
+        values.put(COLUMN_MESSAGE,   message.getMessage());
+        values.put(COLUMN_TIMESTAMP, message.getTimestamp());
+        values.put(COLUMN_USER_NAME, message.getUsername());
 
         long success = db.insert(TABLE_MESSAGE, "NULL", values);
         db.close();
@@ -102,7 +101,34 @@ public class MessageManager extends DataManager {
         App.getRestManager().createRequest(Constants.REST_API_MESSAGES, Request.Method.GET, null, new RequestCallback() {
             @Override
             public void onResponseCallback(JSONObject response) {
-                Log.d(Constants.TAG, response.toString());
+                try {
+                    if (!"success".equalsIgnoreCase(response.getString("result"))) {
+                        Log.e(Constants.TAG, response.toString());
+                        return;
+                    }
+
+                    JSONArray messageObjects = response.getJSONArray("data");
+                    for (int i = 0; i < messageObjects.length(); i++) {
+                        JSONObject messageObject = messageObjects.getJSONObject(i);
+                        Message message = new Message();
+                        message.setMessage(messageObject.getString("text"));
+                        if (messageObject.optString("senderName").isEmpty()) {
+                            Log.e(Constants.TAG, message.getMessage());
+                        }
+                        message.setUsername(messageObject.getString("senderName"));
+                        message.setUserID("senderId");
+                        message.setMessageId(messageObject.getString("messageId"));
+                        message.setTimestamp(messageObject.getString("timestamp"));
+                        onMessageRetrieved(message);
+                    }
+
+                    Intent updateStatusLabel = new Intent(Constants.INTENT_FILTER_UPDATE_STATUS_LABEL);
+                    updateStatusLabel.putExtra("text", "Finishing...");
+                    updateStatusLabel.putExtra("show", false);
+                    App.getLocalBroadcastManager().sendBroadcast(updateStatusLabel);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -134,26 +160,19 @@ public class MessageManager extends DataManager {
         return false;
     }
 
-    public void onMessageRetrieved(Message msg) {
-
-        if (msg == null) {
+    public void onMessageRetrieved(Message message) {
+        if (message == null) {
             return;
         }
 
-        User user = App.getUserManager().getCurrentUser();
-        if (user != null && msg.getUserID().equals(user.getId())) {
-            return;
-        } else {
-            addMessage(msg);
-        }
+        addMessage(message);
 
         Intent intent = new Intent(Constants.INTENT_FILTER_NEW_MESSAGE);
-        intent.putExtra(COLUMN_MESSAGE, msg.getMessage());
-        intent.putExtra(COLUMN_TIMESTAMP, msg.getTimestamp());
-        intent.putExtra(COLUMN_USER_ID, msg.getUserID());
-        intent.putExtra(COLUMN_USER_NAME, msg.getUsername());
+        intent.putExtra(COLUMN_MESSAGE, message.getMessage());
+        intent.putExtra(COLUMN_TIMESTAMP, message.getTimestamp());
+        intent.putExtra(COLUMN_USER_ID, message.getUserID());
+        intent.putExtra(COLUMN_USER_NAME, message.getUsername());
 
         App.getLocalBroadcastManager().sendBroadcast(intent);
-
     }
 }

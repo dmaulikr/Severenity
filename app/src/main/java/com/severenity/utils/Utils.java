@@ -419,9 +419,17 @@ public class Utils {
     public static void expandOrCollapse(final View v, boolean expand, boolean reverse) {
         TranslateAnimation animation;
         if (expand) {
+            if (v.getVisibility() == View.VISIBLE) {
+                return;
+            }
+
             animation = new TranslateAnimation(0.0f, 0.0f, (reverse ? v.getHeight() : -v.getHeight()), 0.0f);
             v.setVisibility(View.VISIBLE);
         } else {
+            if (v.getVisibility() == View.GONE) {
+                return;
+            }
+
             animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, (reverse ? v.getHeight() : -v.getHeight()));
             Animation.AnimationListener collapseListener = new Animation.AnimationListener() {
                 @Override

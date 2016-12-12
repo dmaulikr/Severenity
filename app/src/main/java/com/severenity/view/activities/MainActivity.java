@@ -280,12 +280,30 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         if (App.getNetworkManager().isConnected()) {
             tvConnectionState.setText(getResources().getString(R.string.connected));
             tvConnectionState.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
-            Utils.expandOrCollapse(tvConnectionState, false, true);
+            Utils.expandOrCollapse(tvConnectionState, false, false);
         } else {
             tvConnectionState.setText(getResources().getString(R.string.disconnected));
             tvConnectionState.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
-            Utils.expandOrCollapse(tvConnectionState, true, true);
+            Utils.expandOrCollapse(tvConnectionState, true, false);
         }
+    }
+
+    /**
+     * Updates status label with text provided.
+     *
+     * @param text - text to show over the label.
+     * @param show - if true - label will be shown, otherwise collapsed.
+     */
+    private void updateStatusLabelWith(String text, boolean show) {
+        if (!App.getNetworkManager().isConnected()) {
+            return;
+        }
+
+        tvConnectionState.setText(text);
+        tvConnectionState.setBackgroundColor(getResources().getColor(
+            show ? android.R.color.holo_orange_dark : android.R.color.holo_green_dark)
+        );
+        Utils.expandOrCollapse(tvConnectionState, show, false);
     }
 
     @Override
@@ -591,6 +609,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         App.getLocalBroadcastManager().unregisterReceiver(updateUIReceiver);
         App.getLocalBroadcastManager().unregisterReceiver(App.getLocationManager().getGoogleApiClientReceiver());
         App.getLocalBroadcastManager().unregisterReceiver(showPlaceInfoDialog);
+        App.getLocalBroadcastManager().unregisterReceiver(statusLabelUpdater);
     }
 
     @Override
@@ -612,6 +631,11 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         App.getLocalBroadcastManager().registerReceiver(
             showPlaceInfoDialog,
             new IntentFilter(Constants.INTENT_FILTER_SHOW_PLACE_INFO_DIALOG)
+        );
+
+        App.getLocalBroadcastManager().registerReceiver(
+                statusLabelUpdater,
+            new IntentFilter(Constants.INTENT_FILTER_UPDATE_STATUS_LABEL)
         );
 
         App.getGoogleApiHelper().connect();
@@ -702,14 +726,12 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private BroadcastReceiver showPlaceInfoDialog = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             Bundle extra = intent.getExtras();
             try {
                 JSONObject objectInfo = new JSONObject(extra.getString(Constants.OBJECT_INFO_AS_JSON));
 
                 switch (objectInfo.getInt(Constants.OBJECT_TYPE_IDENTIFIER)) {
                     case Constants.TYPE_PLACE: {
-
                         boolean showRelocationButton = extra.getBoolean(PlacesInfoDialog.SHOW_RELOCATION_BUTTON, false);
                         mPlaceInfoDialog = PlacesInfoDialog.newInstance(objectInfo.getString(Constants.PLACE_ID),
                                 showRelocationButton);
@@ -726,7 +748,14 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    };
 
+    private BroadcastReceiver statusLabelUpdater = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Bundle extras = intent.getExtras();
+            updateStatusLabelWith(intent.getStringExtra("text"), extras.getBoolean("show"));
         }
     };
 

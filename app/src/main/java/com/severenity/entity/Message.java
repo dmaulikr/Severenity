@@ -5,7 +5,7 @@ package com.severenity.entity;
  */
 public class Message {
 
-    private int mMessageID = -1;
+    private String mMessageId;
     private String mUserId;
     private String mMessage;
     private String mTimestamp;
@@ -14,8 +14,13 @@ public class Message {
     /*timestamp should be in format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ"*/
     public Message() {}
 
-    public int getMessageID() {return this.mMessageID; }
-    public void setMessageID(int messageID) {this.mMessageID = messageID; }
+    public String getMessageId() {
+        return this.mMessageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.mMessageId = messageId;
+    }
 
     public String getMessage() {return this.mMessage; }
     public void   setMessage(String message) {this.mMessage = message; }

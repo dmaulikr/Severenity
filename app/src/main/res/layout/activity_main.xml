@@ -29,7 +29,7 @@
         />
 
     <TextView
-        android:layout_above="@id/toolbarBottom"
+        android:layout_below="@id/toolbarTop"
         android:visibility="gone"
         android:padding="4dp"
         android:id="@+id/tvConnectionStateMainActivity"

@@ -53,11 +53,14 @@ android {
         mavenCentral()
         maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://jitpack.io" }
+        flatDir{
+            dirs 'libs'
+        }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile('io.socket:socket.io-client:0.8.1') {
         // excluding org.json which is provided by Android
@@ -81,6 +84,8 @@ dependencies {
     compile 'com.github.iammert:MaterialIntroView:1.5.2'
     compile 'com.github.wooplr:Spotlight:1.1'
     compile 'com.google.android.gms:play-services-analytics:9.6.1'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile (name: 'wikitudesdk', ext:'aar')
 }
 
 apply plugin: 'com.google.gms.google-services'
