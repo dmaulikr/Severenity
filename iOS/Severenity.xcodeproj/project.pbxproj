@@ -53,6 +53,9 @@
 		12C1859C1DEED8BD0053A7CF /* SettingsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C1859B1DEED8BD0053A7CF /* SettingsInteractor.swift */; };
 		12C1859E1DEED93C0053A7CF /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C1859D1DEED93C0053A7CF /* SettingsPresenter.swift */; };
 		12D9D9A01DF98B230088A93B /* Pods_Severenity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3AAAE59B41ABFF884BC13C0 /* Pods_Severenity.framework */; };
+		12D9D9A21DFF067E0088A93B /* InitialRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9D9A11DFF067E0088A93B /* InitialRouter.swift */; };
+		12D9D9A41DFF06D70088A93B /* InitialInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9D9A31DFF06D70088A93B /* InitialInteractor.swift */; };
+		12D9D9A61DFF07480088A93B /* InitialPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9D9A51DFF07480088A93B /* InitialPresenter.swift */; };
 		12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */; };
 		12EE6B011DB7AB3000FFC567 /* ShopInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */; };
 		12EE6B071DB7AD0B00FFC567 /* ShopRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */; };
@@ -205,6 +208,9 @@
 		12C185991DEED85E0053A7CF /* SettingsRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsRouter.swift; sourceTree = "<group>"; };
 		12C1859B1DEED8BD0053A7CF /* SettingsInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsInteractor.swift; sourceTree = "<group>"; };
 		12C1859D1DEED93C0053A7CF /* SettingsPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPresenter.swift; sourceTree = "<group>"; };
+		12D9D9A11DFF067E0088A93B /* InitialRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialRouter.swift; sourceTree = "<group>"; };
+		12D9D9A31DFF06D70088A93B /* InitialInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialInteractor.swift; sourceTree = "<group>"; };
+		12D9D9A51DFF07480088A93B /* InitialPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialPresenter.swift; sourceTree = "<group>"; };
 		12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopPresenter.swift; sourceTree = "<group>"; };
 		12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopInteractor.swift; sourceTree = "<group>"; };
 		12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopRouter.swift; sourceTree = "<group>"; };
@@ -364,6 +370,7 @@
 			isa = PBXGroup;
 			children = (
 				12EE6B3B1DB9215200FFC567 /* ChatPresenter.swift */,
+				12D9D9A51DFF07480088A93B /* InitialPresenter.swift */,
 				12EE6B311DB9100B00FFC567 /* MapPresenter.swift */,
 				121A65401DC3678B00A6C6B9 /* NavigationBarPresenter.swift */,
 				12EE6B121DB8C4AF00FFC567 /* Profile */,
@@ -380,6 +387,7 @@
 			isa = PBXGroup;
 			children = (
 				12EE6B391DB9211C00FFC567 /* ChatInteractor.swift */,
+				12D9D9A31DFF06D70088A93B /* InitialInteractor.swift */,
 				12EE6B331DB9103100FFC567 /* MapInteractor.swift */,
 				121A65421DC367A100A6C6B9 /* NavigationBarInteractor.swift */,
 				12EE6B1B1DB8C69A00FFC567 /* Profile */,
@@ -431,6 +439,7 @@
 			isa = PBXGroup;
 			children = (
 				12EE6B371DB920E100FFC567 /* ChatRouter.swift */,
+				12D9D9A11DFF067E0088A93B /* InitialRouter.swift */,
 				12EE6B351DB9106F00FFC567 /* MapRouter.swift */,
 				121A65441DC367BC00A6C6B9 /* NavigationBarRouter.swift */,
 				12EE6B281DB8C74F00FFC567 /* Profile */,
@@ -925,10 +934,12 @@
 				12EE6B211DB8C6F700FFC567 /* ProfileGridInteractor.swift in Sources */,
 				12EE6B381DB920E100FFC567 /* ChatRouter.swift in Sources */,
 				12EE6B2E1DB8C77E00FFC567 /* ProfileListRouter.swift in Sources */,
+				12D9D9A41DFF06D70088A93B /* InitialInteractor.swift in Sources */,
 				12EE6B3C1DB9215200FFC567 /* ChatPresenter.swift in Sources */,
 				12C185881DE7028E0053A7CF /* Logger.swift in Sources */,
 				52787BE01D86AA35009D17F5 /* AppDelegate.swift in Sources */,
 				12EE6B3A1DB9211C00FFC567 /* ChatInteractor.swift in Sources */,
+				12D9D9A61DFF07480088A93B /* InitialPresenter.swift in Sources */,
 				121A65691DC38FF900A6C6B9 /* ProfileListCell.swift in Sources */,
 				121A65571DC38FBF00A6C6B9 /* InitialViewController.swift in Sources */,
 				12EE6B231DB8C70A00FFC567 /* ProfileInteractor.swift in Sources */,
@@ -959,6 +970,7 @@
 				52BD55AE1DC3F2470044666E /* NavigationBarView.swift in Sources */,
 				12EE6B161DB8C50100FFC567 /* ProfilePresenter.swift in Sources */,
 				12EE6B361DB9106F00FFC567 /* MapRouter.swift in Sources */,
+				12D9D9A21DFF067E0088A93B /* InitialRouter.swift in Sources */,
 				121A656C1DC38FF900A6C6B9 /* ProfileViewController.swift in Sources */,
 				121A65431DC367A100A6C6B9 /* NavigationBarInteractor.swift in Sources */,
 				5264A7A11D8828B500EE78FC /* PlacesService.swift in Sources */,
@@ -1207,7 +1219,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Severenity/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -1231,7 +1243,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Severenity/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";

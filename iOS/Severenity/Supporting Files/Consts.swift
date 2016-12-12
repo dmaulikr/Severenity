@@ -29,6 +29,7 @@ let kQuestsInteractor = "QuestsInteractor"
 let kShopInteractor = "ShopInteractor"
 let kTabBarInteractor = "TabBarInteractor"
 let kSettingsInteractor = "SettingsInteractor"
+let kInitialInteractor = "InitialInteractor"
 
 // MARK: Log file name
 
