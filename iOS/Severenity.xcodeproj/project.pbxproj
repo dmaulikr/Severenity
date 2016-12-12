@@ -52,6 +52,7 @@
 		12C1859A1DEED85E0053A7CF /* SettingsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C185991DEED85E0053A7CF /* SettingsRouter.swift */; };
 		12C1859C1DEED8BD0053A7CF /* SettingsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C1859B1DEED8BD0053A7CF /* SettingsInteractor.swift */; };
 		12C1859E1DEED93C0053A7CF /* SettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C1859D1DEED93C0053A7CF /* SettingsPresenter.swift */; };
+		12D9D9A01DF98B230088A93B /* Pods_Severenity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3AAAE59B41ABFF884BC13C0 /* Pods_Severenity.framework */; };
 		12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */; };
 		12EE6B011DB7AB3000FFC567 /* ShopInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */; };
 		12EE6B071DB7AD0B00FFC567 /* ShopRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */; };
@@ -100,7 +101,6 @@
 		7E0F9D121D964C440038D11D /* facebook_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D101D964C440038D11D /* facebook_login.png */; };
 		7E0F9D131D964C440038D11D /* facebook_logout.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D111D964C440038D11D /* facebook_logout.png */; };
 		7E0F9D151D96524F0038D11D /* DeepSpace.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E0F9D141D96524F0038D11D /* DeepSpace.png */; };
-		F7F9968E342323C91D242D2A /* Pods_Severenity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3AAAE59B41ABFF884BC13C0 /* Pods_Severenity.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -292,7 +292,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F7F9968E342323C91D242D2A /* Pods_Severenity.framework in Frameworks */,
+				12D9D9A01DF98B230088A93B /* Pods_Severenity.framework in Frameworks */,
 				1270DD1C1DC90009002E1139 /* HealthKit.framework in Frameworks */,
 				12C185981DEDDE930053A7CF /* MessageUI.framework in Frameworks */,
 			);
@@ -1207,7 +1207,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Severenity/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -1231,7 +1231,7 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Severenity/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";

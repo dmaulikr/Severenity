@@ -57,6 +57,8 @@
 	<string>Severenity needs your GPS information to load the map</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Severenity needs your GPS information to load the map</string>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -80,7 +82,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>UIFileSharingEnabled</key>
-    <true/>
 </dict>
 </plist>
