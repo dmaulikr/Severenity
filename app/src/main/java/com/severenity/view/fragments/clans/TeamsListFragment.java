@@ -2,6 +2,7 @@ package com.severenity.view.fragments.clans;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.severenity.engine.adapters.TeamsListAdapter;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.Team;
 import com.severenity.utils.Utils;
+import com.severenity.utils.common.Constants;
 import com.severenity.view.Dialogs.CreateTeamDialog;
 import com.severenity.view.custom.CustomListView;
 import com.severenity.view.fragments.clans.pages.TeamEventsListener;
@@ -27,24 +29,38 @@ import java.util.List;
 /**
  * Created by Andriy on 7/28/2016.
  */
-public class TeamsListFragment extends Fragment implements View.OnClickListener,
-        TeamEventsListener,
-        CustomListView.LoadDataListener{
+public class TeamsListFragment extends Fragment implements View.OnClickListener, TeamEventsListener,
+        CustomListView.LoadDataListener {
 
-    private View mAddTeamButtonsView = null;
-    private CreateTeamDialog mTeamDialog;
-    private int mOffset = 0;
-    private final int ITEM_PER_REQUEST = 15;
-
-    private CustomListView mTeamsList;
-
-    public TeamsListFragment(TeamEventsListener listener) {
-        // Required empty public constructor
-        mListener = listener;
-    }
+    private static final String ARGUMENT_TEAM_EVENTS_LISTENER = "teamEventsListener";
+    private static final int ITEM_PER_REQUEST = 15;
 
     // listener that might handle event once team is created
     private TeamEventsListener mListener;
+    private View mAddTeamButtonsView = null;
+    private CreateTeamDialog mTeamDialog;
+    private int mOffset = 0;
+
+    private CustomListView mTeamsList;
+
+    public TeamsListFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param listener - listener for the team events (created etc.)
+     * @return A new instance of fragment {@link TeamsListFragment}.
+     */
+    public static TeamsListFragment newInstance(TeamEventsListener listener) {
+        TeamsListFragment fragment = new TeamsListFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARGUMENT_TEAM_EVENTS_LISTENER, listener);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +75,8 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
         mTeamsList.setAdapter(adapter);
         mTeamsList.setListener(this);
 
+        mListener = (TeamEventsListener) getArguments().getSerializable(ARGUMENT_TEAM_EVENTS_LISTENER);
+
         if (!App.getUserManager().getCurrentUser().getTeam().isEmpty() || (App.getUserManager().getCurrentUser().getLevel() < 5) ) {
             mAddTeamButtonsView.setVisibility(View.GONE);
         }
@@ -69,18 +87,15 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
     }
 
     private void requestTeams() {
-
         App.getTeamManager().getTeamsAsPage(mOffset, ITEM_PER_REQUEST, new RequestCallback() {
             @Override
             public void onResponseCallback(JSONObject response) {
-
                 try {
-                    if (response.getString("result").equals("success")) {
+                    if ("success".equals(response.getString("result"))) {
                         JSONArray data = response.getJSONObject("data").getJSONArray("docs");
                         mOffset += data.length();
 
-
-                        List<Team> result = new ArrayList<Team>(data.length());
+                        List<Team> result = new ArrayList<>(data.length());
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject jsonTeam = data.getJSONObject(i);
                             Team team = Utils.createTeamFromJSON(jsonTeam);
@@ -91,7 +106,6 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
 
                         mTeamsList.addNewData(result);
                     }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -99,9 +113,7 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
 
             @Override
             public void onErrorCallback(NetworkResponse response) {
-
-                int i = 0;
-                i = i + 1;
+                Log.e(Constants.TAG, "Request teams fails: " + (response == null ? "" : response.toString()));
             }
         });
     }
@@ -109,17 +121,16 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.createTeam: {
+            case R.id.createTeam:
                 mTeamDialog = CreateTeamDialog.newInstance();
                 mTeamDialog.setListener(this);
                 mTeamDialog.show(getFragmentManager(), "CreateTeam");
                 break;
-            }
         }
     }
 
     @Override
-    public void OnTeamCreated() {
+    public void onTeamCreated() {
         mTeamDialog.dismiss();
         mTeamDialog = null;
         if (!App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
@@ -130,30 +141,32 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
         // pass information further to the main holder
         // so that it can create team fragment and switch
         // user to it.
-        mListener.OnTeamCreated();
+        mListener.onTeamCreated();
     }
 
     @Override
-    public void OnTeamJoined() {
+    public void onTeamJoined() {
         if (!App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
             mAddTeamButtonsView.setVisibility(View.GONE);
         }
 
-        mListener.OnTeamJoined();
+        mListener.onTeamJoined();
     }
 
     @Override
-    public void OnTeamLeft() {
+    public void onTeamLeft() {
         mOffset = 0;
         mTeamsList.clearData();
         requestTeams();
         if (mListener != null) {
-            mListener.OnTeamLeft();
+            mListener.onTeamLeft();
         }
     }
 
     @Override
-    public void loadData() { requestTeams(); }
+    public void loadData() {
+        requestTeams();
+    }
 
     @Override
     public void onHiddenChanged(boolean hidden) {

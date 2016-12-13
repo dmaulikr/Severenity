@@ -1,6 +1,7 @@
 package com.severenity.view.fragments.clans.pages;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.view.Gravity;
@@ -24,47 +25,32 @@ import java.util.Map;
  * Created by Andriy on 8/14/2016.
  */
 public class TeamsPage extends ClansPageBase implements TeamEventsListener {
-
     // variable to start button id's from.
-
     protected final int BUTTON_TEAM_LIST_ID = 10001;
     protected final int BUTTON_TEAM_ID      = 10002;
     protected final int BUTTON_CHAT_ID      = 10003;
 
-    private Context mContext;
-
     private View currentSelectedPagesButton = null;
     private LinearLayout mButtonsLayout;
 
-    public TeamsPage(Context context) {
+    public TeamsPage() {
         super(R.layout.team_clans_container_fragment, R.id.teamFragmentsContent);
+    }
 
-        mContext = context;
-        mPageTitle = mContext.getResources().getString(R.string.title_team);
-        mFragments = new ArrayMap<>();
+    public static TeamsPage newInstance(String title) {
+        TeamsPage teamsPage = new TeamsPage();
+        Bundle args = new Bundle();
 
-        boolean showTeamPageFirst = false;
-        if (App.getUserManager().getCurrentUser().getTeam() != null) {
-            showTeamPageFirst = !App.getUserManager().getCurrentUser().getTeam().isEmpty();
-        }
+        args.putString(ARGUMENT_PAGE_TITLE, title);
 
-        mFragments.put(BUTTON_TEAM_LIST_ID, new FragmentInfo(new TeamsListFragment(this), "teamsList", mContext.getResources().getString(R.string.team_list), !showTeamPageFirst));
-
-        if (showTeamPageFirst) {
-            mFragments.put(BUTTON_TEAM_ID, new FragmentInfo(new TeamFragment(App.getUserManager().getCurrentUser().getTeam(), this), "teamFragment", mContext.getResources().getString(R.string.clans_team), showTeamPageFirst));
-        }
-
-        mFragments.put(BUTTON_CHAT_ID, new FragmentInfo(new ChatFragment(), "chatFragment", mContext.getResources().getString(R.string.chat), false));
-        mWarningContentLayoutID = R.id.warningFragmentContent;
-
-        // if users level is lower then 3 we show warning
-        if (App.getUserManager().getCurrentUser().getLevel() < 3) {
-            mWarningFragment = new FragmentInfo(new WarningFragment(), "warningFragment", mContext.getResources().getString(R.string.warning_fragment), true);
-        }
+        teamsPage.setArguments(args);
+        return teamsPage;
     }
 
     @Override
     public View onCreate(View view) {
+        mPageTitle = getResources().getString(R.string.title_team);
+
         View v = super.onCreate(view);
         mButtonsLayout = ((LinearLayout)v.findViewById(R.id.buttonsLayout));
 
@@ -73,6 +59,32 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
         }
 
         return v;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        mFragments = new ArrayMap<>();
+
+        boolean showTeamPageFirst = false;
+        if (App.getUserManager().getCurrentUser().getTeam() != null) {
+            showTeamPageFirst = !App.getUserManager().getCurrentUser().getTeam().isEmpty();
+        }
+
+        mFragments.put(BUTTON_TEAM_LIST_ID, new FragmentInfo(TeamsListFragment.newInstance(this), "teamsList", context.getResources().getString(R.string.team_list), !showTeamPageFirst));
+
+        if (showTeamPageFirst) {
+            mFragments.put(BUTTON_TEAM_ID, new FragmentInfo(TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeam(), this), "teamFragment", context.getResources().getString(R.string.clans_team), showTeamPageFirst));
+        }
+
+        mFragments.put(BUTTON_CHAT_ID, new FragmentInfo(new ChatFragment(), "chatFragment", context.getResources().getString(R.string.chat), false));
+        mWarningContentLayoutID = R.id.warningFragmentContent;
+
+        // if users level is lower then 3 we show warning
+        if (App.getUserManager().getCurrentUser().getLevel() < 3) {
+            mWarningFragment = new FragmentInfo(new WarningFragment(), "warningFragment", context.getResources().getString(R.string.warning_fragment), true);
+        }
     }
 
     /**
@@ -132,7 +144,7 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
 
     protected void createFragmentAndButtonForTheTeam() {
         if (mFragments.get(BUTTON_TEAM_ID) == null) {
-            FragmentInfo info = new FragmentInfo(new TeamFragment(App.getUserManager().getCurrentUser().getTeam(), this), "teamFragment", "Team", false);
+            FragmentInfo info = new FragmentInfo(TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeam(), this), "teamFragment", "Team", false);
             mFragments.put(BUTTON_TEAM_ID, info);
 
             FragmentTransaction transaction = mFragmentManager.beginTransaction();
@@ -146,13 +158,15 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         mFragments.size());
 
-                TextView tv = (TextView)getView().findViewById(entry.getKey());
-                if (tv != null) {
-                    tv.setLayoutParams(param);
+                if (getView() != null) {
+                    TextView tv = (TextView) getView().findViewById(entry.getKey());
+                    if (tv != null) {
+                        tv.setLayoutParams(param);
+                    }
                 }
             }
             createButton(info, BUTTON_TEAM_ID);
-            ((TextView)getView().findViewById(BUTTON_TEAM_ID)).callOnClick();
+            getView().findViewById(BUTTON_TEAM_ID).callOnClick();
         }
     }
 
@@ -164,7 +178,9 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
             transaction.remove(info.mFragment);
             transaction.commit();
 
-            mButtonsLayout.removeView(getView().findViewById(BUTTON_TEAM_ID));
+            if (getView() != null) {
+                mButtonsLayout.removeView(getView().findViewById(BUTTON_TEAM_ID));
+            }
 
             for (Map.Entry<Integer, FragmentInfo> entry : mFragments.entrySet()) {
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
@@ -180,19 +196,19 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
         }
 
         // click teamAll button.
-        ((TextView)getView().findViewById(BUTTON_TEAM_LIST_ID)).callOnClick();
+        getView().findViewById(BUTTON_TEAM_LIST_ID).callOnClick();
     }
 
     @Override
-    public void OnTeamCreated() {
+    public void onTeamCreated() {
         createFragmentAndButtonForTheTeam();
     }
 
     @Override
-    public void OnTeamJoined() {
+    public void onTeamJoined() {
         createFragmentAndButtonForTheTeam();
     }
 
     @Override
-    public void OnTeamLeft() { removeFragmentAndButtonForTheTeam(); }
+    public void onTeamLeft() { removeFragmentAndButtonForTheTeam(); }
 }

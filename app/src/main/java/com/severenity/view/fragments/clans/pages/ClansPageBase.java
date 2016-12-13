@@ -17,6 +17,7 @@ import java.util.Map;
  * Created by Andriy on 8/13/2016.
  */
 public abstract class ClansPageBase extends Fragment implements View.OnClickListener {
+    protected static final String ARGUMENT_PAGE_TITLE = "pageTitle";
 
     protected Map<Integer, FragmentInfo> mFragments;
     protected FragmentManager    mFragmentManager;
@@ -46,6 +47,10 @@ public abstract class ClansPageBase extends Fragment implements View.OnClickList
     }
 
     public String getTitle() {
+        if (mPageTitle == null || mPageTitle.isEmpty()) {
+            mPageTitle = getArguments().getString(ARGUMENT_PAGE_TITLE);
+        }
+
         return mPageTitle;
     }
 

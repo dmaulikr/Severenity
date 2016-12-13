@@ -1,14 +1,12 @@
 package com.severenity.view.fragments.clans;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -18,7 +16,6 @@ import android.widget.Toast;
 import com.android.volley.NetworkResponse;
 import com.severenity.App;
 import com.severenity.R;
-import com.severenity.engine.adapters.TeamsListAdapter;
 import com.severenity.engine.adapters.UsersListAdapter;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.Team;
@@ -52,14 +49,29 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     private FrameLayout       mLeaveButtonLayout;
     private boolean           mIsSelfRemoved = false;
 
+    private static final String ARGUMENT_TEAM_ID = "teamId";
+    private static final String ARGUMENT_TEAM_EVENTS_LISTENER = "teamEventsListener";
+
     // listener that might handle event once team is created
     private TeamEventsListener mListener;
 
+    public TeamFragment() {}
 
-    public TeamFragment(String teamID, TeamEventsListener listener) {
-        // Required empty public constructor
-        mTeamID = teamID;
-        mListener = listener;
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param teamId - team id of the team to display.
+     * @param listener - listener for the team events (created etc.)
+     * @return A new instance of fragment {@link TeamFragment}.
+     */
+    public static TeamFragment newInstance(String teamId, TeamEventsListener listener) {
+        TeamFragment fragment = new TeamFragment();
+        Bundle args = new Bundle();
+        args.putString(ARGUMENT_TEAM_ID, teamId);
+        args.putSerializable(ARGUMENT_TEAM_EVENTS_LISTENER, listener);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -81,6 +93,9 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
         mLeaveButton = (Button)view.findViewById(R.id.leaveTeamButton);
         mLeaveButton.setOnClickListener(this);
         mLeaveButtonLayout = (FrameLayout) view.findViewById(R.id.leaveTeam);
+
+        mTeamID = getArguments().getString(ARGUMENT_TEAM_ID);
+        mListener = (TeamEventsListener) getArguments().getSerializable(ARGUMENT_TEAM_EVENTS_LISTENER);
 
         if (!App.getUserManager().getCurrentUser().getTeam().equals(mTeamID)) {
             mLeaveButtonLayout.setVisibility(View.GONE);
@@ -182,10 +197,9 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
                     mMoveUserFromTeamDialog.dismiss();
                     mUserIdToDelete = "";
                     if (mIsSelfRemoved) {
-                        mListener.OnTeamLeft();
+                        mListener.onTeamLeft();
                         App.getUserManager().updateCurrentUser(new String[]{COLUMN_TEAM}, new String[]{""});
                     }
-
                 } else {
                     // TODO: Error handling
                     String err = response.getString("data");

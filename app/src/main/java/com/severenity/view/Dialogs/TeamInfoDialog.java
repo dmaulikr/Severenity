@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -58,14 +57,14 @@ public class TeamInfoDialog extends DialogFragment implements
         View view = inflater.inflate(R.layout.dialog_team_info, null);
         setCancelable(false);
 
-        mTeamFragment = new TeamFragment(mTeamID, this);
+        mTeamFragment = TeamFragment.newInstance(mTeamID, this);
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.teamInfoFragment, mTeamFragment, "TeamInfoFragment");
         transaction.commit();
 
-        ((Button)view.findViewById(R.id.cancelButton)).setOnClickListener(this);
-        ((Button)view.findViewById(R.id.joinButton)).setOnClickListener(this);
+        view.findViewById(R.id.cancelButton).setOnClickListener(this);
+        view.findViewById(R.id.joinButton).setOnClickListener(this);
         return view;
     }
 
@@ -103,7 +102,7 @@ public class TeamInfoDialog extends DialogFragment implements
                     App.getUserManager().updateCurrentUserLocallyWithUser(user);
                     mDialog.dismiss();
                     if (mListener != null) {
-                        mListener.OnTeamJoined();
+                        mListener.onTeamJoined();
                     }
                 } else {
                     // TODO: Error handling
@@ -124,20 +123,16 @@ public class TeamInfoDialog extends DialogFragment implements
     };
 
     @Override
-    public void OnTeamCreated() {
-
-    }
+    public void onTeamCreated() {}
 
     @Override
-    public void OnTeamJoined() {
-
-    }
+    public void onTeamJoined() {}
 
     @Override
-    public void OnTeamLeft() {
+    public void onTeamLeft() {
         dismiss();
         if (mListener != null) {
-            mListener.OnTeamLeft();
+            mListener.onTeamLeft();
         }
     }
 }

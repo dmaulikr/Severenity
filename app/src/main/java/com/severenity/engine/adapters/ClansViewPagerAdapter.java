@@ -13,17 +13,12 @@ import java.util.ArrayList;
  * Created by Andriy on 8/13/2016.
  */
 public class ClansViewPagerAdapter extends FragmentStatePagerAdapter {
-
-    private Context mContext;
     private String mPageTitles[];
     private ArrayList<ClansPageBase> mFragments;
 
-    public ClansViewPagerAdapter(FragmentManager fm,
-                                 Context nContext,
-                                 ArrayList<ClansPageBase> list) {
+    public ClansViewPagerAdapter(FragmentManager fm, ArrayList<ClansPageBase> list) {
         super(fm);
         mFragments = list;
-        mContext = nContext;
         mPageTitles = new String[list.size()];
         for (int i = 0; i < list.size(); ++i) {
             mPageTitles[i] = mFragments.get(i).getTitle();
@@ -32,9 +27,8 @@ public class ClansViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return (Fragment)mFragments.get(position);
+        return mFragments.get(position);
     }
-
 
     @Override
     public int getCount() {
