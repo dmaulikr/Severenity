@@ -152,7 +152,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
-    
+
 }
 
 // MARK: UITextField delegate

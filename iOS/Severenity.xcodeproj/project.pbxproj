@@ -78,6 +78,8 @@
 		12EE6B401DB923E600FFC567 /* QuestsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B3F1DB923E600FFC567 /* QuestsInteractor.swift */; };
 		12EE6B421DB9241B00FFC567 /* QuestsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B411DB9241B00FFC567 /* QuestsPresenter.swift */; };
 		12EE6B461DBA372A00FFC567 /* WireFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B451DBA372A00FFC567 /* WireFrame.swift */; };
+		523A0D4A1DFFFA3300B3376F /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523A0D491DFFFA3300B3376F /* UserService.swift */; };
+		523A0D4C1E001A1400B3376F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523A0D4B1E001A1400B3376F /* User.swift */; };
 		5264A7A11D8828B500EE78FC /* PlacesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5264A7A01D8828B500EE78FC /* PlacesService.swift */; };
 		52787BE01D86AA35009D17F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52787BDF1D86AA35009D17F5 /* AppDelegate.swift */; };
 		52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52787BE61D86AA35009D17F5 /* Assets.xcassets */; };
@@ -238,6 +240,8 @@
 		523828721D89331500F55364 /* SeverenityTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SeverenityTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		523828761D89331500F55364 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		523828801D89332D00F55364 /* SeverenityUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SeverenityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		523A0D491DFFFA3300B3376F /* UserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
+		523A0D4B1E001A1400B3376F /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		523EF8A51DB521C9002001CD /* Severenity.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Severenity.entitlements; path = "Severenity/Supporting Files/Severenity.entitlements"; sourceTree = SOURCE_ROOT; };
 		5264A7A01D8828B500EE78FC /* PlacesService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlacesService.swift; sourceTree = "<group>"; };
 		52787BDC1D86AA35009D17F5 /* Severenity.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Severenity.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -407,6 +411,7 @@
 				1270DD1D1DC9FB86002E1139 /* HealthService.swift */,
 				5264A7A01D8828B500EE78FC /* PlacesService.swift */,
 				121328761DBE45F700FED50E /* SocketService.swift */,
+				523A0D491DFFFA3300B3376F /* UserService.swift */,
 			);
 			name = Services;
 			path = ../Severenity/Services;
@@ -416,6 +421,7 @@
 			isa = PBXGroup;
 			children = (
 				527D92B21D8988510059F14F /* RealmPlaces.swift */,
+				523A0D4B1E001A1400B3376F /* User.swift */,
 			);
 			name = Entities;
 			path = ../Severenity/Entities;
@@ -959,6 +965,7 @@
 				121A65661DC38FF900A6C6B9 /* ProfileGridCell.swift in Sources */,
 				121A65411DC3678B00A6C6B9 /* NavigationBarPresenter.swift in Sources */,
 				12EE6B2A1DB8C76000FFC567 /* ProfileRouter.swift in Sources */,
+				523A0D4A1DFFFA3300B3376F /* UserService.swift in Sources */,
 				121328771DBE45F700FED50E /* SocketService.swift in Sources */,
 				121A655B1DC38FBF00A6C6B9 /* NavigationBarController.swift in Sources */,
 				121A654B1DC37C5000A6C6B9 /* TabBarPresenter.swift in Sources */,
@@ -975,6 +982,7 @@
 				121A65431DC367A100A6C6B9 /* NavigationBarInteractor.swift in Sources */,
 				5264A7A11D8828B500EE78FC /* PlacesService.swift in Sources */,
 				121D55441DC76AEF00294742 /* MessageInView.swift in Sources */,
+				523A0D4C1E001A1400B3376F /* User.swift in Sources */,
 				12C1858F1DEDA2720053A7CF /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

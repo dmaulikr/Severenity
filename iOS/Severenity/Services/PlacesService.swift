@@ -57,7 +57,7 @@ class PlacesService: NSObject {
      gets JSON response, parse it and set to Realm. When completed, returns to provideData method.*/
     private func requestDataFromServer(_ completion: @escaping () -> Void) {
         
-        guard let serverURL = URL.init(string: kPlacesServerURL) else {
+        guard let serverURL = URL.init(string: kPlacesURL) else {
             Log.error(message: "Cannot create server url", sender: self)
             return
         }

@@ -12,7 +12,7 @@ import SocketIO
 class SocketService: NSObject {
     
     static let sharedInstance = SocketService()
-    var socket: SocketIOClient = SocketIOClient(socketURL: URL(string: kSocketServerURL)!)
+    var socket: SocketIOClient = SocketIOClient(socketURL: URL(string: kServerURL)!)
     
     // MARK: Init
     

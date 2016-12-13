@@ -58,6 +58,16 @@ extension InitialViewController: LoginButtonDelegate {
         }
         Log.info(message: "Facebook access token: \n AppID: \(accessToken.appID) \n userID: \(accessToken.userID) \n token: \(accessToken.tokenString) \n", sender: self)
         
+        
+
+        
+        
+        UserService.sharedInstance.authorizeUserWith(userId: accessToken.userID)
+
+        
+        
+        
+        
         view.backgroundColor = UIColor.white
         loginButton.isHidden = true
         startActivityIndicator(view: view)

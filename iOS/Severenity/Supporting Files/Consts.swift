@@ -10,8 +10,10 @@ import Foundation
 
 // MARK: Servers adresses
 
-let kPlacesServerURL = "https://severenity.herokuapp.com/places/all"
-let kSocketServerURL = "https://severenity.herokuapp.com"
+let kServerURL = "https://severenity.herokuapp.com"
+let kPlacesURL = kServerURL + "/places/all"
+let kUsersURL = kServerURL + "/users"
+let kCreateUserURL = kServerURL + "/users/create"
 
 // MARK: Alerts
 
