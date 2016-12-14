@@ -9,9 +9,9 @@
 import UIKit
 
 protocol ProfileGridPresenterDelegate: class {
-    func profileGridPresenterDidCallView(withData data: [String])
+    func profileGridPresenterDidCallViewWith(data: [String])
 }
 
 protocol ProfileGridInteractorDelegate: class {
-    func profileGridInteractorDidCallPresenter(withData data: Array<Dictionary<String, AnyObject>>)
+    func profileGridInteractorDidCallPresenterWith(data: Array<Dictionary<String, AnyObject>>)
 }

@@ -87,7 +87,7 @@ class ChatViewController: UIViewController {
 
 extension ChatViewController: ChatPresenterDelegate {
     
-    func displayNewMessage(with dictionary: Dictionary<String,String>) {
+    func displayNewMessageWith(dictionary: Dictionary<String,String>) {
         Log.info(message: "ChatViewController is called from ChatPresenter with message: \(dictionary)", sender: self)
         messages.append(dictionary)
         messagesTableView.reloadData()

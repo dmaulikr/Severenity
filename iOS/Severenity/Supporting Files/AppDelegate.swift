@@ -28,11 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Feel free to use kGoogleAPIKey
         Log.info(message: "Google Maps API key provided: \(GMSServices.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))", sender: self)
         Log.info(message: "Google Places API key provided: \(GMSPlacesClient.provideAPIKey("AIzaSyB0vX6YGdJlcx9IB7LNSUakHbYRdA_DmBw"))", sender: self)
-        
         SocketService.sharedInstance.establishConnection()
-
         getHealthKitData()
-        
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
@@ -56,11 +53,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     let fileHandle = try FileHandle(forWritingTo: file)
                     fileHandle.closeFile()
                 } catch {
-                    print("ERROR: Closing log file failed: \(error)")
+                    Log.error(message: "Closing log file failed: \(error)", sender: self)
                 }
             }
         }
-
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -75,7 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        
+        FBSDKAppEvents.activateApp()
         let fbToken = FBSDKAccessToken.current()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if (fbToken != nil) {
@@ -83,18 +79,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "loginController")
         }
-        
-        FBSDKAppEvents.activateApp()
     }
-
+    
     func applicationWillTerminate(_ application: UIApplication) {
-        let loginManager: FBSDKLoginManager = FBSDKLoginManager()
-        loginManager.logOut()
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
     // MARK: Get HealthKit data
-    
+    // TODO: This method is here just for test purposes now. It should be moved to the corresponding Interactor/Service
     private func getHealthKitData() {
         let today = Date()
         let calendar = Calendar.current

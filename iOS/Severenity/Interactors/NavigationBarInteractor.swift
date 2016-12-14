@@ -23,26 +23,37 @@ class NavigationBarInteractor: NSObject {
     
     func navigationBarPresenterNeedsData() {
         Log.info(message: "NavigationBarInteractor was called from NavigationBarPresenter", sender: self)
-        
         guard let fbUserID = FacebookService.sharedInstance.accessTokenUserID else {
             Log.error(message: "Cannot get FB Token", sender: self)
             return
         }
-        FacebookService.sharedInstance.getFBProfilePicture(for: fbUserID, size: .normal, completion: { (image) in
-            FacebookService.sharedInstance.getFBProfileInfo (with: "me", and: { (info) in
-                    self.delegate?.navigationBarInteractorDidCallPresenter(with: image, and: info)
-                    self.saveSharedData(image: image, data: info)
-            })
+        FacebookService.sharedInstance.getFBProfilePicture(for: fbUserID, size: .normal, completion: { image in
+            self.delegate?.navigationBarInteractorDidCallPresenterWithProfile(picture: image)
         })
     }
     
-    /// Saves FB profile data to UserDefaults to share it with notification center widget-extension
-    private func saveSharedData(image: UIImage, data: Dictionary<String,String>) {
+    func saveUserData() {
+        guard let fbUserID = FacebookService.sharedInstance.accessTokenUserID else {
+            Log.error(message: "Cannot get FB Token", sender: self)
+            return
+        }
+        FacebookService.sharedInstance.getFBProfilePicture(for: fbUserID, size: .normal, completion: { image in
+            self.delegate?.navigationBarInteractorDidCallPresenterWithProfile(picture: image)
+            self.saveSharedData(image: image)
+        })
+    }
+    
+    /// Saves user profile data to UserDefaults to share it with notification center widget-extension
+    private func saveSharedData(image: UIImage) {
         let userDefaults = UserDefaults(suiteName: "group.severenity.DataSharing")
-        userDefaults?.set(data, forKey: "profileData")
+        if let userName = User.current.name {
+            userDefaults?.set(userName, forKey: "userName")
+        } else {
+            userDefaults?.set("", forKey: "userName")
+        }
         let pictureData = UIImagePNGRepresentation(image)
         userDefaults?.set(pictureData, forKey: "profilePicture")
         userDefaults?.synchronize()
-        Log.info(message: "FB profile info saved to UserDefaults", sender: self)
+        Log.info(message: "User profile info saved to UserDefaults", sender: self)
     }
 }

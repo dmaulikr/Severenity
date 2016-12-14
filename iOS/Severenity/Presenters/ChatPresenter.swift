@@ -34,9 +34,9 @@ class ChatPresenter: NSObject {
 
 extension ChatPresenter: ChatInteractorDelegate {
     
-    func newMessageDidArrive(with dictionary: Dictionary<String,String>) {
+    func newMessageDidArriveWith(dictionary: Dictionary<String,String>) {
         Log.info(message: "ChatPresenter is called from ChatInteractor with message: \(dictionary)", sender: self)
-        delegate?.displayNewMessage(with: dictionary)
+        delegate?.displayNewMessageWith(dictionary: dictionary)
     }
     
 }

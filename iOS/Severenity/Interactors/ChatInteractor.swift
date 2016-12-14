@@ -38,7 +38,7 @@ class ChatInteractor: NSObject {
     }
     
     func recieveChatMessage(with dictionary: Dictionary<String,String>) {
-        Log.info(message: "message recieved: \(dictionary)", sender: self)
-        delegate?.newMessageDidArrive(with: dictionary)
+        Log.info(message: "Message recieved: \(dictionary)", sender: self)
+        delegate?.newMessageDidArriveWith(dictionary: dictionary)
     }
 }

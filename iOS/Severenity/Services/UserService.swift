@@ -22,7 +22,7 @@ class UserService: NSObject {
     
     // MARK: Authorizing user
     
-    func authorizeUserWith(userId: String) {
+    func authorizeUserWith(userId: String, completion: @escaping (_ result: Bool) -> Void) {
         Alamofire.request(kUsersURL, method: .post, parameters: ["userId":userId]).responseJSON { response in
             guard let responseResult = response.result.value as? [String: Any], let authResult = responseResult["result"] as? String else {
                     Log.error(message: "Response does not contain data", sender: self)
@@ -32,15 +32,19 @@ class UserService: NSObject {
                 case "success":
                     Log.info(message: "User authorization result: success", sender: self)
                     self.setCurrentUserWith(data: responseResult)
+                    completion(true)
                 case "continue":
                     Log.info(message: "User authorization result: continue", sender: self)
                     if let authReason = responseResult["reason"] as? Int, authReason == 1 {
                         self.createUserWith(userId: userId)
                     }
+                    completion(true)
                 case "error":
                     Log.error(message: "User authorization result: error", sender: self)
+                    completion(false)
             default:
                 Log.error(message: "Unknown user authorization result", sender: self)
+                completion(false)
             }
         }
     }

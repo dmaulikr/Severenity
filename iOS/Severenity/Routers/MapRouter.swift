@@ -10,11 +10,11 @@ import UIKit
 import CoreLocation
 
 protocol MapPresenterDelegate: class {
-    func addNewPlaceToMap(with data: Dictionary<String,Any>)
-    func addNewPlayerToMap(with image: UIImage, and coordinates: CLLocationCoordinate2D, and info: Dictionary<String,String>)
+    func addPlaceToMapWith(dictionary: Dictionary<String,Any>)
+    func addPlayerToMapWith(image: UIImage, coordinates: CLLocationCoordinate2D, info: Dictionary<String,String>)
 }
 
 protocol MapInteractorDelegate: class {
-    func displayPlace(with data: Dictionary<String,Any>)
-    func displayPlayer(with picture: UIImage, and coordinates: CLLocationCoordinate2D, and info: Dictionary<String,String>)
+    func displayPlaceWith(dictionary: Dictionary<String,Any>)
+    func displayPlayerWith(picture: UIImage, coordinates: CLLocationCoordinate2D, info: Dictionary<String,String>)
 }

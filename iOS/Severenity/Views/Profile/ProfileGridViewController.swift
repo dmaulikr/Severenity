@@ -58,7 +58,7 @@ class ProfileGridViewController: UICollectionViewController {
 
 extension ProfileGridViewController: ProfileGridPresenterDelegate {
     
-    func profileGridPresenterDidCallView(withData data: [String]) {
+    func profileGridPresenterDidCallViewWith(data: [String]) {
         Log.info(message: "ProfileGridPresenter did call ProfileGridViewController", sender: self)
     }
     

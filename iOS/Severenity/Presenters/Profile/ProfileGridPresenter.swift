@@ -36,9 +36,9 @@ class ProfileGridPresenter: NSObject {
 // MARK: ProfileGridInteracor delegate
 
 extension ProfileGridPresenter: ProfileGridInteractorDelegate {
-    
-    func profileGridInteractorDidCallPresenter(withData data: Array<Dictionary<String, AnyObject>>) {
+
+    func profileGridInteractorDidCallPresenterWith(data: Array<Dictionary<String, AnyObject>>) {
         Log.info(message: "ProfileGridInteractor did call ProfileGridPresenter", sender: self)
-        delegate?.profileGridPresenterDidCallView(withData: dataForTheView)
+        delegate?.profileGridPresenterDidCallViewWith(data: dataForTheView)
     }
 }

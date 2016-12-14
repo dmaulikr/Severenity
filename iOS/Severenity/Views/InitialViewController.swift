@@ -56,31 +56,25 @@ extension InitialViewController: LoginButtonDelegate {
             Log.info(message: "Facebook login did complete with result: \(result)", sender: self)
             return
         }
-        Log.info(message: "Facebook access token: \n AppID: \(accessToken.appID) \n userID: \(accessToken.userID) \n token: \(accessToken.tokenString) \n", sender: self)
-        
-        
-
-        
-        
-        UserService.sharedInstance.authorizeUserWith(userId: accessToken.userID)
-
-        
-        
-        
-        
-        view.backgroundColor = UIColor.white
         loginButton.isHidden = true
-        startActivityIndicator(view: view)
-        
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "loggedInController")
-            _ = navigationController?.popViewController(animated: true)
-            appDelegate.window?.rootViewController = vc
-        }
-        
-        stopActivityIndicator(view: view)
-        presenter?.initialViewEvent()
+        presenter?.facebookLoginDidCompleteWith(userId: accessToken.userID, completion: { success in
+            if success {
+                Log.info(message: "Facebook access token: \n AppID: \(accessToken.appID) \n userID: \(accessToken.userID) \n token: \(accessToken.tokenString) \n", sender: self)
+                if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let vc = storyboard.instantiateViewController(withIdentifier: "loggedInController")
+                    _ = self.navigationController?.popViewController(animated: true)
+                    appDelegate.window?.rootViewController = vc
+                }
+            } else {
+                let authErrorAlertController = UIAlertController(title: "Hello dear user!", message: kAuthError, preferredStyle: .alert)
+                let defaultAction = UIAlertAction.init(title: "Ok", style: .default, handler: { action in
+                    exit(0)
+                })
+                authErrorAlertController.addAction(defaultAction)
+                self.present(authErrorAlertController, animated: true, completion: nil)
+            }
+        })
     }
     
     func loginButtonDidLogOut(_ loginButton: LoginButton) {

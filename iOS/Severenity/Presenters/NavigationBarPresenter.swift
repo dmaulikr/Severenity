@@ -27,6 +27,10 @@ class NavigationBarPresenter: NSObject {
         Log.info(message: "User interacted with NavigationBarController. NavigationBarPresenter responds.", sender: self)
         interactor?.navigationBarPresenterNeedsData()
     }
+    
+    func userDataLoaded() {
+        interactor?.saveUserData()
+    }
 
 }
 
@@ -35,8 +39,8 @@ class NavigationBarPresenter: NSObject {
 
 extension NavigationBarPresenter: NavigationBarInteractorDelegate {
     
-    func navigationBarInteractorDidCallPresenter(with picture: UIImage, and info: Dictionary<String,String>) {
+    func navigationBarInteractorDidCallPresenterWithProfile(picture: UIImage) {
         Log.info(message: "NavigationBarPresenter is called from NavigationBarInteractor", sender: self)
-        delegate?.navigationBarPresenterDidCallView(with: picture, and: info)
+        delegate?.navigationBarPresenterDidCallViewWithProfile(picture: picture)
     }
 }

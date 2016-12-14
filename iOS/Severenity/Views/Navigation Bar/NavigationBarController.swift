@@ -46,16 +46,19 @@ class NavigationBarController: UINavigationController {
 
 extension NavigationBarController: NavigationBarPresenterDelegate {
 
-    func navigationBarPresenterDidCallView(with picture: UIImage, and info: Dictionary<String,String>) {
+    func navigationBarPresenterDidCallViewWithProfile(picture: UIImage) {
         Log.info(message: "NavigationBarPresenter did call NavigationBarViewController", sender: self)
-        
         if navBarView == nil, let viewForNavBar = NavigationBarView.loadFromNibNamed(nibNamed: "NavigationBarView") as? NavigationBarView {
             viewForNavBar.userPicture.image = picture.roundedImageWithBorder(with: 4, and: #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1))
-            viewForNavBar.userName.text = info["name"]
+            viewForNavBar.userName.text = User.current.name ?? ""
+            if let level = User.current.profile?["level"] {
+                viewForNavBar.levelLabel.text = "Level: \(level)"
+            }
             navBarView = viewForNavBar
             stopActivityIndicator(view: navigationBar)
             navigationBar.addSubview(navBarView)
             navBarView.settingsButton.addTarget(self, action: #selector(settingsButtonTouch), for: UIControlEvents.touchUpInside)
+            presenter?.userDataLoaded()
         }
     }
     

@@ -45,7 +45,7 @@ class ProfileListInteractor: NSObject {
         locationsServerManager.provideData { (result) in
             if let places = result as? Array<Dictionary<String, AnyObject>> {
                 self.placesData = places as [AnyObject]
-                self.delegate?.profileListInteractorDidCallPresenter(withData: places)
+                self.delegate?.profileListInteractorDidCallPresenterWith(data: places)
             }
         }
     }

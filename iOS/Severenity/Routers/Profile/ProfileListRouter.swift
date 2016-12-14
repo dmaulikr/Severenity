@@ -9,9 +9,9 @@
 import UIKit
 
 protocol ProfileListPresenterDelegate: class {
-    func profileListPresenterDidCallView(withData data: [String])
+    func profileListPresenterDidCallViewWith(data: [String])
 }
 
 protocol ProfileListInteractorDelegate: class {
-    func profileListInteractorDidCallPresenter(withData data: Array<Dictionary<String, AnyObject>>)
+    func profileListInteractorDidCallPresenterWith(data: Array<Dictionary<String, AnyObject>>)
 }

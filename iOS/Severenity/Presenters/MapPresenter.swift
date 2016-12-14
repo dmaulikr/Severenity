@@ -44,13 +44,13 @@ class MapPresenter: NSObject {
 
 extension MapPresenter: MapInteractorDelegate {
     
-    func displayPlace(with data: Dictionary<String,Any>) {
-        Log.info(message: "MapPresenter is called from MapInteractor with data: \(data)", sender: self)
-        delegate?.addNewPlaceToMap(with: data)
+    func displayPlaceWith(dictionary: Dictionary<String,Any>) {
+        Log.info(message: "MapPresenter is called from MapInteractor with data: \(dictionary)", sender: self)
+        delegate?.addPlaceToMapWith(dictionary: dictionary)
     }
     
-    func displayPlayer(with picture: UIImage, and coordinates: CLLocationCoordinate2D, and info: Dictionary<String,String>) {
-        delegate?.addNewPlayerToMap(with: picture, and: coordinates, and: info)
+    func displayPlayerWith(picture: UIImage, coordinates: CLLocationCoordinate2D, info: Dictionary<String,String>) {
+        delegate?.addPlayerToMapWith(image: picture, coordinates: coordinates, info: info)
     }
     
 }

@@ -42,13 +42,12 @@ extension TodayViewController {
     /// Loads FB profile data from UserDefaults shared by containing application
     func retrieveSharedData() {
         let userDefaults = UserDefaults(suiteName: "group.severenity.DataSharing")
-        if let data = userDefaults?.dictionary(forKey: "profileData"), let name = data["name"] as? String,
-            let imageData = userDefaults?.object(forKey: "profilePicture") as? Data {
+        if let name = userDefaults?.string(forKey: "userName"), let imageData = userDefaults?.object(forKey: "profilePicture") as? Data {
             nameLabel.text = name
             if nameLabel.text == "Oleg Novosad" {
                 levelLabel.text = levelLabel.text?.appending("100501. Father of Severenity. God of software development. Has infinite powers.")
             } else {
-                levelLabel.text = levelLabel.text?.appending("1. Unknown hero.")
+                levelLabel.text = levelLabel.text?.appending("1. Young hero.")
             }
             profilePicture.image = UIImage(data: imageData)?.roundedImageWithBorder(with: 4, and: #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1))
         }

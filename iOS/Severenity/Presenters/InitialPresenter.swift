@@ -23,9 +23,15 @@ class InitialPresenter: NSObject {
     
     // MARK: InitialViewController events
     
-    func initialViewEvent() {
-        Log.info(message: "User interacted with InitialViewController. InitialPresenter responds.", sender: self)
-        interactor?.initialPresenterEvent()
+    func facebookLoginDidCompleteWith(userId: String, completion: @escaping (_ success: Bool) -> Void) {
+        Log.info(message: "User did login in InitialViewController. InitialPresenter responds.", sender: self)
+        interactor?.authorizeUserWith(userId: userId, completion: { success in
+            if success {
+                completion(true)
+            } else {
+                completion(true)
+            }
+        })
     }
     
 }

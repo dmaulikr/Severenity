@@ -18,6 +18,7 @@ let kCreateUserURL = kServerURL + "/users/create"
 // MARK: Alerts
 
 let kNeedsLocationServicesAccess = "Unfortunately Severenity needs access to location services to continue. Please turn it manually in Settings and come back. App will now exit"
+let kAuthError = "Sorry, you cannot be authorized now. Try again later."
 
 // MARK: VIPER Interactors
 

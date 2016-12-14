@@ -76,15 +76,15 @@ class MapViewController: UIViewController {
 
 extension MapViewController: MapPresenterDelegate {
     
-    func addNewPlaceToMap(with data: Dictionary<String,Any>) {
-        Log.info(message: "MapPresenter did call MapViewController with data: \(data)", sender: self)
+    func addPlaceToMapWith(dictionary: Dictionary<String,Any>) {
+        Log.info(message: "MapPresenter did call MapViewController with data: \(dictionary)", sender: self)
         let marker = GMSMarker()
-        if let lat = data["lat"] as? Double, let lng = data["lng"] as? Double {
+        if let lat = dictionary["lat"] as? Double, let lng = dictionary["lng"] as? Double {
             marker.position = CLLocationCoordinate2DMake(lat, lng)
         }
-        marker.title = data["name"] as? String
+        marker.title = dictionary["name"] as? String
         marker.map = mapView
-        if let placeId = data["placeId"] as? String {
+        if let placeId = dictionary["placeId"] as? String {
             markers[placeId] = marker
         }
         Log.info(message: "New place marker added to the map", sender: self)
@@ -92,7 +92,7 @@ extension MapViewController: MapPresenterDelegate {
         showAllMarkersOnMap()
     }
     
-    func addNewPlayerToMap(with image: UIImage, and coordinates: CLLocationCoordinate2D, and info: Dictionary<String,String>) {
+    func addPlayerToMapWith(image: UIImage, coordinates: CLLocationCoordinate2D, info: Dictionary<String,String>) {
         guard let userID = info["id"], let userName = info["name"] else {
             Log.error(message: "Cannot add player marker to map with recieved info", sender: self)
             return

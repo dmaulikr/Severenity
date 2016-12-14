@@ -19,10 +19,18 @@ class InitialInteractor: NSObject {
         WireFrame.sharedInstance.viperInteractors[kInitialInteractor] = self
     }
     
-    // MARK: TabBarPresetner events
+    // MARK: InitialPresetner events
     
-    func initialPresenterEvent() {
-        Log.info(message: "InitialInteractor was called from InitialPresenter", sender: self)
-        delegate?.initialInteractorDidCallPresenter()
+    func authorizeUserWith(userId: String, completion: @escaping (_ success: Bool) -> Void) {
+        Log.info(message: "InitialInteractor was called from InitialPresenter to authorize user", sender: self)
+        UserService.sharedInstance.authorizeUserWith(userId: userId) { success in
+            if success {
+                completion(true)
+            } else {
+                completion(false)
+            }
+            
+        }
     }
+    
 }

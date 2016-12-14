@@ -80,7 +80,7 @@ class ProfileListViewController: UITableViewController {
 
 extension ProfileListViewController: ProfileListPresenterDelegate {
     
-    func profileListPresenterDidCallView(withData data: [String]) {
+    func profileListPresenterDidCallViewWith(data: [String]) {
         Log.info(message: "ProfileListPresenter did call ProfileListViewController", sender: self)
         dataForList = data
         tableView.reloadData()

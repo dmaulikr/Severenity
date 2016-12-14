@@ -40,15 +40,14 @@ class ProfileListPresenter: NSObject {
 
 extension ProfileListPresenter: ProfileListInteractorDelegate {
     
-    func profileListInteractorDidCallPresenter(withData data: Array<Dictionary<String, AnyObject>>) {
+    func profileListInteractorDidCallPresenterWith(data: Array<Dictionary<String, AnyObject>>) {
         Log.info(message: "ProfileListInteracor did call ProfileListPresenter", sender: self)
         for element in data {
             if let name = element["name"] as? String {
                 dataForTheView.append(name)
             }
         }
-        
-        delegate?.profileListPresenterDidCallView(withData: dataForTheView)
+        delegate?.profileListPresenterDidCallViewWith(data: dataForTheView)
     }
     
 }

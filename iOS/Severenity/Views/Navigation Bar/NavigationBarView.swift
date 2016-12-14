@@ -14,5 +14,6 @@ class NavigationBarView: UIView {
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var settingsButton: UIButton!
     @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var levelLabel: UILabel!
     
 }

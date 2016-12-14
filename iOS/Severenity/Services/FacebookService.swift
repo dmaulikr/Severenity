@@ -29,7 +29,6 @@ class FacebookService: NSObject {
     
     private override init() {
         super.init()
-        
         if let fbUserID = FBSDKAccessToken.current().userID {
             accessTokenUserID = fbUserID
         }

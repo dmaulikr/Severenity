@@ -9,9 +9,9 @@
 import UIKit
 
 protocol NavigationBarPresenterDelegate: class {
-    func navigationBarPresenterDidCallView(with picture: UIImage, and info: Dictionary<String,String>)
+    func navigationBarPresenterDidCallViewWithProfile(picture: UIImage)
 }
 
 protocol NavigationBarInteractorDelegate: class {
-    func navigationBarInteractorDidCallPresenter(with picture: UIImage, and info: Dictionary<String,String>)
+    func navigationBarInteractorDidCallPresenterWithProfile(picture: UIImage)
 }

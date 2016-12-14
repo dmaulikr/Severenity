@@ -25,7 +25,7 @@ class MapInteractor: NSObject {
     func profileListViewEvent(with data: AnyObject) {
         Log.info(message: "MapInteractor event happened from ProfileListView with data: \(data)", sender: self)
         if let recievedData = data as? Dictionary<String,Any> {
-            delegate?.displayPlace(with: recievedData)
+            delegate?.displayPlaceWith(dictionary: recievedData)
         }
     }
     
@@ -42,7 +42,7 @@ class MapInteractor: NSObject {
             let fbUserID = dictionary["id"] as? String {
             FacebookService.sharedInstance.getFBProfilePicture(for: fbUserID, size: .normal) { (image) in
                     FacebookService.sharedInstance.getFBProfileInfo(with: fbUserID, and: { (info) in
-                        self.delegate?.displayPlayer(with: image, and: CLLocationCoordinate2DMake(lat, lng), and: info)
+                        self.delegate?.displayPlayerWith(picture: image, coordinates: CLLocationCoordinate2DMake(lat, lng), info: info)
                     })
             }
         }

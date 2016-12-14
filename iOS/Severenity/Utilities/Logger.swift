@@ -12,7 +12,7 @@ class Log: NSObject {
     
     /// Logs info message
     class func info(message: String, sender: Any, detailed: Bool = false) {
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .background).sync {
             let log = Regex.check(text: message, with: [kEmailRegexPattern])
             var logContent = ""
             if detailed {
@@ -32,7 +32,7 @@ class Log: NSObject {
     
     /// Logs error message
     class func error(message: String, sender: Any, detailed: Bool = false) {
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.global(qos: .background).sync {
             let log = Regex.check(text: message, with: [kEmailRegexPattern])
             var logContent = ""
             if detailed {
