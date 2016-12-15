@@ -140,7 +140,7 @@ extension MapViewController: MapPresenterDelegate {
     }
 }
 
-// MARK: GMSMapViewDelegate
+// MARK: GMSMapView delegate
 
 extension MapViewController: GMSMapViewDelegate {
     

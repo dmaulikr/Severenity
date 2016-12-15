@@ -76,6 +76,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if (fbToken != nil) {
             window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "loggedInController")
+            UserService.sharedInstance.authorizeUserWith(userId: (fbToken?.userID)!) { success in
+                Log.info(message: "User session restored", sender: self)
+            }
         } else {
             window?.rootViewController = storyboard.instantiateViewController(withIdentifier: "loginController")
         }
