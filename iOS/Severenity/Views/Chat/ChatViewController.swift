@@ -37,10 +37,8 @@ class ChatViewController: UIViewController {
         messagesTableView.backgroundColor = UIColor.black
         messagesTableView.separatorColor = UIColor.clear
         newMessageTextField.delegate = self
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
         Log.info(message: "Chat tab did load", sender: self);
     }
     

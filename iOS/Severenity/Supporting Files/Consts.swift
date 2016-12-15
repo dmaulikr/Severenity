@@ -45,3 +45,15 @@ let kDocumentDirPath = FileManager.default.urls(for: .documentDirectory, in: .us
 // MARK: Regex patterns
 
 let kEmailRegexPattern = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
+
+// MARK: Place icons
+
+enum PlaceType: Int {
+    case def
+    case money
+    case implantRecovery
+    case implantRepair
+    case implantIncrease
+    case energyIncrease
+    case immunityIncrease
+}

@@ -31,7 +31,6 @@ class MapViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Log.info(message: "Map tab did load", sender: self)
-        
         locationManager.requestWhenInUseAuthorization()
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
@@ -52,7 +51,8 @@ class MapViewController: UIViewController {
             if let currentLatitude = locationManager.location?.coordinate.latitude, let currentLongitude = locationManager.location?.coordinate.longitude {
                 mapView.moveCamera(GMSCameraUpdate.setCamera(GMSCameraPosition.camera(withLatitude: currentLatitude,
                                                                                       longitude: currentLongitude,
-                                                                                      zoom: 4)))
+                                                                                      zoom: 19)))
+                presenter?.readyToLoadPlacesNearLocation(lng: currentLongitude, lat: currentLatitude)
             }
         }
     }
@@ -69,6 +69,27 @@ class MapViewController: UIViewController {
         }
         mapView.animate(with: GMSCameraUpdate.fit(bounds, with: UIEdgeInsetsMake(50, 50, 50, 50)))
     }
+    
+    internal func iconForPlace(type: PlaceType) -> UIImage? {
+        var icon: UIImage?
+        switch type {
+        case .def:
+            icon = #imageLiteral(resourceName: "place_experience_violet.png")
+        case .money:
+            icon = #imageLiteral(resourceName: "place_money_violet.png")
+        case .implantRecovery:
+            icon = #imageLiteral(resourceName: "place_implant_recovery_violet.png")
+        case .implantRepair:
+            icon = #imageLiteral(resourceName: "place_implant_repair_violet.png")
+        case .implantIncrease:
+            icon = #imageLiteral(resourceName: "place_implant_increase_violet.png")
+        case .energyIncrease:
+            icon = #imageLiteral(resourceName: "place_energy_increase_violet.png")
+        case .immunityIncrease:
+            icon = #imageLiteral(resourceName: "place_immunity_increase_violet.png")
+        }
+        return icon
+    }
 
 }
 
@@ -83,13 +104,16 @@ extension MapViewController: MapPresenterDelegate {
             marker.position = CLLocationCoordinate2DMake(lat, lng)
         }
         marker.title = dictionary["name"] as? String
+        if let placeType = dictionary["type"] as? Int {
+            marker.icon = iconForPlace(type: PlaceType(rawValue: placeType)!)
+        }
         marker.map = mapView
         if let placeId = dictionary["placeId"] as? String {
             markers[placeId] = marker
         }
         Log.info(message: "New place marker added to the map", sender: self)
         tabBarController?.selectedIndex = 2
-        showAllMarkersOnMap()
+        //showAllMarkersOnMap()
     }
     
     func addPlayerToMapWith(image: UIImage, coordinates: CLLocationCoordinate2D, info: Dictionary<String,String>) {
@@ -98,7 +122,7 @@ extension MapViewController: MapPresenterDelegate {
             return
         }
         var customImage = image.roundedImageWithBorder(with: 5, and: #colorLiteral(red: 0.5176470588, green: 0.3411764706, blue: 0.6, alpha: 1))
-        customImage = customImage?.imageResize(sizeChange: CGSize.init(width: 45, height: 45))
+        customImage = customImage?.imageResize(sizeChange: CGSize(width: 45, height: 45))
         if markers[userID] != nil {
             markers[userID]?.icon = customImage
             markers[userID]?.position = coordinates
@@ -123,7 +147,7 @@ extension MapViewController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         mapView.moveCamera(GMSCameraUpdate.setCamera(GMSCameraPosition.camera(withLatitude: marker.position.latitude,
                                                                               longitude: marker.position.longitude,
-                                                                              zoom: 18)))
+                                                                              zoom: 19)))
         mapView.selectedMarker = marker
         return true
     }

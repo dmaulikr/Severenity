@@ -56,6 +56,13 @@
 		12D9D9A21DFF067E0088A93B /* InitialRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9D9A11DFF067E0088A93B /* InitialRouter.swift */; };
 		12D9D9A41DFF06D70088A93B /* InitialInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9D9A31DFF06D70088A93B /* InitialInteractor.swift */; };
 		12D9D9A61DFF07480088A93B /* InitialPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12D9D9A51DFF07480088A93B /* InitialPresenter.swift */; };
+		12ED7D4E1E02C84E00C774EB /* place_energy_increase_violet.png in Resources */ = {isa = PBXBuildFile; fileRef = 12ED7D471E02C84E00C774EB /* place_energy_increase_violet.png */; };
+		12ED7D4F1E02C84E00C774EB /* place_experience_violet.png in Resources */ = {isa = PBXBuildFile; fileRef = 12ED7D481E02C84E00C774EB /* place_experience_violet.png */; };
+		12ED7D501E02C84E00C774EB /* place_immunity_increase_violet.png in Resources */ = {isa = PBXBuildFile; fileRef = 12ED7D491E02C84E00C774EB /* place_immunity_increase_violet.png */; };
+		12ED7D511E02C84E00C774EB /* place_implant_increase_violet.png in Resources */ = {isa = PBXBuildFile; fileRef = 12ED7D4A1E02C84E00C774EB /* place_implant_increase_violet.png */; };
+		12ED7D521E02C84E00C774EB /* place_implant_recovery_violet.png in Resources */ = {isa = PBXBuildFile; fileRef = 12ED7D4B1E02C84E00C774EB /* place_implant_recovery_violet.png */; };
+		12ED7D531E02C84E00C774EB /* place_implant_repair_violet.png in Resources */ = {isa = PBXBuildFile; fileRef = 12ED7D4C1E02C84E00C774EB /* place_implant_repair_violet.png */; };
+		12ED7D541E02C84E00C774EB /* place_money_violet.png in Resources */ = {isa = PBXBuildFile; fileRef = 12ED7D4D1E02C84E00C774EB /* place_money_violet.png */; };
 		12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */; };
 		12EE6B011DB7AB3000FFC567 /* ShopInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */; };
 		12EE6B071DB7AD0B00FFC567 /* ShopRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */; };
@@ -213,6 +220,13 @@
 		12D9D9A11DFF067E0088A93B /* InitialRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialRouter.swift; sourceTree = "<group>"; };
 		12D9D9A31DFF06D70088A93B /* InitialInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialInteractor.swift; sourceTree = "<group>"; };
 		12D9D9A51DFF07480088A93B /* InitialPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialPresenter.swift; sourceTree = "<group>"; };
+		12ED7D471E02C84E00C774EB /* place_energy_increase_violet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = place_energy_increase_violet.png; path = Places/place_energy_increase_violet.png; sourceTree = "<group>"; };
+		12ED7D481E02C84E00C774EB /* place_experience_violet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = place_experience_violet.png; path = Places/place_experience_violet.png; sourceTree = "<group>"; };
+		12ED7D491E02C84E00C774EB /* place_immunity_increase_violet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = place_immunity_increase_violet.png; path = Places/place_immunity_increase_violet.png; sourceTree = "<group>"; };
+		12ED7D4A1E02C84E00C774EB /* place_implant_increase_violet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = place_implant_increase_violet.png; path = Places/place_implant_increase_violet.png; sourceTree = "<group>"; };
+		12ED7D4B1E02C84E00C774EB /* place_implant_recovery_violet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = place_implant_recovery_violet.png; path = Places/place_implant_recovery_violet.png; sourceTree = "<group>"; };
+		12ED7D4C1E02C84E00C774EB /* place_implant_repair_violet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = place_implant_repair_violet.png; path = Places/place_implant_repair_violet.png; sourceTree = "<group>"; };
+		12ED7D4D1E02C84E00C774EB /* place_money_violet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = place_money_violet.png; path = Places/place_money_violet.png; sourceTree = "<group>"; };
 		12EE6AFE1DB7AB1100FFC567 /* ShopPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopPresenter.swift; sourceTree = "<group>"; };
 		12EE6B001DB7AB3000FFC567 /* ShopInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopInteractor.swift; sourceTree = "<group>"; };
 		12EE6B061DB7AD0B00FFC567 /* ShopRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopRouter.swift; sourceTree = "<group>"; };
@@ -314,6 +328,7 @@
 		121A654C1DC386F300A6C6B9 /* Graphical Resources */ = {
 			isa = PBXGroup;
 			children = (
+				12ED7D461E02C80800C774EB /* Places */,
 				12C1858A1DEDA1390053A7CF /* settings.png */,
 				52787BE61D86AA35009D17F5 /* Assets.xcassets */,
 				12698F101DC7856F000F4601 /* starting_background@2x.jpg */,
@@ -368,6 +383,20 @@
 			);
 			name = Settings;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		12ED7D461E02C80800C774EB /* Places */ = {
+			isa = PBXGroup;
+			children = (
+				12ED7D471E02C84E00C774EB /* place_energy_increase_violet.png */,
+				12ED7D481E02C84E00C774EB /* place_experience_violet.png */,
+				12ED7D491E02C84E00C774EB /* place_immunity_increase_violet.png */,
+				12ED7D4A1E02C84E00C774EB /* place_implant_increase_violet.png */,
+				12ED7D4B1E02C84E00C774EB /* place_implant_recovery_violet.png */,
+				12ED7D4C1E02C84E00C774EB /* place_implant_repair_violet.png */,
+				12ED7D4D1E02C84E00C774EB /* place_money_violet.png */,
+			);
+			name = Places;
 			sourceTree = "<group>";
 		};
 		12EE6B0B1DB7B2DE00FFC567 /* Presenters */ = {
@@ -814,9 +843,13 @@
 			files = (
 				52ED3BBB1DC4DF7A00BE2B50 /* menu_quests_selected.png in Resources */,
 				121A65581DC38FBF00A6C6B9 /* LaunchScreen.storyboard in Resources */,
+				12ED7D501E02C84E00C774EB /* place_immunity_increase_violet.png in Resources */,
 				52ED3BB91DC4DF7A00BE2B50 /* menu_profile_selected.png in Resources */,
 				52ED3BB51DC4DF7A00BE2B50 /* menu_chat_selected.png in Resources */,
 				52ED3BBC1DC4DF7A00BE2B50 /* menu_quests.png in Resources */,
+				12ED7D4F1E02C84E00C774EB /* place_experience_violet.png in Resources */,
+				12ED7D541E02C84E00C774EB /* place_money_violet.png in Resources */,
+				12ED7D521E02C84E00C774EB /* place_implant_recovery_violet.png in Resources */,
 				12698F111DC7856F000F4601 /* starting_background@2x.jpg in Resources */,
 				121D55421DC76AC900294742 /* MessageInView.xib in Resources */,
 				52ED3BB71DC4DF7A00BE2B50 /* menu_map_selected.png in Resources */,
@@ -830,13 +863,16 @@
 				52ED3BBA1DC4DF7A00BE2B50 /* menu_profile.png in Resources */,
 				52ED3BBE1DC4DF7A00BE2B50 /* menu_shop.png in Resources */,
 				52BD55AC1DC3F06B0044666E /* NavigationBarView.xib in Resources */,
+				12ED7D511E02C84E00C774EB /* place_implant_increase_violet.png in Resources */,
 				52787BE71D86AA35009D17F5 /* Assets.xcassets in Resources */,
 				12C185901DEDA2720053A7CF /* SettingsView.xib in Resources */,
+				12ED7D4E1E02C84E00C774EB /* place_energy_increase_violet.png in Resources */,
 				7E0F9D151D96524F0038D11D /* DeepSpace.png in Resources */,
 				7E0F9D121D964C440038D11D /* facebook_login.png in Resources */,
 				52ED3BB61DC4DF7A00BE2B50 /* menu_chat.png in Resources */,
 				121A65671DC38FF900A6C6B9 /* ProfileGridCell.xib in Resources */,
 				52ED3BBD1DC4DF7A00BE2B50 /* menu_shop_selected.png in Resources */,
+				12ED7D531E02C84E00C774EB /* place_implant_repair_violet.png in Resources */,
 				52ED3BB31DC4DF7A00BE2B50 /* icon_send_message_violet.png in Resources */,
 				52ED3BB81DC4DF7A00BE2B50 /* menu_map.png in Resources */,
 			);

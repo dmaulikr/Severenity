@@ -38,6 +38,10 @@ class MapPresenter: NSObject {
         interactor?.processUserLocationUpdate(with: currentLocationDictionary)
     }
     
+    func readyToLoadPlacesNearLocation(lng: Double, lat: Double) {
+        interactor?.getPlacesNearCoordinates(lng: lng, lat: lat)
+    }
+    
 }
 
 // MARK: MapInteractor delegate

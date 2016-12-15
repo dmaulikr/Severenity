@@ -39,7 +39,7 @@ class SocketService: NSObject {
     func addSocketHandlers() {
         socket.on("location") { (data, ack) in
             Log.info(message: "socket 'location' recieved with data: \(data)", sender: self)
-            let selector = #selector(MapInteractor.processNewPlayerLocation(with:))
+            let selector = #selector(MapInteractor.processNewPlayerLocationWith(dictionary:))
             let _ = WireFrame.sharedInstance.viperInteractors[kMapInteractor]?.perform(selector, with: data.first)
         }
         socket.on("chat message") { (data, ack) in
@@ -54,7 +54,7 @@ class SocketService: NSObject {
     func sendLocationToServer(with placeJSON: Dictionary<String,Any>) {
         socket.emit("location", placeJSON)
         Log.info(message: "socket message: \(placeJSON) was sent to server", sender: self)
-        let selector = #selector(MapInteractor.processNewPlayerLocation(with:))
+        let selector = #selector(MapInteractor.processNewPlayerLocationWith(dictionary:))
         let _ = WireFrame.sharedInstance.viperInteractors[kMapInteractor]?.perform(selector, with: placeJSON)
     }
     
