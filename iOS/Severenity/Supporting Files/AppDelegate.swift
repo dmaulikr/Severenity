@@ -93,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func getHealthKitData() {
         let today = Date()
         let calendar = Calendar.current
-        let startDate = calendar.date(byAdding: .day, value: -90, to: today)
+        let startDate = calendar.date(byAdding: .day, value: -90, to: today) // 90 (days) - depicts the period of time during which data from HealthKit will be retrieved
         
         var stepsCount = 0.0
         HealthService.sharedInstance.retrieveStepsCount(startDate: startDate!, endDate: today) { result in
