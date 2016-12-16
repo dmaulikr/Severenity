@@ -27,9 +27,11 @@ class NavigationBarInteractor: NSObject {
             Log.error(message: "Cannot get FB Token", sender: self)
             return
         }
-        FacebookService.sharedInstance.getFBProfilePicture(for: fbUserID, size: .normal, completion: { image in
-            self.delegate?.navigationBarInteractorDidCallPresenterWithProfile(picture: image)
-        })
+        UserService.sharedInstance.authorizeUserWith(userId: fbUserID) { success in
+            FacebookService.sharedInstance.getFBProfilePicture(for: fbUserID, size: .normal, completion: { image in
+                self.delegate?.navigationBarInteractorDidCallPresenterWithProfile(picture: image)
+            })
+        }
     }
     
     func saveUserData() {
