@@ -89,7 +89,6 @@ public class Utils {
     /**
      * Retrieves IMEI of the device.
      *
-     * @param context context for system service.
      * @return device's IMEI
      */
     public static String getDeviceId() {

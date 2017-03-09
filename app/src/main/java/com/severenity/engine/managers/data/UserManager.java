@@ -437,7 +437,7 @@ public class UserManager extends DataManager {
      */
     private void startDeviceRegistrationService(String userId) {
         Intent intent = new Intent(context, RegistrationIntentService.class);
-        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_ID, Utils.getDeviceId(context));
+        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_ID, Utils.getDeviceId());
         intent.putExtra(Constants.INTENT_EXTRA_DEVICE_NAME, Utils.getDeviceName());
         intent.putExtra(Constants.INTENT_EXTRA_USER_ID, userId);
         intent.putExtra(Constants.INTENT_EXTRA_REGISTRATION_ID, App.getCurrentFCMToken());
