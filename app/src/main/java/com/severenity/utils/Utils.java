@@ -39,6 +39,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Utility class contains a lot of helping methods.
@@ -91,9 +92,8 @@ public class Utils {
      * @param context context for system service.
      * @return device's IMEI
      */
-    public static String getDeviceId(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        return telephonyManager.getDeviceId();
+    public static String getDeviceId() {
+        return UUID.randomUUID().toString();
     }
 
     /**

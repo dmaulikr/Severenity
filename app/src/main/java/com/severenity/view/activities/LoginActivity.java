@@ -171,12 +171,9 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
 
-        int phoneState = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         int fineLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
 
-        result =
-                phoneState == PackageManager.PERMISSION_GRANTED &&
-                fineLocation == PackageManager.PERMISSION_GRANTED;
+        result = fineLocation == PackageManager.PERMISSION_GRANTED;
 
         return result;
     }
