@@ -679,12 +679,12 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         App.getQuestManager().onQuestAccepted(q);
                     }
                 });
-                notificationManager.cancel((int) q.getId());
+                notificationManager.cancel(0);
             }
 
             @Override
             public void onDecline() {
-                notificationManager.cancel((int) q.getId());
+                notificationManager.cancel(0);
             }
         });
     }

@@ -26,7 +26,7 @@ public class FCMListener extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage message) {
         Map<String, String> data = message.getData();
-        String type = data.get("type");
+        String type = data.get("notificationType");
         if (type == null) {
             Log.e(Constants.TAG, "'type' is missing in GCM message.");
             return;
@@ -46,52 +46,40 @@ public class FCMListener extends FirebaseMessagingService {
             case "quest":
                 Intent questIntent = new Intent(this, MainActivity.class);
                 questIntent.setAction(GCMManager.QUEST_RECEIVED);
-                String quest = data.get("quest");
 
-                if (quest == null) {
-                    Log.e(Constants.TAG, "'quest' object is missing in GCM message");
+                int questType = Integer.valueOf(data.get("type"));
+                String id = data.get("id");
+
+                if (App.getQuestManager().getQuestById(id) != null) {
                     return;
                 }
 
-                try {
-                    JSONObject questObj = new JSONObject(quest);
-                    int questType = questObj.getInt("type");
-                    long id = questObj.getLong("id");
+                questIntent.putExtra("id", id);
+                questIntent.putExtra("title", data.get("title"));
+                questIntent.putExtra("credits", Long.valueOf(data.get("credits")));
+                questIntent.putExtra("experience", Long.valueOf(data.get("experience")));
+                questIntent.putExtra("expirationTime", data.get("expirationDate"));
+                questIntent.putExtra("status", Quest.QuestStatus.Created.ordinal());
 
-                    if (App.getQuestManager().getQuestById(id) != null) {
-                        return;
-                    }
-
-                    questIntent.putExtra("id", id);
-                    questIntent.putExtra("title", questObj.getString("title"));
-                    questIntent.putExtra("credits", questObj.getLong("credits"));
-                    questIntent.putExtra("experience", questObj.getLong("experience"));
-                    questIntent.putExtra("expirationTime", questObj.getString("expirationDate"));
-                    questIntent.putExtra("status", Quest.QuestStatus.Created.ordinal());
-
-                    if (questType == Quest.QuestType.Distance.ordinal()) {
-                        questIntent.putExtra("type", Quest.QuestType.Distance.ordinal());
-                        questIntent.putExtra("distance", questObj.getInt("distance"));
-                    } else if (questType == Quest.QuestType.Capture.ordinal()) {
-                        questIntent.putExtra("type", Quest.QuestType.Capture.ordinal());
-                        questIntent.putExtra("placeType", questObj.getString("placeType"));
-                        questIntent.putExtra("placeTypeValue", questObj.getInt("placeTypeValue"));
-                    } else if (questType == Quest.QuestType.Collect.ordinal()) {
-                        questIntent.putExtra("type", Quest.QuestType.Collect.ordinal());
-                        questIntent.putExtra("characteristic", questObj.getString("characteristic"));
-                        questIntent.putExtra("characteristicAmount", questObj.getInt("characteristicAmount"));
-                    }
-
-                    App.getLocalBroadcastManager().sendBroadcast(questIntent);
-                    Utils.sendNotification(Constants.NOTIFICATION_MSG_NEW_QUEST, this, questIntent, (int) id);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (questType == Quest.QuestType.Distance.ordinal()) {
+                    questIntent.putExtra("type", Quest.QuestType.Distance.ordinal());
+                    questIntent.putExtra("distance", Integer.valueOf(data.get("distance")));
+                } else if (questType == Quest.QuestType.Capture.ordinal()) {
+                    questIntent.putExtra("type", Quest.QuestType.Capture.ordinal());
+                    questIntent.putExtra("placeType", data.get("placeType"));
+                    questIntent.putExtra("placeTypeValue", Integer.valueOf(data.get("placeTypeValue")));
+                } else if (questType == Quest.QuestType.Collect.ordinal()) {
+                    questIntent.putExtra("type", Quest.QuestType.Collect.ordinal());
+                    questIntent.putExtra("characteristic", data.get("characteristic"));
+                    questIntent.putExtra("characteristicAmount", Integer.valueOf(data.get("characteristicAmount")));
                 }
+
+                App.getLocalBroadcastManager().sendBroadcast(questIntent);
+                Utils.sendNotification(Constants.NOTIFICATION_MSG_NEW_QUEST, this, questIntent, 0);
 
                 break;
             default:
                 Log.e(Constants.TAG, "Unknown GCM message type received from the server.");
-                return;
         }
     }
 }

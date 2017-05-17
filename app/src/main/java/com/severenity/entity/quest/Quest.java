@@ -39,7 +39,7 @@ public class Quest extends BaseObservable {
     @Bindable
     private boolean isFinished;
 
-    private long id;
+    private String id;
 
     @Bindable
     private String title;
@@ -68,7 +68,7 @@ public class Quest extends BaseObservable {
 
     public Quest() {}
 
-    public Quest(long id, String title, String expirationTime, long experience, long credits, QuestStatus status, int progress) {
+    public Quest(String id, String title, String expirationTime, long experience, long credits, QuestStatus status, int progress) {
         setId(id);
         setTitle(title);
         setExperience(experience);
@@ -91,11 +91,11 @@ public class Quest extends BaseObservable {
         this.expirationTime = expirationTime;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

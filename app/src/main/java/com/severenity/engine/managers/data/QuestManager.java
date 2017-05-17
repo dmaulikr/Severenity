@@ -51,7 +51,12 @@ public class QuestManager extends DataManager {
         super(context);
     }
 
-    public void addQuests(ArrayList<Quest> quests) {
+    /**
+     * Adds list of quests to the database.
+     *
+     * @param quests - list of {@link Quest} objects to add.
+     */
+    private void addQuests(ArrayList<Quest> quests) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
 
@@ -68,18 +73,33 @@ public class QuestManager extends DataManager {
         }
     }
 
+    /**
+     * Deletes quest from the local database.
+     *
+     * @param quest - {@link Quest} object to delete.
+     */
     public void deleteQuest(Quest quest) {
         checkIfNull(quest);
 
         deleteQuestById(quest.getId());
     }
 
-    public void deleteQuestById(long id) {
+    /**
+     * Removes quest from the local database based on uuid.
+     *
+     * @param id - uuid of the quest
+     */
+    private void deleteQuestById(String id) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete(TABLE_QUESTS, "id = ?", new String[]{String.valueOf(id)});
         db.close();
     }
 
+    /**
+     * Creates {@link ContentValues} from {@link Quest} object.
+     * @param quest - {@link Quest} quest object to create values from.
+     * @return {@link ContentValues} instance.
+     */
     private ContentValues createValuesFrom(Quest quest) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_ID, quest.getId());
@@ -105,7 +125,13 @@ public class QuestManager extends DataManager {
         return values;
     }
 
-    public boolean addQuest(Quest quest) {
+    /**
+     * Adds quest to the database.
+     *
+     * @param quest - {@link Quest} object to add.
+     * @return true if added, false otherwise.
+     */
+    private boolean addQuest(Quest quest) {
         Quest q = getQuest(quest);
         if (q != null) {
             return false;
@@ -119,14 +145,19 @@ public class QuestManager extends DataManager {
         return success != -1;
     }
 
-
-    public Quest getQuestById(long id) {
+    /**
+     * Finds quest in the database depending on the id.
+     *
+     * @param id - id of the quest to find.
+     * @return {@link Quest} object if found, null otherwise.
+     */
+    public Quest getQuestById(String id) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query(
                 TABLE_QUESTS,
                 null,
-                "id = " + id,
+                "id = '" + id + "'",
                 null, null, null, null, null
         );
 
@@ -161,9 +192,15 @@ public class QuestManager extends DataManager {
         }
     }
 
+    /**
+     * Transforms cursor data to {@link Quest} object.
+     *
+     * @param cursor - cursor pointing to the row.
+     * @return {@link Quest} object created of the data.
+     */
     private Quest getQuestFromCursor(Cursor cursor) {
         Quest quest = new Quest();
-        quest.setId(cursor.getLong(cursor.getColumnIndex(COLUMN_ID)));
+        quest.setId(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
         quest.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
         quest.setType(Quest.QuestType.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_TYPE))]);
         quest.setStatus(Quest.QuestStatus.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS))]);
@@ -185,7 +222,7 @@ public class QuestManager extends DataManager {
      * @param quest - quest to find.
      * @return quest if found.
      */
-    public Quest getQuest(Quest quest) {
+    private Quest getQuest(Quest quest) {
         checkIfNull(quest);
 
         return getQuestById(quest.getId());
@@ -277,7 +314,7 @@ public class QuestManager extends DataManager {
      * @param questId - quest to update
      * @param status  - new {@link com.severenity.entity.quest.Quest.QuestStatus}. None < New < Progress < Finished.
      */
-    public void updateQuestStatusAndPopulate(long questId, int status) {
+    private void updateQuestStatusAndPopulate(String questId, int status) {
         Quest quest = getQuestById(questId);
 
         if (quest == null) {
@@ -292,7 +329,7 @@ public class QuestManager extends DataManager {
             if (status == 1 || status == 2) {
                 values.put(COLUMN_PROGRESS, 0);
             }
-            db.update(TABLE_QUESTS, values, "id = " + questId, null);
+            db.update(TABLE_QUESTS, values, "id = '" + questId + "'", null);
             db.close();
         } else {
             Log.e(Constants.TAG, "New quest status is incorrect for quest " + questId);
@@ -356,11 +393,11 @@ public class QuestManager extends DataManager {
      * @param questObj - JSON object to retrieve quest from.
      * @return {@link Quest} object.
      */
-    public Quest getQuestFromJSON(JSONObject questObj) {
+    private Quest getQuestFromJSON(JSONObject questObj) {
         Quest quest = new Quest();
         try {
             int questType = questObj.getInt("type");
-            long id = questObj.getLong("questId");
+            String id = questObj.getString("questId");
 
             Quest existingQuest = App.getQuestManager().getQuestById(id);
             if (existingQuest != null) {
@@ -402,7 +439,7 @@ public class QuestManager extends DataManager {
     /**
      * Deletes all quests from the local database.
      */
-    public void deleteQuests() {
+    private void deleteQuests() {
         try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
             db.delete(TABLE_QUESTS, null, null);
         } catch (SQLException e) {
@@ -443,7 +480,7 @@ public class QuestManager extends DataManager {
      * @param questId - quest to update.
      * @param value - new progress value to set.
      */
-    public void updateQuestProgressLocally(long questId, int value, int status) {
+    private void updateQuestProgressLocally(long questId, int value, int status) {
         try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
             ContentValues values = new ContentValues();
             values.put(COLUMN_PROGRESS, value);
@@ -452,7 +489,7 @@ public class QuestManager extends DataManager {
                     status == Quest.QuestStatus.Closed.ordinal()) {
                 values.put(COLUMN_EXPIRATION_TIME, "null");
             }
-            db.update(TABLE_QUESTS, values, "id = " + questId, null);
+            db.update(TABLE_QUESTS, values, "id = '" + questId + "'", null);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -469,7 +506,7 @@ public class QuestManager extends DataManager {
      *
      * @param userId - quests of this users will be retrieved.
      */
-    public void getQuestsFromServer(String userId) {
+    private void getQuestsFromServer(String userId) {
         App.getQuestManager().deleteQuests();
         String request = Constants.REST_API_USERS + "/" + userId + Constants.REST_API_QUESTS;
         App.getRestManager().createRequest(request, Request.Method.GET, null, new RequestCallback() {
@@ -515,7 +552,7 @@ public class QuestManager extends DataManager {
      * @param userId - id of the user which quest should be updated.
      * @param data - data to be sent together with quest update request for user.
      */
-    public void updateQuestWithData(String userId, JSONObject data) {
+    private void updateQuestWithData(String userId, JSONObject data) {
         String request = Constants.REST_API_USERS + "/" + userId + Constants.REST_API_QUESTS_UPDATE;
         App.getRestManager().createRequest(request, Request.Method.POST, data, new RequestCallback() {
             @Override
@@ -536,7 +573,7 @@ public class QuestManager extends DataManager {
                     switch (reason) {
                         case "accepted": {
                             int status = data.getInt("status");
-                            long questId = data.getLong("questId");
+                            String questId = data.getString("questId");
 
                             updateQuestStatusAndPopulate(questId, status);
                         } break;
@@ -582,7 +619,7 @@ public class QuestManager extends DataManager {
     public Quest getQuestFromIntent(Intent intent) {
         Quest quest = new Quest();
         Quest.QuestType type = Quest.QuestType.values()[intent.getIntExtra("type", 0)];
-        quest.setId(intent.getLongExtra("id", 0));
+        quest.setId(intent.getStringExtra("id"));
         quest.setType(type);
         quest.setTitle(intent.getStringExtra("title"));
         quest.setStatus(Quest.QuestStatus.values()[intent.getIntExtra("status", 0)]);

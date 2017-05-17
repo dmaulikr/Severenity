@@ -24,7 +24,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     // 4 - added place/owners tables
     // 5 - added recovery info table
     // 6 - added max implant hp column
-    // 7 - added team column into users tanle
+    // 7 - added team column into users table
     private static final int DB_VERSION = 7;
     private static final String DB_NAME = "Filter.db";
 
@@ -65,7 +65,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     private static final String DB_SQL_CREATE_QUESTS =
             "CREATE TABLE " + QuestContract.DBQuest.TABLE_QUESTS + " (" +
                     QuestContract.DBQuest._ID + INT_TYPE + " PRIMARY KEY," +
-                    QuestContract.DBQuest.COLUMN_ID + INT_TYPE + COMMA_SEP +
+                    QuestContract.DBQuest.COLUMN_ID + TEXT_TYPE + COMMA_SEP +
                     QuestContract.DBQuest.COLUMN_TITLE + TEXT_TYPE + COMMA_SEP +
                     QuestContract.DBQuest.COLUMN_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
                     QuestContract.DBQuest.COLUMN_EXP_AMOUNT + INT_TYPE + COMMA_SEP +
