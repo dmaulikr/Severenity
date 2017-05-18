@@ -119,8 +119,8 @@ public class Constants {
      * Connection constants
      */
 
-    public final static String HOST =  "https://severenity.herokuapp.com";
-//    public final static String HOST =  "http://localhost:8080";
+//    public final static String HOST =  "https://severenity.herokuapp.com";
+    public final static String HOST =  "http://localhost:8080";
 
     public final static int CONNECTION_READ_TIMEOUT = 10000; // milliseconds
     public final static int CONNECTION_CONNECT_TIMEOUT = 15000; // milliseconds
@@ -145,11 +145,11 @@ public class Constants {
     public static String REST_API_PLACES_ALL = HOST + "/places/all";
     public static String REST_API_USER_ALL_RANGE = HOST + "/users/allaspage";
     public static String REST_API_USER_ALL = HOST + "/users/all";
-    public static String REST_API_TEAM_CREATE  = HOST + "/team/create";
-    public static String REST_API_TEAM_GET  = HOST + "/team";
-    public static String REST_API_TEAM_REMOVE_USER  = HOST + "/team/removeUser";
+    public static String REST_API_TEAM_CREATE  = HOST + "/teams/create";
+    public static String REST_API_TEAM_GET  = HOST + "/teams";
+    public static String REST_API_TEAM_REMOVE_USER  = HOST + "/teams/removeUser";
     public static String REST_API_TEAM_ALL_RANGE = HOST + "/teams/allaspage";
-    public static String REST_API_TEAM_JOIN_TEAM  = HOST + "/team/join";
+    public static String REST_API_TEAM_JOIN_TEAM  = HOST + "/teams/join";
     public static String REST_API_MESSAGES = HOST + "/messages/all";
 
     /**

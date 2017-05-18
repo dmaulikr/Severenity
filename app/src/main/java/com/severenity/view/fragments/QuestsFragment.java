@@ -59,6 +59,8 @@ public class QuestsFragment extends Fragment {
         questIntentFilter.addAction(Constants.INTENT_FILTER_QUEST_UPDATE);
         questIntentFilter.addAction(Constants.INTENT_FILTER_NEW_QUEST);
 
+        App.getQuestManager().getTeamQuestsFromServer();
+
         App.getLocalBroadcastManager().registerReceiver(questReceiver, questIntentFilter);
     }
 

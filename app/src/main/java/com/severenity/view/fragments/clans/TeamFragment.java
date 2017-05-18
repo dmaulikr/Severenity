@@ -114,43 +114,44 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     }
 
     private void requestTeamInfo() {
-
-        if (mTeamID != null && !mTeamID.isEmpty()) {
-            App.getTeamManager().getTeam(mTeamID, new RequestCallback() {
-                @Override
-                public void onResponseCallback(JSONObject response) {
-                    try {
-                        if (response.getString("result").equals("success")) {
-                            Team team = Utils.createTeamFromJSON(response.getJSONObject("data"));
-                            if (team == null) {
-                                Log.e(Constants.TAG, "Was not able to create user from JSON:" + response.getJSONObject("data"));
-                                return;
-                            }
-                            mTeamModerator.setText(team.getModerator().getName());
-                            if (App.getUserManager().getCurrentUser().getId().equals(team.getModerator().getId())) {
-                                Log.i(Constants.TAG, "Current user is moderator for the team. Give ability to delete users");
-                                mUsersInTeamList.setLongClickable(true);
-                                mUsersInTeamList.setOnItemLongClickListener(TeamFragmentInstance);
-                                mLeaveButtonLayout.setVisibility(View.GONE);
-                            }
-                            mTeamModerator.setHint(team.getModerator().getId());
-                            mTeamName.setText(team.getName());
-                            mUsersInTeamList.clearData();
-                            mUsersInTeamList.addNewData(team.getMembers());
-                        } else {
-                            Log.e(Constants.TAG, "Getting team by name fails");
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onErrorCallback(NetworkResponse response) {
-                    Log.e(Constants.TAG, "Getting team by name fails");
-                }
-            });
+        if (mTeamID == null || mTeamID.isEmpty()) {
+            return;
         }
+
+        App.getTeamManager().getTeam(mTeamID, new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
+                try {
+                    if (response.getString("result").equals("success")) {
+                        Team team = Utils.createTeamFromJSON(response.getJSONObject("data"));
+                        if (team == null) {
+                            Log.e(Constants.TAG, "Was not able to create user from JSON:" + response.getJSONObject("data"));
+                            return;
+                        }
+                        mTeamModerator.setText(team.getModerator().getName());
+                        if (App.getUserManager().getCurrentUser().getId().equals(team.getModerator().getId())) {
+                            Log.i(Constants.TAG, "Current user is moderator for the team. Give ability to delete users");
+                            mUsersInTeamList.setLongClickable(true);
+                            mUsersInTeamList.setOnItemLongClickListener(TeamFragmentInstance);
+                            mLeaveButtonLayout.setVisibility(View.GONE);
+                        }
+                        mTeamModerator.setHint(team.getModerator().getId());
+                        mTeamName.setText(team.getName());
+                        mUsersInTeamList.clearData();
+                        mUsersInTeamList.addNewData(team.getMembers());
+                    } else {
+                        Log.e(Constants.TAG, "Getting team by name fails");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+                Log.e(Constants.TAG, "Getting team by name fails");
+            }
+        });
     }
 
     @Override

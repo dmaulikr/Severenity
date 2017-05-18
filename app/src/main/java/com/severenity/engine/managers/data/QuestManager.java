@@ -399,7 +399,7 @@ public class QuestManager extends DataManager {
             int questType = questObj.getInt("type");
             String id = questObj.getString("questId");
 
-            Quest existingQuest = App.getQuestManager().getQuestById(id);
+            Quest existingQuest = getQuestById(id);
             if (existingQuest != null) {
                 return existingQuest;
             }
@@ -507,7 +507,7 @@ public class QuestManager extends DataManager {
      * @param userId - quests of this users will be retrieved.
      */
     private void getQuestsFromServer(String userId) {
-        App.getQuestManager().deleteQuests();
+        deleteQuests();
         String request = Constants.REST_API_USERS + "/" + userId + Constants.REST_API_QUESTS;
         App.getRestManager().createRequest(request, Request.Method.GET, null, new RequestCallback() {
             @Override
@@ -521,10 +521,10 @@ public class QuestManager extends DataManager {
                     ArrayList<Quest> questsList = new ArrayList<>();
                     for (int i = 0; i < quests.length(); i++) {
                         JSONObject questObject = quests.getJSONObject(i);
-                        questsList.add(App.getQuestManager().getQuestFromJSON(questObject));
+                        questsList.add(getQuestFromJSON(questObject));
                     }
 
-                    App.getQuestManager().addQuests(questsList);
+                    addQuests(questsList);
 
                     Intent intent = new Intent(Constants.INTENT_FILTER_NEW_QUEST);
                     intent.putExtra(Constants.INTENT_EXTRA_SINGLE_QUEST, false);
@@ -540,6 +540,43 @@ public class QuestManager extends DataManager {
                     Log.e(Constants.TAG, "Error response for quests retrieve: " + response.toString());
                 } else {
                     Log.e(Constants.TAG, "Error response for quests retrieve is null.");
+                }
+            }
+        });
+    }
+
+    /**
+     * Retrieve team quests from server.
+     */
+    public void getTeamQuestsFromServer() {
+        String request = Constants.HOST + Constants.REST_API_QUESTS + "/teams";
+        App.getRestManager().createRequest(request, Request.Method.GET, null, new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
+                try {
+                    if (!response.getString("result").equalsIgnoreCase("success")) {
+                        return;
+                    }
+
+                    JSONArray quests = response.getJSONArray("data");
+                    ArrayList<Quest> questsList = new ArrayList<>();
+                    for (int i = 0; i < quests.length(); i++) {
+                        JSONObject questObject = quests.getJSONObject(i);
+                        questsList.add(getQuestFromJSON(questObject));
+                    }
+
+                    Log.e(Constants.TAG, questsList.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+                if (response != null) {
+                    Log.e(Constants.TAG, "Error response for team quests retrieve: " + response.toString());
+                } else {
+                    Log.e(Constants.TAG, "Error response for team quests retrieve is null.");
                 }
             }
         });

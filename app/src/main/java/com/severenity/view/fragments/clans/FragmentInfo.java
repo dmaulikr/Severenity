@@ -15,10 +15,7 @@ public class FragmentInfo {
     public String mFragmentButtonCaption;
     public boolean mActiveFragment;
 
-    public FragmentInfo(Fragment fragment,
-                        String fragmentName,
-                        String fragmentButtonName,
-                        boolean active){
+    public FragmentInfo(Fragment fragment, String fragmentName, String fragmentButtonName, boolean active) {
         mFragmentName = fragmentName;
         mFragment = fragment;
         mActiveFragment = active;
