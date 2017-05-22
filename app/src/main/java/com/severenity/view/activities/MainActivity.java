@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private Toolbar toolbarTop;
 
     private ProfilePictureView userProfilePicture;
-    private TextView tvEnergyValue, tvImmunityValue, tvExperienceValue, tvLevelValue;
+    private TextView tvEnergyValue, tvCreditsValue, tvExperienceValue, tvLevelValue;
     private TextView tvConnectionState;
     private ImageView ivGPSState;
 
@@ -390,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
 
         userProfilePicture = (ProfilePictureView) toolbarTop.findViewById(R.id.mapUserAvatar);
 
-        tvImmunityValue = (TextView) toolbarTop.findViewById(R.id.tvImmunityValue);
+        tvCreditsValue = (TextView) toolbarTop.findViewById(R.id.tvCreditsValue);
         tvEnergyValue = (TextView) toolbarTop.findViewById(R.id.tvEnergyValue);
         tvExperienceValue = (TextView) toolbarTop.findViewById(R.id.tvExperienceValue);
         tvLevelValue = (TextView) toolbarTop.findViewById(R.id.tvLevelValue);
@@ -717,7 +717,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
             return;
         }
 
-        tvImmunityValue.setText(String.format(getResources().getString(R.string.immunity_value), user.getImmunity()));
+        tvCreditsValue.setText(String.format(getResources().getString(R.string.credits_value), user.getCredits()));
         tvEnergyValue.setText(String.format(getResources().getString(R.string.energy_value), user.getEnergy()));
         tvExperienceValue.setText(String.format(getResources().getString(R.string.experience_value), user.getExperience()));
         tvLevelValue.setText(String.format(getResources().getString(R.string.level_value), user.getLevel()));

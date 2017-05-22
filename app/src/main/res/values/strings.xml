@@ -25,6 +25,7 @@
 
     <string name="drawerOpened">Spells</string>
     <string name="drawerClosed">Sample</string>
+    <string name="credits_value">Credits: %d</string>
     <string name="immunity_value">Immunity: %d</string>
     <string name="energy_value">Energy: %d</string>
     <string name="spell_selected">Spell selected: %s</string>

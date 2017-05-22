@@ -18,14 +18,14 @@
 
         <TextView
             android:gravity="center"
-            android:id="@+id/tvImmunityValue"
+            android:id="@+id/tvCreditsValue"
             android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/mapUserAvatar"
             android:layout_margin="5dp"
             android:textSize="12sp"
-            android:text="@string/immunity_value" />
+            android:text="@string/credits_value" />
 
         <TextView
             android:gravity="center"
@@ -33,7 +33,7 @@
             android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/tvImmunityValue"
+            android:layout_toEndOf="@id/tvCreditsValue"
             android:layout_margin="5dp"
             android:layout_marginBottom="0dp"
             android:textSize="12sp"
@@ -43,7 +43,7 @@
             android:gravity="center"
             android:id="@+id/tvExperienceValue"
             android:textColor="@color/white"
-            android:layout_below="@id/tvImmunityValue"
+            android:layout_below="@id/tvCreditsValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/mapUserAvatar"
@@ -56,7 +56,7 @@
             android:gravity="center"
             android:id="@+id/tvLevelValue"
             android:textColor="@color/white"
-            android:layout_below="@id/tvImmunityValue"
+            android:layout_below="@id/tvCreditsValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/tvExperienceValue"
