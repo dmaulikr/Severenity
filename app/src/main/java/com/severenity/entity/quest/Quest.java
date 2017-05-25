@@ -59,6 +59,8 @@ public class Quest extends BaseObservable {
     @Bindable
     private int progress;
 
+    private int isTeamQuest;
+
     /**
      * In format of {@link Constants}: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
      */
@@ -68,7 +70,7 @@ public class Quest extends BaseObservable {
 
     public Quest() {}
 
-    public Quest(String id, String title, String expirationTime, long experience, long credits, QuestStatus status, int progress) {
+    public Quest(String id, String title, String expirationTime, long experience, long credits, QuestStatus status, int progress, int isTeamQuest) {
         setId(id);
         setTitle(title);
         setExperience(experience);
@@ -76,6 +78,7 @@ public class Quest extends BaseObservable {
         setStatus(status);
         setExpirationTime(expirationTime);
         setProgress(progress);
+        setIsTeamQuest(isTeamQuest);
     }
 
     public String getExpirationTime() {
@@ -153,13 +156,24 @@ public class Quest extends BaseObservable {
         this.type = type;
     }
 
-    public void setIsFinished(boolean isFinished) {
+    private void setIsFinished(boolean isFinished) {
         this.isFinished = isFinished;
         notifyPropertyChanged(BR.isFinished);
     }
 
     public boolean getIsFinished() {
         return isFinished;
+    }
+
+    public int isTeamQuest() {
+        return isTeamQuest;
+    }
+
+    public void setIsTeamQuest(int teamQuest) {
+        if (teamQuest > 1) {
+            teamQuest = 1;
+        }
+        isTeamQuest = teamQuest;
     }
 
     public int getProgress() {

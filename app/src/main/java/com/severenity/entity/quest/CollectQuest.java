@@ -17,7 +17,7 @@ public class CollectQuest extends Quest {
     private int amount;
 
     public CollectQuest(Quest quest, Constants.Characteristic characteristic, int amount) {
-        super(quest.getId(), quest.getTitle(), quest.getExpirationTime(), quest.getExperience(), quest.getCredits(), quest.getStatus(), quest.getProgress());
+        super(quest.getId(), quest.getTitle(), quest.getExpirationTime(), quest.getExperience(), quest.getCredits(), quest.getStatus(), quest.getProgress(), quest.isTeamQuest());
 
         fillData(characteristic, amount);
     }

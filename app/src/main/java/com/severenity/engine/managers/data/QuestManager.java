@@ -33,6 +33,7 @@ import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_DISTA
 import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_EXPIRATION_TIME;
 import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_EXP_AMOUNT;
 import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_ID;
+import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_IS_TEAM_QUEST;
 import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_PLACE_TYPE;
 import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_PLACE_TYPE_VALUE;
 import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_PROGRESS;
@@ -108,6 +109,7 @@ public class QuestManager extends DataManager {
         values.put(COLUMN_EXP_AMOUNT, quest.getExperience());
         values.put(COLUMN_CREDITS_AMOUNT, quest.getCredits());
         values.put(COLUMN_STATUS, quest.getStatus().ordinal());
+        values.put(COLUMN_IS_TEAM_QUEST, quest.isTeamQuest());
         values.put(COLUMN_TYPE, quest.getType().ordinal());
         values.put(COLUMN_EXPIRATION_TIME, quest.getExpirationTime());
         values.put(COLUMN_PROGRESS, quest.getProgress());
@@ -206,6 +208,7 @@ public class QuestManager extends DataManager {
         quest.setStatus(Quest.QuestStatus.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS))]);
         quest.setExperience(cursor.getLong(cursor.getColumnIndex(COLUMN_EXP_AMOUNT)));
         quest.setCredits(cursor.getLong(cursor.getColumnIndex(COLUMN_CREDITS_AMOUNT)));
+        quest.setIsTeamQuest(cursor.getInt(cursor.getColumnIndex(COLUMN_IS_TEAM_QUEST)));
         quest.setProgress(cursor.getInt(cursor.getColumnIndex(COLUMN_PROGRESS)));
 
         String expirationTime = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRATION_TIME));
@@ -243,7 +246,7 @@ public class QuestManager extends DataManager {
 
             ArrayList<Quest> questsList = new ArrayList<>(cursor.getCount());
 
-            if (cursor.moveToFirst()) {
+            if (cursor.moveToNext()) {
                 do {
                     Quest quest = getQuestFromCursor(cursor);
 
@@ -279,6 +282,7 @@ public class QuestManager extends DataManager {
 
             return questsList;
         } catch (SQLException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -353,6 +357,7 @@ public class QuestManager extends DataManager {
         intent.putExtra(COLUMN_EXP_AMOUNT, quest.getExperience());
         intent.putExtra(COLUMN_CREDITS_AMOUNT, quest.getCredits());
         intent.putExtra(COLUMN_STATUS, quest.getStatus().ordinal());
+        intent.putExtra(COLUMN_IS_TEAM_QUEST, quest.isTeamQuest());
         intent.putExtra(COLUMN_TYPE, quest.getType().ordinal());
         intent.putExtra(COLUMN_EXPIRATION_TIME, quest.getExpirationTime());
         intent.putExtra(COLUMN_PROGRESS, quest.getProgress());
@@ -396,7 +401,7 @@ public class QuestManager extends DataManager {
     private Quest getQuestFromJSON(JSONObject questObj) {
         Quest quest = new Quest();
         try {
-            int questType = questObj.getInt("type");
+            int questType = Integer.valueOf(questObj.getString("type"));
             String id = questObj.getString("questId");
 
             Quest existingQuest = getQuestById(id);
@@ -406,27 +411,30 @@ public class QuestManager extends DataManager {
 
             quest.setId(id);
             quest.setTitle(questObj.getString("title"));
-            quest.setCredits(questObj.getLong("credits"));
-            quest.setExperience(questObj.getLong("experience"));
-            quest.setStatus(Quest.QuestStatus.values()[questObj.getInt("status")]);
+            quest.setCredits(Integer.valueOf(questObj.getString("credits")));
+            quest.setExperience(Integer.valueOf(questObj.getString("experience")));
+            quest.setStatus(Quest.QuestStatus.values()[Integer.valueOf(questObj.getString("status"))]);
+            quest.setIsTeamQuest(Integer.valueOf(questObj.getString("isTeamQuest")));
 
             if (quest.getStatus() == Quest.QuestStatus.Finished || quest.getStatus() == Quest.QuestStatus.Closed) {
                 quest.setExpirationTime("null");
+                quest.setProgress(100);
             } else {
+                if (quest.getStatus() != Quest.QuestStatus.Created) {
+                    quest.setProgress(Integer.valueOf(questObj.getJSONObject("progress").getString("progress")));
+                }
                 quest.setExpirationTime(questObj.getString("expirationDate"));
             }
 
-            quest.setProgress(questObj.getJSONObject("progress").getInt("progress"));
-
             if (questType == Quest.QuestType.Distance.ordinal()) {
                 quest.setType(Quest.QuestType.Distance);
-                quest = new DistanceQuest(quest, questObj.getInt("distance"));
+                quest = new DistanceQuest(quest, Integer.valueOf(questObj.getString("distance")));
             } else if (questType == Quest.QuestType.Capture.ordinal()) {
                 quest.setType(Quest.QuestType.Capture);
-                quest = new CaptureQuest(quest, GamePlace.PlaceType.values()[questObj.getInt("placeType")], questObj.getInt("placeTypeValue"));
+                quest = new CaptureQuest(quest, GamePlace.PlaceType.values()[Integer.valueOf(questObj.getString("placeType"))], Integer.valueOf(questObj.getString("placeTypeValue")));
             } else if (questType == Quest.QuestType.Collect.ordinal()) {
                 quest.setType(Quest.QuestType.Collect);
-                quest = new CollectQuest(quest, Constants.Characteristic.values()[questObj.getInt("characteristic")], questObj.getInt("characteristicAmount"));
+                quest = new CollectQuest(quest, Constants.Characteristic.values()[Integer.valueOf(questObj.getString("characteristic"))], Integer.valueOf(questObj.getString("characteristicAmount")));
             }
 
         } catch (JSONException e) {
@@ -549,7 +557,7 @@ public class QuestManager extends DataManager {
      * Retrieve team quests from server.
      */
     public void getTeamQuestsFromServer() {
-        String request = Constants.HOST + Constants.REST_API_QUESTS + "/teams";
+        String request = Constants.HOST + Constants.REST_API_QUESTS + "/teams/" + App.getUserManager().getCurrentUser().getTeam() + "?leaderId=" + App.getUserManager().getCurrentUser().getId();
         App.getRestManager().createRequest(request, Request.Method.GET, null, new RequestCallback() {
             @Override
             public void onResponseCallback(JSONObject response) {
@@ -566,6 +574,12 @@ public class QuestManager extends DataManager {
                     }
 
                     Log.e(Constants.TAG, questsList.toString());
+
+                    addQuests(questsList);
+
+                    Intent intent = new Intent(Constants.INTENT_FILTER_NEW_QUEST);
+                    intent.putExtra(Constants.INTENT_EXTRA_SINGLE_QUEST, false);
+                    App.getLocalBroadcastManager().sendBroadcast(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

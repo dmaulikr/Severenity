@@ -16,7 +16,7 @@ public class DistanceQuest extends Quest {
     private int distance; // in km
 
     public DistanceQuest(Quest quest, int distance) {
-        super(quest.getId(), quest.getTitle(), quest.getExpirationTime(), quest.getExperience(), quest.getCredits(), quest.getStatus(), quest.getProgress());
+        super(quest.getId(), quest.getTitle(), quest.getExpirationTime(), quest.getExperience(), quest.getCredits(), quest.getStatus(), quest.getProgress(), quest.isTeamQuest());
 
         fillData(distance);
     }

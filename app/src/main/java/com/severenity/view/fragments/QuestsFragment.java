@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,9 +42,14 @@ public class QuestsFragment extends Fragment {
 
     private QuestsAdapter questsAdapter;
     private ArrayList<Quest> quests = new ArrayList<>();
+    private boolean isTeamQuestsFragment = false;
 
-    public QuestsFragment() {
-        // Required empty public constructor
+    public static QuestsFragment newInstance(boolean isTeamQuestsFragment) {
+        QuestsFragment questsFragment = new QuestsFragment();
+        Bundle arg = new Bundle();
+        arg.putBoolean("isTeamQuestsFragment", isTeamQuestsFragment);
+        questsFragment.setArguments(arg);
+        return questsFragment;
     }
 
     @Override
@@ -58,8 +64,6 @@ public class QuestsFragment extends Fragment {
         IntentFilter questIntentFilter = new IntentFilter();
         questIntentFilter.addAction(Constants.INTENT_FILTER_QUEST_UPDATE);
         questIntentFilter.addAction(Constants.INTENT_FILTER_NEW_QUEST);
-
-        App.getQuestManager().getTeamQuestsFromServer();
 
         App.getLocalBroadcastManager().registerReceiver(questReceiver, questIntentFilter);
     }
@@ -81,6 +85,9 @@ public class QuestsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle arguments = getArguments();
+        isTeamQuestsFragment = arguments.getBoolean("isTeamQuestsFragment");
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_quests, container, false);
 
@@ -92,7 +99,13 @@ public class QuestsFragment extends Fragment {
         questsList.setLayoutManager(linearLayoutManager);
         questsList.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL_LIST));
         questsList.setItemAnimator(new DefaultItemAnimator());
+
         questsList.setAdapter(questsAdapter);
+
+        if (isTeamQuestsFragment) {
+            App.getQuestManager().getTeamQuestsFromServer();
+        }
+
         activity.registerForContextMenu(questsList);
 
         emptyList = (TextView) view.findViewById(R.id.tvEmptyList);

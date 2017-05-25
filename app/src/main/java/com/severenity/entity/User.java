@@ -174,6 +174,11 @@ public class User {
         return obj.toString();
     }
 
+    /**
+     * The team user belongs to.
+     *
+     * @return team id of the team user belongs to.
+     */
     public String getTeam() {
         if (this.userTeam == null) {
             return "";

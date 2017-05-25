@@ -48,9 +48,9 @@ public class TeamsListAdapter extends CustomListArrayAdapterBase<Team> {
         number.setText(Integer.toString(position + 1));
 
         final Team team = getItem(position);
-        if (team == null){
+        if (team == null) {
             Log.e(Constants.TAG, "Null object in the TeamListAdapter.");
-            return null;
+            return result;
         }
 
         TextView tmName = (TextView) result.findViewById(R.id.teamName);
@@ -59,10 +59,10 @@ public class TeamsListAdapter extends CustomListArrayAdapterBase<Team> {
         TextView membersCount = (TextView) result.findViewById(R.id.membersCount);
         membersCount.setText(Integer.toString(team.getMembers().size()));
 
-        ((ImageView)result.findViewById(R.id.teamInfoImg)).setOnClickListener(new View.OnClickListener() {
+        result.findViewById(R.id.teamInfoImg).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TeamInfoDialog dialog = TeamInfoDialog.newInstance(team.getTeamID());
+                TeamInfoDialog dialog = TeamInfoDialog.newInstance(team.getTeamId());
                 dialog.setListener(mListener);
                 FragmentManager manager = ((FragmentActivity) mContext).getSupportFragmentManager();
                 dialog.show(manager, "TeamInfo");

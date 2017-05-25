@@ -79,7 +79,7 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
 
         if (hasTeam) {
             mFragments.put(BUTTON_TEAM_ID, new FragmentInfo(TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeam(), this), "teamFragment", context.getResources().getString(R.string.clans_team), true));
-            mFragments.put(BUTTON_QUESTS_ID, new FragmentInfo(new QuestsFragment(), "questsFragment", context.getResources().getString(R.string.clans_quests), false));
+            mFragments.put(BUTTON_QUESTS_ID, new FragmentInfo(QuestsFragment.newInstance(true), "questsFragment", context.getResources().getString(R.string.clans_quests), false));
         }
 
         mWarningContentLayoutID = R.id.warningFragmentContent;
@@ -217,7 +217,7 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
         }
 
         FragmentInfo info = new FragmentInfo(
-            new QuestsFragment(),
+            QuestsFragment.newInstance(true),
             "questsFragment",
             getResources().getString(R.string.clans_quests),
             false
@@ -273,7 +273,10 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
                     mFragments.size());
 
             TextView tv = (TextView) getView().findViewById(entry.getKey());
-            tv.setLayoutParams(param);
+
+            if (tv != null) {
+                tv.setLayoutParams(param);
+            }
         }
     }
 

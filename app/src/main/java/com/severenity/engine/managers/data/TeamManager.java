@@ -1,7 +1,5 @@
 package com.severenity.engine.managers.data;
 
-import android.content.Context;
-
 import com.android.volley.Request;
 import com.severenity.App;
 import com.severenity.engine.network.RequestCallback;
@@ -18,13 +16,6 @@ import org.json.JSONObject;
  */
 
 public class TeamManager {
-
-    private Context mContext;
-
-    public TeamManager(Context context) {
-        mContext = context;
-    }
-
     /**
      * Creates team.
      *

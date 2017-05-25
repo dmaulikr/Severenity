@@ -21,6 +21,7 @@ public class QuestContract {
         public static final String COLUMN_EXPIRATION_TIME = "expirationTime";
         public static final String COLUMN_STATUS = "status";
         public static final String COLUMN_TYPE = "type";
+        public static final String COLUMN_IS_TEAM_QUEST = "isTeamQuest";
         public static final String COLUMN_DISTANCE = "distance";
         public static final String COLUMN_PLACE_TYPE = "placeType";
         public static final String COLUMN_PLACE_TYPE_VALUE = "placeTypeValue";

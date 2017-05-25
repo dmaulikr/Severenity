@@ -48,10 +48,10 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
         View view = inflater.inflate(R.layout.dialog_create_team, null);
         setCancelable(false);
 
-        ((Button)view.findViewById(R.id.btnCreateTeam)).setOnClickListener(this);
-        ((Button)view.findViewById(R.id.btnCancel)).setOnClickListener(this);
+        view.findViewById(R.id.btnCreateTeam).setOnClickListener(this);
+        view.findViewById(R.id.btnCancel).setOnClickListener(this);
 
-        mTeamNameView = (TextView)view.findViewById(R.id.etTeamName);
+        mTeamNameView = (TextView) view.findViewById(R.id.etTeamName);
 
         return view;
     }
@@ -70,7 +70,6 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
                 }
 
                 App.getTeamManager().createTeam(teamName, App.getUserManager().getCurrentUser(), teamCreationCallBack);
-                return;
         }
     }
 
@@ -83,7 +82,7 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
             try {
                 if (response.getString("result").equals("success")) {
                     String teamName = response.getString("data");
-                    App.getUserManager().updateCurrentUser(new String[]{COLUMN_TEAM}, new String[]{teamName});
+                    App.getUserManager().updateCurrentUser(new String[]{ COLUMN_TEAM }, new String[]{ teamName });
                     mListener.onTeamCreated();
                 } else {
                     // TODO: Error handling

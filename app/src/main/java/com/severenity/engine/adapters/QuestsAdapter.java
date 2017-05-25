@@ -39,10 +39,10 @@ public class QuestsAdapter extends RecyclerView.Adapter<QuestsAdapter.QuestViewH
         addAll(objects);
     }
 
-    public class QuestViewHolder extends RecyclerView.ViewHolder {
+    class QuestViewHolder extends RecyclerView.ViewHolder {
         private QuestItemBinding questItemBinding;
 
-        public QuestViewHolder(View v) {
+        QuestViewHolder(View v) {
             super(v);
             questItemBinding = DataBindingUtil.bind(v);
             v.setOnCreateContextMenuListener(context);
@@ -75,7 +75,7 @@ public class QuestsAdapter extends RecyclerView.Adapter<QuestsAdapter.QuestViewH
 
     public void update(Quest newQuestValues) {
         for (Quest quest : quests) {
-            if (quest.getId() == newQuestValues.getId()) {
+            if (quest.getId().equals(newQuestValues.getId())) {
                 quest.setProgress(newQuestValues.getProgress());
                 quest.setStatus(newQuestValues.getStatus());
                 break;
@@ -86,7 +86,7 @@ public class QuestsAdapter extends RecyclerView.Adapter<QuestsAdapter.QuestViewH
 
     public void remove(Quest object) {
         for (Quest quest : quests) {
-            if (quest.getId() == object.getId()) {
+            if (quest.getId().equals(object.getId())) {
                 quests.remove(quest);
                 notifyDataSetChanged();
                 break;
@@ -99,7 +99,7 @@ public class QuestsAdapter extends RecyclerView.Adapter<QuestsAdapter.QuestViewH
         addAll(collection);
     }
 
-    public void addAll(Collection<? extends Quest> collection) {
+    private void addAll(Collection<? extends Quest> collection) {
         if (collection != null) {
             quests.addAll(collection);
         }

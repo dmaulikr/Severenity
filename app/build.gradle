@@ -52,7 +52,7 @@ android {
         mavenCentral()
         maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://jitpack.io" }
-        flatDir{
+        flatDir {
             dirs 'libs'
         }
     }
@@ -63,16 +63,18 @@ dependencies {
         // excluding org.json which is provided by Android
         exclude group: 'org.json', module: 'json'
     }
-    compile 'com.google.android.gms:play-services-fitness:10.0.0'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:design:25.2.0'
     compile 'com.android.support:support-v4:25.2.0'
-    compile 'com.google.android.gms:play-services:10.0.0'
-    compile 'com.google.android.gms:play-services-location:10.0.0'
-    compile 'com.google.android.gms:play-services-games:10.0.0'
-    compile 'com.google.android.gms:play-services-maps:10.0.0'
-    compile 'com.google.firebase:firebase-messaging:10.0.0'
+    compile 'com.google.android.gms:play-services-places:10.2.6'
+    compile 'com.google.android.gms:play-services-location:10.2.6'
+    compile 'com.google.android.gms:play-services-games:10.2.6'
+    compile 'com.google.android.gms:play-services-maps:10.2.6'
+    compile 'com.google.android.gms:play-services-fitness:10.2.6'
+    compile 'com.google.firebase:firebase-core:10.2.6'
+    compile 'com.google.firebase:firebase-messaging:10.2.6'
     compile 'com.google.maps.android:android-maps-utils:0.4.3'
     compile 'com.facebook.android:facebook-android-sdk:4.20.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
@@ -80,9 +82,8 @@ dependencies {
     compile 'joda-time:joda-time:2.9.3'
     compile 'com.github.iammert:MaterialIntroView:1.5.2'
     compile 'com.github.wooplr:Spotlight:1.1'
-    compile 'com.google.android.gms:play-services-analytics:10.0.0'
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
 }
+
 
 apply plugin: 'com.google.gms.google-services'

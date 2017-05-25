@@ -18,7 +18,7 @@ public class CaptureQuest extends Quest {
     private int placeTypeValue;
 
     public CaptureQuest(Quest quest, GamePlace.PlaceType placeType, int placeTypeValue) {
-        super(quest.getId(), quest.getTitle(), quest.getExpirationTime(), quest.getExperience(), quest.getCredits(), quest.getStatus(), quest.getProgress());
+        super(quest.getId(), quest.getTitle(), quest.getExpirationTime(), quest.getExperience(), quest.getCredits(), quest.getStatus(), quest.getProgress(), quest.isTeamQuest());
 
         fillData(placeType, placeTypeValue);
     }

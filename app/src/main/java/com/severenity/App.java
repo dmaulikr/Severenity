@@ -73,7 +73,7 @@ public class App extends Application {
 
         sharedPrefereces = getSharedPreferences("Severenity", MODE_PRIVATE);
         mPlacesManager = new PlacesManager(mContext);
-        mTeamManager = new TeamManager(mContext);
+        mTeamManager = new TeamManager();
     }
 
     public static SharedPreferences getSharedPreferences() {
