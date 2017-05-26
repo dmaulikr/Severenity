@@ -42,14 +42,9 @@ public class QuestsFragment extends Fragment {
 
     private QuestsAdapter questsAdapter;
     private ArrayList<Quest> quests = new ArrayList<>();
-    private boolean isTeamQuestsFragment = false;
 
-    public static QuestsFragment newInstance(boolean isTeamQuestsFragment) {
-        QuestsFragment questsFragment = new QuestsFragment();
-        Bundle arg = new Bundle();
-        arg.putBoolean("isTeamQuestsFragment", isTeamQuestsFragment);
-        questsFragment.setArguments(arg);
-        return questsFragment;
+    public static QuestsFragment newInstance() {
+        return new QuestsFragment();
     }
 
     @Override
@@ -85,9 +80,6 @@ public class QuestsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Bundle arguments = getArguments();
-        isTeamQuestsFragment = arguments.getBoolean("isTeamQuestsFragment");
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_quests, container, false);
 
@@ -101,10 +93,6 @@ public class QuestsFragment extends Fragment {
         questsList.setItemAnimator(new DefaultItemAnimator());
 
         questsList.setAdapter(questsAdapter);
-
-        if (isTeamQuestsFragment) {
-            App.getQuestManager().getTeamQuestsFromServer();
-        }
 
         activity.registerForContextMenu(questsList);
 
@@ -163,7 +151,7 @@ public class QuestsFragment extends Fragment {
                         q.setExpirationTime(expirationTime);
                     }
 
-                    q.setStatus(Quest.QuestStatus.Accepted);
+                    q.setStatus(Quest.QuestStatus.values()[questObj.getInt("status")]);
 
                     if (questType == Quest.QuestType.Distance.ordinal()) {
                         q.setType(Quest.QuestType.Distance);

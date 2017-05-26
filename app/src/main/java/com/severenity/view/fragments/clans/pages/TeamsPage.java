@@ -14,6 +14,7 @@ import com.severenity.App;
 import com.severenity.R;
 import com.severenity.view.Dialogs.CreateTeamDialog;
 import com.severenity.view.fragments.QuestsFragment;
+import com.severenity.view.fragments.TeamQuestsFragment;
 import com.severenity.view.fragments.clans.ChatFragment;
 import com.severenity.view.fragments.clans.FragmentInfo;
 import com.severenity.view.fragments.clans.TeamFragment;
@@ -74,12 +75,16 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
             hasTeam = !App.getUserManager().getCurrentUser().getTeam().isEmpty();
         }
 
+        TeamsListFragment teamsListFragment = TeamsListFragment.newInstance();
+        teamsListFragment.setListener(this);
         mFragments.put(BUTTON_CHAT_ID, new FragmentInfo(new ChatFragment(), "chatFragment", context.getResources().getString(R.string.chat), false));
-        mFragments.put(BUTTON_TEAM_LIST_ID, new FragmentInfo(TeamsListFragment.newInstance(this), "teamsList", context.getResources().getString(R.string.team_list), !hasTeam));
+        mFragments.put(BUTTON_TEAM_LIST_ID, new FragmentInfo(teamsListFragment, "teamsList", context.getResources().getString(R.string.team_list), !hasTeam));
 
         if (hasTeam) {
-            mFragments.put(BUTTON_TEAM_ID, new FragmentInfo(TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeam(), this), "teamFragment", context.getResources().getString(R.string.clans_team), true));
-            mFragments.put(BUTTON_QUESTS_ID, new FragmentInfo(QuestsFragment.newInstance(true), "questsFragment", context.getResources().getString(R.string.clans_quests), false));
+            TeamFragment teamFragment = TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeam());
+            teamFragment.setListener(this);
+            mFragments.put(BUTTON_TEAM_ID, new FragmentInfo(teamFragment, "teamFragment", context.getResources().getString(R.string.clans_team), true));
+            mFragments.put(BUTTON_QUESTS_ID, new FragmentInfo(TeamQuestsFragment.newInstance(), "teamQuestsFragment", context.getResources().getString(R.string.clans_quests), false));
         }
 
         mWarningContentLayoutID = R.id.warningFragmentContent;
@@ -157,8 +162,10 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
             return;
         }
 
+        TeamFragment teamFragment = TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeam());
+        teamFragment.setListener(this);
         FragmentInfo info = new FragmentInfo(
-            TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeam(), this),
+                teamFragment,
             "teamFragment",
             getResources().getString(R.string.clans_team),
             false
@@ -217,8 +224,8 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
         }
 
         FragmentInfo info = new FragmentInfo(
-            QuestsFragment.newInstance(true),
-            "questsFragment",
+            TeamQuestsFragment.newInstance(),
+            "teamQuestsFragment",
             getResources().getString(R.string.clans_quests),
             false
         );

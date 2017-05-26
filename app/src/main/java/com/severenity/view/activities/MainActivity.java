@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private ShopFragment shopFragment = new ShopFragment();
     private ClansFragment clansFragment = new ClansFragment();
     private PlayerFragment playerFragment = new PlayerFragment();
-    private QuestsFragment battlesFragment = QuestsFragment.newInstance(false);
+    private QuestsFragment battlesFragment = QuestsFragment.newInstance();
     private GameMapFragment gameMapFragment = new GameMapFragment();
     private String shopFragmentTag = ShopFragment.class.getSimpleName();
     private String clansFragmentTag = ClansFragment.class.getSimpleName();

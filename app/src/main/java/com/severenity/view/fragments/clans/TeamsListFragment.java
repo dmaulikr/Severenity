@@ -47,19 +47,8 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param listener - listener for the team events (created etc.)
-     * @return A new instance of fragment {@link TeamsListFragment}.
-     */
-    public static TeamsListFragment newInstance(TeamEventsListener listener) {
-        TeamsListFragment fragment = new TeamsListFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(ARGUMENT_TEAM_EVENTS_LISTENER, listener);
-        fragment.setArguments(args);
-        return fragment;
+    public static TeamsListFragment newInstance() {
+        return new TeamsListFragment();
     }
 
     @Override
@@ -75,8 +64,6 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
         mTeamsList.setAdapter(adapter);
         mTeamsList.setListener(this);
 
-        mListener = (TeamEventsListener) getArguments().getSerializable(ARGUMENT_TEAM_EVENTS_LISTENER);
-
         if (!App.getUserManager().getCurrentUser().getTeam().isEmpty() || (App.getUserManager().getCurrentUser().getLevel() < 5) ) {
             mAddTeamButtonsView.setVisibility(View.GONE);
         }
@@ -86,13 +73,16 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
         return view;
     }
 
+    /**
+     * Requests and parses new teams page.
+     */
     private void requestTeams() {
         App.getTeamManager().getTeamsAsPage(mOffset, ITEM_PER_REQUEST, new RequestCallback() {
             @Override
             public void onResponseCallback(JSONObject response) {
                 try {
                     if ("success".equals(response.getString("result"))) {
-                        JSONArray data = response.getJSONObject("data").getJSONArray("docs");
+                        JSONArray data = response.getJSONArray("data");
                         mOffset += data.length();
 
                         List<Team> result = new ArrayList<>(data.length());
@@ -105,6 +95,8 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
                         }
 
                         mTeamsList.addNewData(result);
+                    } else {
+                        Log.e(Constants.TAG, "Retrieve teams error: " + response.getJSONObject("data").toString());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -175,5 +167,9 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
             mTeamsList.clearData();
             requestTeams();
         }
+    }
+
+    public void setListener(TeamEventsListener listener) {
+        mListener = listener;
     }
 }

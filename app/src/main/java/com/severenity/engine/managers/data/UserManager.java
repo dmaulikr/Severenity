@@ -297,8 +297,7 @@ public class UserManager extends DataManager {
      * @param count - indicates count of records to be retrieved.
      */
     public void getUsersAsPage(int start, int count, RequestCallback callback) {
-
-        String req = Constants.REST_API_USER_ALL_RANGE + "/?pageOffset=" + start + "&pageLimit=" + count;
+        String req = Constants.REST_API_USERS + "?pageOffset=" + start + "&pageLimit=" + count;
         App.getRestManager().createRequest(req, Request.Method.GET, null, callback);
     }
 

@@ -74,7 +74,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     QuestContract.DBQuest.COLUMN_TYPE + INT_TYPE + COMMA_SEP +
                     QuestContract.DBQuest.COLUMN_EXPIRATION_TIME + TEXT_TYPE + COMMA_SEP +
                     QuestContract.DBQuest.COLUMN_PROGRESS + INT_TYPE + COMMA_SEP +
-                    QuestContract.DBQuest.COLUMN_IS_TEAM_QUEST + INT_TYPE + COMMA_SEP +
                     QuestContract.DBQuest.COLUMN_DISTANCE + INT_TYPE + QuestContract.DBQuest.COLUMN_NULLABLE + COMMA_SEP +
                     QuestContract.DBQuest.COLUMN_PLACE_TYPE + TEXT_TYPE + QuestContract.DBQuest.COLUMN_NULLABLE + COMMA_SEP +
                     QuestContract.DBQuest.COLUMN_PLACE_TYPE_VALUE + INT_TYPE + QuestContract.DBQuest.COLUMN_NULLABLE + COMMA_SEP +

@@ -143,12 +143,10 @@ public class Constants {
     public static String REST_API_QUESTS = "/quests";
     public static String REST_API_QUESTS_UPDATE = "/quests/update";
     public static String REST_API_PLACES_ALL = HOST + "/places/all";
-    public static String REST_API_USER_ALL_RANGE = HOST + "/users/allaspage";
     public static String REST_API_USER_ALL = HOST + "/users/all";
     public static String REST_API_TEAM_CREATE  = HOST + "/teams/create";
-    public static String REST_API_TEAM_GET  = HOST + "/teams";
+    public static String REST_API_TEAMS  = HOST + "/teams";
     public static String REST_API_TEAM_REMOVE_USER  = HOST + "/teams/removeUser";
-    public static String REST_API_TEAM_ALL_RANGE = HOST + "/teams/allaspage";
     public static String REST_API_TEAM_JOIN_TEAM  = HOST + "/teams/join";
     public static String REST_API_MESSAGES = HOST + "/messages/all";
 

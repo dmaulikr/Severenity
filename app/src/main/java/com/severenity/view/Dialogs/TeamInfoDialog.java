@@ -57,7 +57,8 @@ public class TeamInfoDialog extends DialogFragment implements
         View view = inflater.inflate(R.layout.dialog_team_info, null);
         setCancelable(false);
 
-        mTeamFragment = TeamFragment.newInstance(mTeamID, this);
+        mTeamFragment = TeamFragment.newInstance(mTeamID);
+        mTeamFragment.setListener(this);
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.teamInfoFragment, mTeamFragment, "TeamInfoFragment");

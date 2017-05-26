@@ -1,14 +1,12 @@
 package com.severenity.view.fragments.clans.pages;
 
-import java.io.Serializable;
-
 /**
  * Created by Andriy on 9/6/2016.
  *
  * This interface describes the events that can happen with the team.
  * team can be created, user can joint team, user can leave team
  */
-public interface TeamEventsListener extends Serializable {
+public interface TeamEventsListener {
 
     // indicates tha the team was created
     void onTeamCreated();

@@ -62,14 +62,12 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
      * this fragment using the provided parameters.
      *
      * @param teamId - team id of the team to display.
-     * @param listener - listener for the team events (created etc.)
      * @return A new instance of fragment {@link TeamFragment}.
      */
-    public static TeamFragment newInstance(String teamId, TeamEventsListener listener) {
+    public static TeamFragment newInstance(String teamId) {
         TeamFragment fragment = new TeamFragment();
         Bundle args = new Bundle();
         args.putString(ARGUMENT_TEAM_ID, teamId);
-        args.putSerializable(ARGUMENT_TEAM_EVENTS_LISTENER, listener);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,7 +93,6 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
         mLeaveButtonLayout = (FrameLayout) view.findViewById(R.id.leaveTeam);
 
         mTeamID = getArguments().getString(ARGUMENT_TEAM_ID);
-        mListener = (TeamEventsListener) getArguments().getSerializable(ARGUMENT_TEAM_EVENTS_LISTENER);
 
         if (!App.getUserManager().getCurrentUser().getTeam().equals(mTeamID)) {
             mLeaveButtonLayout.setVisibility(View.GONE);
@@ -133,7 +130,6 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
                             Log.i(Constants.TAG, "Current user is moderator for the team. Give ability to delete users");
                             mUsersInTeamList.setLongClickable(true);
                             mUsersInTeamList.setOnItemLongClickListener(TeamFragmentInstance);
-                            mLeaveButtonLayout.setVisibility(View.GONE);
                         }
                         mTeamModerator.setHint(team.getModerator().getId());
                         mTeamName.setText(team.getName());
@@ -223,10 +219,14 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     public void onClick(View v) {
         mIsSelfRemoved = true;
         mUserIdToDelete = App.getUserManager().getCurrentUser().getId();
-        mMoveUserFromTeamDialog = CustomAlertDialog.newInstance(R.string.deleteUser, this);
+        mMoveUserFromTeamDialog = CustomAlertDialog.newInstance(mIsSelfRemoved ? R.string.leaveTeam : R.string.deleteUser, this);
         mMoveUserFromTeamDialog.setCancelable(false);
         FragmentManager fm = getFragmentManager();
         mMoveUserFromTeamDialog.show(fm, "userRemoveDialog");
+    }
+
+    public void setListener(TeamEventsListener listener) {
+        mListener = listener;
     }
 }
 

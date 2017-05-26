@@ -2,6 +2,7 @@ package com.severenity.view.fragments.clans;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.severenity.engine.adapters.UsersListAdapter;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.User;
 import com.severenity.utils.Utils;
+import com.severenity.utils.common.Constants;
 import com.severenity.view.custom.CustomListView;
 
 import org.json.JSONArray;
@@ -61,27 +63,31 @@ public class WorldFragment extends Fragment implements CustomListView.LoadDataLi
         requestUsers();
     }
 
+    /**
+     * Requests and parses new users page.
+     */
     private void requestUsers() {
-
         App.getUserManager().getUsersAsPage(mOffset, ITEM_PER_REQUEST, new RequestCallback() {
             @Override
             public void onResponseCallback(JSONObject response) {
-
                 try {
-                    JSONArray data = response.getJSONArray("docs");
-                    mOffset += data.length();
+                    if ("success".equals(response.getString("result"))) {
+                        JSONArray data = response.getJSONArray("data");
+                        mOffset += data.length();
 
-                    List<User> result = new ArrayList<User>();
-                    for (int i = 0; i < data.length(); i++) {
-                        JSONObject jsonUser = data.getJSONObject(i);
-                        User user = Utils.createUserFromJSON(jsonUser);
-                        if (user != null) {
-                            result.add(user);
+                        List<User> result = new ArrayList<User>();
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject jsonUser = data.getJSONObject(i);
+                            User user = Utils.createUserFromJSON(jsonUser);
+                            if (user != null) {
+                                result.add(user);
+                            }
                         }
+
+                        mUsersList.addNewData(result);
+                    } else {
+                        Log.e(Constants.TAG, "Retrieve users error: " + response.getJSONObject("data").toString());
                     }
-
-                    mUsersList.addNewData(result);
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

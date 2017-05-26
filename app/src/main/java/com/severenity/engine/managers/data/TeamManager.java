@@ -44,7 +44,7 @@ public class TeamManager {
      * @param callback - callback method for handling server response
      */
     public void getTeam(String teamID, RequestCallback callback) {
-        App.getRestManager().createRequest(Constants.REST_API_TEAM_GET + "/" + teamID, Request.Method.GET, null, callback);
+        App.getRestManager().createRequest(Constants.REST_API_TEAMS + "/" + teamID, Request.Method.GET, null, callback);
     }
 
     /**
@@ -54,8 +54,7 @@ public class TeamManager {
      * @param count - indicates count of records to be retrieved.
      */
     public void getTeamsAsPage(int start, int count, RequestCallback callback) {
-
-        String req = Constants.REST_API_TEAM_ALL_RANGE + "/?pageOffset=" + start + "&pageLimit=" + count;
+        String req = Constants.REST_API_TEAMS + "?pageOffset=" + start + "&pageLimit=" + count;
         App.getRestManager().createRequest(req, Request.Method.GET, null, callback);
     }
 
