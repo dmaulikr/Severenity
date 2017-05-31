@@ -1,9 +1,11 @@
 package com.severenity.entity;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Novosad on 5/5/16.
  */
-public class Device {
+public class Device extends RealmObject {
     private String deviceName;
     private String deviceId;
     private String registrationId;

@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +25,7 @@ import com.severenity.utils.DateUtils;
 import com.severenity.utils.common.Constants;
 
 import java.util.ArrayList;
-
-import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_MESSAGE;
-import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_TIMESTAMP;
-import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_USER_ID;
-import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_USER_NAME;
+import java.util.UUID;
 
 /**
  * Created by Andriy on 7/26/2016.
@@ -127,22 +122,23 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
      * Creates message objects and triggers send to server.
      */
     private void sendMessage() {
-        Message msg = new Message();
-        msg.setMessage(mMessageEdit.getText().toString());
-        msg.setUsername(App.getUserManager().getCurrentUser().getName());
-        msg.setUserID(App.getUserManager().getCurrentUser().getId());
-        msg.setTimestamp(DateUtils.getTimestamp());
+        Message message = new Message();
+        message.setMessageId(UUID.randomUUID().toString());
+        message.setText(mMessageEdit.getText().toString());
+        message.setSenderName(App.getUserManager().getCurrentUser().getName());
+        message.setSenderId(App.getUserManager().getCurrentUser().getId());
+        message.setTimestamp(DateUtils.getTimestamp());
         mMessageEdit.setText("");
 
         if (mMessageAdapter == null) {
             ArrayList<Message> messages = new ArrayList<>(1);
-            messages.add(msg);
+            messages.add(message);
             setMessageAdapter(messages);
         } else {
-            mMessageAdapter.addItem(msg);
+            mMessageAdapter.addItem(message);
         }
 
-        App.getMessageManager().sendMessage(msg);
+        App.getMessageManager().sendMessage(message);
         mMessageAdapter.notifyDataSetChanged();
         mMessagesList.setSelection(mMessageAdapter.getCount() - 1);
     }
@@ -154,7 +150,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
      */
     private void setMessageAdapter(ArrayList<Message> messages) {
         if (mMessageAdapter == null) {
-            mMessageAdapter = new MessagesAdapter(getContext(), messages);
+            mMessageAdapter = new MessagesAdapter(messages);
         }
 
         mMessagesList.setAdapter(mMessageAdapter);
@@ -170,10 +166,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
         public void onReceive(Context context, Intent intent) {
             Bundle extra = intent.getExtras();
             Message message = new Message();
-            message.setMessage(extra.getString(COLUMN_MESSAGE));
-            message.setTimestamp(extra.getString(COLUMN_TIMESTAMP));
-            message.setUsername(extra.getString(COLUMN_USER_NAME));
-            message.setUserID(extra.getString(COLUMN_USER_ID));
+            message.setMessageId(extra.getString("messageId"));
+            message.setText(extra.getString("text"));
+            message.setTimestamp(extra.getString("timestamp"));
+            message.setSenderName(extra.getString("senderName"));
+            message.setSenderId(extra.getString("senderId"));
 
             if (mMessageAdapter != null) {
                 mMessageAdapter.addItem(message);

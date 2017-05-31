@@ -1,42 +1,53 @@
 package com.severenity.entity;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
+
 /**
  * Created by Andriy on 4/27/2016.
  */
-public class Message {
+public class Message extends RealmObject {
 
-    private String mMessageId;
-    private String mUserId;
-    private String mMessage;
-    private String mTimestamp;
-    private String mUsername;
+    @Required
+    @PrimaryKey
+    private String messageId;
 
-    /*timestamp should be in format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ"*/
-    public Message() {}
+    @Required
+    private String senderId;
+
+    @Required
+    private String text;
+
+    @Required
+    private String timestamp;
+
+    @Required
+    private String senderName;
 
     public String getMessageId() {
-        return this.mMessageId;
+        return this.messageId;
     }
 
     public void setMessageId(String messageId) {
-        this.mMessageId = messageId;
+        this.messageId = messageId;
     }
 
-    public String getMessage() {return this.mMessage; }
-    public void   setMessage(String message) {this.mMessage = message; }
+    public String getText() {return this.text; }
 
-    public String getUserID() {return this.mUserId; }
-    public void   setUserID(String userID) {this.mUserId = userID;}
+    public void setText(String text) {this.text = text; }
 
-    public String getTimestamp() {return this.mTimestamp; }
-    public void   setTimestamp(String timestamp) {this.mTimestamp = timestamp;}
+    public String getSenderId() {return this.senderId; }
 
-    public String getUsername() {return this.mUsername; }
-    public void setUsername(String username) {this.mUsername = username;}
+    public void setSenderId(String senderId) {this.senderId = senderId;}
 
-    public int getMessageHASH() {
-        String str = mUserId + mMessage + mTimestamp + mUsername;
-        return str.hashCode();
-    }
+    public String getTimestamp() {return this.timestamp; }
 
+    /**
+     * Timestamp should be in format: "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+     */
+    public void   setTimestamp(String timestamp) {this.timestamp = timestamp;}
+
+    public String getSenderName() {return this.senderName; }
+    public void setSenderName(String senderName) {this.senderName = senderName;}
 }

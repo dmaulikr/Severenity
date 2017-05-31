@@ -26,11 +26,9 @@ public class MessagesAdapter extends BaseAdapter {
     public static final int INNER_MESSAGE_DELIVERED = 1;
 
     private ArrayList<Message> mMessages;
-    private Context mContext;
     private String mLocalUserID = AccessToken.getCurrentAccessToken().getUserId();
 
-    public MessagesAdapter(Context ctx, ArrayList<Message> messages) {
-        this.mContext = ctx;
+    public MessagesAdapter(ArrayList<Message> messages) {
         this.mMessages = messages;
     }
 
@@ -56,10 +54,11 @@ public class MessagesAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (getItem(position).getUserID().equals(mLocalUserID))
+        if (getItem(position).getSenderId().equals(mLocalUserID)) {
             return INNER_MESSAGE_DELIVERED;
-        else
+        } else {
             return OUTER_MESSAGE_DELIVERED;
+        }
     }
 
     @Override
@@ -91,13 +90,13 @@ public class MessagesAdapter extends BaseAdapter {
         }
 
         TextView tvUserName = (TextView) messageView.findViewById(R.id.messageUsername);
-        tvUserName.setText(message.getUsername());
+        tvUserName.setText(message.getSenderName());
 
         TextView tvMessage = (TextView) messageView.findViewById(R.id.messageMessage);
-        tvMessage.setText(message.getMessage());
+        tvMessage.setText(message.getText());
 
         ImageView ivProfileImage = (ImageView) messageView.findViewById(R.id.messageAvatar);
-        Picasso.with(messageView.getContext()).load("https://graph.facebook.com/" + message.getUserID() + "/picture?type=normal").into(ivProfileImage);
+        Picasso.with(messageView.getContext()).load("https://graph.facebook.com/" + message.getSenderId() + "/picture?type=normal").into(ivProfileImage);
         return messageView;
     }
 

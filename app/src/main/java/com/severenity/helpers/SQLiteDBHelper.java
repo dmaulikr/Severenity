@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.severenity.entity.contracts.MsgContract;
 import com.severenity.entity.contracts.PlaceContract;
 import com.severenity.entity.contracts.QuestContract;
 import com.severenity.entity.contracts.RecoveryContract;
@@ -54,14 +53,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     UserContract.DBUser.COLUMN_TEAM + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_LEVEL + INT_TYPE + " )";
 
-    private static final String DB_SQL_CREATE_MESSAGES =
-            "CREATE TABLE " + MsgContract.DBMsg.TABLE_MESSAGE + " (" +
-                    MsgContract.DBMsg._ID + " INTEGER PRIMARY KEY," +
-                    MsgContract.DBMsg.COLUMN_USER_ID   + TEXT_TYPE + COMMA_SEP +
-                    MsgContract.DBMsg.COLUMN_MESSAGE   + TEXT_TYPE + COMMA_SEP +
-                    MsgContract.DBMsg.COLUMN_USER_NAME + TEXT_TYPE + COMMA_SEP +
-                    MsgContract.DBMsg.COLUMN_TIMESTAMP + TEXT_TYPE + " )";
-
     private static final String DB_SQL_CREATE_QUESTS =
             "CREATE TABLE " + QuestContract.DBQuest.TABLE_QUESTS + " (" +
                     QuestContract.DBQuest._ID + INT_TYPE + " PRIMARY KEY," +
@@ -106,8 +97,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     private static final String DB_SQL_DELETE_USERS = "DROP TABLE IF EXISTS " + UserContract.DBUser.TABLE_USERS;
 
-    private static final String DB_SQL_DELETE_MESSAGES = "DROP TABLE IF EXISTS " + MsgContract.DBMsg.TABLE_MESSAGE;
-
     private static final String DB_SQL_DELETE_QUESTS = "DROP TABLE IF EXISTS " + QuestContract.DBQuest.TABLE_QUESTS;
 
     // !!! DO NOT CALL THIS STATEMENT DIRECTLY. Use deletePlaces method instead
@@ -146,7 +135,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // TEMP: clearing on creation
         db.execSQL(DB_SQL_CREATE_USERS);
-        db.execSQL(DB_SQL_CREATE_MESSAGES);
         db.execSQL(DB_SQL_CREATE_QUESTS);
         createPlace(db);
         db.execSQL(DB_SQL_CREATE_RECOVERY);
@@ -156,10 +144,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        if (oldVersion == 1 && newVersion == DB_VERSION) {
-            db.execSQL(DB_SQL_CREATE_MESSAGES);
-        }
-
         if (oldVersion == 2 && newVersion == DB_VERSION) {
             db.execSQL(DB_SQL_CREATE_QUESTS);
         }

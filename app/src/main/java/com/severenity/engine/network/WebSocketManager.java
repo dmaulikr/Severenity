@@ -43,7 +43,7 @@ public class WebSocketManager {
      *
      * @param connect - if true - calls .connect() method on create mSocket
      */
-    public boolean createSocket(String address, boolean connect) {
+    private boolean createSocket(String address, boolean connect) {
         if (address == null || address.equalsIgnoreCase("")) {
             return false;
         }
@@ -99,7 +99,7 @@ public class WebSocketManager {
      * Subscription for user, place and other entity updates sent from server in order
      * to update local database.
      */
-    public void subscribeForEntityUpdateEvents() {
+    private void subscribeForEntityUpdateEvents() {
         if (mSocket == null) {
             return;
         }
@@ -200,7 +200,7 @@ public class WebSocketManager {
      * Unsubscription from user, place and other entity updates sent from server in order
      * to stop updating local database.
      */
-    public void unSubscribeFromEntityUpdateEvents() {
+    private void unSubscribeFromEntityUpdateEvents() {
         if (mSocket == null) {
             return;
         }
@@ -337,7 +337,7 @@ public class WebSocketManager {
     /**
      * Subscribes to messages events from the server.
      */
-    public void subscribeForMessageEvent() {
+    private void subscribeForMessageEvent() {
         if (mSocket == null) {
             return;
         }
@@ -347,24 +347,14 @@ public class WebSocketManager {
             @Override
             public void call(Object... args) {
                 for (Object arg : args) {
-                    try {
-                        JSONObject jsonObject = (JSONObject) arg;
-                        final Message message = new Message();
-                        message.setUserID(jsonObject.getString("senderId"));
-                        message.setMessage(jsonObject.getString("text"));
-                        message.setUsername(jsonObject.getString("senderName"));
-                        message.setTimestamp(jsonObject.getString("timestamp"));
-
-                        Handler handler = new Handler(Looper.getMainLooper());
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                App.getMessageManager().onMessageRetrieved(message);
-                            }
-                        });
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    final JSONObject jsonObject = (JSONObject) arg;
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            App.getMessageManager().onMessageRetrieved(jsonObject);
+                        }
+                    });
                 }
             }
         });
@@ -374,7 +364,7 @@ public class WebSocketManager {
      * Unsubscribe from location events from the server.
      *
      */
-    public void unSubscribeFromMessageEvents() {
+    private void unSubscribeFromMessageEvents() {
         if (mSocket == null) {
             return;
         }
@@ -395,9 +385,10 @@ public class WebSocketManager {
 
         try {
             JSONObject jsonObject = new JSONObject();
+            jsonObject.put("messageId", message.getMessageId());
             jsonObject.put("senderId", AccessToken.getCurrentAccessToken().getUserId());
-            jsonObject.put("text", message.getMessage());
-            jsonObject.put("senderName", message.getUsername());
+            jsonObject.put("text", message.getText());
+            jsonObject.put("senderName", message.getSenderName());
             jsonObject.put("timestamp", message.getTimestamp());
             mSocket.emit(Constants.SOCKET_EVENT_MESSAGE, jsonObject);
         } catch (JSONException e) {

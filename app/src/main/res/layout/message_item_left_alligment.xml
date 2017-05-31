@@ -16,7 +16,6 @@
         android:orientation="horizontal"
         android:padding="2dp">
 
-
         <ImageView
             android:id="@+id/messageAvatar"
             android:layout_width="40dp"

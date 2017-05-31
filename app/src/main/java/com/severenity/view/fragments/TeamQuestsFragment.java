@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.severenity.App;
 import com.severenity.R;
 
 public class TeamQuestsFragment extends Fragment {
@@ -34,6 +35,7 @@ public class TeamQuestsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        App.getTeamQuestManager().getTeamQuests();
         return inflater.inflate(R.layout.fragment_team_quests, container, false);
     }
 

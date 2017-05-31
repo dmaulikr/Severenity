@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.severenity.engine.managers.data.MessageManager;
 import com.severenity.engine.managers.data.PlacesManager;
 import com.severenity.engine.managers.data.QuestManager;
 import com.severenity.engine.managers.data.TeamManager;
+import com.severenity.engine.managers.data.TeamQuestManager;
 import com.severenity.engine.managers.data.UserManager;
 import com.severenity.engine.managers.game.ChipManager;
 import com.severenity.engine.managers.location.LocationManager;
@@ -24,6 +24,8 @@ import com.severenity.helpers.GoogleApiHelper;
 import com.severenity.utils.FontsOverride;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.activities.LoginActivity;
+
+import io.realm.Realm;
 
 /**
  * Main app file. Handles all managers and is central point for access to the managers.
@@ -44,6 +46,7 @@ public class App extends Application {
     private PlacesManager mPlacesManager;
     private TeamManager mTeamManager;
     private NetworkManager mNetworkManager;
+    private TeamQuestManager teamQuestManager;
 
     private static App mInstance;
 
@@ -55,7 +58,7 @@ public class App extends Application {
 
         FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/zekton.ttf");
 
-        FacebookSdk.sdkInitialize(this);
+        Realm.init(this);
 
         mInstance = this;
         Context mContext = getApplicationContext();
@@ -67,6 +70,7 @@ public class App extends Application {
         webSocketManager = new WebSocketManager();
         restManager = new RestManager(mContext);
         questManager = new QuestManager(mContext);
+        teamQuestManager = new TeamQuestManager(mContext);
         gcmManager = new GCMManager();
         msgManager = new MessageManager(mContext);
         mNetworkManager = new NetworkManager(mContext);
@@ -144,6 +148,10 @@ public class App extends Application {
 
     public static QuestManager getQuestManager() {
         return getInstance().questManager;
+    }
+
+    public static TeamQuestManager getTeamQuestManager() {
+        return getInstance().teamQuestManager;
     }
 
     public static PlacesManager getPlacesManager() {

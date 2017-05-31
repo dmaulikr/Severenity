@@ -1,11 +1,7 @@
 package com.severenity.engine.managers.data;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.android.volley.NetworkResponse;
@@ -20,34 +16,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_MESSAGE;
-import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_TIMESTAMP;
-import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_USER_ID;
-import static com.severenity.entity.contracts.MsgContract.DBMsg.COLUMN_USER_NAME;
-import static com.severenity.entity.contracts.MsgContract.DBMsg.TABLE_MESSAGE;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by Andriy on 4/27/2016.
  */
 public class MessageManager extends DataManager {
 
+    Realm realm;
+
     public MessageManager(Context context) {
         super(context);
-    }
-
-    private boolean addMessage(Message message) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_USER_ID,   message.getUserID());
-        values.put(COLUMN_MESSAGE,   message.getMessage());
-        values.put(COLUMN_TIMESTAMP, message.getTimestamp());
-        values.put(COLUMN_USER_NAME, message.getUsername());
-
-        long success = db.insert(TABLE_MESSAGE, "NULL", values);
-        db.close();
-
-        return success != -1;
+        realm = Realm.getDefaultInstance();
     }
 
     /**
@@ -56,41 +39,8 @@ public class MessageManager extends DataManager {
      * @return list of messages from DB.
      */
     public ArrayList<Message> getMessages() {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor;
-        try {
-            cursor = db.query(
-                    TABLE_MESSAGE,
-                    new String[]{COLUMN_USER_ID, COLUMN_MESSAGE, COLUMN_TIMESTAMP, COLUMN_USER_NAME},
-                    null,
-                    null,
-                    null, null, null, null
-            );
-        } catch (SQLException e) {
-            return null;
-        }
-
-        if (cursor.getCount() == 0) return null;
-
-        ArrayList<Message> messagesList = new ArrayList<>(cursor.getCount());
-
-        if (cursor.moveToFirst()) {
-            do {
-                Message message = new Message();
-                message.setUserID(cursor.getString(cursor.getColumnIndex(COLUMN_USER_ID)));
-                message.setUsername(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME)));
-                message.setTimestamp(cursor.getString(cursor.getColumnIndex(COLUMN_TIMESTAMP)));
-                message.setMessage(cursor.getString(cursor.getColumnIndex(COLUMN_MESSAGE)));
-
-                messagesList.add(message);
-            }
-            while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return messagesList;
+        RealmResults<Message> messages = realm.where(Message.class).findAllAsync();
+        return new ArrayList<>(realm.copyFromRealm(messages));
     }
 
     /**
@@ -109,17 +59,14 @@ public class MessageManager extends DataManager {
 
                     JSONArray messageObjects = response.getJSONArray("data");
                     for (int i = 0; i < messageObjects.length(); i++) {
-                        JSONObject messageObject = messageObjects.getJSONObject(i);
-                        Message message = new Message();
-                        message.setMessage(messageObject.getString("text"));
-                        if (messageObject.optString("senderName").isEmpty()) {
-                            Log.e(Constants.TAG, message.getMessage());
-                        }
-                        message.setUsername(messageObject.getString("senderName"));
-                        message.setUserID("senderId");
-                        message.setMessageId(messageObject.getString("messageId"));
-                        message.setTimestamp(messageObject.getString("timestamp"));
-                        onMessageRetrieved(message);
+                        final JSONObject messageObject = messageObjects.getJSONObject(i);
+                        realm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                realm.createOrUpdateObjectFromJson(Message.class, messageObject);
+                            }
+                        });
+                        onMessageRetrieved(messageObject);
                     }
 
                     Intent updateStatusLabel = new Intent(Constants.INTENT_FILTER_UPDATE_STATUS_LABEL);
@@ -143,36 +90,55 @@ public class MessageManager extends DataManager {
     /**
      * Sends message via web sockets.
      *
-     * @param msg - {@link Message} message to send.
-     * @return true if message was fired, false otherwise.
+     * @param message - {@link Message} message to send.
      */
-    public boolean sendMessage(Message msg) {
-
-        if (msg == null) {
-            return false;
-        }
-
-        if (addMessage(msg)) {
-            App.getWebSocketManager().sendMessageToServer(msg);
-            return true;
-        }
-
-        return false;
-    }
-
-    public void onMessageRetrieved(Message message) {
+    public void sendMessage(final Message message) {
         if (message == null) {
             return;
         }
 
-        addMessage(message);
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealm(message);
+            }
+        });
 
-        Intent intent = new Intent(Constants.INTENT_FILTER_NEW_MESSAGE);
-        intent.putExtra(COLUMN_MESSAGE, message.getMessage());
-        intent.putExtra(COLUMN_TIMESTAMP, message.getTimestamp());
-        intent.putExtra(COLUMN_USER_ID, message.getUserID());
-        intent.putExtra(COLUMN_USER_NAME, message.getUsername());
+        App.getWebSocketManager().sendMessageToServer(message);
+    }
 
-        App.getLocalBroadcastManager().sendBroadcast(intent);
+    public void onMessageRetrieved(final JSONObject message) {
+        if (message == null) {
+            return;
+        }
+
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.createOrUpdateObjectFromJson(Message.class, message);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                try {
+                    Message m = realm.where(Message.class).equalTo("messageId", message.getString("messageId")).findFirst();
+                    Intent intent = new Intent(Constants.INTENT_FILTER_NEW_MESSAGE);
+                    intent.putExtra("messageId", m.getMessageId());
+                    intent.putExtra("text", m.getText());
+                    intent.putExtra("timestamp", m.getTimestamp());
+                    intent.putExtra("senderId", m.getSenderId());
+                    intent.putExtra("senderName", m.getSenderName());
+
+                    App.getLocalBroadcastManager().sendBroadcast(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                error.printStackTrace();
+            }
+        });
     }
 }
