@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.graphics.Color" />
-        <variable name="quest" type="com.severenity.entity.quest.Quest" />
+        <variable name="teamQuest" type="com.severenity.entity.quest.team.TeamQuest" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -17,33 +17,21 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:id="@+id/ivQuestIcon"
-                android:src="@{quest.isFinished ? @drawable/icon_quest_finished : @drawable/icon_quest_in_progress}"
+                android:src="@{teamQuest.isFinished ? @drawable/icon_quest_finished : @drawable/icon_quest_in_progress}"
                 android:layout_width="48dp"
                 android:layout_height="48dp" />
 
-            <TextView
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:layout_alignParentEnd="true"
-                android:drawableTop="@drawable/place_money"
-                android:id="@+id/tvCoinsAmountForQuest"
-                android:text="@{String.valueOf(quest.credits)}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:layout_toStartOf="@id/tvCoinsAmountForQuest"
-                android:drawableTop="@drawable/place_experience"
-                android:id="@+id/tvExpAmountForQuest"
-                android:text="@{String.valueOf(quest.experience)}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="12sp" />
+            <!--<TextView-->
+            <!--android:layout_marginTop="12dp"-->
+            <!--android:layout_marginBottom="12dp"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:drawableTop="@drawable/place_money"-->
+            <!--android:id="@+id/tvCoinsAmountForQuest"-->
+            <!--android:text="@{String.valueOf(teamQuest.reward.credits)}"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:textSize="12sp" />-->
 
             <LinearLayout
                 android:id="@+id/llQuestDetails"
@@ -56,7 +44,7 @@
                 <TextView
                     android:textSize="20sp"
                     android:id="@+id/tvQuestTitle"
-                    android:text="@{quest.title}"
+                    android:text="@{teamQuest.title}"
                     android:layout_margin="5dp"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
@@ -66,7 +54,7 @@
                     android:textSize="12sp"
                     android:layout_gravity="center"
                     android:id="@+id/tvQuestDescription"
-                    android:text="@{quest.description}"
+                    android:text="@{teamQuest.description}"
                     android:lines="2"
                     android:ellipsize="marquee"
                     android:singleLine="false"
@@ -74,16 +62,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ivQuestIcon"
-                android:layout_toStartOf="@id/llQuestDetails"
-                android:layout_alignParentBottom="true"
-                android:gravity="center"
-                android:padding="7dp"
-                android:text='@{quest.progress + "%"}' />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 </layout>

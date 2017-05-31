@@ -54,9 +54,6 @@ public class TeamQuestManager extends DataManager {
                         try {
                             if ("success".equals(response.getString("result"))) {
                                 realm.createOrUpdateAllFromJson(TeamQuest.class, response.getJSONArray("data"));
-                                RealmResults<TeamQuest> teamQuestsRealm = realm.where(TeamQuest.class).findAll();
-                                ArrayList<TeamQuest> teamQuests = new ArrayList<>(realm.copyFromRealm(teamQuestsRealm));
-                                Log.e(Constants.TAG, teamQuests.toString());
                             } else {
                                 Log.e(Constants.TAG, response.getJSONObject("data").toString());
                             }

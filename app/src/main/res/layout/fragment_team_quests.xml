@@ -5,9 +5,12 @@
     tools:context="com.severenity.view.fragments.TeamQuestsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ExpandableListView
+        android:id="@+id/elvTeamQuests"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/title_team_quests" />
+        android:indicatorEnd="?android:attr/expandableListPreferredItemIndicatorLeft"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="0.5dp" />
 
 </FrameLayout>
