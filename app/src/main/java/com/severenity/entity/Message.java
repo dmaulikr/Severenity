@@ -5,7 +5,7 @@ import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
 /**
- * Created by Andriy on 4/27/2016.
+ * Created by Novosad on 4/27/2016.
  */
 public class Message extends RealmObject {
 

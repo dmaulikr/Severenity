@@ -24,14 +24,13 @@ import com.severenity.view.fragments.clans.WarningFragment;
 import java.util.Map;
 
 /**
- * Created by Andriy on 8/14/2016.
+ * Created by Novosad on 8/14/2016.
  */
 public class TeamsPage extends ClansPageBase implements TeamEventsListener {
     // variable to start button id's from.
     protected final int BUTTON_TEAM_LIST_ID = 10001;
     protected final int BUTTON_TEAM_ID      = 10002;
     protected final int BUTTON_CHAT_ID      = 10003;
-    protected final int BUTTON_QUESTS_ID      = 10004;
 
     private View currentSelectedPagesButton = null;
     private LinearLayout mButtonsLayout;
@@ -84,7 +83,6 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
             TeamFragment teamFragment = TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeam());
             teamFragment.setListener(this);
             mFragments.put(BUTTON_TEAM_ID, new FragmentInfo(teamFragment, "teamFragment", context.getResources().getString(R.string.clans_team), true));
-            mFragments.put(BUTTON_QUESTS_ID, new FragmentInfo(TeamQuestsFragment.newInstance(), "teamQuestsFragment", context.getResources().getString(R.string.clans_quests), false));
         }
 
         mWarningContentLayoutID = R.id.warningFragmentContent;
@@ -212,60 +210,6 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
     }
 
     /**
-     * Creates quests fragment in the teams page when player has joined or created a team.
-     */
-    protected void createQuestsFragment() {
-        if (mFragments.get(BUTTON_QUESTS_ID) != null) {
-            return;
-        }
-
-        if (getView() == null) {
-            return;
-        }
-
-        FragmentInfo info = new FragmentInfo(
-            TeamQuestsFragment.newInstance(),
-            "teamQuestsFragment",
-            getResources().getString(R.string.clans_quests),
-            false
-        );
-
-        mFragments.put(BUTTON_QUESTS_ID, info);
-
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.add(R.id.teamFragmentsContent, info.mFragment, info.mFragmentName);
-        transaction.hide(info.mFragment);
-        transaction.commit();
-
-        setupLayoutParamsForInnerFragment();
-
-        createButton(info, BUTTON_QUESTS_ID);
-    }
-
-    /**
-     * Removes quests fragment from the teams page when player does not have team.
-     */
-    protected void removeQuestsFragment() {
-        if (mFragments.get(BUTTON_QUESTS_ID) == null) {
-            return;
-        }
-
-        if (getView() == null) {
-            return;
-        }
-
-        FragmentInfo info = mFragments.remove(BUTTON_QUESTS_ID);
-
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.remove(info.mFragment);
-        transaction.commit();
-
-        mButtonsLayout.removeView(getView().findViewById(BUTTON_QUESTS_ID));
-
-        setupLayoutParamsForInnerFragment();
-    }
-
-    /**
      * Setups layout parameters for the inner fragment in the teams page.
      */
     private void setupLayoutParamsForInnerFragment() {
@@ -289,19 +233,16 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
 
     @Override
     public void onTeamCreated() {
-        createQuestsFragment();
         createTeamFragment();
     }
 
     @Override
     public void onTeamJoined() {
-        createQuestsFragment();
         createTeamFragment();
     }
 
     @Override
     public void onTeamLeft() {
-        removeQuestsFragment();
         removeTeamFragment();
     }
 }

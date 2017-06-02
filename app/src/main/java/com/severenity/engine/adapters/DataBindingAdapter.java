@@ -7,7 +7,7 @@ import android.widget.ImageView;
  * Created by Novosad on 5/17/16.
  */
 public class DataBindingAdapter {
-    @BindingAdapter("chipIconResource")
+    @BindingAdapter("skillIconResource")
     public static void setImageResource(ImageView imageView, int resource) {
         imageView.setImageResource(resource);
     }

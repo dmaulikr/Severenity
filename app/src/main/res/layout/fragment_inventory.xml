@@ -5,7 +5,7 @@
     tools:context="com.severenity.view.fragments.InventoryFragment">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvChips"
+        android:id="@+id/rvSkills"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

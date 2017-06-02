@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Andriy on 8/27/2016.
+ * Created by Novosad on 8/27/2016.
  *
  * Team manager provides API for manipulating with the teams
  */

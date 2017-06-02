@@ -11,7 +11,7 @@ import com.severenity.App;
 import com.severenity.R;
 
 /**
- * Created by Andriy on 5/12/2016.
+ * Created by Novosad on 5/12/2016.
  */
 public class MarkerInfoAdapter implements GoogleMap.InfoWindowAdapter {
 

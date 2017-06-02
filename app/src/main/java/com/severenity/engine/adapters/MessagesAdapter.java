@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 /**
- * Created by Andriy on 4/29/2016.
+ * Created by Novosad on 4/29/2016.
  */
 public class MessagesAdapter extends BaseAdapter {
 

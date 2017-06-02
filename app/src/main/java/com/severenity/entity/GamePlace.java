@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Andriy on 5/15/2016.
+ * Created by Novosad on 5/15/2016.
  */
 public class GamePlace {
     public enum PlaceType {

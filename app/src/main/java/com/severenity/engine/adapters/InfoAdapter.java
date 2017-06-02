@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import java.util.ArrayList;
 
 /**
- * Created by Andriy on 5/18/2016.
+ * Created by Novosad on 5/18/2016.
  */
 
 public abstract class InfoAdapter extends BaseAdapter {

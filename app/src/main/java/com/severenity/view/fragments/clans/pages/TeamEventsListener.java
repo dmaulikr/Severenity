@@ -1,7 +1,7 @@
 package com.severenity.view.fragments.clans.pages;
 
 /**
- * Created by Andriy on 9/6/2016.
+ * Created by Novosad on 9/6/2016.
  *
  * This interface describes the events that can happen with the team.
  * team can be created, user can joint team, user can leave team

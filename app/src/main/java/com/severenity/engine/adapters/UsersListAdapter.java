@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by Andriy on 8/4/2016.
+ * Created by Novosad on 8/4/2016.
  */
 
 public class UsersListAdapter extends CustomListArrayAdapterBase<User> {

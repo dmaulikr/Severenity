@@ -15,7 +15,7 @@ import com.severenity.view.fragments.clans.FragmentInfo;
 import com.severenity.view.fragments.clans.WorldFragment;
 
 /**
- * Created by Andriy on 8/14/2016.
+ * Created by Novosad on 8/14/2016.
  */
 public class WorldPage extends ClansPageBase {
     // indicate button's ID that current page has.

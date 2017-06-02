@@ -14,7 +14,7 @@ import com.severenity.engine.managers.data.QuestManager;
 import com.severenity.engine.managers.data.TeamManager;
 import com.severenity.engine.managers.data.TeamQuestManager;
 import com.severenity.engine.managers.data.UserManager;
-import com.severenity.engine.managers.game.ChipManager;
+import com.severenity.engine.managers.game.SkillManager;
 import com.severenity.engine.managers.location.LocationManager;
 import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.engine.network.NetworkManager;
@@ -37,7 +37,7 @@ public class App extends Application {
     private LocationManager locationManager;
     private LocalBroadcastManager localBroadcastManager;
     private UserManager userManager;
-    private ChipManager chipManager;
+    private SkillManager skillManager;
     private WebSocketManager webSocketManager;
     private MessageManager msgManager;
     private QuestManager questManager;
@@ -66,7 +66,7 @@ public class App extends Application {
         locationManager = new LocationManager(mContext);
         localBroadcastManager = LocalBroadcastManager.getInstance(mContext);
         userManager = new UserManager(mContext);
-        chipManager = new ChipManager(mContext);
+        skillManager = new SkillManager(mContext);
         webSocketManager = new WebSocketManager();
         restManager = new RestManager(mContext);
         questManager = new QuestManager(mContext);
@@ -134,8 +134,8 @@ public class App extends Application {
         return getInstance().restManager;
     }
 
-    public static ChipManager getSpellManager() {
-        return getInstance().chipManager;
+    public static SkillManager getSpellManager() {
+        return getInstance().skillManager;
     }
 
     public static WebSocketManager getWebSocketManager() {

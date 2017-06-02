@@ -1,6 +1,5 @@
 package com.severenity.engine.adapters;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -10,7 +9,7 @@ import com.severenity.view.fragments.clans.pages.ClansPageBase;
 import java.util.ArrayList;
 
 /**
- * Created by Andriy on 8/13/2016.
+ * Created by Novosad on 8/13/2016.
  */
 public class ClansViewPagerAdapter extends FragmentStatePagerAdapter {
     private String mPageTitles[];

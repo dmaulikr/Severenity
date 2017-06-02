@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.severenity.R;
 
 /**
- * Created by Andriy on 8/8/2016.
+ * Created by Novosad on 8/8/2016.
  */
 public class WarningFragment extends Fragment {
 

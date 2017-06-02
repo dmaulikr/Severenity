@@ -33,7 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by Andriy on 5/17/2016.
+ * Created by Novosad on 5/17/2016.
  */
 public class PlacesInfoDialog extends DialogFragment {
 

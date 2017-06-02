@@ -16,7 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Andriy on 6/28/2016.
+ * Created by Novosad on 6/28/2016.
  */
 public class UsersActions implements View.OnClickListener {
     public enum ActionsType {
@@ -33,7 +33,6 @@ public class UsersActions implements View.OnClickListener {
     public UsersActions(View view, Context context) {
         mUserActions = (LinearLayout)view.findViewById(R.id.userActions);
         mUserActions.findViewById(R.id.btnCapturePlace).setOnClickListener(this);
-        mUserActions.findViewById(R.id.btnCapturePlayer).setOnClickListener(this);
         mUserActions.findViewById(R.id.btnAttack).setOnClickListener(this);
         mUserActions.findViewById(R.id.btnDefend).setOnClickListener(this);
         mUserActions.findViewById(R.id.btnInvisibility).setOnClickListener(this);
@@ -55,7 +54,6 @@ public class UsersActions implements View.OnClickListener {
         switch (type) {
             case ActionsOnUser: {
                 if (mUserActions.getVisibility() == View.INVISIBLE) {
-                    (mUserActions.findViewById(R.id.btnCapturePlayer)).setVisibility(View.VISIBLE);
                     (mUserActions.findViewById(R.id.btnDefend)).setVisibility(View.VISIBLE);
                     (mUserActions.findViewById(R.id.btnInvisibility)).setVisibility(View.VISIBLE);
                     (mUserActions.findViewById(R.id.btnAttack)).setVisibility(View.VISIBLE);
@@ -72,7 +70,6 @@ public class UsersActions implements View.OnClickListener {
                     (mUserActions.findViewById(R.id.btnDefend)).setVisibility(View.VISIBLE);
                     (mUserActions.findViewById(R.id.btnInvisibility)).setVisibility(View.VISIBLE);
                     (mUserActions.findViewById(R.id.btnCapturePlace)).setVisibility(View.VISIBLE);
-                    (mUserActions.findViewById(R.id.btnCapturePlayer)).setVisibility(View.GONE);
                     mUserActions.setVisibility(View.VISIBLE);
                     Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.user_actions_slide_in);
                     mUserActions.startAnimation(anim);
@@ -155,7 +152,6 @@ public class UsersActions implements View.OnClickListener {
                 break;
             }
 
-            case R.id.btnCapturePlayer:
             case R.id.btnDefend:
             case R.id.btnInvisibility:
                 Toast.makeText(mContext, "This signal is under development. Stay tuned!", Toast.LENGTH_SHORT).show();

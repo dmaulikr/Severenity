@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Andriy on 9/2/2016.
+ * Created by Novosad on 9/2/2016.
  */
 public abstract class CustomListArrayAdapterBase<T> extends ArrayAdapter<T> {
     protected List<T> mItemList = new ArrayList<>();

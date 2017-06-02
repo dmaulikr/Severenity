@@ -30,9 +30,9 @@ public class ShopFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shop, container, false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         rvShopItemsList = (RecyclerView) view.findViewById(R.id.rvShopItems);
-        rvShopItemsList.setLayoutManager(gridLayoutManager );
+        rvShopItemsList.setLayoutManager(gridLayoutManager);
         ShopItemsAdapter adapter = new ShopItemsAdapter(createMockListData());
         rvShopItemsList.setAdapter(adapter);
 
@@ -41,35 +41,9 @@ public class ShopFragment extends Fragment {
 
     private List<ShopItem> createMockListData() {
         List<ShopItem> list = new ArrayList<>();
-        list.add(new ShopItem("First item", R.drawable.shop_item, "Test description blah-blah-blah", "50 credits"));
-        list.add(new ShopItem("First item", 0, "Test description blah-blah-blah", "70 credits"));
-        list.add(new ShopItem("First item", 0, "Test description blah-blah-blah", "110 credits"));
-        list.add(new ShopItem("First item", 0, "Test description blah-blah-blah", "90 credits"));
-        list.add(new ShopItem("First item", 0, "Test description blah-blah-blah", "10 credits"));
+        list.add(new ShopItem("Credits", R.drawable.shop_item_credits, "100 credits for in-game activities.", 0, 1));
+        list.add(new ShopItem("Quest tip", R.drawable.shop_item_tip, "A small tip used during the quest.", 50, 0.5));
+        list.add(new ShopItem("Quest Pass", R.mipmap.shop_item_ticket, "Ticket for participation in the quest.", 0, 10));
         return list;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-//        mapView.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-//        mapView.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-//        mapView.onDestroy();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-//        mapView.onSaveInstanceState(outState);
     }
 }

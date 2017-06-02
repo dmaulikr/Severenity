@@ -19,7 +19,7 @@ import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 import java.util.List;
 
 /**
- * Created by Andriy on 8/31/2016.
+ * Created by Novosad on 8/31/2016.
  */
 public class TeamsListAdapter extends CustomListArrayAdapterBase<Team> {
 

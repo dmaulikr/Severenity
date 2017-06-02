@@ -1,8 +1,8 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.severenity.view.Dialogs.ChipInfoFragment">
+    tools:context="com.severenity.view.Dialogs.SkillInfoFragment">
     <data>
-        <variable name="chip" type="com.severenity.entity.chip.Chip" />
+        <variable name="skill" type="com.severenity.entity.skill.Skill" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,76 +17,76 @@
             android:src="@drawable/com_facebook_close" />
 
         <ImageView
-            android:id="@+id/ivChipInfoImage"
+            android:id="@+id/ivSkillInfoImage"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            chipIconResource="@{chip.chipIconResource}" />
+            skillIconResource="@{skill.skillIconResource}" />
 
         <RelativeLayout
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:id="@+id/rlChipRarity"
-            android:layout_toEndOf="@id/ivChipInfoImage"
+            android:id="@+id/rlSkillRarity"
+            android:layout_toEndOf="@id/ivSkillInfoImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/tvChipRarityLabel"
+                android:id="@+id/tvSkillRarityLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/rarity" />
             <TextView
-                android:layout_below="@id/tvChipRarityLabel"
+                android:layout_below="@id/tvSkillRarityLabel"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/tvChipRarity"
+                android:id="@+id/tvSkillRarity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{chip.rarity.toString()}"/>
+                android:text="@{skill.rarity.toString()}"/>
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_margin="@dimen/activity_horizontal_margin"
-            android:id="@+id/rlChipType"
-            android:layout_toEndOf="@id/rlChipRarity"
+            android:id="@+id/rlSkillType"
+            android:layout_toEndOf="@id/rlSkillRarity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/tvChipTypeLabel"
+                android:id="@+id/tvSkillTypeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type" />
             <TextView
-                android:layout_below="@id/tvChipTypeLabel"
+                android:layout_below="@id/tvSkillTypeLabel"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/tvChipType"
+                android:id="@+id/tvSkillType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{chip.chipType.toString()}"/>
+                android:text="@{skill.skillType.toString()}"/>
         </RelativeLayout>
 
         <TextView
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:layout_centerInParent="true"
-            android:id="@+id/tvChipDescription"
-            android:layout_toEndOf="@id/ivChipInfoImage"
-            android:layout_below="@id/rlChipRarity"
+            android:id="@+id/tvSkillDescription"
+            android:layout_toEndOf="@id/ivSkillInfoImage"
+            android:layout_below="@id/rlSkillRarity"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{chip.description}" />
+            android:text="@{skill.description}" />
 
         <TextView
-            android:layout_below="@id/ivChipInfoImage"
+            android:layout_below="@id/ivSkillInfoImage"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/tvChipDescription"
+            android:layout_toStartOf="@id/tvSkillDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@{String.valueOf(chip.level)}" />
+            android:text="@{String.valueOf(skill.level)}" />
 
     </RelativeLayout>
 </layout>

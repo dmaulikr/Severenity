@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Andriy on 7/28/2016.
+ * Created by Novosad on 7/28/2016.
  */
 public class TeamsListFragment extends Fragment implements View.OnClickListener, TeamEventsListener,
         CustomListView.LoadDataListener {

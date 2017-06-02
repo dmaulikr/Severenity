@@ -32,7 +32,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.severenity.App;
 import com.severenity.R;
-import com.severenity.engine.adapters.ChipAdapter;
+import com.severenity.engine.adapters.SkillAdapter;
 import com.severenity.entity.GamePlace;
 import com.severenity.entity.UsersActions;
 import com.severenity.utils.CustomTypefaceSpan;
@@ -55,7 +55,7 @@ public class GameMapFragment extends Fragment {
 
     private ActionMode spellMode;
 
-    private ChipAdapter chipAdapter;
+    private SkillAdapter skillAdapter;
 
     public GameMapFragment() {
         // Required empty public constructor
@@ -152,27 +152,27 @@ public class GameMapFragment extends Fragment {
             }
         });
 
-        chipAdapter = new ChipAdapter(activity, R.layout.spell_item);
+        skillAdapter = new SkillAdapter(activity, R.layout.spell_item);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
         drawerList = (ListView) view.findViewById(R.id.lvSpells);
-        drawerList.setAdapter(chipAdapter);
+        drawerList.setAdapter(skillAdapter);
 
         drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (spellMode == null) {
-                    App.getSpellManager().setCurrentChip(chipAdapter.getItem(position));
+                    App.getSpellManager().setCurrentSkill(skillAdapter.getItem(position));
                     spellMode = activity.startSupportActionMode(new ActionBarSpell());
-                    spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), chipAdapter.getItem(position).getTitle()));
+                    spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), skillAdapter.getItem(position).getTitle()));
                 } else {
-                    App.getSpellManager().setCurrentChip(chipAdapter.getItem(position));
+                    App.getSpellManager().setCurrentSkill(skillAdapter.getItem(position));
 
-                    if (App.getSpellManager().getCurrentChip() == null) {
+                    if (App.getSpellManager().getCurrentSkill() == null) {
                         spellMode.finish();
                         spellMode = null;
                     } else {
-                        spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), chipAdapter.getItem(position).getTitle()));
+                        spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), skillAdapter.getItem(position).getTitle()));
                     }
                 }
 

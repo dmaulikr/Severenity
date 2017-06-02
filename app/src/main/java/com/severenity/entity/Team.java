@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Andriy on 8/31/2016.
+ * Created by Novosad on 8/31/2016.
  */
 public class Team {
     private String mTeamName;

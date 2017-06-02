@@ -1,7 +1,7 @@
 package com.severenity.view.fragments.clans;
 
 /**
- * Created by Andriy on 8/13/2016.
+ * Created by Novosad on 8/13/2016.
  */
 
 import android.support.v4.app.Fragment;

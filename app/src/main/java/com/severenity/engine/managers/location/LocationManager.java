@@ -164,7 +164,7 @@ public class LocationManager implements LocationListener {
             @Override
             public void onMapClick(LatLng latLng) {
                 if (latLng != null) {
-                    if (App.getSpellManager().isChipMode()) {
+                    if (App.getSpellManager().isSkillMode()) {
                         // Handle spells here if needed
                     } else {
                         resetCameraLocation();
@@ -179,7 +179,7 @@ public class LocationManager implements LocationListener {
             @Override
             public boolean onMyLocationButtonClick() {
                 resetCameraLocation();
-                App.getSpellManager().cancelChipMode();
+                App.getSpellManager().cancelSkillMode();
                 return true;
             }
         });

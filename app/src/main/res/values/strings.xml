@@ -15,7 +15,8 @@
     <string name="menu_map">Map</string>
     <string name="menu_profile">Spells</string>
     <string name="menu_teams">Teams</string>
-    <string name="menu_battles">Battles</string>
+    <string name="menu_quests">Quests</string>
+    <string name="menu_team_quests">Team Quests</string>
 
     <!-- Titles -->
     <string name="title_shop">Shop is coming soon.</string>
@@ -43,7 +44,7 @@
 
     <string name="rarity">Rarity:</string>
     <string name="type">Type:</string>
-    <string name="chip_info">Chip Info</string>
+    <string name="skill_info">Skill Info</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="accept">Accept</string>
@@ -97,13 +98,13 @@
     <string name="moderator">Moderator:</string>
     <string name="create_team">Create team</string>
 
-    <!-- Chip -->
-    <string name="chip_capture_place">Captures place to collect data that improves your implant</string>
-    <string name="chip_capture_player">Captures player to steal data that improves your implant.</string>
-    <string name="chip_remove">Removes player who has captured from captured object.</string>
-    <string name="chip_defend">Defends your implant from next incoming attacking signals.</string>
-    <string name="chip_attack">Deals damage to the selected implant.</string>
-    <string name="chip_invisibility">Puts invisibility over the object so it disappears from the map.</string>
+    <!-- Skill -->
+    <string name="skill_capture_place">Captures place to collect data that improves your implant</string>
+    <string name="skill_capture_player">Captures player to steal data that improves your implant.</string>
+    <string name="skill_remove">Removes player who has captured from captured object.</string>
+    <string name="skill_defend">Defends your implant from next incoming attacking signals.</string>
+    <string name="skill_attack">Deals damage to the selected implant.</string>
+    <string name="skill_invisibility">Puts invisibility over the object so it disappears from the map.</string>
     <string name="authentication_in_progress">Wait a second&#8230;let me find your resume&#8230;</string>
     <string name="authentication">Authentication</string>
 

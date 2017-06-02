@@ -1,32 +1,29 @@
 package com.severenity.entity;
 
-import android.net.Uri;
-
-import java.net.URI;
-
 /**
- * Created by Odinn on 04.09.2016.
+ * Created by Novosad on 04.09.2016.
  */
 public class ShopItem {
 
     private String title;
     private int imageURL;
     private String description;
-    private String price;
+    private double price;
+    private double credits;
 
-
-
-    public ShopItem(String title, int imageURL, String description, String price) {
+    public ShopItem(String title, int imageURL, String description, double credits, double price) {
         this.title = title;
         this.imageURL = imageURL;
         this.description = description;
         this.price = price;
+        this.credits = credits;
     }
 
-    public ShopItem(String title, int imageURL, String description) {
+    public ShopItem(String title, int imageURL, String description, double credits) {
         this.title = title;
         this.imageURL = imageURL;
         this.description = description;
+        this.credits = credits;
     }
 
 
@@ -53,14 +50,20 @@ public class ShopItem {
     public void setDescription(String description) {
         this.description = description;
     }
-    public String getPrice() {
+
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
+    public double getCredits() {
+        return credits;
+    }
 
-
+    public void setCredits(double credits) {
+        this.credits = credits;
+    }
 }

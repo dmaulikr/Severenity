@@ -35,8 +35,15 @@
     <item
         android:orderInCategory="500"
         android:id="@+id/menu_quests"
-        android:title="@string/menu_battles"
+        android:title="@string/menu_quests"
         android:icon="@drawable/menu_quests"
+        app:showAsAction="always"
+        />
+    <item
+        android:orderInCategory="600"
+        android:id="@+id/menu_team_quests"
+        android:title="@string/menu_quests"
+        android:icon="@drawable/menu_team_quests"
         app:showAsAction="always"
         />
 </menu>

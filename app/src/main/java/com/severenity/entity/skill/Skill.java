@@ -1,4 +1,4 @@
-package com.severenity.entity.chip;
+package com.severenity.entity.skill;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
@@ -11,24 +11,24 @@ import com.severenity.R;
 /**
  * Created by Novosad on 4/4/16.
  */
-public class Chip extends BaseObservable implements Parcelable {
-    protected Chip(Parcel in) {
-        chipIconResource = in.readInt();
+public class Skill extends BaseObservable implements Parcelable {
+    protected Skill(Parcel in) {
+        skillIconResource = in.readInt();
         description = in.readString();
         level = in.readInt();
-        chipType = ChipType.values()[in.readInt()];
+        skillType = SkillType.values()[in.readInt()];
         rarity = Rarity.values()[in.readInt()];
     }
 
-    public static final Creator<Chip> CREATOR = new Creator<Chip>() {
+    public static final Creator<Skill> CREATOR = new Creator<Skill>() {
         @Override
-        public Chip createFromParcel(Parcel in) {
-            return new Chip(in);
+        public Skill createFromParcel(Parcel in) {
+            return new Skill(in);
         }
 
         @Override
-        public Chip[] newArray(int size) {
-            return new Chip[size];
+        public Skill[] newArray(int size) {
+            return new Skill[size];
         }
     };
 
@@ -39,16 +39,15 @@ public class Chip extends BaseObservable implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(chipIconResource);
+        dest.writeInt(skillIconResource);
         dest.writeString(description);
         dest.writeInt(level);
-        dest.writeInt(chipType.ordinal());
+        dest.writeInt(skillType.ordinal());
         dest.writeInt(rarity.ordinal());
     }
 
-    public enum ChipType {
+    public enum SkillType {
         CapturePlace,
-        CapturePlayer,
         Remove,
         Defend,
         Attack,
@@ -61,36 +60,33 @@ public class Chip extends BaseObservable implements Parcelable {
         Rare
     }
 
-    private ChipType chipType;
-    private int chipIconResource;
+    private SkillType skillType;
+    private int skillIconResource;
     private String description;
     private int level;
     private Rarity rarity;
 
-    public Chip(ChipType chipType, String description, int level, Rarity rarity) {
-        setChipType(chipType);
+    public Skill(SkillType skillType, String description, int level, Rarity rarity) {
+        setSkillType(skillType);
         setDescription(description);
         setLevel(level);
         setRarity(rarity);
 
-        switch (chipType) {
+        switch (skillType) {
             case CapturePlace:
-                setChipIconResource(R.drawable.sig_capture_place);
-                break;
-            case CapturePlayer:
-                setChipIconResource(R.drawable.sig_capture_player);
+                setSkillIconResource(R.drawable.sig_capture_place);
                 break;
             case Remove:
-                setChipIconResource(R.drawable.sig_remove);
+                setSkillIconResource(R.drawable.sig_remove);
                 break;
             case Defend:
-                setChipIconResource(R.drawable.sig_defend);
+                setSkillIconResource(R.drawable.sig_defend);
                 break;
             case Attack:
-                setChipIconResource(R.drawable.sig_attack);
+                setSkillIconResource(R.drawable.sig_attack);
                 break;
             case Invisibility:
-                setChipIconResource(R.drawable.sig_invisibility);
+                setSkillIconResource(R.drawable.sig_invisibility);
                 break;
         }
     }
@@ -117,11 +113,9 @@ public class Chip extends BaseObservable implements Parcelable {
 
     @Bindable
     public String getTitle() {
-        switch (chipType) {
+        switch (skillType) {
             case CapturePlace:
                 return "Capture Place";
-            case CapturePlayer:
-                return "Capture Player";
             case Remove:
                 return "Remove";
             case Defend:
@@ -146,36 +140,36 @@ public class Chip extends BaseObservable implements Parcelable {
     }
 
     @Bindable
-    public ChipType getChipType() {
-        return chipType;
+    public SkillType getSkillType() {
+        return skillType;
     }
 
-    public void setChipType(ChipType chipType) {
-        this.chipType = chipType;
-        notifyPropertyChanged(BR.chipType);
+    public void setSkillType(SkillType skillType) {
+        this.skillType = skillType;
+        notifyPropertyChanged(BR.skillType);
     }
 
     @Bindable
-    public int getChipIconResource() {
-        return chipIconResource;
+    public int getSkillIconResource() {
+        return skillIconResource;
     }
 
-    public void setChipIconResource(int chipIconResource) {
-        this.chipIconResource = chipIconResource;
-        notifyPropertyChanged(BR.chipIconResource);
+    public void setSkillIconResource(int skillIconResource) {
+        this.skillIconResource = skillIconResource;
+        notifyPropertyChanged(BR.skillIconResource);
     }
 
-    public boolean is(ChipType chipType) {
-        return this.chipType == chipType;
+    public boolean is(SkillType skillType) {
+        return this.skillType == skillType;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Chip)) {
+        if (!(o instanceof Skill)) {
             return false;
         }
 
-        Chip s = (Chip) o;
-        return this.chipType == s.chipType;
+        Skill s = (Skill) o;
+        return this.skillType == s.skillType;
     }
 }

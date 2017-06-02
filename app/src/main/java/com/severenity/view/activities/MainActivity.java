@@ -55,7 +55,9 @@ import com.severenity.view.fragments.GameMapFragment;
 import com.severenity.view.fragments.PlayerFragment;
 import com.severenity.view.fragments.QuestsFragment;
 import com.severenity.view.fragments.ShopFragment;
+import com.severenity.view.fragments.TeamQuestsFragment;
 import com.severenity.view.fragments.clans.ClansFragment;
+import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 import com.wooplr.spotlight.SpotlightView;
 import com.wooplr.spotlight.prefs.PreferencesManager;
 import com.wooplr.spotlight.utils.SpotlightListener;
@@ -66,7 +68,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.OnRelocateMapListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+public class MainActivity extends AppCompatActivity
+        implements PlacesInfoDialog.OnRelocateMapListener,
+        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,
+        TeamEventsListener {
     private GoogleApiClient googleApiClient;
 
     private SplitToolbar toolbarBottom;
@@ -85,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private ActionMenuItemView mapItem;
     private ActionMenuItemView profileItem;
     private ActionMenuItemView questsItem;
+    private ActionMenuItemView teamQuestsItem;
     private SpotlightView.Builder[] spotLightViewArr;
     private int spotLightCounter = 0;
     /**                         **/
@@ -94,13 +100,15 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
     private ShopFragment shopFragment = new ShopFragment();
     private ClansFragment clansFragment = new ClansFragment();
     private PlayerFragment playerFragment = new PlayerFragment();
-    private QuestsFragment battlesFragment = QuestsFragment.newInstance();
+    private QuestsFragment questsFragment = QuestsFragment.newInstance();
     private GameMapFragment gameMapFragment = new GameMapFragment();
+    private TeamQuestsFragment teamQuestsFragment = new TeamQuestsFragment();
     private String shopFragmentTag = ShopFragment.class.getSimpleName();
     private String clansFragmentTag = ClansFragment.class.getSimpleName();
     private String playerFragmentTag = PlayerFragment.class.getSimpleName();
-    private String battlesFragmentTag = QuestsFragment.class.getSimpleName();
     private String gameMapFragmentTag = GameMapFragment.class.getSimpleName();
+    private String questsFragmentTag = QuestsFragment.class.getSimpleName();
+    private String teamQuestsFragmentTag = TeamQuestsFragment.class.getSimpleName();
     private PlacesInfoDialog mPlaceInfoDialog;
 
     private ArrayList<Fragment> allFragments = new ArrayList<>();
@@ -358,14 +366,16 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 .add(R.id.container, shopFragment, shopFragmentTag)
                 .add(R.id.container, playerFragment, playerFragmentTag)
                 .add(R.id.container, clansFragment, clansFragmentTag)
-                .add(R.id.container, battlesFragment, battlesFragmentTag).commit();
+                .add(R.id.container, questsFragment, questsFragmentTag)
+                .add(R.id.container, teamQuestsFragment, teamQuestsFragmentTag).commit();
 
         allFragments.addAll(Arrays.asList(
                 shopFragment,
                 clansFragment,
                 playerFragment,
-                battlesFragment,
-                gameMapFragment)
+                questsFragment,
+                gameMapFragment,
+                teamQuestsFragment)
         );
     }
 
@@ -412,6 +422,14 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         mapItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_map);
         profileItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_profile);
         questsItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_quests);
+        teamQuestsItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_team_quests);
+
+        if (App.getUserManager().getCurrentUser().getTeam() != null) {
+            teamQuestsItem.setVisibility(View.GONE);
+        } else {
+            teamQuestsItem.setVisibility(View.VISIBLE);
+        }
+
         ivTutorialBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -489,7 +507,20 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                                 }
                             }
                         });
-                        showBattles();
+                        showQuests();
+                        return true;
+                    case R.id.menu_team_quests:
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    item.setIcon(getResources().getDrawable(R.drawable.menu_team_quests_selected, getTheme()));
+                                } else {
+                                    item.setIcon(getResources().getDrawable(R.drawable.menu_team_quests_selected));
+                                }
+                            }
+                        });
+                        showTeamQuests();
                         return true;
                     default:
                         break;
@@ -542,6 +573,13 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                         item.setIcon(getResources().getDrawable(R.drawable.menu_quests));
                     }
                     break;
+                case R.id.menu_team_quests:
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        item.setIcon(getResources().getDrawable(R.drawable.menu_team_quests, getTheme()));
+                    } else {
+                        item.setIcon(getResources().getDrawable(R.drawable.menu_team_quests));
+                    }
+                    break;
                 default: break;
             }
         }
@@ -592,8 +630,12 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
         showFragment(clansFragment);
     }
 
-    private void showBattles() {
-        showFragment(battlesFragment);
+    private void showQuests() {
+        showFragment(questsFragment);
+    }
+
+    private void showTeamQuests() {
+        showFragment(teamQuestsFragment);
     }
 
     @Override
@@ -785,5 +827,20 @@ public class MainActivity extends AppCompatActivity implements PlacesInfoDialog.
                 }
             }, 3 * 1000);
         }
+    }
+
+    @Override
+    public void onTeamCreated() {
+        teamQuestsItem.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onTeamJoined() {
+        teamQuestsItem.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onTeamLeft() {
+        teamQuestsItem.setVisibility(View.GONE);
     }
 }

@@ -3,7 +3,7 @@ package com.severenity.entity.contracts;
 import android.provider.BaseColumns;
 
 /**
- * Created by Andriy on 5/16/2016.
+ * Created by Novosad on 5/16/2016.
  */
 public class PlaceContract {
 

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.severenity.R;
 import com.severenity.entity.ShopItem;
@@ -17,7 +16,7 @@ import com.severenity.entity.ShopItem;
 import java.util.List;
 
 /**
- * Created by Odinn on 04.09.2016.
+ * Created by Novosad on 04.09.2016.
  */
 public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.ShopItemsListHolder>{
     private List<ShopItem> shopItemList;
@@ -37,10 +36,17 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.Shop
         final ShopItem item = shopItemList.get(position);
 
         holder.tvTitle.setText(item.getTitle());
-        holder.tvDescrip.setText(item.getDescription());
-        //TODO: Rework image loading with Picasso after getting the URL
+        holder.tvDescription.setText(item.getDescription());
         holder.ivItemPhoto.setImageResource(item.getImageURL());
-        holder.tvPrice.setText(item.getPrice());
+
+        String value;
+        if (item.getCredits() <= 0) {
+            value = item.getPrice() + " $";
+        } else {
+            value = item.getCredits() + " credits";
+        }
+
+        holder.tvPrice.setText(value);
 
         holder.btnPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,12 +65,8 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.Shop
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
-
-
             }
         });
-
     }
 
     @Override
@@ -72,18 +74,18 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.Shop
         return shopItemList.size();
     }
 
-    public class ShopItemsListHolder extends RecyclerView.ViewHolder{
+    class ShopItemsListHolder extends RecyclerView.ViewHolder{
         TextView tvTitle;
         ImageView ivItemPhoto;
-        TextView tvDescrip;
+        TextView tvDescription;
         Button btnPurchase;
         TextView tvPrice;
-        public ShopItemsListHolder(View itemView) {
+        ShopItemsListHolder(View itemView) {
             super(itemView);
 
             tvTitle = (TextView) itemView.findViewById(R.id.tvShopItemTitle);
             ivItemPhoto = (ImageView) itemView.findViewById(R.id.ivShopItemImage);
-            tvDescrip = (TextView) itemView.findViewById(R.id.tvShopItemDescription);
+            tvDescription = (TextView) itemView.findViewById(R.id.tvShopItemDescription);
             btnPurchase = (Button) itemView.findViewById(R.id.btnShopItemButton);
             tvPrice = (TextView) itemView.findViewById(R.id.tvShopItemPrice);
         }

@@ -33,7 +33,7 @@ import static com.severenity.entity.contracts.PlaceContract.DBPlacesOwners.COLUM
 
 
 /**
- * Created by Andriy on 5/16/2016.
+ * Created by Novosad on 5/16/2016.
  */
 public class PlacesManager extends DataManager {
 

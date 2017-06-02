@@ -32,7 +32,7 @@ import org.json.JSONObject;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
 
 /**
- * Created by Andriy on 8/25/2016.
+ * Created by Novosad on 8/25/2016.
  */
 public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonClickListener,
         AdapterView.OnItemLongClickListener,

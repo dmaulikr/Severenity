@@ -24,7 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Andriy on 9/5/2016.
+ * Created by Novosad on 9/5/2016.
  */
 public class TeamInfoDialog extends DialogFragment implements
         View.OnClickListener, TeamEventsListener {

@@ -13,7 +13,7 @@ import com.severenity.engine.adapters.CustomListArrayAdapterBase;
 import java.util.List;
 
 /**
- * Created by Andriy on 8/6/2016.
+ * Created by Novosad on 8/6/2016.
  */
 public class CustomListView extends ListView implements AbsListView.OnScrollListener {
 

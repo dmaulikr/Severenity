@@ -46,13 +46,6 @@
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:id="@+id/btnCapturePlayer"
-                android:layout_marginEnd="2dp"
-                android:src="@drawable/sig_capture_player" />
-
-            <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
                 android:id="@+id/btnAttack"
                 android:layout_marginEnd="2dp"
                 android:src="@drawable/sig_attack" />

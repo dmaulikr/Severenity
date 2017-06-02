@@ -3,7 +3,7 @@ package com.severenity.entity;
 import com.google.android.gms.maps.model.Marker;
 
 /**
- * Created by Andriy on 6/10/2016.
+ * Created by Novosad on 6/10/2016.
  */
 public class UserMarkerInfo {
     private User mUser;

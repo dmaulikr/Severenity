@@ -14,7 +14,7 @@ import com.severenity.view.fragments.clans.FragmentInfo;
 import java.util.Map;
 
 /**
- * Created by Andriy on 8/13/2016.
+ * Created by Novosad on 8/13/2016.
  */
 public abstract class ClansPageBase extends Fragment implements View.OnClickListener {
     protected static final String ARGUMENT_PAGE_TITLE = "pageTitle";

@@ -16,7 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by Andriy on 6/6/2016.
+ * Created by Novosad on 6/6/2016.
  */
 public class PlaceInfoAdapter extends InfoAdapter {
 

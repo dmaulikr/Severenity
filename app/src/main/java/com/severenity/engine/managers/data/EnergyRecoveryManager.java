@@ -20,7 +20,7 @@ import static com.severenity.entity.contracts.RecoveryContract.DBRecovery.COLUMN
 import static com.severenity.entity.contracts.RecoveryContract.DBRecovery.COLUMN_RECOVERY_DISTANCE;
 
 /**
- * Created by Andriy on 4/27/2016.
+ * Created by Novosad on 4/27/2016.
  */
 public class EnergyRecoveryManager extends DataManager {
 
