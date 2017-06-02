@@ -57,7 +57,6 @@ import com.severenity.view.fragments.QuestsFragment;
 import com.severenity.view.fragments.ShopFragment;
 import com.severenity.view.fragments.TeamQuestsFragment;
 import com.severenity.view.fragments.clans.ClansFragment;
-import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 import com.wooplr.spotlight.SpotlightView;
 import com.wooplr.spotlight.prefs.PreferencesManager;
 import com.wooplr.spotlight.utils.SpotlightListener;
@@ -70,8 +69,7 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity
         implements PlacesInfoDialog.OnRelocateMapListener,
-        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,
-        TeamEventsListener {
+        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
     private GoogleApiClient googleApiClient;
 
     private SplitToolbar toolbarBottom;
@@ -424,12 +422,6 @@ public class MainActivity extends AppCompatActivity
         questsItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_quests);
         teamQuestsItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_team_quests);
 
-        if (App.getUserManager().getCurrentUser().getTeam() != null) {
-            teamQuestsItem.setVisibility(View.GONE);
-        } else {
-            teamQuestsItem.setVisibility(View.VISIBLE);
-        }
-
         ivTutorialBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -529,6 +521,12 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
+
+        if (App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
+            toolbarBottom.getMenu().findItem(R.id.menu_team_quests).setVisible(false);
+        } else {
+            toolbarBottom.getMenu().findItem(R.id.menu_team_quests).setVisible(true);
+        }
     }
 
     /**
@@ -827,20 +825,5 @@ public class MainActivity extends AppCompatActivity
                 }
             }, 3 * 1000);
         }
-    }
-
-    @Override
-    public void onTeamCreated() {
-        teamQuestsItem.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onTeamJoined() {
-        teamQuestsItem.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void onTeamLeft() {
-        teamQuestsItem.setVisibility(View.GONE);
     }
 }

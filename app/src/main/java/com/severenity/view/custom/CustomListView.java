@@ -18,7 +18,6 @@ import java.util.List;
 public class CustomListView extends ListView implements AbsListView.OnScrollListener {
 
     private View mFooter;
-    private boolean mIsLoading;
     private LoadDataListener mListener;
     private CustomListArrayAdapterBase mAdapter;
     // When list is used not for infinite info displaying
@@ -78,7 +77,6 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
 
         mAdapter.addList(data);
         mAdapter.notifyDataSetChanged();
-        mIsLoading = false;
     }
 
     public void clearData() {
@@ -109,7 +107,6 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
             if (count - 1 == pos) {
                 if (mShowSpinner) {
                     this.addFooterView(mFooter);
-                    mIsLoading = true;
                 }
 
                 if (mListener != null) {

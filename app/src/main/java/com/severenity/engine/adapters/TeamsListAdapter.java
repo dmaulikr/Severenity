@@ -1,13 +1,12 @@
 package com.severenity.engine.adapters;
 
+import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.severenity.R;
@@ -59,7 +58,7 @@ public class TeamsListAdapter extends CustomListArrayAdapterBase<Team> {
         TextView membersCount = (TextView) result.findViewById(R.id.membersCount);
         membersCount.setText(Integer.toString(team.getMembers().size()));
 
-        result.findViewById(R.id.teamInfoImg).setOnClickListener(new View.OnClickListener() {
+        result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 TeamInfoDialog dialog = TeamInfoDialog.newInstance(team.getTeamId());
