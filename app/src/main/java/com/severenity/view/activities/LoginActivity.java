@@ -151,12 +151,11 @@ public class LoginActivity extends AppCompatActivity {
     private void requestPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(
-                    new String[]{
+                    new String[] {
                             Manifest.permission.ACCESS_FINE_LOCATION,
                             Manifest.permission.ACCESS_COARSE_LOCATION,
                             Manifest.permission.INTERNET,
                             Manifest.permission.ACCESS_NETWORK_STATE,
-                            Manifest.permission.READ_PHONE_STATE,
                             Manifest.permission.ACCESS_WIFI_STATE
                     },
                     PERMISSION_REQUEST_CODE
@@ -171,12 +170,9 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
 
-        int phoneState = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
         int fineLocation = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
 
-        result =
-                phoneState == PackageManager.PERMISSION_GRANTED &&
-                fineLocation == PackageManager.PERMISSION_GRANTED;
+        result = fineLocation == PackageManager.PERMISSION_GRANTED;
 
         return result;
     }

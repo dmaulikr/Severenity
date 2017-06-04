@@ -39,6 +39,7 @@ import org.json.JSONObject;
 
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 /**
  * Utility class contains a lot of helping methods.
@@ -88,12 +89,10 @@ public class Utils {
     /**
      * Retrieves IMEI of the device.
      *
-     * @param context context for system service.
      * @return device's IMEI
      */
-    public static String getDeviceId(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        return telephonyManager.getDeviceId();
+    public static String getDeviceId() {
+        return UUID.randomUUID().toString();
     }
 
     /**
@@ -419,9 +418,17 @@ public class Utils {
     public static void expandOrCollapse(final View v, boolean expand, boolean reverse) {
         TranslateAnimation animation;
         if (expand) {
+            if (v.getVisibility() == View.VISIBLE) {
+                return;
+            }
+
             animation = new TranslateAnimation(0.0f, 0.0f, (reverse ? v.getHeight() : -v.getHeight()), 0.0f);
             v.setVisibility(View.VISIBLE);
         } else {
+            if (v.getVisibility() == View.GONE) {
+                return;
+            }
+
             animation = new TranslateAnimation(0.0f, 0.0f, 0.0f, (reverse ? v.getHeight() : -v.getHeight()));
             Animation.AnimationListener collapseListener = new Animation.AnimationListener() {
                 @Override

@@ -1,6 +1,6 @@
 package com.severenity.view.fragments.clans.pages;
 
-import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.view.Gravity;
@@ -11,19 +11,16 @@ import android.widget.TextView;
 
 import com.severenity.R;
 import com.severenity.view.fragments.clans.ChatFragment;
-import com.severenity.view.fragments.clans.WorldFragment;
 import com.severenity.view.fragments.clans.FragmentInfo;
+import com.severenity.view.fragments.clans.WorldFragment;
 
 /**
  * Created by Andriy on 8/14/2016.
  */
 public class WorldPage extends ClansPageBase {
-
-    private Context mContext;
-
     // indicate button's ID that current page has.
-    private final int BUTTON_ID = 1;
-    protected final int BUTTONS_ID_OFFSET = 20001;
+    private static final int BUTTON_ID = 1;
+    protected static final int BUTTONS_ID_OFFSET = 20001;
 
     TextView mSwitchButtonTextView;
 
@@ -31,19 +28,26 @@ public class WorldPage extends ClansPageBase {
     FragmentInfo mWorldFragment = new FragmentInfo(new WorldFragment(), "worldClan", "World", true);
     FragmentInfo mChatFragment = new FragmentInfo(new ChatFragment(), "chatFragment", "Chat", false);
 
-    public WorldPage(Context context) {
-        super(  R.layout.world_clans_container_fragment,
-                R.id.worldFragmentsContent);
+    public WorldPage() {
+        super(R.layout.world_clans_container_fragment, R.id.worldFragmentsContent);
 
-        mContext   = context;
-        mPageTitle = mContext.getResources().getString(R.string.title_world);
         mFragments = new ArrayMap<>(2);
         mFragments.put(BUTTONS_ID_OFFSET, mWorldFragment);
         mFragments.put(BUTTONS_ID_OFFSET + BUTTON_ID, mChatFragment);
     }
 
+    public static WorldPage newInstance(String pageTitle) {
+        WorldPage fragment = new WorldPage();
+        Bundle args = new Bundle();
+        args.putString(ARGUMENT_PAGE_TITLE, pageTitle);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public View onCreate(View view) {
+        mPageTitle = getArguments().getString(ARGUMENT_PAGE_TITLE);
+
         View v = super.onCreate(view);
 
         LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(

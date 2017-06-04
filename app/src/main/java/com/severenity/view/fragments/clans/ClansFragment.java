@@ -39,10 +39,10 @@ public class ClansFragment extends Fragment {
         mViewPager = (ViewPager) view.findViewById(R.id.vpPager);
 
         ArrayList<ClansPageBase> list = new ArrayList<>(2);
-        list.add(new WorldPage(getContext()));
-        list.add(new TeamsPage(getContext()));
+        list.add(WorldPage.newInstance(getResources().getString(R.string.title_world)));
+        list.add(TeamsPage.newInstance(getResources().getString(R.string.title_team)));
 
-        mTeamViewPagerAdapter = new ClansViewPagerAdapter(getChildFragmentManager(), getContext(), list);
+        mTeamViewPagerAdapter = new ClansViewPagerAdapter(getChildFragmentManager(), list);
 
         mViewPager.setAdapter(mTeamViewPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -53,9 +53,9 @@ public class ClansFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        for ( int i = 0; i < mTeamViewPagerAdapter.getCount(); i++) {
-            ClansPageBase ntFragment = (ClansPageBase)mTeamViewPagerAdapter.getItem(i);
-            ntFragment.onFragmentShow(hidden ? false : true);
+        for (int i = 0; i < mTeamViewPagerAdapter.getCount(); i++) {
+            ClansPageBase ntFragment = (ClansPageBase) mTeamViewPagerAdapter.getItem(i);
+            ntFragment.onFragmentShow(!hidden);
         }
     }
 }

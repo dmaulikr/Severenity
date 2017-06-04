@@ -81,6 +81,7 @@ public class Constants {
     public static final String INTENT_FILTER_DELETE_OWNER = "com.severenity.deleteowner";
     public static final String INTENT_FILTER_REQUEST_PLACES = "com.severenity.requestplaces";
     public static final String INTENT_FILTER_AUTHENTICATION = "com.severenity.authentication";
+    public static final String INTENT_FILTER_UPDATE_STATUS_LABEL = "com.severenity.updatestatuslabel";
 
     public static final String INTENT_EXTRA_USER_ID = "USER_ID";
     public static final String INTENT_EXTRA_DEVICE_ID = "DEVICE_ID";

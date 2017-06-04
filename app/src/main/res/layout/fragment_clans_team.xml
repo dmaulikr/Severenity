@@ -23,8 +23,8 @@
         android:text="@string/moderator"
         android:id="@+id/teamModerator"
         android:layout_alignTop="@+id/teamLogo"
-        android:layout_toRightOf="@+id/teamLogo"
-        android:layout_marginLeft="5dp" />
+        android:layout_toEndOf="@+id/teamLogo"
+        android:layout_marginStart="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,8 +34,8 @@
         android:layout_alignParentEnd="false"
         android:layout_marginRight="15dp"
         android:layout_alignTop="@+id/teamModerator"
-        android:singleLine="true"
-        android:layout_toRightOf="@+id/teamModerator"
+        android:maxLines="1"
+        android:layout_toEndOf="@+id/teamModerator"
         android:layout_marginLeft="15dp" />
 
     <TextView
@@ -45,7 +45,7 @@
         android:text="Name:"
         android:id="@+id/name"
         android:layout_below="@+id/teamModerator"
-        android:layout_alignLeft="@+id/teamModerator"
+        android:layout_alignStart="@+id/teamModerator"
         android:layout_marginTop="5dp" />
 
     <TextView
@@ -53,9 +53,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/teamNameText"
-        android:layout_alignLeft="@+id/teamModeratorText"
+        android:layout_alignStart="@+id/teamModeratorText"
         android:layout_alignTop="@+id/name"
-        android:singleLine="true" />
+        android:maxLines="1" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Fights:"
         android:id="@+id/fights"
-        android:layout_alignLeft="@+id/name"
+        android:layout_alignStart="@+id/name"
         android:layout_below="@+id/name"
         android:layout_marginTop="5dp" />
 
@@ -73,7 +73,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Total points:"
         android:id="@+id/score"
-        android:layout_alignLeft="@+id/name"
+        android:layout_alignStart="@+id/name"
         android:layout_below="@+id/fights"
         android:layout_marginTop="5dp" />
 
@@ -104,8 +104,7 @@
             android:layout_alignParentEnd="true"
             android:gravity="center_vertical|center_horizontal"
             android:textColor="@color/white"
-            android:layout_marginStart="5dp"
-            android:singleLine="false" />
+            android:layout_marginStart="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -150,7 +149,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:paddingBottom="5dp"
-        android:paddingRight="10dp"
+        android:paddingEnd="10dp"
         android:layout_margin="0dp">
 
         <Button

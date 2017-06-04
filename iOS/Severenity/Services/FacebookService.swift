@@ -57,7 +57,7 @@ class FacebookService: NSObject {
     func getFBProfileInfo(with fbUserID: String, and completion: @escaping (_ info: Dictionary<String,String>) -> Void) {
         FBSDKGraphRequest(graphPath: fbUserID, parameters: ["fields": "id, name, first_name, last_name, email"]).start(completionHandler: { (connection, result, error) -> Void in
             guard error == nil, let fbDetails = result as? Dictionary<String, String> else {
-                Log.error(message: "Cannot get Facebook profile info: \(error)", sender: self)
+                Log.error(message: "Cannot get Facebook profile info: \(String(describing: error))", sender: self)
                 return
             }
             completion(fbDetails)

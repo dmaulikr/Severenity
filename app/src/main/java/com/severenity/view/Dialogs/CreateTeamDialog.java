@@ -84,7 +84,7 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
                 if (response.getString("result").equals("success")) {
                     String teamName = response.getString("data");
                     App.getUserManager().updateCurrentUser(new String[]{COLUMN_TEAM}, new String[]{teamName});
-                    mListener.OnTeamCreated();
+                    mListener.onTeamCreated();
                 } else {
                     // TODO: Error handling
                     String err = response.getString("data");

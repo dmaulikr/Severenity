@@ -1,6 +1,5 @@
 package com.severenity.view.fragments;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -44,6 +43,7 @@ import com.severenity.view.activities.MainActivity;
  * Handles user with map activity (actual game)
  */
 public class GameMapFragment extends Fragment {
+
     private SupportMapFragment mapFragment;
     private MainActivity activity;
     private TextView tvAttributions;

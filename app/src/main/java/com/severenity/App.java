@@ -1,9 +1,9 @@
 package com.severenity;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.facebook.FacebookSdk;
@@ -30,7 +30,7 @@ import com.severenity.view.activities.LoginActivity;
  *
  * Created by Novosad on 3/24/16.
  */
-public class App extends MultiDexApplication {
+public class App extends Application {
     private GoogleApiHelper googleApiHelper;
     private LocationManager locationManager;
     private LocalBroadcastManager localBroadcastManager;

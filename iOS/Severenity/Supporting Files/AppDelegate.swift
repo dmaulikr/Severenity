@@ -96,7 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let startDate = calendar.date(byAdding: .day, value: -90, to: today) // 90 (days) - depicts the period of time during which data from HealthKit will be retrieved
         
         var stepsCount = 0.0
-        HealthService.sharedInstance.retrieveStepsCount(startDate: startDate!, endDate: today) { result in
+        HealthKitService.sharedInstance.retrieveStepsCount(startDate: startDate!, endDate: today) { result in
             stepsCount = result
             
             // IMPORTANT: For testing purposes it's okey to have this log here but in any other case it should be removed because it's PHI data
@@ -104,7 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         var totalDistance = 0.0
-        HealthService.sharedInstance.retrieveWalkRunDistance(startDate: startDate!, endDate: today) { result in
+        HealthKitService.sharedInstance.retrieveWalkRunDistance(startDate: startDate!, endDate: today) { result in
             totalDistance = result
             
             // IMPORTANT: For testing purposes it's okey to have this log here but in any other case it should be removed because it's PHI data

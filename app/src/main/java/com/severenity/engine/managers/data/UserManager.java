@@ -261,7 +261,7 @@ public class UserManager extends DataManager {
      *
      * @param userId - id of the user to authorize or create.
      */
-    public void authorizeUser(String userId, RequestCallback callback) {
+    private void authorizeUser(String userId, RequestCallback callback) {
         JSONObject data = new JSONObject();
         try {
             data.put("userId", userId);
@@ -277,7 +277,7 @@ public class UserManager extends DataManager {
      * @param user     - user to create on the server.
      * @param callback - callback to execute with response.
      */
-    public void createUser(User user, RequestCallback callback) {
+    private void createUser(User user, RequestCallback callback) {
         JSONObject userObject = new JSONObject();
         try {
             userObject.put("userId", user.getId());
@@ -437,7 +437,7 @@ public class UserManager extends DataManager {
      */
     private void startDeviceRegistrationService(String userId) {
         Intent intent = new Intent(context, RegistrationIntentService.class);
-        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_ID, Utils.getDeviceId(context));
+        intent.putExtra(Constants.INTENT_EXTRA_DEVICE_ID, Utils.getDeviceId());
         intent.putExtra(Constants.INTENT_EXTRA_DEVICE_NAME, Utils.getDeviceName());
         intent.putExtra(Constants.INTENT_EXTRA_USER_ID, userId);
         intent.putExtra(Constants.INTENT_EXTRA_REGISTRATION_ID, App.getCurrentFCMToken());

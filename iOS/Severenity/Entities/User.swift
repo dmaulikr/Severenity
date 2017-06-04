@@ -33,15 +33,15 @@ class User: NSObject {
     }
 
     func printDescription() {
-        let description = "\(createdDate)\n" +
-            "\(devices)\n" +
-            "\(email)\n" +
-            "\(name)\n" +
-            "\(profile)\n" +
-            "\(quests)\n" +
-            "\(quests)\n" +
-            "\(team)\n" +
-            "\(userId)"
+        let description = "\(String(describing: createdDate))\n" +
+            "\(String(describing: devices))\n" +
+            "\(String(describing: email))\n" +
+            "\(String(describing: name))\n" +
+            "\(String(describing: profile))\n" +
+            "\(String(describing: quests))\n" +
+            "\(String(describing: quests))\n" +
+            "\(String(describing: team))\n" +
+            "\(String(describing: userId))"
         Log.info(message: "Current user description:\n \(description)", sender: self)
     }
     

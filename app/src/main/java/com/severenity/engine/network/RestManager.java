@@ -83,7 +83,6 @@ public class RestManager {
             new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    Log.i(Constants.TAG, response.toString());
                     callback.onResponseCallback(response);
                 }
             }, new Response.ErrorListener() {

@@ -41,7 +41,7 @@
 		12650F4F1DF03E5800B45DCE /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12650F4E1DF03E5800B45DCE /* TodayViewController.swift */; };
 		12698F111DC7856F000F4601 /* starting_background@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 12698F101DC7856F000F4601 /* starting_background@2x.jpg */; };
 		1270DD1C1DC90009002E1139 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1270DD1B1DC90009002E1139 /* HealthKit.framework */; };
-		1270DD1E1DC9FB86002E1139 /* HealthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1270DD1D1DC9FB86002E1139 /* HealthService.swift */; };
+		1270DD1E1DC9FB86002E1139 /* HealthKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1270DD1D1DC9FB86002E1139 /* HealthKitService.swift */; };
 		127A2C881DBF55E600CD492F /* FacebookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 127A2C871DBF55E600CD492F /* FacebookService.swift */; };
 		12B3F7A61DCB955A00386093 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12B3F7A51DCB955A00386093 /* Keychain.swift */; };
 		12C185881DE7028E0053A7CF /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C185871DE7028E0053A7CF /* Logger.swift */; };
@@ -204,7 +204,7 @@
 		12650F4E1DF03E5800B45DCE /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		12698F101DC7856F000F4601 /* starting_background@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "starting_background@2x.jpg"; sourceTree = "<group>"; };
 		1270DD1B1DC90009002E1139 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
-		1270DD1D1DC9FB86002E1139 /* HealthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthService.swift; sourceTree = "<group>"; };
+		1270DD1D1DC9FB86002E1139 /* HealthKitService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthKitService.swift; sourceTree = "<group>"; };
 		127A2C871DBF55E600CD492F /* FacebookService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookService.swift; sourceTree = "<group>"; };
 		1293BE2B1DB65AE000658292 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		12B3F7A51DCB955A00386093 /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
@@ -437,7 +437,7 @@
 			isa = PBXGroup;
 			children = (
 				127A2C871DBF55E600CD492F /* FacebookService.swift */,
-				1270DD1D1DC9FB86002E1139 /* HealthService.swift */,
+				1270DD1D1DC9FB86002E1139 /* HealthKitService.swift */,
 				5264A7A01D8828B500EE78FC /* PlacesService.swift */,
 				121328761DBE45F700FED50E /* SocketService.swift */,
 				523A0D491DFFFA3300B3376F /* UserService.swift */,
@@ -751,7 +751,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
 				LastUpgradeCheck = 0810;
-				ORGANIZATIONNAME = severenity;
+				ORGANIZATIONNAME = Severenity;
 				TargetAttributes = {
 					12650EC91DEF1EE000B45DCE = {
 						CreatedOnToolsVersion = 8.1;
@@ -986,7 +986,7 @@
 				121A65571DC38FBF00A6C6B9 /* InitialViewController.swift in Sources */,
 				12EE6B231DB8C70A00FFC567 /* ProfileInteractor.swift in Sources */,
 				12EE6B461DBA372A00FFC567 /* WireFrame.swift in Sources */,
-				1270DD1E1DC9FB86002E1139 /* HealthService.swift in Sources */,
+				1270DD1E1DC9FB86002E1139 /* HealthKitService.swift in Sources */,
 				12EE6B071DB7AD0B00FFC567 /* ShopRouter.swift in Sources */,
 				12EE6AFF1DB7AB1100FFC567 /* ShopPresenter.swift in Sources */,
 				52BD55A91DC3EEF90044666E /* Extensions.swift in Sources */,
@@ -1068,7 +1068,7 @@
 				INFOPLIST_FILE = SeverenityWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni.SeverenityWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity.SeverenityWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -1091,7 +1091,7 @@
 				INFOPLIST_FILE = SeverenityWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni.SeverenityWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity.SeverenityWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "SeverenityWidget/SeverenityWidget-Bridging-Header.h";
@@ -1262,14 +1262,16 @@
 				DEVELOPMENT_TEAM = M7LFA46QZA;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Severenity/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1286,13 +1288,15 @@
 				DEVELOPMENT_TEAM = M7LFA46QZA;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "Severenity/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severeni;
+				PRODUCT_BUNDLE_IDENTIFIER = com.severenity.Severenity;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
