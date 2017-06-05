@@ -31,8 +31,6 @@ import java.util.List;
  */
 public class TeamsListFragment extends Fragment implements View.OnClickListener, TeamEventsListener,
         CustomListView.LoadDataListener {
-
-    private static final String ARGUMENT_TEAM_EVENTS_LISTENER = "teamEventsListener";
     private static final int ITEM_PER_REQUEST = 15;
 
     // listener that might handle event once team is created

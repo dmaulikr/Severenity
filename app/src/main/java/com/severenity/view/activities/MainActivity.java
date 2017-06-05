@@ -650,6 +650,7 @@ public class MainActivity extends AppCompatActivity
         App.getLocalBroadcastManager().unregisterReceiver(App.getLocationManager().getGoogleApiClientReceiver());
         App.getLocalBroadcastManager().unregisterReceiver(showPlaceInfoDialog);
         App.getLocalBroadcastManager().unregisterReceiver(statusLabelUpdater);
+        App.getLocalBroadcastManager().unregisterReceiver(onTeamChangedReceiver);
     }
 
     @Override
@@ -678,6 +679,9 @@ public class MainActivity extends AppCompatActivity
             new IntentFilter(Constants.INTENT_FILTER_UPDATE_STATUS_LABEL)
         );
 
+        App.getLocalBroadcastManager().registerReceiver(onTeamChangedReceiver,
+                new IntentFilter(Constants.INTENT_FILTER_TEAM_CHANGED));
+
         App.getGoogleApiHelper().connect();
     }
 
@@ -697,6 +701,14 @@ public class MainActivity extends AppCompatActivity
                 String level = intent.getStringExtra("level");
                 Utils.showAlertDialog(Constants.NOTIFICATION_MSG_LEVEL_UP + level, MainActivity.this);
             }
+        }
+    };
+
+    private BroadcastReceiver onTeamChangedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean showTeamQuestsTab = intent.getExtras().getBoolean(Constants.INTENT_EXTRA_SHOW_TEAM_QUESTS);
+            toolbarBottom.getMenu().findItem(R.id.menu_team_quests).setVisible(showTeamQuestsTab);
         }
     };
 

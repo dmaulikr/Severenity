@@ -1,6 +1,7 @@
 package com.severenity.view.fragments.clans.pages;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
@@ -12,9 +13,7 @@ import android.widget.TextView;
 
 import com.severenity.App;
 import com.severenity.R;
-import com.severenity.view.Dialogs.CreateTeamDialog;
-import com.severenity.view.fragments.QuestsFragment;
-import com.severenity.view.fragments.TeamQuestsFragment;
+import com.severenity.utils.common.Constants;
 import com.severenity.view.fragments.clans.ChatFragment;
 import com.severenity.view.fragments.clans.FragmentInfo;
 import com.severenity.view.fragments.clans.TeamFragment;
@@ -31,6 +30,8 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
     protected final int BUTTON_TEAM_LIST_ID = 10001;
     protected final int BUTTON_TEAM_ID      = 10002;
     protected final int BUTTON_CHAT_ID      = 10003;
+
+    Intent intent = new Intent(Constants.INTENT_FILTER_TEAM_CHANGED);
 
     private View currentSelectedPagesButton = null;
     private LinearLayout mButtonsLayout;
@@ -234,15 +235,24 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
     @Override
     public void onTeamCreated() {
         createTeamFragment();
+
+        intent.putExtra(Constants.INTENT_EXTRA_SHOW_TEAM_QUESTS, true);
+        App.getLocalBroadcastManager().sendBroadcast(intent);
     }
 
     @Override
     public void onTeamJoined() {
         createTeamFragment();
+
+        intent.putExtra(Constants.INTENT_EXTRA_SHOW_TEAM_QUESTS, true);
+        App.getLocalBroadcastManager().sendBroadcast(intent);
     }
 
     @Override
     public void onTeamLeft() {
         removeTeamFragment();
+
+        intent.putExtra(Constants.INTENT_EXTRA_SHOW_TEAM_QUESTS, false);
+        App.getLocalBroadcastManager().sendBroadcast(intent);
     }
 }

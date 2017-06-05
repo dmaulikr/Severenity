@@ -7,7 +7,6 @@ package com.severenity.view.fragments.clans.pages;
  * team can be created, user can joint team, user can leave team
  */
 public interface TeamEventsListener {
-
     // indicates tha the team was created
     void onTeamCreated();
 
