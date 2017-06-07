@@ -17,6 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * Created by Novosad on 4/29/2016.
  */
@@ -95,7 +97,7 @@ public class MessagesAdapter extends BaseAdapter {
         TextView tvMessage = (TextView) messageView.findViewById(R.id.messageMessage);
         tvMessage.setText(message.getText());
 
-        ImageView ivProfileImage = (ImageView) messageView.findViewById(R.id.messageAvatar);
+        CircleImageView ivProfileImage = (CircleImageView) messageView.findViewById(R.id.messageAvatar);
         Picasso.with(messageView.getContext()).load("https://graph.facebook.com/" + message.getSenderId() + "/picture?type=normal").into(ivProfileImage);
         return messageView;
     }

@@ -126,13 +126,7 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
          * want to make it easy for an attacker to replace the public key with one
          * of their own and then fake messages from the server.
          */
-        String base64EncodedPublicKey = "CONSTRUCT_YOUR_KEY_AND_PLACE_IT_HERE";
-
-        // Some sanity checks to see if the developer (that's you!) really followed the
-        // instructions to run this sample (don't put these checks on your app!)
-        if (base64EncodedPublicKey.contains("CONSTRUCT_YOUR")) {
-            throw new RuntimeException("Please put your app's public key in MainActivity.java. See README.");
-        }
+        String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwDo5cnWibZEcBnIja1rNfxObBsEQBHbZsH2h3i6oKysme4X0hlLbaGjsbiH7N2gLtrPajgjbylwF3UbQH2T6OuWNqt/a63olNjQPoGjtUWdQOIelM1rSKeS/mt9eswYm0rs6hYVozOTxiDG0nTmAYl4t6ZQeMAQlrTB5anauNaptzTm0VAs777TMvjDCClFaw9B8ILNM8lK+SCtMYCBeIWvJMoMWCeXSrya1sa6+8eLVaSx52rzwBvzWZLGr4g+xLbSbeZb53U5N4z4UJrrMgRRSUELu5R32A3dJc17XdUcoGwk4u6HL0jwB6iySqKvltA4k7pOlWJZijYQ/aRjqdwIDAQAB";
 
         // Create the helper, passing it our context and the public key to verify signatures with
         Log.d(Constants.TAG, "Creating IAB helper.");
@@ -214,10 +208,6 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
 
     // (arbitrary) request code for the purchase flow
     static final int RC_REQUEST = 10001;
-
-    // Graphics for the gas gauge
-    static int[] TANK_RES_IDS = { R.drawable.gas0, R.drawable.gas1, R.drawable.gas2,
-            R.drawable.gas3, R.drawable.gas4 };
 
     // How many units (1/4 tank is our unit) fill in the tank.
     static final int TANK_MAX = 4;

@@ -9,12 +9,21 @@
         android:id="@+id/userInfo"
         android:background="@color/primaryDark"
         android:layout_width="match_parent"
-        android:layout_height="64dp">
+        android:layout_height="72dp">
 
-        <com.facebook.login.widget.ProfilePictureView
-            android:id="@+id/mapUserAvatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
+        <LinearLayout
+            android:layout_alignParentStart="true"
+            android:id="@+id/mapUserAvatarHolder"
+            android:background="@drawable/player_avatar_background"
+            android:layout_width="64dp"
+            android:layout_height="64dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_margin="12dp"
+                android:layout_gravity="center"
+                android:id="@+id/mapUserAvatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </LinearLayout>
 
         <TextView
             android:gravity="center"
@@ -22,7 +31,7 @@
             android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/mapUserAvatar"
+            android:layout_toEndOf="@id/mapUserAvatarHolder"
             android:layout_margin="5dp"
             android:textSize="12sp"
             android:text="@string/credits_value" />
@@ -46,7 +55,7 @@
             android:layout_below="@id/tvCreditsValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/mapUserAvatar"
+            android:layout_toEndOf="@id/mapUserAvatarHolder"
             android:layout_margin="5dp"
             android:layout_marginBottom="0dp"
             android:textSize="12sp"

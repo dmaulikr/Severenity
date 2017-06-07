@@ -57,6 +57,7 @@ import com.severenity.view.fragments.QuestsFragment;
 import com.severenity.view.fragments.ShopFragment;
 import com.severenity.view.fragments.TeamQuestsFragment;
 import com.severenity.view.fragments.clans.ClansFragment;
+import com.squareup.picasso.Picasso;
 import com.wooplr.spotlight.SpotlightView;
 import com.wooplr.spotlight.prefs.PreferencesManager;
 import com.wooplr.spotlight.utils.SpotlightListener;
@@ -67,6 +68,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends AppCompatActivity
         implements PlacesInfoDialog.OnRelocateMapListener,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity
     private SplitToolbar toolbarBottom;
     private Toolbar toolbarTop;
 
-    private ProfilePictureView userProfilePicture;
+    private CircleImageView userProfilePicture;
     private TextView tvEnergyValue, tvCreditsValue, tvExperienceValue, tvLevelValue;
     private TextView tvConnectionState;
     private ImageView ivGPSState;
@@ -389,14 +392,14 @@ public class MainActivity extends AppCompatActivity
                                 return;
                             }
 
-                            userProfilePicture.setProfileId(object.getString("id"));
+                            Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + object.getString("id") + "/picture?type=normal").into(userProfilePicture);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 }).executeAsync();
 
-        userProfilePicture = (ProfilePictureView) toolbarTop.findViewById(R.id.mapUserAvatar);
+        userProfilePicture = (CircleImageView) toolbarTop.findViewById(R.id.mapUserAvatar);
 
         tvCreditsValue = (TextView) toolbarTop.findViewById(R.id.tvCreditsValue);
         tvEnergyValue = (TextView) toolbarTop.findViewById(R.id.tvEnergyValue);

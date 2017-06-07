@@ -3,6 +3,7 @@ package com.severenity.view.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.severenity.R;
 import com.severenity.engine.adapters.TeamQuestsListAdapter;
 import com.severenity.entity.quest.team.TeamQuest;
 import com.severenity.entity.quest.team.TeamQuestPart;
+import com.severenity.utils.common.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,18 +66,14 @@ public class TeamQuestsFragment extends Fragment {
             teamQuestsListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
                 @Override
                 public void onGroupExpand(int groupPosition) {
-                    Toast.makeText(getActivity(),
-                            teamQuests.get(groupPosition) + " parts expanded.",
-                            Toast.LENGTH_SHORT).show();
+                    Log.d(Constants.TAG, teamQuests.get(groupPosition) + " parts expanded.");
                 }
             });
 
             teamQuestsListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
                 @Override
                 public void onGroupCollapse(int groupPosition) {
-                    Toast.makeText(getActivity(),
-                            teamQuests.get(groupPosition) + " parts collapsed.",
-                            Toast.LENGTH_SHORT).show();
+                    Log.d(Constants.TAG, teamQuests.get(groupPosition) + " parts collapsed.");
                 }
             });
         }

@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:baselineAligned="false"
+    android:layout_margin="4dp"
     android:orientation="horizontal"
     android:weightSum="10">
 
@@ -16,7 +17,7 @@
         android:orientation="horizontal"
         android:padding="2dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/messageAvatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -26,27 +27,29 @@
             android:layout_rowSpan="2"
             android:src="@drawable/ic_launcher" />
 
-
         <TextView
+            android:layout_margin="2dp"
+            android:layout_marginTop="8dp"
             android:id="@+id/messageUsername"
             android:layout_width="wrap_content"
-            android:layout_height="23dp"
+            android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_marginEnd="1dp"
             android:layout_row="0"
             android:text="Alexander"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textColor="@color/violet"
+            android:textSize="12sp" />
 
         <TextView
+            android:layout_margin="2dp"
             android:id="@+id/messageMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_column="1"
             android:layout_row="1"
-            android:layout_weight="100"
             android:text="Test"
+            android:textSize="12sp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/black" />
 
@@ -59,8 +62,7 @@
             android:layout_row="2"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/darkgray"
-            android:textSize="13sp" />
-
+            android:textSize="12sp" />
     </GridLayout>
 
 </LinearLayout>
