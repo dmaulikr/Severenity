@@ -22,7 +22,6 @@
     <string name="title_shop">Shop is coming soon.</string>
     <string name="title_profile">Profile</string>
     <string name="title_inventory">Inventory</string>
-    <string name="totalDistancePassed">Total distance passed:\n%d meters</string>
 
     <string name="drawerOpened">Spells</string>
     <string name="drawerClosed">Sample</string>
@@ -34,6 +33,12 @@
     <string name="level_value">Level: %d</string>
     <string name="empty_quests">You do not have any accepted quests.</string>
     <string name="menu_delete">Delete</string>
+
+    <string name="profile_stat_level">%d \n level</string>
+    <string name="profile_stat_team">Member of \n %s</string>
+    <string name="profile_stat_meters">%d meters</string>
+    <string name="profile_stat_quests">%d quests</string>
+    <string name="profile_stat_places_owned">%d places</string>
 
     <string name="owners_list">Owners list:</string>
     <string name="other_owners">%1$d</string>
@@ -87,15 +92,14 @@
     <string name="tutorial_avatar_body">Look at that! What a nice picture here, huh? :-)</string>
     <string name="repeat_tutorial">Tutorial</string>
     <string name="repeat_tutorial_body">Tap here in case you want to pass tutorial once again.</string>
-    <string name="name">name</string>
-    <string name="team_name">team name</string>
-    <string name="users">users</string>
+    <string name="name">Name</string>
+    <string name="team_name">Team Name</string>
+    <string name="users">Users</string>
     <string name="clans_team">Team</string>
     <string name="clans_quests">Quests</string>
     <string name="team_list">All teams</string>
     <string name="level_to_join_team">You have to reach level 3 in order to join teams.</string>
-    <string name="teammate">teammate</string>
-    <string name="moderator">Moderator:</string>
+    <string name="member">Member</string>
     <string name="create_team">Create team</string>
 
     <!-- Skill -->
@@ -115,7 +119,6 @@
     <string name="subscription_period_prompt">Select your subscription period</string>
     <string name="subscription_resignup_prompt">To reactivate your subscription, select your subscription period</string>
     <string name="subscription_update_prompt">To change your subscription, select your new subscription period</string>
-    <string name="subscription_period_monthly">Monthly</string>
     <string name="subscription_period_yearly">Yearly</string>
     <string name="subscription_prompt_continue">Continue</string>
     <string name="subscription_prompt_cancel">Cancel</string>
@@ -123,4 +126,5 @@
     <string name="content_description_title_image">80\'s Video Game Style Car Logo</string>
     <string name="content_desc_gas_gauge_indicator">Gas gauge indicator</string>
     <string name="content_desc_free_vs_premium_indicator">Free or Premium Image Indicator</string>
+    <string name="no_team">No team</string>
 </resources>

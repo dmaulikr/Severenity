@@ -1,12 +1,15 @@
 package com.severenity.view.fragments;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,8 +25,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
@@ -240,6 +245,11 @@ public class GameMapFragment extends Fragment {
     private BroadcastReceiver requestPlacesFromGoogle = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(context, "Location receive permission is not granted. Please allow Severenity to use your location.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
         com.google.android.gms.common.api.PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
                 .getCurrentPlace(App.getGoogleApiHelper().getGoogleApiClient(), null);
         result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {

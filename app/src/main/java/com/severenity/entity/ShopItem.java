@@ -4,28 +4,28 @@ package com.severenity.entity;
  * Created by Novosad on 04.09.2016.
  */
 public class ShopItem {
+    public enum ShopItemType {
+        quest_ticket,
+        quest_tip,
+        credits,
+        all_quests_subscription
+    }
 
     private String title;
     private int imageURL;
     private String description;
     private double price;
     private double credits;
+    private ShopItemType type;
 
-    public ShopItem(String title, int imageURL, String description, double credits, double price) {
+    public ShopItem(ShopItemType type, String title, int imageURL, String description, double credits, double price) {
         this.title = title;
         this.imageURL = imageURL;
         this.description = description;
         this.price = price;
         this.credits = credits;
+        this.type = type;
     }
-
-    public ShopItem(String title, int imageURL, String description, double credits) {
-        this.title = title;
-        this.imageURL = imageURL;
-        this.description = description;
-        this.credits = credits;
-    }
-
 
     public String getTitle() {
         return title;
@@ -65,5 +65,13 @@ public class ShopItem {
 
     public void setCredits(double credits) {
         this.credits = credits;
+    }
+
+    public ShopItemType getType() {
+        return type;
+    }
+
+    public void setType(ShopItemType type) {
+        this.type = type;
     }
 }

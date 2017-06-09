@@ -552,7 +552,7 @@ public class QuestManager extends DataManager {
      * Retrieve team quests from server.
      */
     public void getTeamQuestsFromServer() {
-        String request = Constants.HOST + Constants.REST_API_QUESTS + "/teams/" + App.getUserManager().getCurrentUser().getTeam() + "?leaderId=" + App.getUserManager().getCurrentUser().getId();
+        String request = Constants.HOST + Constants.REST_API_QUESTS + "/teams/" + App.getUserManager().getCurrentUser().getTeamId() + "?leaderId=" + App.getUserManager().getCurrentUser().getId();
         App.getRestManager().createRequest(request, Request.Method.GET, null, new RequestCallback() {
             @Override
             public void onResponseCallback(JSONObject response) {

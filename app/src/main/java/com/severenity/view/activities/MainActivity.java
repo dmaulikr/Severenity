@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -31,7 +30,6 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.login.widget.ProfilePictureView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.fitness.Fitness;
@@ -134,7 +132,7 @@ public class MainActivity extends AppCompatActivity
         mRecoveryManager = new EnergyRecoveryManager(getApplicationContext());
         mRecoveryManager.start();
 
-        toolbarBottom.findViewById(R.id.menu_map).performClick();
+        toolbarBottom.findViewById(R.id.menu_map).callOnClick();
 
         buildGoogleApiClient();
         App.getGoogleApiHelper().setGoogleApiClient(googleApiClient);
@@ -321,6 +319,24 @@ public class MainActivity extends AppCompatActivity
         mRecoveryManager.stop();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(Constants.TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
+        if (shopFragment.getPurchaseHelper() == null) {
+            return;
+        }
+
+        // Pass on the activity result to the helper for handling
+        if (!shopFragment.getPurchaseHelper().handleActivityResult(requestCode, resultCode, data)) {
+            // not handled, so handle it ourselves (here's where you'd
+            // perform any handling of activity results not related to in-app
+            // billing...
+            super.onActivityResult(requestCode, resultCode, data);
+        } else {
+            Log.d(Constants.TAG, "onActivityResult handled by IABUtil.");
+        }
+    }
+
     private void initSocketSubscriptions() {
         if (App.getWebSocketManager().isConnected()) {
             App.getWebSocketManager().subscribeForEvents();
@@ -393,6 +409,12 @@ public class MainActivity extends AppCompatActivity
                             }
 
                             Picasso.with(getApplicationContext()).load("https://graph.facebook.com/" + object.getString("id") + "/picture?type=normal").into(userProfilePicture);
+                            userProfilePicture.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    profileItem.callOnClick();
+                                }
+                            });
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -414,7 +436,7 @@ public class MainActivity extends AppCompatActivity
         ivGPSState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                App.getUserManager().updateCurrentUserProgress(AccessToken.getCurrentAccessToken().getUserId(), 100);
+                Toast.makeText(getApplicationContext(), "Your current GPS status.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -443,11 +465,7 @@ public class MainActivity extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    item.setIcon(getResources().getDrawable(R.drawable.menu_shop_selected, getTheme()));
-                                } else {
-                                    item.setIcon(getResources().getDrawable(R.drawable.menu_shop_selected));
-                                }
+                                item.setIcon(getResources().getDrawable(R.drawable.menu_shop_selected, getTheme()));
                             }
                         });
                         showShop();
@@ -456,11 +474,7 @@ public class MainActivity extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    item.setIcon(getResources().getDrawable(R.drawable.menu_profile_selected, getTheme()));
-                                } else {
-                                    item.setIcon(getResources().getDrawable(R.drawable.menu_profile_selected));
-                                }
+                                item.setIcon(getResources().getDrawable(R.drawable.menu_profile_selected, getTheme()));
                             }
                         });
                         showProfile();
@@ -469,11 +483,7 @@ public class MainActivity extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    item.setIcon(getResources().getDrawable(R.drawable.menu_map_selected, getTheme()));
-                                } else {
-                                    item.setIcon(getResources().getDrawable(R.drawable.menu_map_selected));
-                                }
+                                item.setIcon(getResources().getDrawable(R.drawable.menu_map_selected, getTheme()));
                             }
                         });
                         showMap();
@@ -482,11 +492,7 @@ public class MainActivity extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    item.setIcon(getResources().getDrawable(R.drawable.menu_chat_selected, getTheme()));
-                                } else {
-                                    item.setIcon(getResources().getDrawable(R.drawable.menu_chat_selected));
-                                }
+                                item.setIcon(getResources().getDrawable(R.drawable.menu_chat_selected, getTheme()));
                             }
                         });
                         showTeams();
@@ -495,11 +501,7 @@ public class MainActivity extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    item.setIcon(getResources().getDrawable(R.drawable.menu_quests_selected, getTheme()));
-                                } else {
-                                    item.setIcon(getResources().getDrawable(R.drawable.menu_quests_selected));
-                                }
+                                item.setIcon(getResources().getDrawable(R.drawable.menu_quests_selected, getTheme()));
                             }
                         });
                         showQuests();
@@ -508,11 +510,7 @@ public class MainActivity extends AppCompatActivity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    item.setIcon(getResources().getDrawable(R.drawable.menu_team_quests_selected, getTheme()));
-                                } else {
-                                    item.setIcon(getResources().getDrawable(R.drawable.menu_team_quests_selected));
-                                }
+                                item.setIcon(getResources().getDrawable(R.drawable.menu_team_quests_selected, getTheme()));
                             }
                         });
                         showTeamQuests();
@@ -525,7 +523,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        if (App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
+        if (App.getUserManager().getCurrentUser().getTeamId().isEmpty()) {
             toolbarBottom.getMenu().findItem(R.id.menu_team_quests).setVisible(false);
         } else {
             toolbarBottom.getMenu().findItem(R.id.menu_team_quests).setVisible(true);
@@ -540,46 +538,22 @@ public class MainActivity extends AppCompatActivity
             MenuItem item = toolbarBottom.getMenu().getItem(i);
             switch (item.getItemId()) {
                 case R.id.menu_shop:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        item.setIcon(getResources().getDrawable(R.drawable.menu_shop, getTheme()));
-                    } else {
-                        item.setIcon(getResources().getDrawable(R.drawable.menu_shop));
-                    }
+                    item.setIcon(getResources().getDrawable(R.drawable.menu_shop, getTheme()));
                     break;
                 case R.id.menu_profile:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        item.setIcon(getResources().getDrawable(R.drawable.menu_profile, getTheme()));
-                    } else {
-                        item.setIcon(getResources().getDrawable(R.drawable.menu_profile));
-                    }
+                    item.setIcon(getResources().getDrawable(R.drawable.menu_profile, getTheme()));
                     break;
                 case R.id.menu_map:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        item.setIcon(getResources().getDrawable(R.drawable.menu_map, getTheme()));
-                    } else {
-                        item.setIcon(getResources().getDrawable(R.drawable.menu_map));
-                    }
+                    item.setIcon(getResources().getDrawable(R.drawable.menu_map, getTheme()));
                     break;
                 case R.id.menu_chat:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        item.setIcon(getResources().getDrawable(R.drawable.menu_chat, getTheme()));
-                    } else {
-                        item.setIcon(getResources().getDrawable(R.drawable.menu_chat));
-                    }
+                    item.setIcon(getResources().getDrawable(R.drawable.menu_chat, getTheme()));
                     break;
                 case R.id.menu_quests:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        item.setIcon(getResources().getDrawable(R.drawable.menu_quests, getTheme()));
-                    } else {
-                        item.setIcon(getResources().getDrawable(R.drawable.menu_quests));
-                    }
+                    item.setIcon(getResources().getDrawable(R.drawable.menu_quests, getTheme()));
                     break;
                 case R.id.menu_team_quests:
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        item.setIcon(getResources().getDrawable(R.drawable.menu_team_quests, getTheme()));
-                    } else {
-                        item.setIcon(getResources().getDrawable(R.drawable.menu_team_quests));
-                    }
+                    item.setIcon(getResources().getDrawable(R.drawable.menu_team_quests, getTheme()));
                     break;
                 default: break;
             }
@@ -647,7 +621,6 @@ public class MainActivity extends AppCompatActivity
 
         App.getUserManager().updateCurrentUserLocallyWithUser(App.getUserManager().getCurrentUser());
         App.getLocationManager().stopLocationUpdates();
-        App.getGoogleApiHelper().disconnect();
 
         App.getLocalBroadcastManager().unregisterReceiver(updateUIReceiver);
         App.getLocalBroadcastManager().unregisterReceiver(App.getLocationManager().getGoogleApiClientReceiver());
@@ -684,8 +657,6 @@ public class MainActivity extends AppCompatActivity
 
         App.getLocalBroadcastManager().registerReceiver(onTeamChangedReceiver,
                 new IntentFilter(Constants.INTENT_FILTER_TEAM_CHANGED));
-
-        App.getGoogleApiHelper().connect();
     }
 
     /**
@@ -819,7 +790,7 @@ public class MainActivity extends AppCompatActivity
         if (mPlaceInfoDialog != null) {
             mPlaceInfoDialog.dismiss();
 
-            toolbarBottom.findViewById(R.id.menu_map).performClick();
+            toolbarBottom.findViewById(R.id.menu_map).callOnClick();
             App.getLocationManager().showPlaceAtPosition(placeID);
         }
     }

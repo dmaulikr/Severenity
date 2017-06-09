@@ -51,10 +51,10 @@ public class SkillRecycleViewAdapter extends RecyclerView.Adapter<SkillRecycleVi
         return this.skillList.size();
     }
 
-    public class SkillViewHolder extends RecyclerView.ViewHolder {
+    class SkillViewHolder extends RecyclerView.ViewHolder {
         private SkillGridItemBinding skillGridItemBinding;
 
-        public SkillViewHolder(View view) {
+        SkillViewHolder(View view) {
             super(view);
             skillGridItemBinding = DataBindingUtil.bind(view);
         }

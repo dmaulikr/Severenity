@@ -71,8 +71,8 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
         mFragments = new ArrayMap<>();
 
         boolean hasTeam = false;
-        if (App.getUserManager().getCurrentUser().getTeam() != null) {
-            hasTeam = !App.getUserManager().getCurrentUser().getTeam().isEmpty();
+        if (App.getUserManager().getCurrentUser().getTeamId() != null) {
+            hasTeam = !App.getUserManager().getCurrentUser().getTeamId().isEmpty();
         }
 
         TeamsListFragment teamsListFragment = TeamsListFragment.newInstance();
@@ -81,7 +81,7 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
         mFragments.put(BUTTON_TEAM_LIST_ID, new FragmentInfo(teamsListFragment, "teamsList", context.getResources().getString(R.string.team_list), !hasTeam));
 
         if (hasTeam) {
-            TeamFragment teamFragment = TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeam());
+            TeamFragment teamFragment = TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeamId());
             teamFragment.setListener(this);
             mFragments.put(BUTTON_TEAM_ID, new FragmentInfo(teamFragment, "teamFragment", context.getResources().getString(R.string.clans_team), true));
         }
@@ -161,7 +161,7 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
             return;
         }
 
-        TeamFragment teamFragment = TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeam());
+        TeamFragment teamFragment = TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeamId());
         teamFragment.setListener(this);
         FragmentInfo info = new FragmentInfo(
                 teamFragment,

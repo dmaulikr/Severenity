@@ -62,7 +62,7 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
         mTeamsList.setAdapter(adapter);
         mTeamsList.setListener(this);
 
-        if (!App.getUserManager().getCurrentUser().getTeam().isEmpty() || (App.getUserManager().getCurrentUser().getLevel() < 5) ) {
+        if (!App.getUserManager().getCurrentUser().getTeamId().isEmpty() || (App.getUserManager().getCurrentUser().getLevel() < 5) ) {
             mAddTeamButtonsView.setVisibility(View.GONE);
         }
 
@@ -123,7 +123,7 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
     public void onTeamCreated() {
         mTeamDialog.dismiss();
         mTeamDialog = null;
-        if (!App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
+        if (!App.getUserManager().getCurrentUser().getTeamId().isEmpty()) {
             mAddTeamButtonsView.setVisibility(View.GONE);
         }
         Utils.hideKeyboard(getActivity());
@@ -136,7 +136,7 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onTeamJoined() {
-        if (!App.getUserManager().getCurrentUser().getTeam().isEmpty()) {
+        if (!App.getUserManager().getCurrentUser().getTeamId().isEmpty()) {
             mAddTeamButtonsView.setVisibility(View.GONE);
         }
 

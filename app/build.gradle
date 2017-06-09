@@ -21,8 +21,8 @@ android {
         applicationId "com.severenity"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 6
-        versionName "0.9"
+        versionCode 7
+        versionName "0.9.1"
         multiDexEnabled true
         signingConfig signingConfigs.config
     }
@@ -78,7 +78,7 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.4.3'
     compile 'com.facebook.android:facebook-android-sdk:4.20.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'joda-time:joda-time:2.9.3'
     compile 'com.github.iammert:MaterialIntroView:1.5.2'
     compile 'com.github.wooplr:Spotlight:1.1'

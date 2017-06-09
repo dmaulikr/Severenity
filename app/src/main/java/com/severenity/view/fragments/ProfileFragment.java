@@ -6,30 +6,55 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.NetworkResponse;
 import com.severenity.App;
 import com.severenity.R;
-import com.severenity.engine.adapters.InfoAdapter;
-import com.severenity.engine.adapters.UserInfoAdapter;
+import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.GamePlace;
 import com.severenity.entity.User;
+import com.severenity.entity.quest.Quest;
+import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
+import com.severenity.view.Dialogs.PlacesOwnedDialog;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
-    private TextView tvTotalMetersPassed;
-    private ListView mPlacesList;
+public class ProfileFragment extends DialogFragment {
+    private static String ARGUMENT_USER_ID = "userId";
+
+    private TextView tvMetersPassed;
+    private TextView tvQuestsCompleted;
+    private TextView tvPlacesOwned;
+    private TextView tvLevel;
+    private TextView tvTeam;
+
+    public static ProfileFragment newInstance(String title) {
+        ProfileFragment profileFragment = new ProfileFragment();
+        Bundle args = new Bundle();
+
+        args.putString(ARGUMENT_USER_ID, title);
+
+        profileFragment.setArguments(args);
+        return profileFragment;
+    }
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -41,37 +66,67 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        User currentUser = App.getUserManager().getCurrentUser();
+        Bundle args = getArguments();
+        final String userId = args.getString(ARGUMENT_USER_ID);
 
-        int meters = 0;
+        User user = App.getUserManager().getCurrentUser();
 
-        if (currentUser != null) {
-            meters = currentUser.getDistance();
+        if (user == null || userId == null) {
+            return view;
         }
 
-        tvTotalMetersPassed = (TextView) view.findViewById(R.id.tvTotalMetersPassed);
-        tvTotalMetersPassed.setText(String.format(getResources().getString(R.string.totalDistancePassed), meters));
+        tvMetersPassed = (TextView) view.findViewById(R.id.tvProfileStatMeters);
+        tvLevel = (TextView) view.findViewById(R.id.tvProfileStatLevel);
+        tvTeam = (TextView) view.findViewById(R.id.tvProfileStatTeam);
+        tvQuestsCompleted = (TextView) view.findViewById(R.id.tvProfileStatQuestsCompleted);
+        tvPlacesOwned = (TextView) view.findViewById(R.id.tvProfileStatPlacesOwned);
+
+        TextView tvUserName = (TextView) view.findViewById(R.id.tvProfileStatUsername);
+        CircleImageView civAvatar = (CircleImageView) view.findViewById(R.id.civAvatar);
 
         ImageView fbLogout = (ImageView) view.findViewById(R.id.ivFBLogout);
-        fbLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                App.getInstance().logOut();
-            }
-        });
 
-        mPlacesList = (ListView)view.findViewById(R.id.listOwnPlaces);
-        UserInfoAdapter infoAdapter = new UserInfoAdapter(getContext());
+        if (!userId.equals(user.getId())) {
+            fbLogout.setVisibility(View.GONE);
+            App.getUserManager().getUser(userId, new RequestCallback() {
+                @Override
+                public void onResponseCallback(JSONObject response) {
+                    User user = Utils.createUserFromJSON(response);
+                    updateUIInfo(user);
+                }
 
-        ArrayList<GamePlace> places = App.getPlacesManager().findPlacesByOwner(App.getUserManager().getCurrentUser().getId());
-        for (GamePlace gp: places) {
-            InfoAdapter.InfoData data = new InfoAdapter.InfoData();
-            data.dataID     = gp.getPlaceID();
-            data.dataString = gp.getPlaceName();
-            infoAdapter.addItem(data);
+                @Override
+                public void onErrorCallback(NetworkResponse response) {
+                    if (response != null) {
+                        Log.e(Constants.TAG, "Cannot get info for user " + userId + ". Error: " + response.toString());
+                    } else {
+                        Log.e(Constants.TAG, "Cannot get info for user " + userId + ". Response is null.");
+                    }
+                }
+            });
+        } else {
+            Picasso.with(getActivity()).load("https://graph.facebook.com/" + user.getId() + "/picture?type=large").into(civAvatar);
+            tvUserName.setText(user.getName());
+
+            fbLogout.setVisibility(View.VISIBLE);
+            fbLogout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    App.getInstance().logOut();
+                }
+            });
+
+            tvPlacesOwned.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PlacesOwnedDialog dialog = PlacesOwnedDialog.newInstance();
+                    FragmentManager manager = getActivity().getSupportFragmentManager();
+                    dialog.show(manager, "placesOwnedInfo");
+                }
+            });
+
+            updateUIInfo(user);
         }
-
-        mPlacesList.setAdapter(infoAdapter);
 
         return view;
     }
@@ -80,7 +135,7 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        updateUIInfo();
+        updateUIInfo(App.getUserManager().getCurrentUser());
         App.getLocalBroadcastManager().registerReceiver(
                 updateUIReceiver,
                 new IntentFilter(Constants.INTENT_FILTER_UPDATE_UI)
@@ -89,26 +144,43 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onPause() {
-        super.onPause();
-
         App.getLocalBroadcastManager().unregisterReceiver(updateUIReceiver);
+
+        super.onPause();
     }
 
     private BroadcastReceiver updateUIReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            updateUIInfo();
+            updateUIInfo(App.getUserManager().getCurrentUser());
         }
     };
 
-    private void updateUIInfo() {
-        if (App.getUserManager().getCurrentUser() == null) {
+    private void updateUIInfo(User user) {
+        if (user == null) {
             return;
         }
 
-        tvTotalMetersPassed.setText(String.format(
-            getResources().getString(R.string.totalDistancePassed),
-            App.getUserManager().getCurrentUser().getDistance())
-        );
+        tvLevel.setText(String.format(getResources().getString(R.string.profile_stat_level), user.getLevel()));
+
+        if (user.getTeamId().isEmpty()) {
+            tvTeam.setText(getResources().getString(R.string.no_team));
+        } else {
+            tvTeam.setText(String.format(getResources().getString(R.string.profile_stat_team), user.getTeamName()));
+        }
+
+        tvMetersPassed.setText(String.format(getResources().getString(R.string.profile_stat_meters), user.getDistance()));
+
+        ArrayList<GamePlace> places = App.getPlacesManager().findPlacesByOwner(user.getId());
+        tvPlacesOwned.setText(String.format(getResources().getString(R.string.profile_stat_places_owned), places.size()));
+
+        ArrayList<Quest> completedQuests = new ArrayList<>();
+        for (Quest quest : App.getQuestManager().getQuests()) {
+            if (quest.getStatus() == Quest.QuestStatus.Finished) {
+                completedQuests.add(quest);
+            }
+        }
+
+        tvQuestsCompleted.setText(String.format(getResources().getString(R.string.profile_stat_quests), completedQuests.size()));
     }
 }

@@ -583,13 +583,11 @@ public class IabHelper {
                 result = new IabResult(responseCode, "Problem purchashing item.");
                 mPurchaseListener.onIabPurchaseFinished(result, null);
             }
-        }
-        else if (resultCode == Activity.RESULT_CANCELED) {
+        } else if (resultCode == Activity.RESULT_CANCELED) {
             logDebug("Purchase canceled - Response: " + getResponseDesc(responseCode));
             result = new IabResult(IABHELPER_USER_CANCELLED, "User canceled.");
             if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, null);
-        }
-        else {
+        } else {
             logError("Purchase failed. Result code: " + Integer.toString(resultCode)
                     + ". Response: " + getResponseDesc(responseCode));
             result = new IabResult(IABHELPER_UNKNOWN_PURCHASE_RESPONSE, "Unknown purchase response.");
@@ -598,7 +596,7 @@ public class IabHelper {
         return true;
     }
 
-    public Inventory queryInventory() throws IabException {
+    Inventory queryInventory() throws IabException {
         return queryInventory(false, null, null);
     }
 

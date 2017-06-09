@@ -1,7 +1,5 @@
 package com.severenity.engine.adapters;
 
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +18,15 @@ import java.util.List;
  */
 public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.ShopItemsListHolder>{
     private List<ShopItem> shopItemList;
+    private OnShopItemClickListener onShopItemClickListener;
 
-    public ShopItemsAdapter(List<ShopItem> shopItemList){
+    public interface OnShopItemClickListener {
+        void onShopItemClicked(ShopItem item);
+    }
+
+    public ShopItemsAdapter(List<ShopItem> shopItemList, OnShopItemClickListener onShopItemClickListener) {
         this.shopItemList = shopItemList;
+        this.onShopItemClickListener = onShopItemClickListener;
     }
 
     @Override
@@ -51,20 +55,7 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.Shop
         holder.btnPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setTitle("Confirmation")
-                        .setMessage("Are you sure you want to buy "+ item.getTitle())
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // TODO: Make some realization
-                            }
-                        })
-                        .setNegativeButton("No",null)
-                        .setCancelable(true);
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                onShopItemClickListener.onShopItemClicked(item);
             }
         });
     }

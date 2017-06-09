@@ -25,7 +25,8 @@ public class User {
     private int maxImmunity;
     private int maxEnergy;
     private String createdDate;
-    private String userTeam;
+    private String teamId;
+    private String teamName;
 
     public User() {
 
@@ -179,14 +180,25 @@ public class User {
      *
      * @return team id of the team user belongs to.
      */
-    public String getTeam() {
-        if (this.userTeam == null) {
+    public String getTeamId() {
+        if (this.teamId == null) {
             return "";
         }
-        return this.userTeam;
+        return this.teamId;
     }
 
-    public void setTeam(String team) {
-        this.userTeam = team;
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
+    }
+
+    public String getTeamName() {
+        if (this.teamId == null) {
+            return "";
+        }
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 }

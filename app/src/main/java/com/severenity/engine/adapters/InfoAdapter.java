@@ -18,10 +18,10 @@ public abstract class InfoAdapter extends BaseAdapter {
         public String dataString;
     }
 
-    protected Context mContext;
+    Context mContext;
     private ArrayList<InfoData> mData;
 
-    public InfoAdapter(Context ctx) {
+    InfoAdapter(Context ctx) {
         mContext = ctx;
         mData = new ArrayList<>();
     }
@@ -42,7 +42,14 @@ public abstract class InfoAdapter extends BaseAdapter {
     }
 
     public void addItem(InfoData data) {
+        for (InfoData item : mData) {
+            if (item.dataID.equals(data.dataID)) {
+                return;
+            }
+        }
+
         mData.add(data);
+        notifyDataSetChanged();
     }
 
     public void removeItem(int position) {

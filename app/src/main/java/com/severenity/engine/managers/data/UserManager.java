@@ -42,6 +42,7 @@ import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_MAX_IMP
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_NAME;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_NULLABLE;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
+import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM_NAME;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_VIEW_RADIUS;
 import static com.severenity.entity.contracts.UserContract.DBUser.TABLE_USERS;
 
@@ -82,7 +83,7 @@ public class UserManager extends DataManager {
         values.put(COLUMN_MAX_IMPLANT_HP, user.getMaxImplantHP());
         values.put(COLUMN_ACTION_RADIUS, user.getActionRadius());
         values.put(COLUMN_VIEW_RADIUS, user.getViewRadius());
-        values.put(COLUMN_TEAM, user.getTeam());
+        values.put(COLUMN_TEAM, user.getTeamId());
 
         long success = db.insert(TABLE_USERS, COLUMN_NULLABLE, values);
         db.close();
@@ -134,7 +135,8 @@ public class UserManager extends DataManager {
             user.setMaxImplantHP(cursor.getInt(cursor.getColumnIndex(COLUMN_MAX_IMPLANT_HP)));
             user.setViewRadius(cursor.getDouble(cursor.getColumnIndex(COLUMN_VIEW_RADIUS)));
             user.setActionRadius(cursor.getDouble(cursor.getColumnIndex(COLUMN_ACTION_RADIUS)));
-            user.setTeam(cursor.getString(cursor.getColumnIndex(COLUMN_TEAM)));
+            user.setTeamId(cursor.getString(cursor.getColumnIndex(COLUMN_TEAM)));
+            user.setTeamName(cursor.getString(cursor.getColumnIndex(COLUMN_TEAM_NAME)));
 
             cursor.close();
             db.close();
@@ -207,7 +209,8 @@ public class UserManager extends DataManager {
         values.put(COLUMN_IMPLANT_HP, user.getImplantHP());
         values.put(COLUMN_MAX_IMPLANT_HP, user.getMaxImplantHP());
         values.put(COLUMN_CREDITS, user.getCredits());
-        values.put(COLUMN_TEAM, user.getTeam());
+        values.put(COLUMN_TEAM, user.getTeamId());
+        values.put(COLUMN_TEAM_NAME, user.getTeamName());
 
         if (currentUser != null && user.getLevel() > currentUser.getLevel()) {
             Intent levelUpIntent = new Intent(context, MainActivity.class);
@@ -242,7 +245,7 @@ public class UserManager extends DataManager {
         return currentUser;
     }
 
-    public void setCurrentUser(User user) {
+    private void setCurrentUser(User user) {
         currentUser = user;
     }
 
@@ -305,15 +308,31 @@ public class UserManager extends DataManager {
      * Sends distance passed update to the server in order to update experience,
      * distance and level.
      *
-     * @param userId       - id of the user which has to be updated.
      * @param metersPassed - last meters passed update.
      */
-    public void updateCurrentUserProgress(String userId, int metersPassed) {
+    public void updateCurrentUserProgress(int metersPassed) {
         try {
             JSONObject data = new JSONObject();
-            data.put("userId", userId);
+            data.put("userId", getCurrentUser().getId());
             data.put("field", "distance");
             data.put("amount", metersPassed);
+            App.getWebSocketManager().sendUserUpdateToServer(data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sends credits update for the user (in case purchased or for other activities).
+     *
+     * @param credits - credits amount to add.
+     */
+    public void updateCurrentUserCredits(int credits) {
+        try {
+            JSONObject data = new JSONObject();
+            data.put("userId", getCurrentUser().getId());
+            data.put("field", "credits");
+            data.put("amount", credits);
             App.getWebSocketManager().sendUserUpdateToServer(data);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -460,10 +479,10 @@ public class UserManager extends DataManager {
      */
     public void createCurrentUserAndNotify(JSONObject userObject, Intent intent) {
         User user = Utils.createUserFromJSON(userObject);
-        if (App.getUserManager().getUser(user) != null) {
+        if (getUser(user) != null) {
             updateCurrentUserLocallyWithUser(user);
         } else {
-            setCurrentUser(App.getUserManager().addUser(user));
+            setCurrentUser(addUser(user));
         }
         App.getLocalBroadcastManager().sendBroadcast(intent);
     }

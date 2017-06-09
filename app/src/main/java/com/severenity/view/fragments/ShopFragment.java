@@ -1,9 +1,6 @@
 package com.severenity.view.fragments;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,14 +80,56 @@ import static android.content.Context.MODE_PRIVATE;
  * we have to apply its effects to our world and consume it. This
  * is also very important!
  */
-public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBroadcastListener,
-        DialogInterface.OnClickListener {
-
-    private ProgressDialog waitDialog;
+public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBroadcastListener, ShopItemsAdapter.OnShopItemClickListener {
     private RecyclerView rvShopItemsList;
+
+    // Does the user have an active subscription to the year tickets plan?
+    boolean mSubscribedToAnnualTickets = false;
+
+    // Will the subscription auto-renew?
+    boolean mAutoRenewEnabled = false;
+
+    // Tracks the currently owned yearly tickets SKU, and the options in the Manage dialog
+    String mAnnualTicketsSku = "";
+
+    // SKUs for our products: consumable quest tip, quest ticket and credits
+    static final String SKU_QUEST_TICKET = "quest_ticket";
+    static final String SKU_QUEST_TIP = "quest_tip";
+    static final String SKU_CREDITS = "credits";
+
+    // SKU for year tickets subscription
+    static final String SKU_ANNUAL_TICKETS = "all_quests_subscription";
+
+    // (arbitrary) request code for the purchase flow
+    static final int RC_REQUEST = 10001;
+
+    // How many tickets team may have at max.
+    static final int TICKETS_MAX = 24;
+    // How many tips you may have at max.
+    static final int TIPS_MAX = 3;
+
+    // Current amount of tickets
+    int mTickets;
+
+    // Current amount of tips
+    int mTips;
+
+    // The helper object
+    IabHelper mHelper;
+
+    // Provides purchase notification while this app is running
+    IabBroadcastReceiver mBroadcastReceiver;
 
     public ShopFragment() {
         // Required empty public constructor
+    }
+
+    private List<ShopItem> createMockListData() {
+        List<ShopItem> list = new ArrayList<>();
+        list.add(new ShopItem(ShopItem.ShopItemType.credits, "Credits", R.drawable.shop_item_credits, "100 credits for in-game activities.", 0, 1.99));
+        list.add(new ShopItem(ShopItem.ShopItemType.quest_tip, "Quest Tip", R.drawable.shop_item_tip, "A tip used during the quest to help you.", 50, 0.99));
+        list.add(new ShopItem(ShopItem.ShopItemType.quest_ticket, "Quest Ticket", R.mipmap.shop_item_ticket, "Ticket for participation in the quest.", 0, 9.49));
+        return list;
     }
 
     @Override
@@ -102,7 +140,7 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         rvShopItemsList = (RecyclerView) view.findViewById(R.id.rvShopItems);
         rvShopItemsList.setLayoutManager(gridLayoutManager);
-        ShopItemsAdapter adapter = new ShopItemsAdapter(createMockListData());
+        ShopItemsAdapter adapter = new ShopItemsAdapter(createMockListData(), this);
         rvShopItemsList.setAdapter(adapter);
 
         return view;
@@ -173,61 +211,15 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
         });
     }
 
-    private List<ShopItem> createMockListData() {
-        List<ShopItem> list = new ArrayList<>();
-        list.add(new ShopItem("Credits", R.drawable.shop_item_credits, "100 credits for in-game activities.", 0, 1));
-        list.add(new ShopItem("Quest tip", R.drawable.shop_item_tip, "A small tip used during the quest.", 50, 0.5));
-        list.add(new ShopItem("Quest Pass", R.mipmap.shop_item_ticket, "Ticket for participation in the quest.", 0, 10));
-        return list;
-    }
-
-    // Does the user have the premium upgrade?
-    boolean mIsPremium = false;
-
-    // Does the user have an active subscription to the infinite gas plan?
-    boolean mSubscribedToInfiniteGas = false;
-
-    // Will the subscription auto-renew?
-    boolean mAutoRenewEnabled = false;
-
-    // Tracks the currently owned infinite gas SKU, and the options in the Manage dialog
-    String mInfiniteGasSku = "";
-    String mFirstChoiceSku = "";
-    String mSecondChoiceSku = "";
-
-    // Used to select between purchasing gas on a monthly or yearly basis
-    String mSelectedSubscriptionPeriod = "";
-
-    // SKUs for our products: the premium upgrade (non-consumable) and gas (consumable)
-    static final String SKU_PREMIUM = "premium";
-    static final String SKU_GAS = "gas";
-
-    // SKU for our subscription (infinite gas)
-    static final String SKU_INFINITE_GAS_MONTHLY = "infinite_gas_monthly";
-    static final String SKU_INFINITE_GAS_YEARLY = "infinite_gas_yearly";
-
-    // (arbitrary) request code for the purchase flow
-    static final int RC_REQUEST = 10001;
-
-    // How many units (1/4 tank is our unit) fill in the tank.
-    static final int TANK_MAX = 4;
-
-    // Current amount of gas in tank, in units
-    int mTank;
-
-    // The helper object
-    IabHelper mHelper;
-
-    // Provides purchase notification while this app is running
-    IabBroadcastReceiver mBroadcastReceiver;
-
     // Listener that's called when we finish querying the items and subscriptions we own
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
         public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
             Log.d(Constants.TAG, "Query inventory finished.");
 
             // Have we been disposed of in the meantime? If so, quit.
-            if (mHelper == null) return;
+            if (mHelper == null) {
+                return;
+            }
 
             // Is it a failure?
             if (result.isFailure()) {
@@ -243,48 +235,63 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
              * verifyDeveloperPayload().
              */
 
-            // Do we have the premium upgrade?
-            Purchase premiumPurchase = inventory.getPurchase(SKU_PREMIUM);
-            mIsPremium = (premiumPurchase != null && verifyDeveloperPayload(premiumPurchase));
-            Log.d(Constants.TAG, "User is " + (mIsPremium ? "PREMIUM" : "NOT PREMIUM"));
-
             // First find out which subscription is auto renewing
-            Purchase gasMonthly = inventory.getPurchase(SKU_INFINITE_GAS_MONTHLY);
-            Purchase gasYearly = inventory.getPurchase(SKU_INFINITE_GAS_YEARLY);
-            if (gasMonthly != null && gasMonthly.isAutoRenewing()) {
-                mInfiniteGasSku = SKU_INFINITE_GAS_MONTHLY;
-                mAutoRenewEnabled = true;
-            } else if (gasYearly != null && gasYearly.isAutoRenewing()) {
-                mInfiniteGasSku = SKU_INFINITE_GAS_YEARLY;
+            Purchase yearlyTickets = inventory.getPurchase(SKU_ANNUAL_TICKETS);
+            if (yearlyTickets != null && yearlyTickets.isAutoRenewing()) {
+                mAnnualTicketsSku = SKU_ANNUAL_TICKETS;
                 mAutoRenewEnabled = true;
             } else {
-                mInfiniteGasSku = "";
+                mAnnualTicketsSku = "";
                 mAutoRenewEnabled = false;
             }
 
             // The user is subscribed if either subscription exists, even if neither is auto
             // renewing
-            mSubscribedToInfiniteGas = (gasMonthly != null && verifyDeveloperPayload(gasMonthly))
-                    || (gasYearly != null && verifyDeveloperPayload(gasYearly));
-            Log.d(Constants.TAG, "User " + (mSubscribedToInfiniteGas ? "HAS" : "DOES NOT HAVE")
-                    + " infinite gas subscription.");
-            if (mSubscribedToInfiniteGas) mTank = TANK_MAX;
+            mSubscribedToAnnualTickets = yearlyTickets != null && verifyDeveloperPayload(yearlyTickets);
+            Log.d(Constants.TAG, "User " + (mSubscribedToAnnualTickets ? "HAS" : "DOES NOT HAVE")
+                    + " year tickets subscription.");
 
-            // Check for gas delivery -- if we own gas, we should fill up the tank immediately
-            Purchase gasPurchase = inventory.getPurchase(SKU_GAS);
-            if (gasPurchase != null && verifyDeveloperPayload(gasPurchase)) {
-                Log.d(Constants.TAG, "We have gas. Consuming it.");
+            if (mSubscribedToAnnualTickets) {
+                mTickets = TICKETS_MAX;
+            }
+
+            // Check for ticket delivery -- if we own ticket, we should fill up the tickets immediately
+            Purchase ticketPurchase = inventory.getPurchase(SKU_QUEST_TICKET);
+            if (ticketPurchase != null && verifyDeveloperPayload(ticketPurchase)) {
+                Log.d(Constants.TAG, "We have ticket. Consuming it.");
                 try {
-                    mHelper.consumeAsync(inventory.getPurchase(SKU_GAS), mConsumeFinishedListener);
+                    mHelper.consumeAsync(inventory.getPurchase(SKU_QUEST_TICKET), mConsumeFinishedListener);
                 } catch (IabHelper.IabAsyncInProgressException e) {
-                    complain("Error consuming gas. Another async operation in progress.");
+                    complain("Error consuming ticket. Another async operation in progress.");
+                }
+                return;
+            }
+
+            // Check for credits delivery -- if we own credits, we should add credits to user immediately
+            Purchase creditsPurchase = inventory.getPurchase(SKU_CREDITS);
+            if (creditsPurchase != null && verifyDeveloperPayload(creditsPurchase)) {
+                Log.d(Constants.TAG, "We have credits. Consuming it.");
+                try {
+                    mHelper.consumeAsync(inventory.getPurchase(SKU_CREDITS), mConsumeFinishedListener);
+                } catch (IabHelper.IabAsyncInProgressException e) {
+                    complain("Error consuming credits. Another async operation in progress.");
+                }
+                return;
+            }
+
+            // Check for quest tip delivery -- if we own tip, we should add tips to user immediately
+            Purchase tipPurchase = inventory.getPurchase(SKU_QUEST_TIP);
+            if (tipPurchase != null && verifyDeveloperPayload(tipPurchase)) {
+                Log.d(Constants.TAG, "We have tip. Consuming it.");
+                try {
+                    mHelper.consumeAsync(inventory.getPurchase(SKU_QUEST_TIP), mConsumeFinishedListener);
+                } catch (IabHelper.IabAsyncInProgressException e) {
+                    complain("Error consuming tip. Another async operation in progress.");
                 }
                 return;
             }
 
             // TODO: Reflect on UI changes according to purchases
-            // updateUi();
-            setWaitScreen(false);
             Log.d(Constants.TAG, "Initial inventory query finished; enabling main UI.");
         }
     };
@@ -300,176 +307,90 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
         }
     }
 
-    // User clicked the "Buy Gas" button
-    public void onBuyGasButtonClicked(View arg0) {
-        Log.d(Constants.TAG, "Buy gas button clicked.");
+    // User clicked the "Purchase" on quest ticket
+    public void onPurchaseQuestTicketClicked() {
+        Log.d(Constants.TAG, "Buy ticket button clicked.");
 
-        if (mSubscribedToInfiniteGas) {
-            complain("No need! You're subscribed to infinite gas. Isn't that awesome?");
+        if (mSubscribedToAnnualTickets) {
+            complain("No need! You're subscribed to all quests this year. Isn't that awesome?");
             return;
         }
 
-        if (mTank >= TANK_MAX) {
-            complain("Your tank is full. Drive around a bit!");
+        if (mTickets >= TICKETS_MAX) {
+            complain("You have tickets for a year. Just use them! :-)");
             return;
         }
 
         // launch the gas purchase UI flow.
         // We will be notified of completion via mPurchaseFinishedListener
-        setWaitScreen(true);
-        Log.d(Constants.TAG, "Launching purchase flow for gas.");
+        Log.d(Constants.TAG, "Launching purchase flow for quest ticket.");
 
         /* TODO: for security, generate your payload here for verification. See the comments on
          *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
          *        an empty string, but on a production app you should carefully generate this. */
-        String payload = "";
+        String payload = App.getUserManager().getCurrentUser().getId() + "_purchase_" + SKU_QUEST_TICKET;
 
         try {
-            mHelper.launchPurchaseFlow(getActivity(), SKU_GAS, RC_REQUEST,
+            mHelper.launchPurchaseFlow(getActivity(), SKU_QUEST_TICKET, RC_REQUEST,
                     mPurchaseFinishedListener, payload);
         } catch (IabHelper.IabAsyncInProgressException e) {
             complain("Error launching purchase flow. Another async operation in progress.");
-            setWaitScreen(false);
         }
     }
 
-    // User clicked the "Upgrade to Premium" button.
-    public void onUpgradeAppButtonClicked(View arg0) {
-        Log.d(Constants.TAG, "Upgrade button clicked; launching purchase flow for upgrade.");
-        setWaitScreen(true);
+    // User clicked the "Purchase" on quest tip
+    public void onPurchaseQuestTipClicked() {
+        Log.d(Constants.TAG, "Purchase quest tip button clicked; launching purchase flow for quest tip.");
 
         /* TODO: for security, generate your payload here for verification. See the comments on
          *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
          *        an empty string, but on a production app you should carefully generate this. */
-        String payload = "";
+        String payload = App.getUserManager().getCurrentUser().getId() + "_purchase_" + SKU_QUEST_TIP;
 
         try {
-            mHelper.launchPurchaseFlow(getActivity(), SKU_PREMIUM, RC_REQUEST,
+            mHelper.launchPurchaseFlow(getActivity(), SKU_QUEST_TIP, RC_REQUEST,
                     mPurchaseFinishedListener, payload);
         } catch (IabHelper.IabAsyncInProgressException e) {
             complain("Error launching purchase flow. Another async operation in progress.");
-            setWaitScreen(false);
         }
     }
 
-    // "Subscribe to infinite gas" button clicked. Explain to user, then start purchase
+    // User clicked the "Purchase" on quest tip
+    public void onPurchaseCreditsClicked() {
+        Log.d(Constants.TAG, "Purchase credits button clicked; launching purchase flow for credits.");
+
+        /* TODO: for security, generate your payload here for verification. See the comments on
+         *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
+         *        an empty string, but on a production app you should carefully generate this. */
+        String payload = App.getUserManager().getCurrentUser().getId() + "_purchase_" + SKU_CREDITS;
+
+        try {
+            mHelper.launchPurchaseFlow(getActivity(), SKU_CREDITS, RC_REQUEST,
+                    mPurchaseFinishedListener, payload);
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            complain("Error launching purchase flow. Another async operation in progress.");
+        }
+    }
+
+    // "Subscribe to all team quests this year" button clicked. Explain to user, then start purchase
     // flow for subscription.
-    public void onInfiniteGasButtonClicked(View arg0) {
+    public void onYearlyQuestsPurchaseClicked() {
         if (!mHelper.subscriptionsSupported()) {
             complain("Subscriptions not supported on your device yet. Sorry!");
             return;
         }
 
-        CharSequence[] options;
-        if (!mSubscribedToInfiniteGas || !mAutoRenewEnabled) {
-            // Both subscription options should be available
-            options = new CharSequence[2];
-            options[0] = getString(R.string.subscription_period_monthly);
-            options[1] = getString(R.string.subscription_period_yearly);
-            mFirstChoiceSku = SKU_INFINITE_GAS_MONTHLY;
-            mSecondChoiceSku = SKU_INFINITE_GAS_YEARLY;
-        } else {
-            // This is the subscription upgrade/downgrade path, so only one option is valid
-            options = new CharSequence[1];
-            if (mInfiniteGasSku.equals(SKU_INFINITE_GAS_MONTHLY)) {
-                // Give the option to upgrade to yearly
-                options[0] = getString(R.string.subscription_period_yearly);
-                mFirstChoiceSku = SKU_INFINITE_GAS_YEARLY;
-            } else {
-                // Give the option to downgrade to monthly
-                options[0] = getString(R.string.subscription_period_monthly);
-                mFirstChoiceSku = SKU_INFINITE_GAS_MONTHLY;
-            }
-            mSecondChoiceSku = "";
-        }
-
-        int titleResId;
-        if (!mSubscribedToInfiniteGas) {
-            titleResId = R.string.subscription_period_prompt;
-        } else if (!mAutoRenewEnabled) {
-            titleResId = R.string.subscription_resignup_prompt;
-        } else {
-            titleResId = R.string.subscription_update_prompt;
-        }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(titleResId)
-                .setSingleChoiceItems(options, 0 /* checkedItem */, this)
-                .setPositiveButton(R.string.subscription_prompt_continue, this)
-                .setNegativeButton(R.string.subscription_prompt_cancel, this);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    @Override
-    public void onClick(DialogInterface dialog, int id) {
-        if (id == 0 /* First choice item */) {
-            mSelectedSubscriptionPeriod = mFirstChoiceSku;
-        } else if (id == 1 /* Second choice item */) {
-            mSelectedSubscriptionPeriod = mSecondChoiceSku;
-        } else if (id == DialogInterface.BUTTON_POSITIVE /* continue button */) {
-            /* TODO: for security, generate your payload here for verification. See the comments on
+        /* TODO: for security, generate your payload here for verification. See the comments on
              *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
              *        an empty string, but on a production app you should carefully generate
              *        this. */
-            String payload = "";
+        String payload = App.getUserManager().getCurrentUser().getId() + "_purchase_" + SKU_ANNUAL_TICKETS;
 
-            if (TextUtils.isEmpty(mSelectedSubscriptionPeriod)) {
-                // The user has not changed from the default selection
-                mSelectedSubscriptionPeriod = mFirstChoiceSku;
-            }
-
-            List<String> oldSkus = null;
-            if (!TextUtils.isEmpty(mInfiniteGasSku)
-                    && !mInfiniteGasSku.equals(mSelectedSubscriptionPeriod)) {
-                // The user currently has a valid subscription, any purchase action is going to
-                // replace that subscription
-                oldSkus = new ArrayList<String>();
-                oldSkus.add(mInfiniteGasSku);
-            }
-
-            setWaitScreen(true);
-            Log.d(Constants.TAG, "Launching purchase flow for gas subscription.");
-            try {
-                mHelper.launchPurchaseFlow(getActivity(), mSelectedSubscriptionPeriod, IabHelper.ITEM_TYPE_SUBS,
-                        oldSkus, RC_REQUEST, mPurchaseFinishedListener, payload);
-            } catch (IabHelper.IabAsyncInProgressException e) {
-                complain("Error launching purchase flow. Another async operation in progress.");
-                setWaitScreen(false);
-            }
-            // Reset the dialog options
-            mSelectedSubscriptionPeriod = "";
-            mFirstChoiceSku = "";
-            mSecondChoiceSku = "";
-        } else if (id != DialogInterface.BUTTON_NEGATIVE) {
-            // There are only four buttons, this should not happen
-            Log.e(Constants.TAG, "Unknown button clicked in subscription dialog: " + id);
-        }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        waitDialog = new ProgressDialog(getActivity());
-        waitDialog.setMessage("Wait please...");
-        waitDialog.setTitle("Purchasing...");
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(Constants.TAG, "onActivityResult(" + requestCode + "," + resultCode + "," + data);
-        if (mHelper == null) return;
-
-        // Pass on the activity result to the helper for handling
-        if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
-            // not handled, so handle it ourselves (here's where you'd
-            // perform any handling of activity results not related to in-app
-            // billing...
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-        else {
-            Log.d(Constants.TAG, "onActivityResult handled by IABUtil.");
+        Log.d(Constants.TAG, "Launching purchase flow for annual ticket subscription.");
+        try {
+            mHelper.launchPurchaseFlow(getActivity(), SKU_ANNUAL_TICKETS, IabHelper.ITEM_TYPE_SUBS, null, RC_REQUEST, mPurchaseFinishedListener, payload);
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            complain("Error launching purchase flow. Another async operation in progress.");
         }
     }
 
@@ -509,53 +430,61 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
             Log.d(Constants.TAG, "Purchase finished: " + result + ", purchase: " + purchase);
 
             // if we were disposed of in the meantime, quit.
-            if (mHelper == null) return;
+            if (mHelper == null) {
+                return;
+            }
 
             if (result.isFailure()) {
                 complain("Error purchasing: " + result);
-                setWaitScreen(false);
                 return;
             }
             if (!verifyDeveloperPayload(purchase)) {
                 complain("Error purchasing. Authenticity verification failed.");
-                setWaitScreen(false);
                 return;
             }
 
             Log.d(Constants.TAG, "Purchase successful.");
 
-            if (purchase.getSku().equals(SKU_GAS)) {
-                // bought 1/4 tank of gas. So consume it.
-                Log.d(Constants.TAG, "Purchase is gas. Starting gas consumption.");
-                try {
-                    mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-                } catch (IabHelper.IabAsyncInProgressException e) {
-                    complain("Error consuming gas. Another async operation in progress.");
-                    setWaitScreen(false);
-                    return;
-                }
-            }
-            else if (purchase.getSku().equals(SKU_PREMIUM)) {
-                // bought the premium upgrade!
-                Log.d(Constants.TAG, "Purchase is premium upgrade. Congratulating user.");
-                alert("Thank you for upgrading to premium!");
-                mIsPremium = true;
-                // TODO: Reflect on UI changes according to purchases
-                // updateUi();
-                setWaitScreen(false);
-            }
-            else if (purchase.getSku().equals(SKU_INFINITE_GAS_MONTHLY)
-                    || purchase.getSku().equals(SKU_INFINITE_GAS_YEARLY)) {
-                // bought the infinite gas subscription
-                Log.d(Constants.TAG, "Infinite gas subscription purchased.");
-                alert("Thank you for subscribing to infinite gas!");
-                mSubscribedToInfiniteGas = true;
-                mAutoRenewEnabled = purchase.isAutoRenewing();
-                mInfiniteGasSku = purchase.getSku();
-                mTank = TANK_MAX;
-                // TODO: Reflect on UI changes according to purchases
-                // updateUi();
-                setWaitScreen(false);
+            switch (purchase.getSku()) {
+                case SKU_QUEST_TICKET:
+                    // bought 1 ticket. So consume it.
+                    Log.d(Constants.TAG, "Purchase is ticket. Starting ticket consumption.");
+                    try {
+                        mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                    } catch (IabHelper.IabAsyncInProgressException e) {
+                        complain("Error consuming ticket. Another async operation in progress.");
+                    }
+                    break;
+                case SKU_QUEST_TIP:
+                    // bought the quest tip!
+                    Log.d(Constants.TAG, "Purchase is quest tip. Starting tip consumption.");
+                    try {
+                        mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                    } catch (IabHelper.IabAsyncInProgressException e) {
+                        complain("Error consuming credits. Another async operation in progress.");
+                    }
+
+                    // TODO: Reflect on UI changes according to purchases
+                    break;
+                case SKU_CREDITS:
+                    // bought the credits!
+                    Log.d(Constants.TAG, "Purchase is credits. Starting credits consumption.");
+                    try {
+                        mHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                    } catch (IabHelper.IabAsyncInProgressException e) {
+                        complain("Error consuming credits. Another async operation in progress.");
+                    }
+                    break;
+                case SKU_ANNUAL_TICKETS:
+                    // bought the infinite gas subscription
+                    Log.d(Constants.TAG, "Annual tickets subscription purchased.");
+                    alert("Thank you for subscribing to annual tickets! You can attend all team quests next year!");
+                    mSubscribedToAnnualTickets = true;
+                    mAutoRenewEnabled = purchase.isAutoRenewing();
+                    mAnnualTicketsSku = purchase.getSku();
+                    mTickets = TICKETS_MAX;
+                    // TODO: Reflect on UI changes according to purchases
+                    break;
             }
         }
     };
@@ -566,25 +495,42 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
             Log.d(Constants.TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
 
             // if we were disposed of in the meantime, quit.
-            if (mHelper == null) return;
+            if (mHelper == null) {
+                return;
+            }
 
-            // We know this is the "gas" sku because it's the only one we consume,
-            // so we don't check which sku was consumed. If you have more than one
-            // sku, you probably should check...
-            if (result.isSuccess()) {
-                // successfully consumed, so we apply the effects of the item in our
-                // game world's logic, which in our case means filling the gas tank a bit
-                Log.d(Constants.TAG, "Consumption successful. Provisioning.");
-                mTank = mTank == TANK_MAX ? TANK_MAX : mTank + 1;
-                saveData();
-                alert("You filled 1/4 tank. Your tank is now " + String.valueOf(mTank) + "/4 full!");
-            }
-            else {
+            if (result.isFailure()) {
                 complain("Error while consuming: " + result);
+                return;
             }
+
+            switch (purchase.getSku()) {
+                case SKU_QUEST_TICKET:
+                    Log.d(Constants.TAG, "Consumption successful. Provisioning.");
+
+                    mTickets = mTickets == TICKETS_MAX ? TICKETS_MAX : mTickets + 1;
+
+                    // TODO: Save data and update UI
+                    alert("You own " + (mTickets == 1 ? "1 ticket!" : String.valueOf(mTickets) + " tickets!") + "\nNow gather team and take a quest!");
+                    break;
+                case SKU_QUEST_TIP:
+                    Log.d(Constants.TAG, "Consumption successful. Provisioning.");
+
+                    mTips = mTips == TIPS_MAX ? TIPS_MAX : mTips + 1;
+
+                    // TODO: Save data and update UI
+                    alert("You own " + (mTips == 1 ? "1 tip!" : String.valueOf(mTips) + " tips!" ) + "\nTake advantage of tip help on next quest!");
+                    break;
+                case SKU_CREDITS:
+                    Log.d(Constants.TAG, "Consumption successful. Provisioning.");
+
+                    App.getUserManager().updateCurrentUserCredits(100);
+
+                    alert("Thank you for purchasing credits! Now use them for in-game activities");
+                    break;
+            }
+
             // TODO: Reflect on UI changes according to purchases
-            // updateUi();
-            setWaitScreen(false);
             Log.d(Constants.TAG, "End consumption flow.");
         }
     };
@@ -604,42 +550,6 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
         if (mHelper != null) {
             mHelper.disposeWhenFinished();
             mHelper = null;
-        }
-    }
-
-//    // updates UI to reflect model
-//    public void updateUi() {
-//        // update the car color to reflect premium status or lack thereof
-//        ((ImageView)findViewById(R.id.free_or_premium)).setImageResource(mIsPremium ? R.drawable.premium : R.drawable.free);
-//
-//        // "Upgrade" button is only visible if the user is not premium
-//        findViewById(R.id.upgrade_button).setVisibility(mIsPremium ? View.GONE : View.VISIBLE);
-//
-//        ImageView infiniteGasButton = (ImageView) findViewById(R.id.infinite_gas_button);
-//        if (mSubscribedToInfiniteGas) {
-//            // If subscription is active, show "Manage Infinite Gas"
-//            infiniteGasButton.setImageResource(R.drawable.manage_infinite_gas);
-//        } else {
-//            // The user does not have infinite gas, show "Get Infinite Gas"
-//            infiniteGasButton.setImageResource(R.drawable.get_infinite_gas);
-//        }
-//
-//        // update gas gauge to reflect tank status
-//        if (mSubscribedToInfiniteGas) {
-//            ((ImageView)findViewById(R.id.gas_gauge)).setImageResource(R.drawable.gas_inf);
-//        }
-//        else {
-//            int index = mTank >= TANK_RES_IDS.length ? TANK_RES_IDS.length - 1 : mTank;
-//            ((ImageView)findViewById(R.id.gas_gauge)).setImageResource(TANK_RES_IDS[index]);
-//        }
-//    }
-
-    // Enables or disables the "please wait" screen.
-    void setWaitScreen(boolean set) {
-        if (set) {
-            waitDialog.show();
-        } else {
-            waitDialog.hide();
         }
     }
 
@@ -665,14 +575,33 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
          */
 
         SharedPreferences.Editor spe = getActivity().getPreferences(MODE_PRIVATE).edit();
-        spe.putInt("tank", mTank);
+        spe.putInt("tank", mTickets);
         spe.apply();
-        Log.d(Constants.TAG, "Saved data: tank = " + String.valueOf(mTank));
+        Log.d(Constants.TAG, "Saved data: tank = " + String.valueOf(mTickets));
     }
 
     void loadData() {
         SharedPreferences sp = getActivity().getPreferences(MODE_PRIVATE);
-        mTank = sp.getInt("tank", 2);
-        Log.d(Constants.TAG, "Loaded data: tank = " + String.valueOf(mTank));
+        mTickets = sp.getInt("tank", 2);
+        Log.d(Constants.TAG, "Loaded data: tank = " + String.valueOf(mTickets));
+    }
+
+    @Override
+    public void onShopItemClicked(ShopItem item) {
+        switch (item.getType()) {
+            case credits:
+                onPurchaseCreditsClicked();
+                break;
+            case quest_tip:
+                onPurchaseQuestTipClicked();
+                break;
+            case quest_ticket:
+                onPurchaseQuestTicketClicked();
+                break;
+        }
+    }
+
+    public IabHelper getPurchaseHelper() {
+        return mHelper;
     }
 }

@@ -1,8 +1,10 @@
 package com.severenity.engine.managers.location;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,12 +15,14 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -465,7 +469,7 @@ public class LocationManager implements LocationListener {
      * Initializes location updates according to created location request and sets
      * flag about requesting location updates.
      */
-    public void startLocationUpdates() {
+    private void startLocationUpdates() {
         if (locationRequest == null) {
             createLocationRequest();
         }
@@ -477,9 +481,13 @@ public class LocationManager implements LocationListener {
             return;
         }
 
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                App.getGoogleApiClient(), locationRequest, this);
-        requestingLocationUpdates = true;
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    App.getGoogleApiClient(), locationRequest, this);
+            requestingLocationUpdates = true;
+        } else {
+            Toast.makeText(context, "Location receive permission is not granted. Please allow Severenity to use your location.", Toast.LENGTH_SHORT).show();
+        }
 
         App.getWebSocketManager().subscribeForLocationEvent();
     }
@@ -642,7 +650,7 @@ public class LocationManager implements LocationListener {
 
     private void updateUserInfo(int metersPassed) {
         App.getQuestManager().updateQuestProgress("distance", String.valueOf(metersPassed));
-        App.getUserManager().updateCurrentUserProgress(App.getUserManager().getCurrentUser().getId(), metersPassed);
+        App.getUserManager().updateCurrentUserProgress(metersPassed);
     }
 
     /**
@@ -655,7 +663,13 @@ public class LocationManager implements LocationListener {
             boolean googleApiClientConnected = intent.getBooleanExtra(Constants.EXTRA_GAC_CONNECTED, false);
             if (googleApiClientConnected) {
                 startLocationUpdates();
-                currentLocation = LocationServices.FusedLocationApi.getLastLocation(App.getGoogleApiClient());
+
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    currentLocation = LocationServices.FusedLocationApi.getLastLocation(App.getGoogleApiClient());
+                } else {
+                    Toast.makeText(context, "Location receive permission is not granted. Please allow Severenity to use your location.", Toast.LENGTH_SHORT).show();
+                }
+
                 if (currentLocation != null) {
                     mLocationOfLastSquareUpdate = updateSquarePointsForFilteringLocations();
                     mLocationOfLastPlacesUpdateFromGoogle = mLocationOfLastSquareUpdate;
@@ -810,7 +824,6 @@ public class LocationManager implements LocationListener {
      * is able to observe other map items).
      */
     private void displayUserActionAndViewCircles() {
-
         User currentUser = App.getUserManager().getCurrentUser();
         if (currentUser == null) {
             return;

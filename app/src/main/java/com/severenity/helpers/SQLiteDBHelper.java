@@ -2,7 +2,6 @@ package com.severenity.helpers;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -24,7 +23,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     // 5 - added recovery info table
     // 6 - added max implant hp column
     // 7 - added team column into users table
-    private static final int DB_VERSION = 7;
+    // 8 - added team name column
+    private static final int DB_VERSION = 8;
     private static final String DB_NAME = "Filter.db";
 
     private static final String TEXT_TYPE = " TEXT";
@@ -51,6 +51,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     UserContract.DBUser.COLUMN_VIEW_RADIUS + REAL_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_ACTION_RADIUS + REAL_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_TEAM + TEXT_TYPE + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_TEAM_NAME + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_LEVEL + INT_TYPE + " )";
 
     private static final String DB_SQL_CREATE_QUESTS =
@@ -112,6 +113,7 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     private static final String DB_SQL_ADD_MAX_IMPLANT_HP_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_MAX_IMPLANT_HP + INT_TYPE + ";";
 
     private static final String DB_SQL_ADD_USER_TEAM_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_TEAM + TEXT_TYPE + ";";
+    private static final String DB_SQL_ADD_USER_TEAM_NAME_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_TEAM_NAME + TEXT_TYPE + ";";
 
     private void createPlace(SQLiteDatabase db) {
         db.execSQL(DB_SQL_CREATE_PLACES);
@@ -125,10 +127,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     public SQLiteDBHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-    }
-
-    public SQLiteDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
-        super(context, name, factory, version, errorHandler);
     }
 
     @Override
@@ -163,6 +161,10 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
         if (oldVersion == 6 && newVersion == DB_VERSION) {
             db.execSQL(DB_SQL_ADD_USER_TEAM_COLUMN);
         }
+
+        if (oldVersion == 7 && newVersion == DB_VERSION) {
+            db.execSQL(DB_SQL_ADD_USER_TEAM_NAME_COLUMN);
+        }
     }
 
     @Override
@@ -171,29 +173,17 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     }
 
     public void dumpTable(String tableName) {
-
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query(
-                tableName,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null);
+        Cursor cursor = db.query(tableName, null, null, null, null, null, null, null);
 
-        if (cursor == null)
+        if (cursor == null || cursor.getCount() == 0) {
             return;
-
-        if (cursor.getCount() == 0)
-            return;
+        }
 
         Log.i(Constants.TAG, "============== dumping data from table: " + tableName + " ================ ");
 
-        if( cursor.moveToFirst()) {
-            String dump = new String();
-
+        if (cursor.moveToFirst()) {
+            String dump = "";
             int colCount = cursor.getColumnCount();
             for (int i = 0; i < colCount; i++) {
                 dump += cursor.getColumnName(i) + " | ";
@@ -210,6 +200,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                 Log.i(Constants.TAG, dump);
             } while (cursor.moveToNext());
         }
+
+        cursor.close();
 
         Log.i(Constants.TAG, "=========================================================================== ");
     }

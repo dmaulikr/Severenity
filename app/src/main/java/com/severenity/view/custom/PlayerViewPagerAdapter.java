@@ -4,27 +4,26 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.severenity.App;
 import com.severenity.view.fragments.InventoryFragment;
 import com.severenity.view.fragments.ProfileFragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Novosad on 5/17/16.
  */
 public class PlayerViewPagerAdapter extends FragmentStatePagerAdapter {
-    private ProfileFragment profileFragment = new ProfileFragment();
-    private InventoryFragment inventoryFragment = new InventoryFragment();
-
-    private ArrayList<Fragment> fragments = new ArrayList<>(
-        Arrays.asList(
-            profileFragment,
-            inventoryFragment
-    ));
+    private ArrayList<Fragment> fragments = new ArrayList<>();
 
     public PlayerViewPagerAdapter(FragmentManager fm) {
         super(fm);
+
+        ProfileFragment profileFragment = ProfileFragment.newInstance(App.getUserManager().getCurrentUser().getId());
+        InventoryFragment inventoryFragment = new InventoryFragment();
+
+        fragments.add(profileFragment);
+        fragments.add(inventoryFragment);
     }
 
     @Override

@@ -82,8 +82,8 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
         mTeamModerator = (TextView)view.findViewById(R.id.teamModeratorText);
         mTeamName = (TextView)view.findViewById(R.id.teamNameText);
 
-        UsersListAdapter searchAdapter = new UsersListAdapter(getContext());
-        mUsersInTeamList = (CustomListView)view.findViewById(R.id.usersInTeamList);
+        UsersListAdapter searchAdapter = new UsersListAdapter(getContext(), this);
+        mUsersInTeamList = (CustomListView) view.findViewById(R.id.usersInTeamList);
         mUsersInTeamList.setAdapter(searchAdapter);
         mUsersInTeamList.showLoadSpinner(false);
         mUsersInTeamList.setChoiceMode(CustomListView.CHOICE_MODE_SINGLE);
@@ -94,7 +94,7 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
 
         mTeamID = getArguments().getString(ARGUMENT_TEAM_ID);
 
-        if (!App.getUserManager().getCurrentUser().getTeam().equals(mTeamID)) {
+        if (!App.getUserManager().getCurrentUser().getTeamId().equals(mTeamID)) {
             mLeaveButtonLayout.setVisibility(View.GONE);
         }
 

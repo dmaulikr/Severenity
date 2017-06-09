@@ -120,5 +120,4 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
     public void onScroll(AbsListView view, int firstVisibleItem,
                          int visibleItemCount, int totalItemCount) {
     }
-
 }

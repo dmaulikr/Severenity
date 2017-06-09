@@ -1,27 +1,35 @@
 package com.severenity.engine.adapters;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.severenity.R;
 import com.severenity.entity.User;
 import com.severenity.utils.common.Constants;
+import com.severenity.view.fragments.ProfileFragment;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Novosad on 8/4/2016.
  */
 
 public class UsersListAdapter extends CustomListArrayAdapterBase<User> {
+    private Fragment fragment;
 
-    public UsersListAdapter(Context ctx) {
+    public UsersListAdapter(Context ctx, Fragment fragment) {
         super(ctx, R.layout.usersearch_item_list);
+
+        this.fragment = fragment;
     }
 
     @Override
@@ -39,19 +47,29 @@ public class UsersListAdapter extends CustomListArrayAdapterBase<User> {
         }
 
         TextView number = (TextView) result.findViewById(R.id.recordNumber);
-        number.setText(Integer.toString(position + 1));
+        number.setText(String.format(Locale.US, "%d", position + 1));
 
         final User user = getItem(position);
         if (user == null){
             Log.e(Constants.TAG, "Null object in the UserSearchAdapter.");
-            return null;
+            return result;
         }
 
         TextView usrName = (TextView) result.findViewById(R.id.userName);
         usrName.setText(user.getName());
 
         TextView userExp = (TextView) result.findViewById(R.id.userExp);
-        userExp.setText(Integer.toString(user.getExperience()));
+        userExp.setText(String.format(Locale.US, "%d", user.getExperience()));
+
+        ImageView userInfo = (ImageView) result.findViewById(R.id.ivUserInfo);
+        userInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileFragment profileFragment = ProfileFragment.newInstance(user.getId());
+                FragmentManager manager = fragment.getActivity().getSupportFragmentManager();
+                profileFragment.show(manager, "userProfileInfo");
+            }
+        });
 
         return result;
     }
