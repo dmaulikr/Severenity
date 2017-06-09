@@ -27,6 +27,8 @@ public class User {
     private String createdDate;
     private String teamId;
     private String teamName;
+    private int tickets;
+    private int tips;
 
     public User() {
 
@@ -200,5 +202,21 @@ public class User {
 
     public void setTeamName(String teamName) {
         this.teamName = teamName;
+    }
+
+    public int getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(int tickets) {
+        this.tickets = tickets;
+    }
+
+    public int getTips() {
+        return tips;
+    }
+
+    public void setTips(int tips) {
+        this.tips = tips;
     }
 }

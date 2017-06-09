@@ -31,6 +31,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,6 +46,8 @@ public class ProfileFragment extends DialogFragment {
     private TextView tvPlacesOwned;
     private TextView tvLevel;
     private TextView tvTeam;
+    private TextView tvTickets;
+    private TextView tvTips;
 
     public static ProfileFragment newInstance(String title) {
         ProfileFragment profileFragment = new ProfileFragment();
@@ -80,14 +83,13 @@ public class ProfileFragment extends DialogFragment {
         tvTeam = (TextView) view.findViewById(R.id.tvProfileStatTeam);
         tvQuestsCompleted = (TextView) view.findViewById(R.id.tvProfileStatQuestsCompleted);
         tvPlacesOwned = (TextView) view.findViewById(R.id.tvProfileStatPlacesOwned);
+        tvTickets = (TextView) view.findViewById(R.id.tvProfileStatTickets);
+        tvTips = (TextView) view.findViewById(R.id.tvProfileStatTips);
 
         TextView tvUserName = (TextView) view.findViewById(R.id.tvProfileStatUsername);
         CircleImageView civAvatar = (CircleImageView) view.findViewById(R.id.civAvatar);
 
-        ImageView fbLogout = (ImageView) view.findViewById(R.id.ivFBLogout);
-
         if (!userId.equals(user.getId())) {
-            fbLogout.setVisibility(View.GONE);
             App.getUserManager().getUser(userId, new RequestCallback() {
                 @Override
                 public void onResponseCallback(JSONObject response) {
@@ -107,14 +109,6 @@ public class ProfileFragment extends DialogFragment {
         } else {
             Picasso.with(getActivity()).load("https://graph.facebook.com/" + user.getId() + "/picture?type=large").into(civAvatar);
             tvUserName.setText(user.getName());
-
-            fbLogout.setVisibility(View.VISIBLE);
-            fbLogout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    App.getInstance().logOut();
-                }
-            });
 
             tvPlacesOwned.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -182,5 +176,8 @@ public class ProfileFragment extends DialogFragment {
         }
 
         tvQuestsCompleted.setText(String.format(getResources().getString(R.string.profile_stat_quests), completedQuests.size()));
+
+        tvTickets.setText(String.format(getResources().getString(R.string.profile_stat_tickets), user.getTickets()));
+        tvTips.setText(String.format(getResources().getString(R.string.profile_stat_tips), user.getTips()));
     }
 }

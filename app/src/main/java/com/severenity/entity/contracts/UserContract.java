@@ -31,6 +31,8 @@ public final class UserContract {
         public static final String COLUMN_LEVEL = "level";
         public static final String COLUMN_TEAM = "team";
         public static final String COLUMN_TEAM_NAME = "teamName";
+        public static final String COLUMN_TICKETS = "tickets";
+        public static final String COLUMN_TIPS = "tips";
         public static final String COLUMN_NULLABLE = "NULL";
     }
 }

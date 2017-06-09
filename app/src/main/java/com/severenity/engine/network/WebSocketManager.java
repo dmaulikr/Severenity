@@ -124,6 +124,8 @@ public class WebSocketManager {
                             user.setExperience(response.getInt("experience"));
                             user.setDistance(response.getInt("distance"));
                             user.setLevel(response.getInt("level"));
+                            user.setTickets(response.getInt("tickets"));
+                            user.setTips(response.getInt("tips"));
 
                             App.getUserManager().updateCurrentUserLocallyWithUser(user);
                             App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_UPDATE_UI));

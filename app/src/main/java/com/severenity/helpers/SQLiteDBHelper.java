@@ -23,9 +23,9 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     // 5 - added recovery info table
     // 6 - added max implant hp column
     // 7 - added team column into users table
-    // 8 - added team name column
+    // 8 - added team name column, tips and tickets for the user
     private static final int DB_VERSION = 8;
-    private static final String DB_NAME = "Filter.db";
+    private static final String DB_NAME = "Severenity.db";
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER ";
@@ -48,6 +48,8 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     UserContract.DBUser.COLUMN_MAX_IMPLANT_HP + INT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_CREATED_DATE + TEXT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_CREDITS + INT_TYPE + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_TICKETS + INT_TYPE + COMMA_SEP +
+                    UserContract.DBUser.COLUMN_TIPS + INT_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_VIEW_RADIUS + REAL_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_ACTION_RADIUS + REAL_TYPE + COMMA_SEP +
                     UserContract.DBUser.COLUMN_TEAM + TEXT_TYPE + COMMA_SEP +
@@ -114,6 +116,9 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
     private static final String DB_SQL_ADD_USER_TEAM_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_TEAM + TEXT_TYPE + ";";
     private static final String DB_SQL_ADD_USER_TEAM_NAME_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_TEAM_NAME + TEXT_TYPE + ";";
+    private static final String DB_SQL_ADD_USER_TIPS_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_TIPS + INT_TYPE + ";";
+    private static final String DB_SQL_ADD_USER_TICKETS_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_TICKETS + INT_TYPE + ";";
+
 
     private void createPlace(SQLiteDatabase db) {
         db.execSQL(DB_SQL_CREATE_PLACES);
@@ -164,6 +169,11 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
         if (oldVersion == 7 && newVersion == DB_VERSION) {
             db.execSQL(DB_SQL_ADD_USER_TEAM_NAME_COLUMN);
+        }
+
+        if (oldVersion == 8 && newVersion == DB_VERSION) {
+            db.execSQL(DB_SQL_ADD_USER_TIPS_COLUMN);
+            db.execSQL(DB_SQL_ADD_USER_TICKETS_COLUMN);
         }
     }
 

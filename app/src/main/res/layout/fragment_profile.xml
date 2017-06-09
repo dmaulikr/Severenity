@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
+    android:padding="4dp"
     tools:context="com.severenity.view.fragments.ProfileFragment">
 
     <LinearLayout
@@ -11,7 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
-        android:layout_height="174dp">
+        android:layout_height="160dp">
 
         <TextView
             android:id="@+id/tvProfileStatLevel"
@@ -59,12 +59,43 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:layout_marginTop="14dp"
         android:layout_below="@id/tvProfileStatUsername"
+        android:id="@+id/tvProfileStatTickets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/shop_item_ticket"
+        android:gravity="center_vertical"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tvProfileStatTickets"
+        android:background="@android:color/darker_gray"/>
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/tvProfileStatTickets"
+        android:id="@+id/tvProfileStatTips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/shop_item_tip"
+        android:gravity="center_vertical"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tvProfileStatTips"
+        android:background="@android:color/darker_gray"/>
+
+    <TextView
+        android:layout_below="@id/tvProfileStatTips"
         android:id="@+id/tvProfileStatMeters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:layout_marginTop="20dp"
         android:gravity="center_vertical"
         android:drawableStart="@android:drawable/ic_menu_compass"
         android:layout_alignParentStart="true"
@@ -102,15 +133,5 @@
         android:gravity="center_vertical"
         android:drawableEnd="@android:drawable/ic_media_play"
         android:textSize="14sp" />
-
-    <ImageView
-        android:id="@+id/ivFBLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="2dp"
-        android:src="@drawable/facebook_logout"
-        android:visibility="visible" />
 
 </RelativeLayout>

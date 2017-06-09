@@ -39,6 +39,8 @@
     <string name="profile_stat_meters">%d meters</string>
     <string name="profile_stat_quests">%d quests</string>
     <string name="profile_stat_places_owned">%d places</string>
+    <string name="profile_stat_tickets">%d tickets available</string>
+    <string name="profile_stat_tips">%d tips available</string>
 
     <string name="owners_list">Owners list:</string>
     <string name="other_owners">%1$d</string>

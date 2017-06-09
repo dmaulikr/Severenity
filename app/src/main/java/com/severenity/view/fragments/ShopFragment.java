@@ -1,8 +1,10 @@
 package com.severenity.view.fragments;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,8 +28,6 @@ import com.severenity.utils.common.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Example game using in-app billing version 3.
@@ -82,6 +82,7 @@ import static android.content.Context.MODE_PRIVATE;
  */
 public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBroadcastListener, ShopItemsAdapter.OnShopItemClickListener {
     private RecyclerView rvShopItemsList;
+    private ShopItem.ShopItemType currentItemUnderPurchase;
 
     // Does the user have an active subscription to the year tickets plan?
     boolean mSubscribedToAnnualTickets = false;
@@ -108,12 +109,6 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
     // How many tips you may have at max.
     static final int TIPS_MAX = 3;
 
-    // Current amount of tickets
-    int mTickets;
-
-    // Current amount of tips
-    int mTips;
-
     // The helper object
     IabHelper mHelper;
 
@@ -128,7 +123,7 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
         List<ShopItem> list = new ArrayList<>();
         list.add(new ShopItem(ShopItem.ShopItemType.credits, "Credits", R.drawable.shop_item_credits, "100 credits for in-game activities.", 0, 1.99));
         list.add(new ShopItem(ShopItem.ShopItemType.quest_tip, "Quest Tip", R.drawable.shop_item_tip, "A tip used during the quest to help you.", 50, 0.99));
-        list.add(new ShopItem(ShopItem.ShopItemType.quest_ticket, "Quest Ticket", R.mipmap.shop_item_ticket, "Ticket for participation in the quest.", 0, 9.49));
+        list.add(new ShopItem(ShopItem.ShopItemType.quest_ticket, "Quest Ticket", R.drawable.shop_item_ticket, "Ticket for participation in the quest.", 0, 9.49));
         return list;
     }
 
@@ -149,9 +144,6 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // load game data
-        loadData();
 
         /* base64EncodedPublicKey should be YOUR APPLICATION'S PUBLIC KEY
          * (that you got from the Google Play developer console). This is not your
@@ -252,7 +244,7 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
                     + " year tickets subscription.");
 
             if (mSubscribedToAnnualTickets) {
-                mTickets = TICKETS_MAX;
+                App.getUserManager().updateCurrentUser("tickets", TICKETS_MAX);
             }
 
             // Check for ticket delivery -- if we own ticket, we should fill up the tickets immediately
@@ -316,7 +308,7 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
             return;
         }
 
-        if (mTickets >= TICKETS_MAX) {
+        if (App.getUserManager().getCurrentUser().getTickets() >= TICKETS_MAX) {
             complain("You have tickets for a year. Just use them! :-)");
             return;
         }
@@ -482,7 +474,7 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
                     mSubscribedToAnnualTickets = true;
                     mAutoRenewEnabled = purchase.isAutoRenewing();
                     mAnnualTicketsSku = purchase.getSku();
-                    mTickets = TICKETS_MAX;
+                    App.getUserManager().updateCurrentUser("tickets", TICKETS_MAX);
                     // TODO: Reflect on UI changes according to purchases
                     break;
             }
@@ -508,25 +500,17 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
                 case SKU_QUEST_TICKET:
                     Log.d(Constants.TAG, "Consumption successful. Provisioning.");
 
-                    mTickets = mTickets == TICKETS_MAX ? TICKETS_MAX : mTickets + 1;
-
-                    // TODO: Save data and update UI
-                    alert("You own " + (mTickets == 1 ? "1 ticket!" : String.valueOf(mTickets) + " tickets!") + "\nNow gather team and take a quest!");
+                    App.getUserManager().updateCurrentUser("tickets", 1);
                     break;
                 case SKU_QUEST_TIP:
                     Log.d(Constants.TAG, "Consumption successful. Provisioning.");
 
-                    mTips = mTips == TIPS_MAX ? TIPS_MAX : mTips + 1;
-
-                    // TODO: Save data and update UI
-                    alert("You own " + (mTips == 1 ? "1 tip!" : String.valueOf(mTips) + " tips!" ) + "\nTake advantage of tip help on next quest!");
+                    App.getUserManager().updateCurrentUser("tips", 1);
                     break;
                 case SKU_CREDITS:
                     Log.d(Constants.TAG, "Consumption successful. Provisioning.");
 
-                    App.getUserManager().updateCurrentUserCredits(100);
-
-                    alert("Thank you for purchasing credits! Now use them for in-game activities");
+                    App.getUserManager().updateCurrentUser("credits", 100);
                     break;
             }
 
@@ -543,6 +527,7 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
         // very important:
         if (mBroadcastReceiver != null) {
             App.getLocalBroadcastManager().unregisterReceiver(mBroadcastReceiver);
+            App.getLocalBroadcastManager().unregisterReceiver(updateUIInfoReceiver);
         }
 
         // very important:
@@ -566,28 +551,9 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
         bld.create().show();
     }
 
-    void saveData() {
-
-        /*
-         * WARNING: on a real application, we recommend you save data in a secure way to
-         * prevent tampering. For simplicity in this sample, we simply store the data using a
-         * SharedPreferences.
-         */
-
-        SharedPreferences.Editor spe = getActivity().getPreferences(MODE_PRIVATE).edit();
-        spe.putInt("tank", mTickets);
-        spe.apply();
-        Log.d(Constants.TAG, "Saved data: tank = " + String.valueOf(mTickets));
-    }
-
-    void loadData() {
-        SharedPreferences sp = getActivity().getPreferences(MODE_PRIVATE);
-        mTickets = sp.getInt("tank", 2);
-        Log.d(Constants.TAG, "Loaded data: tank = " + String.valueOf(mTickets));
-    }
-
     @Override
     public void onShopItemClicked(ShopItem item) {
+        currentItemUnderPurchase = item.getType();
         switch (item.getType()) {
             case credits:
                 onPurchaseCreditsClicked();
@@ -601,7 +567,38 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
         }
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        App.getLocalBroadcastManager().registerReceiver(
+                updateUIInfoReceiver, new IntentFilter(Constants.INTENT_FILTER_UPDATE_UI));
+    }
+
     public IabHelper getPurchaseHelper() {
         return mHelper;
     }
+
+    private BroadcastReceiver updateUIInfoReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (currentItemUnderPurchase == null) {
+                return;
+            }
+
+            switch (currentItemUnderPurchase) {
+                case credits:
+                    alert("Thank you for purchasing credits! Now use them for in-game activities");
+                    break;
+                case quest_ticket:
+                    alert("You own " + (App.getUserManager().getCurrentUser().getTickets() == 1 ? "1 ticket!" : String.valueOf(App.getUserManager().getCurrentUser().getTickets()) + " tickets!") + "\nNow gather team and take a quest!");
+                    break;
+                case quest_tip:
+                    alert("You own " + (App.getUserManager().getCurrentUser().getTips() == 1 ? "1 tip!" : String.valueOf(App.getUserManager().getCurrentUser().getTips()) + " tips!" ) + "\nTake advantage of tip help on next quest!");
+                    break;
+            }
+
+            currentItemUnderPurchase = null;
+        }
+    };
 }

@@ -650,7 +650,7 @@ public class LocationManager implements LocationListener {
 
     private void updateUserInfo(int metersPassed) {
         App.getQuestManager().updateQuestProgress("distance", String.valueOf(metersPassed));
-        App.getUserManager().updateCurrentUserProgress(metersPassed);
+        App.getUserManager().updateCurrentUser("distance", metersPassed);
     }
 
     /**

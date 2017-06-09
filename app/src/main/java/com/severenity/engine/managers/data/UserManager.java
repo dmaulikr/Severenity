@@ -43,6 +43,8 @@ import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_NAME;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_NULLABLE;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM_NAME;
+import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TICKETS;
+import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TIPS;
 import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_VIEW_RADIUS;
 import static com.severenity.entity.contracts.UserContract.DBUser.TABLE_USERS;
 
@@ -137,6 +139,8 @@ public class UserManager extends DataManager {
             user.setActionRadius(cursor.getDouble(cursor.getColumnIndex(COLUMN_ACTION_RADIUS)));
             user.setTeamId(cursor.getString(cursor.getColumnIndex(COLUMN_TEAM)));
             user.setTeamName(cursor.getString(cursor.getColumnIndex(COLUMN_TEAM_NAME)));
+            user.setTickets(cursor.getInt(cursor.getColumnIndex(COLUMN_TICKETS)));
+            user.setTips(cursor.getInt(cursor.getColumnIndex(COLUMN_TIPS)));
 
             cursor.close();
             db.close();
@@ -211,6 +215,8 @@ public class UserManager extends DataManager {
         values.put(COLUMN_CREDITS, user.getCredits());
         values.put(COLUMN_TEAM, user.getTeamId());
         values.put(COLUMN_TEAM_NAME, user.getTeamName());
+        values.put(COLUMN_TICKETS, user.getTickets());
+        values.put(COLUMN_TIPS, user.getTips());
 
         if (currentUser != null && user.getLevel() > currentUser.getLevel()) {
             Intent levelUpIntent = new Intent(context, MainActivity.class);
@@ -305,34 +311,17 @@ public class UserManager extends DataManager {
     }
 
     /**
-     * Sends distance passed update to the server in order to update experience,
-     * distance and level.
+     * Sends field update for the user with specified value.
      *
-     * @param metersPassed - last meters passed update.
+     * @param field - field to update.
+     * @param value - amount to add.
      */
-    public void updateCurrentUserProgress(int metersPassed) {
+    public void updateCurrentUser(String field, int value) {
         try {
             JSONObject data = new JSONObject();
             data.put("userId", getCurrentUser().getId());
-            data.put("field", "distance");
-            data.put("amount", metersPassed);
-            App.getWebSocketManager().sendUserUpdateToServer(data);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Sends credits update for the user (in case purchased or for other activities).
-     *
-     * @param credits - credits amount to add.
-     */
-    public void updateCurrentUserCredits(int credits) {
-        try {
-            JSONObject data = new JSONObject();
-            data.put("userId", getCurrentUser().getId());
-            data.put("field", "credits");
-            data.put("amount", credits);
+            data.put("field", field);
+            data.put("amount", value);
             App.getWebSocketManager().sendUserUpdateToServer(data);
         } catch (JSONException e) {
             e.printStackTrace();

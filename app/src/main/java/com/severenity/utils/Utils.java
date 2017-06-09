@@ -18,7 +18,6 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -123,6 +122,8 @@ public class Utils {
             user.setMaxEnergy(profileObject.getInt("maxEnergy"));
             user.setViewRadius(profileObject.getInt("viewRadius") * 1.0);
             user.setActionRadius(profileObject.getInt("actionRadius") * 1.0);
+            user.setTickets(profileObject.getInt("tickets"));
+            user.setTips(profileObject.getInt("tips"));
 
             return user;
         } catch (JSONException e) {
