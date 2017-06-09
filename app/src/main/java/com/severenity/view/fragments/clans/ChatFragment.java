@@ -93,7 +93,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() > 0 && s.subSequence(s.length() - 1, s.length()).toString().equalsIgnoreCase("\n")) {
+                if (s.length() > 0 && !s.toString().isEmpty() && !s.toString().trim().isEmpty() && s.subSequence(s.length() - 1, s.length()).toString().equalsIgnoreCase("\n")) {
                     s.replace(s.length() - 1, s.length(), "");
                     sendMessage();
                     return;
@@ -122,9 +122,15 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
      * Creates message objects and triggers send to server.
      */
     private void sendMessage() {
+        String text = mMessageEdit.getText().toString();
+
+        if (text.isEmpty() || text.trim().isEmpty()) {
+            return;
+        }
+
         Message message = new Message();
         message.setMessageId(UUID.randomUUID().toString());
-        message.setText(mMessageEdit.getText().toString());
+        message.setText(text);
         message.setSenderName(App.getUserManager().getCurrentUser().getName());
         message.setSenderId(App.getUserManager().getCurrentUser().getId());
         message.setTimestamp(DateUtils.getTimestamp());

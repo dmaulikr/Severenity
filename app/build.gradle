@@ -21,8 +21,8 @@ android {
         applicationId "com.severenity"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 7
-        versionName "0.9.1"
+        versionCode 8
+        versionName "0.9.2"
         multiDexEnabled true
         signingConfig signingConfigs.config
     }

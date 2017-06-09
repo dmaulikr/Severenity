@@ -13,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.NetworkResponse;
@@ -28,10 +27,10 @@ import com.severenity.utils.common.Constants;
 import com.severenity.view.Dialogs.PlacesOwnedDialog;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -48,12 +47,13 @@ public class ProfileFragment extends DialogFragment {
     private TextView tvTeam;
     private TextView tvTickets;
     private TextView tvTips;
+    private TextView tvUserName;
 
-    public static ProfileFragment newInstance(String title) {
+    public static ProfileFragment newInstance(String userId) {
         ProfileFragment profileFragment = new ProfileFragment();
         Bundle args = new Bundle();
 
-        args.putString(ARGUMENT_USER_ID, title);
+        args.putString(ARGUMENT_USER_ID, userId);
 
         profileFragment.setArguments(args);
         return profileFragment;
@@ -85,16 +85,25 @@ public class ProfileFragment extends DialogFragment {
         tvPlacesOwned = (TextView) view.findViewById(R.id.tvProfileStatPlacesOwned);
         tvTickets = (TextView) view.findViewById(R.id.tvProfileStatTickets);
         tvTips = (TextView) view.findViewById(R.id.tvProfileStatTips);
-
-        TextView tvUserName = (TextView) view.findViewById(R.id.tvProfileStatUsername);
+        tvUserName = (TextView) view.findViewById(R.id.tvProfileStatUsername);
         CircleImageView civAvatar = (CircleImageView) view.findViewById(R.id.civAvatar);
 
         if (!userId.equals(user.getId())) {
+            Picasso.with(getActivity()).load("https://graph.facebook.com/" + userId + "/picture?type=large").into(civAvatar);
             App.getUserManager().getUser(userId, new RequestCallback() {
                 @Override
                 public void onResponseCallback(JSONObject response) {
-                    User user = Utils.createUserFromJSON(response);
-                    updateUIInfo(user);
+                    try {
+                        if ("error".equals(response.getString("result"))) {
+                            Log.e(Constants.TAG, response.getJSONObject("data").toString());
+                            return;
+                        }
+
+                        User user = Utils.createUserFromJSON(response.getJSONObject("data"));
+                        updateUIInfo(user);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
@@ -108,7 +117,6 @@ public class ProfileFragment extends DialogFragment {
             });
         } else {
             Picasso.with(getActivity()).load("https://graph.facebook.com/" + user.getId() + "/picture?type=large").into(civAvatar);
-            tvUserName.setText(user.getName());
 
             tvPlacesOwned.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -146,7 +154,10 @@ public class ProfileFragment extends DialogFragment {
     private BroadcastReceiver updateUIReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            updateUIInfo(App.getUserManager().getCurrentUser());
+            String displayedUserId = getArguments().getString(ARGUMENT_USER_ID);
+            if (displayedUserId != null && displayedUserId.equals(App.getUserManager().getCurrentUser().getId())) {
+                updateUIInfo(App.getUserManager().getCurrentUser());
+            }
         }
     };
 
@@ -154,6 +165,8 @@ public class ProfileFragment extends DialogFragment {
         if (user == null) {
             return;
         }
+
+        tvUserName.setText(user.getName());
 
         tvLevel.setText(String.format(getResources().getString(R.string.profile_stat_level), user.getLevel()));
 
@@ -166,6 +179,12 @@ public class ProfileFragment extends DialogFragment {
         tvMetersPassed.setText(String.format(getResources().getString(R.string.profile_stat_meters), user.getDistance()));
 
         ArrayList<GamePlace> places = App.getPlacesManager().findPlacesByOwner(user.getId());
+
+        if (places.size() > 0) {
+            tvPlacesOwned.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_place_marker, 0, android.R.drawable.ic_media_play, 0);
+        } else {
+            tvPlacesOwned.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_place_marker, 0, 0, 0);
+        }
         tvPlacesOwned.setText(String.format(getResources().getString(R.string.profile_stat_places_owned), places.size()));
 
         ArrayList<Quest> completedQuests = new ArrayList<>();
