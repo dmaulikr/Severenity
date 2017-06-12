@@ -6,29 +6,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.view.ActionMode;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
@@ -37,30 +26,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.severenity.App;
 import com.severenity.R;
-import com.severenity.engine.adapters.SkillAdapter;
 import com.severenity.entity.GamePlace;
 import com.severenity.entity.UsersActions;
-import com.severenity.utils.CustomTypefaceSpan;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.activities.MainActivity;
 
 /**
  * Handles user with map activity (actual game)
  */
 public class GameMapFragment extends Fragment {
-
     private SupportMapFragment mapFragment;
-    private MainActivity activity;
     private TextView tvAttributions;
-
-    private DrawerLayout drawerLayout;
-    private ListView drawerList;
     private UsersActions mUserActions;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
-
-    private ActionMode spellMode;
-
-    private SkillAdapter skillAdapter;
 
     public GameMapFragment() {
         // Required empty public constructor
@@ -105,89 +81,6 @@ public class GameMapFragment extends Fragment {
         // initDrawer(view);
 
         return view;
-    }
-
-    /*
-     * // TODO: Re-enable when restoring actions
-    private void initDrawer(View view) {
-        drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerMap);
-
-        actionBarDrawerToggle = new ActionBarDrawerToggle(
-                activity, drawerLayout, activity.getToolbarTop(),
-                R.string.drawerOpened,
-                R.string.drawerClosed) {
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                SpannableString s = new SpannableString(getResources().getString(R.string.title));
-                Typeface zekton = Typeface.createFromAsset(activity.getAssets(), "fonts/zekton.ttf");
-                s.setSpan(new CustomTypefaceSpan("", zekton), 0, s.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                if (activity.getSupportActionBar() != null) {
-                    activity.getSupportActionBar().setTitle(s);
-                }
-                activity.invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                SpannableString s = new SpannableString(getResources().getString(R.string.title));
-                Typeface zekton = Typeface.createFromAsset(activity.getAssets(), "fonts/zekton.ttf");
-                s.setSpan(new CustomTypefaceSpan("", zekton), 0, s.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-                if (activity.getSupportActionBar() != null) {
-                    activity.getSupportActionBar().setTitle(s);
-                }
-                activity.invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-        actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
-        actionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
-                    drawerLayout.closeDrawer(GravityCompat.END);
-                } else {
-                    drawerLayout.openDrawer(GravityCompat.END);
-                }
-            }
-        });
-
-        skillAdapter = new SkillAdapter(activity, R.layout.spell_item);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-
-        drawerList = (ListView) view.findViewById(R.id.lvSpells);
-        drawerList.setAdapter(skillAdapter);
-
-        drawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (spellMode == null) {
-                    App.getSpellManager().setCurrentSkill(skillAdapter.getItem(position));
-                    spellMode = activity.startSupportActionMode(new ActionBarSpell());
-                    spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), skillAdapter.getItem(position).getTitle()));
-                } else {
-                    App.getSpellManager().setCurrentSkill(skillAdapter.getItem(position));
-
-                    if (App.getSpellManager().getCurrentSkill() == null) {
-                        spellMode.finish();
-                        spellMode = null;
-                    } else {
-                        spellMode.setTitle(String.format(getResources().getString(R.string.spell_selected), skillAdapter.getItem(position).getTitle()));
-                    }
-                }
-
-                drawerLayout.closeDrawer(GravityCompat.END);
-            }
-        });
-    }
-
-    */
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        activity = (MainActivity) getActivity();
     }
 
     @Override
@@ -252,7 +145,7 @@ public class GameMapFragment extends Fragment {
                 .getCurrentPlace(App.getGoogleApiHelper().getGoogleApiClient(), null);
         result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
             @Override
-            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
+            public void onResult(@NonNull PlaceLikelihoodBuffer likelyPlaces) {
                 Log.i(Constants.TAG, String.format("Attributions are: %s", likelyPlaces.getAttributions()));
                 for (PlaceLikelihood placeLikelihood : likelyPlaces) {
                     App.getLocationManager().displayPlaceMarker(placeLikelihood.getPlace());
@@ -263,28 +156,4 @@ public class GameMapFragment extends Fragment {
         });
         }
     };
-
-    private class ActionBarSpell implements ActionMode.Callback {
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            mode.getMenuInflater().inflate(R.menu.spell_menu, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            return false;
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            return false;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            spellMode.finish();
-            spellMode = null;
-        }
-    }
 }
