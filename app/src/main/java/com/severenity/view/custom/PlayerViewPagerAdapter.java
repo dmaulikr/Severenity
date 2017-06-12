@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.severenity.App;
-import com.severenity.view.fragments.InventoryFragment;
 import com.severenity.view.fragments.ProfileFragment;
 
 import java.util.ArrayList;
@@ -20,10 +19,11 @@ public class PlayerViewPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
 
         ProfileFragment profileFragment = ProfileFragment.newInstance(App.getUserManager().getCurrentUser().getId());
-        InventoryFragment inventoryFragment = new InventoryFragment();
-
         fragments.add(profileFragment);
-        fragments.add(inventoryFragment);
+
+        // TODO: Restore inventory later
+//        InventoryFragment inventoryFragment = new InventoryFragment();
+//        fragments.add(inventoryFragment);
     }
 
     @Override

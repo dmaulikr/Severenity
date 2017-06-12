@@ -77,15 +77,8 @@ public class GameMapFragment extends Fragment {
             }
         });
 
-        App.getLocalBroadcastManager().registerReceiver(
-                showUserActions,
-                new IntentFilter(Constants.INTENT_FILTER_SHOW_USER_ACTIONS)
-        );
-
-        App.getLocalBroadcastManager().registerReceiver(
-                hideUserActions,
-                new IntentFilter(Constants.INTENT_FILTER_HIDE_USER_ACTIONS)
-        );
+        App.getLocalBroadcastManager().registerReceiver(showUserActions, new IntentFilter(Constants.INTENT_FILTER_SHOW_USER_ACTIONS));
+        App.getLocalBroadcastManager().registerReceiver(hideUserActions, new IntentFilter(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));
 
         App.getLocalBroadcastManager().registerReceiver(
                 requestPlacesFromGoogle,
@@ -106,15 +99,18 @@ public class GameMapFragment extends Fragment {
             }
         });
 
-        initDrawer(view);
+        mUserActions = new UsersActions(view, getActivity().getApplicationContext());
+
+        // TODO: Restore drawer if we will need this later.
+        // initDrawer(view);
 
         return view;
     }
 
+    /*
+     * // TODO: Re-enable when restoring actions
     private void initDrawer(View view) {
         drawerLayout = (DrawerLayout) view.findViewById(R.id.drawerMap);
-
-        mUserActions = new UsersActions(view, getActivity().getApplicationContext());
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(
                 activity, drawerLayout, activity.getToolbarTop(),
@@ -125,8 +121,8 @@ public class GameMapFragment extends Fragment {
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 SpannableString s = new SpannableString(getResources().getString(R.string.title));
-                Typeface prometheus = Typeface.createFromAsset(activity.getAssets(), "fonts/zekton.ttf");
-                s.setSpan(new CustomTypefaceSpan("", prometheus), 0, s.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                Typeface zekton = Typeface.createFromAsset(activity.getAssets(), "fonts/zekton.ttf");
+                s.setSpan(new CustomTypefaceSpan("", zekton), 0, s.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
                 if (activity.getSupportActionBar() != null) {
                     activity.getSupportActionBar().setTitle(s);
                 }
@@ -137,8 +133,8 @@ public class GameMapFragment extends Fragment {
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 SpannableString s = new SpannableString(getResources().getString(R.string.title));
-                Typeface prometheus = Typeface.createFromAsset(activity.getAssets(), "fonts/zekton.ttf");
-                s.setSpan(new CustomTypefaceSpan("", prometheus), 0, s.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                Typeface zekton = Typeface.createFromAsset(activity.getAssets(), "fonts/zekton.ttf");
+                s.setSpan(new CustomTypefaceSpan("", zekton), 0, s.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
                 if (activity.getSupportActionBar() != null) {
                     activity.getSupportActionBar().setTitle(s);
                 }
@@ -185,6 +181,8 @@ public class GameMapFragment extends Fragment {
             }
         });
     }
+
+    */
 
     @Override
     public void onAttach(Context context) {

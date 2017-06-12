@@ -32,7 +32,9 @@ public class PlayerFragment extends Fragment {
 
         tabLayout = (TabLayout) view.findViewById(R.id.tlTabs);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.title_profile));
-        tabLayout.addTab(tabLayout.newTab().setText(R.string.title_inventory));
+
+        // TODO: Re-enable when restoring actions & inventory
+//        tabLayout.addTab(tabLayout.newTab().setText(R.string.title_inventory));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         viewPager = (ViewPager) view.findViewById(R.id.vpPager);

@@ -41,6 +41,11 @@ public class UsersActions implements View.OnClickListener {
         mContext = context;
     }
 
+    /**
+     * Displays action panel with possible actions on item.
+     *
+     * @param type - identifies set of actions to display
+     */
     public void showActionPanel(ActionsType type) {
 
         if (mActionsType != ActionsType.ActionsTypeUnknown) {
@@ -82,15 +87,18 @@ public class UsersActions implements View.OnClickListener {
         }
     }
 
+    /**
+     * Hides action panel from view.
+     *
+     * @param context - context from which panel was launched.
+     */
     public void hideActionPanel(Context context) {
-
         if (mUserActions.getVisibility() == View.VISIBLE) {
 
             Animation anim = AnimationUtils.loadAnimation(context, R.anim.user_actions_slide_out);
             mUserActions.startAnimation(anim);
             mUserActions.setVisibility(View.INVISIBLE);
         }
-
     }
 
     private void setType(ActionsType type) {

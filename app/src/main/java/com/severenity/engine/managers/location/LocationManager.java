@@ -93,7 +93,7 @@ public class LocationManager implements LocationListener {
     private GoogleMap googleMap;
     private LocationRequest locationRequest;
 
-    public boolean requestingLocationUpdates = false;
+    private boolean requestingLocationUpdates = false;
     private boolean isCameraFixed = false;
     private boolean mIsUpdatingLocationProcessStopped = false;
     private Circle mViewCircle, mActionCircle;

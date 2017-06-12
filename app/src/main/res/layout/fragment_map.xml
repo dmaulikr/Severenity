@@ -48,21 +48,24 @@
                 android:layout_height="48dp"
                 android:id="@+id/btnAttack"
                 android:layout_marginEnd="2dp"
-                android:src="@drawable/sig_attack" />
+                android:src="@drawable/sig_attack"
+                android:visibility="gone" />
 
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:id="@+id/btnDefend"
                 android:layout_marginEnd="2dp"
-                android:src="@drawable/sig_defend" />
+                android:src="@drawable/sig_defend"
+                android:visibility="gone" />
 
             <ImageView
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:id="@+id/btnInvisibility"
                 android:layout_marginEnd="2dp"
-                android:src="@drawable/sig_invisibility" />
+                android:src="@drawable/sig_invisibility"
+                android:visibility="gone" />
         </LinearLayout>
         <FrameLayout
             android:layout_width="match_parent"
@@ -71,13 +74,13 @@
     </RelativeLayout>
 
     <!-- The navigation drawer -->
-    <ListView
-        android:id="@+id/lvSpells"
-        android:layout_width="200dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:background="@android:color/transparent"/>
+    <!--<ListView-->
+        <!--android:id="@+id/lvSpells"-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="end"-->
+        <!--android:choiceMode="singleChoice"-->
+        <!--android:divider="@android:color/transparent"-->
+        <!--android:dividerHeight="0dp"-->
+        <!--android:background="@android:color/transparent"/>-->
 </android.support.v4.widget.DrawerLayout>

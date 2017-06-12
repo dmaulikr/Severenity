@@ -36,6 +36,7 @@ import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.managers.data.EnergyRecoveryManager;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity
         implements PlacesInfoDialog.OnRelocateMapListener,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
     private GoogleApiClient googleApiClient;
+    private FirebaseAnalytics firebaseAnalytics;
 
     private SplitToolbar toolbarBottom;
     private Toolbar toolbarTop;
@@ -119,6 +121,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MapsInitializer.initialize(getApplicationContext());
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         setContentView(R.layout.activity_main);
 
         mPreferencesManager = new PreferencesManager(MainActivity.this);
@@ -151,13 +155,22 @@ public class MainActivity extends AppCompatActivity
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "severenity_tutorial");
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "watched");
+                        bundle.putString(FirebaseAnalytics.Param.VALUE, "yes");
+                        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.TUTORIAL_BEGIN, bundle);
                         showTutorial();
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        // nothing
+                        Bundle bundle = new Bundle();
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "severenity_tutorial");
+                        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "watched");
+                        bundle.putString(FirebaseAnalytics.Param.VALUE, "no");
+                        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.TUTORIAL_BEGIN, bundle);
                     }
                 })
                 .create();
@@ -376,6 +389,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Initializes all fragments used withing activity.
+     */
     private void initFragments() {
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -396,6 +412,9 @@ public class MainActivity extends AppCompatActivity
         );
     }
 
+    /**
+     * Initializes top and bottom toolbars with appropriate items.
+     */
     private void initToolbars() {
         toolbarTop = (Toolbar) findViewById(R.id.toolbarTop);
         GraphRequest.newMeRequest(
@@ -412,6 +431,12 @@ public class MainActivity extends AppCompatActivity
                             userProfilePicture.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "severenity_fragment");
+                                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "dislay");
+                                    bundle.putString(FirebaseAnalytics.Param.VALUE, "profile_from_top_toolbar");
+                                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+
                                     profileItem.callOnClick();
                                 }
                             });
@@ -590,26 +615,62 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showMap() {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "severenity_fragment");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "dislay");
+        bundle.putString(FirebaseAnalytics.Param.VALUE, "map");
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+
         showFragment(gameMapFragment);
     }
 
     private void showProfile() {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "severenity_fragment");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "dislay");
+        bundle.putString(FirebaseAnalytics.Param.VALUE, "profile");
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+
         showFragment(playerFragment);
     }
 
     private void showShop() {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "severenity_fragment");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "dislay");
+        bundle.putString(FirebaseAnalytics.Param.VALUE, "shop");
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+
         showFragment(shopFragment);
     }
 
     private void showTeams() {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "severenity_fragment");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "dislay");
+        bundle.putString(FirebaseAnalytics.Param.VALUE, "teams");
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+
         showFragment(clansFragment);
     }
 
     private void showQuests() {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "severenity_fragment");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "dislay");
+        bundle.putString(FirebaseAnalytics.Param.VALUE, "quests");
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+
         showFragment(questsFragment);
     }
 
     private void showTeamQuests() {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "severenity_fragment");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "dislay");
+        bundle.putString(FirebaseAnalytics.Param.VALUE, "team_quests");
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM, bundle);
+
         showFragment(teamQuestsFragment);
     }
 
@@ -723,10 +784,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public Toolbar getToolbarTop() {
-        return toolbarTop;
-    }
-
     private BroadcastReceiver updateUIReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -790,7 +847,7 @@ public class MainActivity extends AppCompatActivity
         if (mPlaceInfoDialog != null) {
             mPlaceInfoDialog.dismiss();
 
-            toolbarBottom.findViewById(R.id.menu_map).callOnClick();
+            mapItem.callOnClick();
             App.getLocationManager().showPlaceAtPosition(placeID);
         }
     }
@@ -799,10 +856,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         if (exit) {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "severenity_back_button");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "tapped");
+            bundle.putString(FirebaseAnalytics.Param.VALUE, "twice");
+            firebaseAnalytics.logEvent("EXIT", bundle);
+
             finish(); // finish activity
         } else {
-            Toast.makeText(this, "Press Back again to Exit.",
-                    Toast.LENGTH_SHORT).show();
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "severenity_back_button");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "tapped");
+            bundle.putString(FirebaseAnalytics.Param.VALUE, "once");
+            firebaseAnalytics.logEvent("EXIT", bundle);
+
+            Toast.makeText(this, "Press Back again to Exit.", Toast.LENGTH_SHORT).show();
             exit = true;
             new Handler().postDelayed(new Runnable() {
                 @Override

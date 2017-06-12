@@ -15,13 +15,29 @@
       },
       "oauth_client": [
         {
-          "client_id": "967925944048-s599s8fc1ksom3de97pb7pocunjsu0ak.apps.googleusercontent.com",
+          "client_id": "967925944048-i68vulnhkj62rgjp0efglvu7s8e8635f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.severenity",
+            "certificate_hash": "9137d0663a6fd3f03c5775bc9dd540972845ddd8"
+          }
+        },
+        {
+          "client_id": "967925944048-vh660lvofmdj704di0fijcoilj247p6l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.severenity",
+            "certificate_hash": "4c6a20e55c7e68324b4a551c94734b207b717236"
+          }
+        },
+        {
+          "client_id": "967925944048-1n223vgc2qg4v858hlgmv31lgschbio2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDwGUVtOrI3FpJeVZKtmYcBC5w3TL9X9dM"
+          "current_key": "AIzaSyBMauC1FCMzlTRdJ5A-kq6GKg4CVf6EQJA"
         }
       ],
       "services": {
@@ -29,8 +45,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "967925944048-1n223vgc2qg4v858hlgmv31lgschbio2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
