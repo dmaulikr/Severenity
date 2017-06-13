@@ -59,9 +59,9 @@ public class UsersActions implements View.OnClickListener {
         switch (type) {
             case ActionsOnUser: {
                 if (mUserActions.getVisibility() == View.INVISIBLE) {
-                    (mUserActions.findViewById(R.id.btnDefend)).setVisibility(View.VISIBLE);
-                    (mUserActions.findViewById(R.id.btnInvisibility)).setVisibility(View.VISIBLE);
-                    (mUserActions.findViewById(R.id.btnAttack)).setVisibility(View.VISIBLE);
+//                    (mUserActions.findViewById(R.id.btnDefend)).setVisibility(View.VISIBLE);
+//                    (mUserActions.findViewById(R.id.btnInvisibility)).setVisibility(View.VISIBLE);
+//                    (mUserActions.findViewById(R.id.btnAttack)).setVisibility(View.VISIBLE);
                     (mUserActions.findViewById(R.id.btnCapturePlace)).setVisibility(View.GONE);
                     mUserActions.setVisibility(View.VISIBLE);
                     Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.user_actions_slide_in);
@@ -71,9 +71,9 @@ public class UsersActions implements View.OnClickListener {
             }
             case ActionsOnPlace: {
                 if (mUserActions.getVisibility() == View.INVISIBLE) {
-                    (mUserActions.findViewById(R.id.btnAttack)).setVisibility(View.VISIBLE);
-                    (mUserActions.findViewById(R.id.btnDefend)).setVisibility(View.VISIBLE);
-                    (mUserActions.findViewById(R.id.btnInvisibility)).setVisibility(View.VISIBLE);
+//                    (mUserActions.findViewById(R.id.btnAttack)).setVisibility(View.VISIBLE);
+//                    (mUserActions.findViewById(R.id.btnDefend)).setVisibility(View.VISIBLE);
+//                    (mUserActions.findViewById(R.id.btnInvisibility)).setVisibility(View.VISIBLE);
                     (mUserActions.findViewById(R.id.btnCapturePlace)).setVisibility(View.VISIBLE);
                     mUserActions.setVisibility(View.VISIBLE);
                     Animation anim = AnimationUtils.loadAnimation(mContext, R.anim.user_actions_slide_in);

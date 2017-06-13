@@ -21,4 +21,12 @@ public class FragmentInfo {
         mActiveFragment = active;
         mFragmentButtonCaption = fragmentButtonName;
     }
+
+    public String getFragmentButtonCaption() {
+        return mFragmentButtonCaption;
+    }
+
+    public void setFragmentButtonCaption(String mFragmentButtonCaption) {
+        this.mFragmentButtonCaption = mFragmentButtonCaption;
+    }
 }

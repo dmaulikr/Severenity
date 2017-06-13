@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Severenity</string>
+
+    <!-- Third party -->
+    <string name="facebook_app_id">912233188857453</string>
+
+    <!-- Project number from google developers console -->
+    <!--<string name="google_app_id">967925944048</string>-->
+
+    <string name="disconnected">Відключено</string>
+    <string name="connected">Підключено</string>
+    <string name="title">Severenity</string>
+    <string name="severenity_notification">Severenity повідомляє</string>
+    <string name="menu_shop">Магазин</string>
+    <string name="menu_map">Карта</string>
+    <string name="menu_profile">Здібності</string>
+    <string name="menu_teams">Команди</string>
+    <string name="menu_quests">Квести</string>
+    <string name="menu_team_quests">Командні Квести</string>
+
+    <!-- Titles -->
+    <string name="title_profile">Профіль</string>
+    <string name="title_inventory">Інвентар</string>
+
+    <string name="credits_value">Кредити: %d</string>
+    <string name="immunity_value">Імунітет: %d</string>
+    <string name="energy_value">Енергія: %d</string>
+    <string name="experience_value">Досвід: %d</string>
+    <string name="level_value">Рівень: %d</string>
+    <string name="empty_quests">У вас немає вибраних квестів.</string>
+    <string name="menu_delete">Видалити</string>
+    <string name="experience">Досвід</string>
+
+    <string name="profile_stat_level">%d \n рівень</string>
+    <string name="profile_stat_team">Учасник команди \n %s</string>
+    <string name="profile_stat_meters">%d метрів</string>
+    <string name="profile_stat_quests">%d квестів</string>
+    <string name="profile_stat_places_owned">%d місць</string>
+    <string name="profile_stat_tickets">%d доступних пропусків</string>
+    <string name="profile_stat_tips">%d доступних підказок</string>
+
+    <string name="owners_list">Список власників:</string>
+    <string name="other_owners">%1$d</string>
+    <string name="owner_singular">власник</string>
+    <string name="owner_plural">власники</string>
+    <string name="owner_own_this_place">володіє цим місцем:</string>
+    <string name="owners_none">Ніхто не володіє цим місцем</string>
+
+    <string name="rarity">Рідкість:</string>
+    <string name="type">Тип:</string>
+    <string name="skill_info">Деталі здібності</string>
+    <string name="ok">Ок</string>
+    <string name="cancel">Відмінити</string>
+    <string name="accept">Прийняти</string>
+    <string name="decline">Відхилити</string>
+    <string name="title_activity_settings">Налаштування</string>
+    <string name="go_to_place">Перейти</string>
+
+    <string name="title_chat">Чат</string>
+    <string name="title_team">Команда</string>
+    <string name="title_world">Світ</string>
+    <string name="title_team_quests">Командні квести</string>
+    <!--<string name="owners_string">&d &s own this place:</string>-->
+    <string name="warning_fragment">Увага</string>
+
+    <!-- Buttons -->
+    <string name="button_send">Відправити</string>
+
+    <string name="search">Пошук</string>
+    <string name="world_list">Список</string>
+    <string name="yes_button">Так</string>
+    <string name="no_button">Ні</string>
+    <string name="leave_button">Покинути</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_profile_body">Перевіряйте Ваш прогрес тут. Усі місця, характеристики та інвентар відображаються у вашому профілі.</string>
+    <string name="tutorial_shop_body">Купуйте в магазині додаткові предмети. Але не витрачайте забагато!</string>
+    <string name="tutorial_map_body">Карта є Вашим полем бою. Уся Ваша, Вашої команди та інших гравців активність відбувається тут.</string>
+    <string name="tutorial_chat_body">Спілкуйтесь з іншими гравцями та керуйте командою тут. Також тут Ви можете найти інших гравців та команди.</string>
+    <string name="tutorial_quests_body">Усі нові та Ваші квести відображаються тут. Перевіряйте Ваш прогрес по завданнях тут.</string>
+    <string name="tutorial_toolbar_top">Деталі профілю</string>
+    <string name="tutorial_toolbar_top_body">Основні Ваші характеристики відображаються тут. Слідкуйте за ними та використовуйте їх у ваших активностях.</string>
+    <string name="tutorial_avatar">Ви</string>
+    <string name="tutorial_avatar_body">Вау! Чудова фотографія, чи не так? :-)</string>
+    <string name="repeat_tutorial">Навчання</string>
+    <string name="repeat_tutorial_body">Натисніть тут, якщо хочете пройти навчання ще раз.</string>
+    <string name="name">Ім\'я</string>
+    <string name="team_name">Назва команди</string>
+    <string name="team_name_double_dot">Назва команди:</string>
+    <string name="users">Гравці</string>
+    <string name="clans_team">Команда</string>
+    <string name="clans_quests">Квести</string>
+    <string name="team_list">Усі команди</string>
+    <string name="level_to_join_team">Вам потрібно набрати 3-й рівень, щоб приєднатися до команди.</string>
+    <string name="member">Учасник</string>
+    <string name="create_team">Створити команду</string>
+
+    <!-- Skill -->
+    <string name="skill_capture_place">Захоплює місце, яке періодично дає Вам бонус для Вашого імплантанта.</string>
+    <string name="skill_capture_player">Захоплює гравця, щоб поцупити бонус для Вашого імплантанта.</string>
+    <string name="skill_remove">Видаляє гравця, що захопив цей об\'єкт.</string>
+    <string name="skill_defend">Захищає Ваш імплантант від наступної атаки.</string>
+    <string name="skill_attack">Шкодить вибраному імплантанту.</string>
+    <string name="skill_invisibility">Робить об\'єкт чи гравця невидимим на карті протягом певного часу.</string>
+    <string name="authentication_in_progress">Заждіть&#8230;дозвольте найти вашу анкету&#8230;</string>
+    <string name="authentication">Авторизація</string>
+
+    <string name="deleteUser">Ви впевнені, що хочете вигнати даного учасника з команди?</string>
+    <string name="leaveTeam">Ви впевнені, що хочете покинути команду?</string>
+
+    <!-- In-app purchasing -->
+    <string name="subscription_period_prompt">Виберіть, будь ласка, період підписки</string>
+    <string name="subscription_resignup_prompt">Щоб відновити підписку, виберіть, будь ласка, період</string>
+    <string name="subscription_update_prompt">Щоб змінити підписку, виберіть, будь ласка, новий період</string>
+    <string name="subscription_period_yearly">Річна</string>
+    <string name="subscription_prompt_continue">Продовжити</string>
+    <string name="subscription_prompt_cancel">Відмінити</string>
+    <string name="shop_item_title_credits">Кредити</string>
+    <string name="shop_item_title_quest_tip">Підказка до квесту</string>
+    <string name="shop_item_title_quest_ticket">Пропуск на квест</string>
+    <string name="shop_item_description_credits">100 кредитів для внутрішній активностей.</string>
+    <string name="shop_item_description_quest_tip">Підказка допоможе Вам швидше пройти квест.</string>
+    <string name="shop_item_description_quest_ticket">Пропуск для участі в квесті.</string>
+    <string name="purchase">Купити</string>
+    <string name="purchase_cost_credits">кредитів</string>
+
+    <string name="join_team">Приєднатись</string>
+    <string name="no_team">Немає команди</string>
+    <string name="quest_distance_no_time">Пройдіть %1$d метрів</string>
+    <string name="quest_distance_time">Пройдіть %1$d метрів протягом %2$s</string>
+    <string name="date_format">%1$d днів, %2$d годин, %3$d хвилин, %4$d секунд</string>
+</resources>

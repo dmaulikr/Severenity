@@ -238,7 +238,7 @@ public class QuestManager extends DataManager {
              Cursor cursor = db.query(TABLE_QUESTS, null, null, null, null, null, null, null)) {
 
             if (cursor.getCount() == 0) {
-                return null;
+                return new ArrayList<>();
             }
 
             ArrayList<Quest> questsList = new ArrayList<>(cursor.getCount());
@@ -280,7 +280,7 @@ public class QuestManager extends DataManager {
             return questsList;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 

@@ -39,7 +39,7 @@ public class ClansFragment extends Fragment {
         mViewPager = (ViewPager) view.findViewById(R.id.vpPager);
 
         ArrayList<ClansPageBase> list = new ArrayList<>(2);
-        list.add(WorldPage.newInstance(getResources().getString(R.string.title_world)));
+        list.add(WorldPage.newInstance(getResources().getString(R.string.title_world), getActivity()));
         list.add(TeamsPage.newInstance(getResources().getString(R.string.title_team)));
 
         mTeamViewPagerAdapter = new ClansViewPagerAdapter(getChildFragmentManager(), list);

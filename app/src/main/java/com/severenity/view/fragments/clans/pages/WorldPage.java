@@ -1,5 +1,6 @@
 package com.severenity.view.fragments.clans.pages;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
@@ -25,22 +26,24 @@ public class WorldPage extends ClansPageBase {
     TextView mSwitchButtonTextView;
 
     // two fragments that this page holds
-    FragmentInfo mWorldFragment = new FragmentInfo(new WorldFragment(), "worldClan", "World", true);
-    FragmentInfo mChatFragment = new FragmentInfo(new ChatFragment(), "chatFragment", "Chat", false);
+    static FragmentInfo mWorldFragment = new FragmentInfo(new WorldFragment(), "worldClan", "World", true);
+    static FragmentInfo mChatFragment = new FragmentInfo(new ChatFragment(), "chatFragment", "Chat", false);
 
     public WorldPage() {
         super(R.layout.world_clans_container_fragment, R.id.worldFragmentsContent);
-
         mFragments = new ArrayMap<>(2);
         mFragments.put(BUTTONS_ID_OFFSET, mWorldFragment);
         mFragments.put(BUTTONS_ID_OFFSET + BUTTON_ID, mChatFragment);
     }
 
-    public static WorldPage newInstance(String pageTitle) {
+    public static WorldPage newInstance(String pageTitle, Context context) {
         WorldPage fragment = new WorldPage();
         Bundle args = new Bundle();
         args.putString(ARGUMENT_PAGE_TITLE, pageTitle);
         fragment.setArguments(args);
+
+        mWorldFragment.setFragmentButtonCaption(context.getResources().getString(R.string.title_world));
+        mChatFragment.setFragmentButtonCaption(context.getResources().getString(R.string.title_chat));
         return fragment;
     }
 

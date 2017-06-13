@@ -77,7 +77,7 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
 
         TeamsListFragment teamsListFragment = TeamsListFragment.newInstance();
         teamsListFragment.setListener(this);
-        mFragments.put(BUTTON_CHAT_ID, new FragmentInfo(new ChatFragment(), "chatFragment", context.getResources().getString(R.string.chat), false));
+        mFragments.put(BUTTON_CHAT_ID, new FragmentInfo(new ChatFragment(), "chatFragment", context.getResources().getString(R.string.title_chat), false));
         mFragments.put(BUTTON_TEAM_LIST_ID, new FragmentInfo(teamsListFragment, "teamsList", context.getResources().getString(R.string.team_list), !hasTeam));
 
         if (hasTeam) {

@@ -121,9 +121,9 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
 
     private List<ShopItem> createMockListData() {
         List<ShopItem> list = new ArrayList<>();
-        list.add(new ShopItem(ShopItem.ShopItemType.credits, "Credits", R.drawable.shop_item_credits, "100 credits for in-game activities.", 0, 1.99));
-        list.add(new ShopItem(ShopItem.ShopItemType.quest_tip, "Quest Tip", R.drawable.shop_item_tip, "A tip used during the quest to help you.", 50, 0.99));
-        list.add(new ShopItem(ShopItem.ShopItemType.quest_ticket, "Quest Ticket", R.drawable.shop_item_ticket, "Ticket for participation in the quest.", 0, 9.49));
+        list.add(new ShopItem(ShopItem.ShopItemType.credits, getResources().getString(R.string.shop_item_title_credits), R.drawable.shop_item_credits, getResources().getString(R.string.shop_item_description_credits), 0, 1.99));
+        list.add(new ShopItem(ShopItem.ShopItemType.quest_tip, getResources().getString(R.string.shop_item_title_quest_tip), R.drawable.shop_item_tip, getResources().getString(R.string.shop_item_description_quest_tip), 50, 0.99));
+        list.add(new ShopItem(ShopItem.ShopItemType.quest_ticket, getResources().getString(R.string.shop_item_title_quest_ticket), R.drawable.shop_item_ticket, getResources().getString(R.string.shop_item_description_quest_ticket), 0, 3.99));
         return list;
     }
 
@@ -283,7 +283,6 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
                 return;
             }
 
-            // TODO: Reflect on UI changes according to purchases
             Log.d(Constants.TAG, "Initial inventory query finished; enabling main UI.");
         }
     };
@@ -475,7 +474,6 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
                     mAutoRenewEnabled = purchase.isAutoRenewing();
                     mAnnualTicketsSku = purchase.getSku();
                     App.getUserManager().updateCurrentUser("tickets", TICKETS_MAX);
-                    // TODO: Reflect on UI changes according to purchases
                     break;
             }
         }
@@ -514,7 +512,6 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
                     break;
             }
 
-            // TODO: Reflect on UI changes according to purchases
             Log.d(Constants.TAG, "End consumption flow.");
         }
     };
@@ -546,7 +543,7 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
     void alert(String message) {
         AlertDialog.Builder bld = new AlertDialog.Builder(getActivity());
         bld.setMessage(message);
-        bld.setNeutralButton("OK", null);
+        bld.setNeutralButton(getResources().getString(R.string.ok), null);
         Log.d(Constants.TAG, "Showing alert dialog: " + message);
         bld.create().show();
     }

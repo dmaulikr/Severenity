@@ -1,4 +1,137 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Severenity</string>
+
+    <!-- Third party -->
+    <string name="facebook_app_id">912233188857453</string>
+
+    <!-- Project number from google developers console -->
+    <!--<string name="google_app_id">967925944048</string>-->
+
+    <string name="disconnected">Disconnected</string>
+    <string name="connected">Connected</string>
+    <string name="title">Severenity</string>
+    <string name="severenity_notification">Severenity notifies</string>
+    <string name="menu_shop">Shop</string>
+    <string name="menu_map">Map</string>
+    <string name="menu_profile">Spells</string>
+    <string name="menu_teams">Teams</string>
+    <string name="menu_quests">Quests</string>
+    <string name="menu_team_quests">Team Quests</string>
+
+    <!-- Titles -->
+    <string name="title_profile">Profile</string>
+    <string name="title_inventory">Inventory</string>
+
+    <string name="credits_value">Credits: %d</string>
+    <string name="immunity_value">Immunity: %d</string>
+    <string name="energy_value">Energy: %d</string>
+    <string name="experience_value">Experience: %d</string>
+    <string name="level_value">Level: %d</string>
     <string name="empty_quests">You do not have any accepted quests.</string>
+    <string name="menu_delete">Delete</string>
+    <string name="experience">Experience</string>
+
+    <string name="profile_stat_level">%d \n level</string>
+    <string name="profile_stat_team">Member of \n %s</string>
+    <string name="profile_stat_meters">%d meters</string>
+    <string name="profile_stat_quests">%d quests</string>
+    <string name="profile_stat_places_owned">%d places</string>
+    <string name="profile_stat_tickets">%d tickets available</string>
+    <string name="profile_stat_tips">%d tips available</string>
+
+    <string name="owners_list">Owners list:</string>
+    <string name="other_owners">%1$d</string>
+    <string name="owner_singular">user</string>
+    <string name="owner_plural">users</string>
+    <string name="owner_own_this_place">own this place:</string>
+    <string name="owners_none">No one owns this place</string>
+
+    <string name="rarity">Rarity:</string>
+    <string name="type">Type:</string>
+    <string name="skill_info">Skill Info</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="go_to_place">Goto</string>
+
+    <string name="title_chat">Chat</string>
+    <string name="title_team">Team</string>
+    <string name="title_world">World</string>
+    <string name="title_team_quests">Team Quests</string>
+    <!--<string name="owners_string">&d &s own this place:</string>-->
+    <string name="warning_fragment">Warning</string>
+
+    <!-- Buttons -->
+    <string name="button_send">Send</string>
+
+    <string name="search">Search</string>
+    <string name="world_list">List</string>
+    <string name="yes_button">Yes</string>
+    <string name="no_button">No</string>
+    <string name="leave_button">leave</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_profile">Profile</string>
+    <string name="tutorial_shop">Shop</string>
+    <string name="tutorial_map">Map</string>
+    <string name="tutorial_chat">Chat</string>
+    <string name="tutorial_quests">Quests</string>
+    <string name="tutorial_profile_body">Check your progress here. All captured objects, total distance, abilities and more is displayed at your profile.</string>
+    <string name="tutorial_shop_body">Visit shop to buy extra goodies. But don\'t spend too much!</string>
+    <string name="tutorial_map_body">Map is your battle arena. All yours, your team and other players activity happen here.</string>
+    <string name="tutorial_chat_body">Communicate with other players in a world chat or manage your team here. Search or join other teams and players.</string>
+    <string name="tutorial_quests_body">All new quests will appear here after you accept the incoming Severenity message. Track their status and progress here.</string>
+    <string name="tutorial_toolbar_top">Profile Info</string>
+    <string name="tutorial_toolbar_top_body">Main characteristics are displayed here. Track them when you will perform action to see instant updates.</string>
+    <string name="tutorial_avatar">You</string>
+    <string name="tutorial_avatar_body">Look at that! What a nice picture here, huh? :-)</string>
+    <string name="repeat_tutorial">Tutorial</string>
+    <string name="repeat_tutorial_body">Tap here in case you want to pass tutorial once again.</string>
+    <string name="name">Name</string>
+    <string name="team_name">Team Name</string>
+    <string name="team_name_double_dot">Team Name:</string>
+    <string name="users">Users</string>
+    <string name="clans_team">Team</string>
+    <string name="clans_quests">Quests</string>
+    <string name="team_list">All teams</string>
+    <string name="level_to_join_team">You have to reach level 3 in order to join teams.</string>
+    <string name="member">Member</string>
+    <string name="create_team">Create team</string>
+
+    <!-- Skill -->
+    <string name="skill_capture_place">Captures place to collect data that improves your implant</string>
+    <string name="skill_capture_player">Captures player to steal data that improves your implant.</string>
+    <string name="skill_remove">Removes player who has captured from captured object.</string>
+    <string name="skill_defend">Defends your implant from next incoming attacking signals.</string>
+    <string name="skill_attack">Deals damage to the selected implant.</string>
+    <string name="skill_invisibility">Puts invisibility over the object so it disappears from the map.</string>
+    <string name="authentication_in_progress">Wait a second&#8230;let me find your resume&#8230;</string>
+    <string name="authentication">Authentication</string>
+
+    <string name="deleteUser">Are you sure want to delete the user?</string>
+    <string name="leaveTeam">Are you sure want to leave this team?</string>
+
+    <!-- In-app purchasing -->
+    <string name="subscription_period_prompt">Select your subscription period</string>
+    <string name="subscription_resignup_prompt">To reactivate your subscription, select your subscription period</string>
+    <string name="subscription_update_prompt">To change your subscription, select your new subscription period</string>
+    <string name="subscription_period_yearly">Yearly</string>
+    <string name="subscription_prompt_continue">Continue</string>
+    <string name="subscription_prompt_cancel">Cancel</string>
+    <string name="shop_item_title_credits">Credits</string>
+    <string name="shop_item_title_quest_tip">Quest Tip</string>
+    <string name="shop_item_title_quest_ticket">Quest Ticket</string>
+    <string name="shop_item_description_credits">100 credits for in-game activities.</string>
+    <string name="shop_item_description_quest_tip">A tip used during the quest to help you.</string>
+    <string name="shop_item_description_quest_ticket">Ticket for participation in the quest.</string>
+    <string name="purchase">Purchase</string>
+    <string name="purchase_cost_credits">credits</string>
+
+    <string name="join_team">Join</string>
+    <string name="no_team">No team</string>
+    <string name="quest_distance_no_time">Pass %1$d meters</string>
+    <string name="quest_distance_time">Pass %1$d meters in %2$s</string>
+    <string name="date_format">%1$d days, %2$d hours, %3$d minutes, %4$d seconds</string>
 </resources>

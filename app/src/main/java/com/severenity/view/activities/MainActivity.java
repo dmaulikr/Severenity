@@ -226,11 +226,11 @@ public class MainActivity extends AppCompatActivity
      */
     private void showTutorial() {
         spotLightViewArr = new SpotlightView.Builder[]{
-                tutorialItem(shopItem, shopItem.getId() + "", getString(R.string.tutorial_shop), getString(R.string.tutorial_shop_body)),
-                tutorialItem(profileItem, profileItem.getId() + "", getString(R.string.tutorial_profile), getString(R.string.tutorial_profile_body)),
-                tutorialItem(mapItem, mapItem.getId() + "", getString(R.string.tutorial_map), getString(R.string.tutorial_map_body)),
-                tutorialItem(chatItem, chatItem.getId() + "", getString(R.string.tutorial_chat), getString(R.string.tutorial_chat_body)),
-                tutorialItem(questsItem, questsItem.getId() + "", getString(R.string.tutorial_quests), getString(R.string.tutorial_quests_body)),
+                tutorialItem(shopItem, shopItem.getId() + "", getString(R.string.menu_shop), getString(R.string.tutorial_shop_body)),
+                tutorialItem(profileItem, profileItem.getId() + "", getString(R.string.menu_profile), getString(R.string.tutorial_profile_body)),
+                tutorialItem(mapItem, mapItem.getId() + "", getString(R.string.menu_map), getString(R.string.tutorial_map_body)),
+                tutorialItem(chatItem, chatItem.getId() + "", getString(R.string.title_chat), getString(R.string.tutorial_chat_body)),
+                tutorialItem(questsItem, questsItem.getId() + "", getString(R.string.menu_quests), getString(R.string.tutorial_quests_body)),
                 tutorialItem(toolbarTop, toolbarTop.getId() + "", getString(R.string.tutorial_toolbar_top), getString(R.string.tutorial_toolbar_top_body)),
                 tutorialItem(userProfilePicture, userProfilePicture.getId() + "", getString(R.string.tutorial_avatar), getString(R.string.tutorial_avatar_body)),
                 tutorialItem(ivTutorialBtn, ivTutorialBtn.getId() + "", getString(R.string.repeat_tutorial), getString(R.string.repeat_tutorial_body))

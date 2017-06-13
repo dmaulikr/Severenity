@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.severenity.R;
 import com.severenity.entity.ShopItem;
+import com.severenity.view.fragments.ShopFragment;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class ShopItemsAdapter extends RecyclerView.Adapter<ShopItemsAdapter.Shop
         if (item.getCredits() <= 0) {
             value = item.getPrice() + " $";
         } else {
-            value = item.getCredits() + " credits";
+            value = item.getCredits() + " " + ((ShopFragment) onShopItemClickListener).getResources().getString(R.string.purchase_cost_credits);
         }
 
         holder.tvPrice.setText(value);

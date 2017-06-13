@@ -1,5 +1,7 @@
 package com.severenity.entity.quest;
 
+import com.severenity.App;
+import com.severenity.R;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
 
@@ -25,14 +27,14 @@ public class DistanceQuest extends Quest {
         this.distance = distance;
 
         if (getExpirationTime() == null || getExpirationTime().equalsIgnoreCase("null")) {
-            setDescription("Pass " + distance + " m");
+            setDescription(String.format(Locale.getDefault(), App.getInstance().getString(R.string.quest_distance_no_time), distance));
         } else {
             setExpirationTime(getExpirationTime());
             try {
-                setDescription("Pass " + distance + " meters in " + Utils.dateDifference(
+                String dateDifference = Utils.dateDifference(
                         new Date(),
-                        new SimpleDateFormat(Constants.TIME_FORMAT, Locale.US).parse(getExpirationTime())
-                ));
+                        new SimpleDateFormat(Constants.TIME_FORMAT, Locale.getDefault()).parse(getExpirationTime()));
+                setDescription(String.format(Locale.getDefault(), App.getInstance().getString(R.string.quest_distance_time), distance, dateDifference));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

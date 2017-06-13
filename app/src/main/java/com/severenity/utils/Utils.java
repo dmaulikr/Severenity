@@ -26,6 +26,7 @@ import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.severenity.App;
 import com.severenity.R;
 import com.severenity.entity.Team;
 import com.severenity.entity.User;
@@ -288,7 +289,7 @@ public class Utils {
 
         long elapsedSeconds = difference / secondsInMilli;
 
-        return String.format(Locale.US, "%d days, %d hours, %d minutes, %d seconds%n", elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
+        return String.format(Locale.US, App.getInstance().getResources().getString(R.string.date_format), elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds);
     }
 
     /**
