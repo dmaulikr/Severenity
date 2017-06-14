@@ -29,8 +29,6 @@ import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
-
 /**
  * Created by Novosad on 8/25/2016.
  */
@@ -195,7 +193,7 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
                     mUserIdToDelete = "";
                     if (mIsSelfRemoved) {
                         mListener.onTeamLeft();
-                        App.getUserManager().updateCurrentUser(new String[]{COLUMN_TEAM}, new String[]{""});
+                        App.getUserManager().updateCurrentUserTeam("");
                     }
                 } else {
                     // TODO: Error handling

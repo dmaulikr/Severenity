@@ -27,6 +27,7 @@ import com.severenity.entity.quest.CollectQuest;
 import com.severenity.entity.quest.DistanceQuest;
 import com.severenity.entity.quest.Quest;
 import com.severenity.utils.common.Constants;
+import com.severenity.view.Dialogs.QuestReceivedDialogFragment;
 import com.severenity.view.activities.MainActivity;
 import com.severenity.view.custom.DividerItemDecoration;
 
@@ -170,6 +171,12 @@ public class QuestsFragment extends Fragment {
                         int characteristicAmount = questObj.getInt("characteristicAmount");
                         q = new CollectQuest(q, characteristic, characteristicAmount);
                     }
+
+                    if (q.getId().equals("0")) {
+                        QuestReceivedDialogFragment questReceivedDialogFragment = QuestReceivedDialogFragment.newInstance(q);
+                        questReceivedDialogFragment.show(getFragmentManager(), "questReceivedDialogFragment");
+                    }
+
                     questsAdapter.add(q);
                 } else {
                     questsAdapter.refreshWith(App.getQuestManager().getQuests());

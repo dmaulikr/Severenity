@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -66,6 +67,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ScheduledExecutorService;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -144,12 +146,15 @@ public class MainActivity extends AppCompatActivity
 
     private void checkForFirstLaunch() {
         SharedPreferences sPref = getPreferences(MODE_PRIVATE);
-        if (sPref.getBoolean("isFirstLaunch", true)) {
-            SharedPreferences.Editor ed = sPref.edit();
-            ed.putBoolean("isFirstLaunch", false);
-            ed.apply();
-            mPreferencesManager.resetAll();
-            AlertDialog dialog = new AlertDialog.Builder(this)
+        if (!sPref.getBoolean("isFirstLaunch", true)) {
+            return;
+        }
+
+        SharedPreferences.Editor ed = sPref.edit();
+        ed.putBoolean("isFirstLaunch", false);
+        ed.apply();
+        mPreferencesManager.resetAll();
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Tutorial")
                 .setMessage("Wanna watch tutorial?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -173,9 +178,14 @@ public class MainActivity extends AppCompatActivity
                         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.TUTORIAL_BEGIN, bundle);
                     }
                 })
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        App.getQuestManager().getInitialQuest();
+                    }
+                })
                 .create();
-            dialog.show();
-        }
+        dialog.show();
     }
 
     private void buildGoogleApiClient() {
@@ -202,7 +212,13 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(Constants.EXTRA_GAC_CONNECTED, App.getGoogleApiClient().isConnected());
         App.getLocalBroadcastManager().sendBroadcast(intent);
 
-        checkForFirstLaunch();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkForFirstLaunch();
+            }
+        }, 3000);
     }
 
     @Override
@@ -350,6 +366,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Initializes all socket subscriptions to listen for events from server.
+     */
     private void initSocketSubscriptions() {
         if (App.getWebSocketManager().isConnected()) {
             App.getWebSocketManager().subscribeForEvents();

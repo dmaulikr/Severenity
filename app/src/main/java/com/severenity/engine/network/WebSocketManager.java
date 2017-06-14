@@ -118,9 +118,7 @@ public class WebSocketManager {
                             user.setMaxImplantHP(response.getInt("maxImplantHP"));
                             user.setCredits(response.getInt("credits"));
                             user.setMaxEnergy(response.getInt("maxEnergy"));
-                            user.setMaxImmunity(response.getInt("maxImmunity"));
                             user.setEnergy(response.getInt("energy"));
-                            user.setImmunity(response.getInt("immunity"));
                             user.setExperience(response.getInt("experience"));
                             user.setDistance(response.getInt("distance"));
                             user.setLevel(response.getInt("level"));

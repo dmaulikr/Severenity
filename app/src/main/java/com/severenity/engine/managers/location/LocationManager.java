@@ -418,7 +418,13 @@ public class LocationManager implements LocationListener {
                 || place.getPlaceTypes().contains(Place.TYPE_HOSPITAL)
                 || place.getPlaceTypes().contains(Place.TYPE_DENTIST)
                 || place.getPlaceTypes().contains(Place.TYPE_DOCTOR)
-                || place.getPlaceTypes().contains(Place.TYPE_PHARMACY)) {
+                || place.getPlaceTypes().contains(Place.TYPE_PHARMACY)
+                || place.getPlaceTypes().contains(Place.TYPE_CEMETERY)
+                || place.getPlaceTypes().contains(Place.TYPE_CHURCH)
+                || place.getPlaceTypes().contains(Place.TYPE_INSURANCE_AGENCY)
+                || place.getPlaceTypes().contains(Place.TYPE_HINDU_TEMPLE)
+                || place.getPlaceTypes().contains(Place.TYPE_MOSQUE)
+                || place.getPlaceTypes().contains(Place.TYPE_SYNAGOGUE)) {
             // display HP recovery
             placeType = GamePlace.PlaceType.ImplantRecovery;
         } else if (place.getPlaceTypes().contains(Place.TYPE_ART_GALLERY)
@@ -434,14 +440,6 @@ public class LocationManager implements LocationListener {
                 || place.getPlaceTypes().contains(Place.TYPE_HARDWARE_STORE)) {
             // display implant repair
             placeType = GamePlace.PlaceType.ImplantRepair;
-        } else if (place.getPlaceTypes().contains(Place.TYPE_CEMETERY)
-                || place.getPlaceTypes().contains(Place.TYPE_CHURCH)
-                || place.getPlaceTypes().contains(Place.TYPE_INSURANCE_AGENCY)
-                || place.getPlaceTypes().contains(Place.TYPE_HINDU_TEMPLE)
-                || place.getPlaceTypes().contains(Place.TYPE_MOSQUE)
-                || place.getPlaceTypes().contains(Place.TYPE_SYNAGOGUE)) {
-            // display immunity amount rise
-            placeType = GamePlace.PlaceType.ImmunityIncrease;
         } else if (place.getPlaceTypes().contains(Place.TYPE_GYM)
                 || place.getPlaceTypes().contains(Place.TYPE_STADIUM)) {
             // display HP rise
@@ -514,7 +512,7 @@ public class LocationManager implements LocationListener {
      *
      * @param location - marker will placed at provided location.
      */
-    public void updateMarker(Location location) {
+    private void updateMarker(Location location) {
         if (currentUserMarker != null) {
             currentUserMarker.remove();
         }
@@ -792,7 +790,7 @@ public class LocationManager implements LocationListener {
      * @param squareLimited - determines if the amount of places displayed should be limited by
      *                      square radius.
      */
-    public void displayPlaceMarkerFromDB(boolean squareLimited) {
+    private void displayPlaceMarkerFromDB(boolean squareLimited) {
         if (App.getUserManager().getCurrentUser() == null) {
             return;
         }
@@ -958,13 +956,6 @@ public class LocationManager implements LocationListener {
                     resourceId = R.drawable.place_implant_increase_blue;
                 } else {
                     resourceId = R.drawable.place_implant_increase_violet;
-                }
-                break;
-            case ImmunityIncrease:
-                if (hasOwner) {
-                    resourceId = R.drawable.place_immunity_increase_blue;
-                } else {
-                    resourceId = R.drawable.place_immunity_increase_violet;
                 }
                 break;
             case EnergyIncrease:

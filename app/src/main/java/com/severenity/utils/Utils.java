@@ -113,13 +113,11 @@ public class Utils {
             JSONObject profileObject = response.getJSONObject("profile");
             user.setDistance(profileObject.getInt("distance"));
             user.setExperience(profileObject.getInt("experience"));
-            user.setImmunity(profileObject.getInt("immunity"));
             user.setEnergy(profileObject.getInt("energy"));
             user.setCredits(profileObject.getInt("credits"));
             user.setImplantHP(profileObject.getInt("implantHP"));
             user.setMaxImplantHP(profileObject.getInt("maxImplantHP"));
             user.setLevel(profileObject.getInt("level"));
-            user.setMaxImmunity(profileObject.getInt("maxImmunity"));
             user.setMaxEnergy(profileObject.getInt("maxEnergy"));
             user.setViewRadius(profileObject.getInt("viewRadius") * 1.0);
             user.setActionRadius(profileObject.getInt("actionRadius") * 1.0);

@@ -1,10 +1,7 @@
 package com.severenity.engine.managers.data;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.android.volley.NetworkResponse;
@@ -25,28 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_ACTION_RADIUS;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_CREATED_DATE;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_CREDITS;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_DISTANCE;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_EMAIL;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_ENERGY;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_EXPERIENCE;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_ID;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_IMMUNITY;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_IMPLANT_HP;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_LEVEL;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_MAX_ENERGY;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_MAX_IMMUNITY;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_MAX_IMPLANT_HP;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_NAME;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_NULLABLE;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM_NAME;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TICKETS;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TIPS;
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_VIEW_RADIUS;
-import static com.severenity.entity.contracts.UserContract.DBUser.TABLE_USERS;
+import io.realm.Realm;
 
 /**
  * Responsible for handling operations related to all users and current user.
@@ -56,45 +32,25 @@ import static com.severenity.entity.contracts.UserContract.DBUser.TABLE_USERS;
  */
 public class UserManager extends DataManager {
     private User currentUser;
+    private Realm realm;
 
     public UserManager(Context context) {
         super(context);
+        realm = Realm.getDefaultInstance();
     }
 
-    public User addUser(User user) {
+    public User addUser(final User user) {
         User u = getUser(user);
         if (u != null) {
             return u;
         }
 
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, user.getId());
-        values.put(COLUMN_NAME, user.getName());
-        values.put(COLUMN_EMAIL, user.getEmail());
-        values.put(COLUMN_CREATED_DATE, user.getCreatedDate());
-        values.put(COLUMN_DISTANCE, user.getDistance());
-        values.put(COLUMN_EXPERIENCE, user.getExperience());
-        values.put(COLUMN_LEVEL, user.getLevel());
-        values.put(COLUMN_IMMUNITY, user.getImmunity());
-        values.put(COLUMN_ENERGY, user.getEnergy());
-        values.put(COLUMN_MAX_IMMUNITY, user.getMaxImmunity());
-        values.put(COLUMN_MAX_ENERGY, user.getMaxEnergy());
-        values.put(COLUMN_CREDITS, user.getCredits());
-        values.put(COLUMN_IMPLANT_HP, user.getImplantHP());
-        values.put(COLUMN_MAX_IMPLANT_HP, user.getMaxImplantHP());
-        values.put(COLUMN_ACTION_RADIUS, user.getActionRadius());
-        values.put(COLUMN_VIEW_RADIUS, user.getViewRadius());
-        values.put(COLUMN_TEAM, user.getTeamId());
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(user);
+        User newUser = realm.where(User.class).equalTo("id", user.getId()).findFirst();
+        realm.commitTransaction();
 
-        long success = db.insert(TABLE_USERS, COLUMN_NULLABLE, values);
-        db.close();
-
-        if (success != -1) {
-            return user;
-        } else {
-            return null;
-        }
+        return newUser;
     }
 
     /**
@@ -109,50 +65,10 @@ public class UserManager extends DataManager {
             return null;
         }
 
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor = db.query(
-                TABLE_USERS,
-                null,
-                "id = ?",
-                new String[]{id},
-                null, null, null, null
-        );
-
-        if (cursor != null && cursor.moveToFirst()) {
-            User user = new User();
-            user.setId(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
-            user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
-            user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
-            user.setCreatedDate(cursor.getString(cursor.getColumnIndex(COLUMN_CREATED_DATE)));
-            user.setDistance(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_DISTANCE))));
-            user.setExperience(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_EXPERIENCE))));
-            user.setLevel(Integer.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_LEVEL))));
-            user.setImmunity(cursor.getInt(cursor.getColumnIndex(COLUMN_IMMUNITY)));
-            user.setMaxImmunity(cursor.getInt(cursor.getColumnIndex(COLUMN_MAX_IMMUNITY)));
-            user.setEnergy(cursor.getInt(cursor.getColumnIndex(COLUMN_ENERGY)));
-            user.setMaxEnergy(cursor.getInt(cursor.getColumnIndex(COLUMN_MAX_ENERGY)));
-            user.setCredits(cursor.getInt(cursor.getColumnIndex(COLUMN_CREDITS)));
-            user.setImplantHP(cursor.getInt(cursor.getColumnIndex(COLUMN_IMPLANT_HP)));
-            user.setMaxImplantHP(cursor.getInt(cursor.getColumnIndex(COLUMN_MAX_IMPLANT_HP)));
-            user.setViewRadius(cursor.getDouble(cursor.getColumnIndex(COLUMN_VIEW_RADIUS)));
-            user.setActionRadius(cursor.getDouble(cursor.getColumnIndex(COLUMN_ACTION_RADIUS)));
-            user.setTeamId(cursor.getString(cursor.getColumnIndex(COLUMN_TEAM)));
-            user.setTeamName(cursor.getString(cursor.getColumnIndex(COLUMN_TEAM_NAME)));
-            user.setTickets(cursor.getInt(cursor.getColumnIndex(COLUMN_TICKETS)));
-            user.setTips(cursor.getInt(cursor.getColumnIndex(COLUMN_TIPS)));
-
-            cursor.close();
-            db.close();
-
-            return user;
-        } else {
-            if (cursor != null) {
-                cursor.close();
-            }
-            db.close();
-            return null;
-        }
+        realm.beginTransaction();
+        User user = realm.where(User.class).equalTo("id", id).findFirst();
+        realm.commitTransaction();
+        return user;
     }
 
     /**
@@ -161,7 +77,7 @@ public class UserManager extends DataManager {
      * @param user - user to find.
      * @return - {@link User} user object if found, null otherwise.
      */
-    public User getUser(User user) {
+    private User getUser(User user) {
         if (checkIfNull(user)) {
             return getUserById(user.getId());
         } else {
@@ -170,29 +86,24 @@ public class UserManager extends DataManager {
     }
 
     /**
-     * Updates current user.
+     * Updates current user team.
      *
-     * @param columns - specifies the array of columns to be updated
-     * @param values  - specifies the value of the columns
+     * @param teamId - new id of the team
      */
-    public void updateCurrentUser(String[] columns, String[] values) {
-        if (columns.length != values.length) {
-            Log.w(Constants.TAG, "Inconsistent data for columns and values.");
-            return;
-        }
-
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues ctValues = new ContentValues();
-        int i = 0;
-        for (String column : columns) {
-            ctValues.put(column, values[i]);
-            i++;
-        }
-
-        db.update(TABLE_USERS, ctValues, "id = ?", new String[]{currentUser.getId()});
-        db.close();
-
-        setCurrentUser(retrieveCurrentUser());
+    public void updateCurrentUserTeam(final String teamId) {
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                User user = realm.where(User.class).equalTo("id", getCurrentUser().getId()).findFirst();
+                user.setTeamId(teamId);
+                realm.copyToRealmOrUpdate(user);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                setCurrentUser(retrieveCurrentUser());
+            }
+        });
     }
 
     /**
@@ -200,37 +111,27 @@ public class UserManager extends DataManager {
      *
      * @param user - {@link User} object to update current user data with.
      */
-    public void updateCurrentUserLocallyWithUser(User user) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_DISTANCE, user.getDistance());
-        values.put(COLUMN_EXPERIENCE, user.getExperience());
-        values.put(COLUMN_LEVEL, user.getLevel());
-        values.put(COLUMN_ENERGY, user.getEnergy());
-        values.put(COLUMN_MAX_ENERGY, user.getMaxEnergy());
-        values.put(COLUMN_IMMUNITY, user.getImmunity());
-        values.put(COLUMN_MAX_IMMUNITY, user.getMaxImmunity());
-        values.put(COLUMN_IMPLANT_HP, user.getImplantHP());
-        values.put(COLUMN_MAX_IMPLANT_HP, user.getMaxImplantHP());
-        values.put(COLUMN_CREDITS, user.getCredits());
-        values.put(COLUMN_TEAM, user.getTeamId());
-        values.put(COLUMN_TEAM_NAME, user.getTeamName());
-        values.put(COLUMN_TICKETS, user.getTickets());
-        values.put(COLUMN_TIPS, user.getTips());
+    public void updateCurrentUserLocallyWithUser(final User user) {
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(user);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                if (currentUser != null && user.getLevel() > currentUser.getLevel()) {
+                    Intent levelUpIntent = new Intent(context, MainActivity.class);
+                    levelUpIntent.setAction(GCMManager.MESSAGE_RECEIVED);
+                    levelUpIntent.putExtra("level", String.valueOf(user.getLevel()));
 
-        if (currentUser != null && user.getLevel() > currentUser.getLevel()) {
-            Intent levelUpIntent = new Intent(context, MainActivity.class);
-            levelUpIntent.setAction(GCMManager.MESSAGE_RECEIVED);
-            levelUpIntent.putExtra("level", String.valueOf(user.getLevel()));
+                    App.getLocalBroadcastManager().sendBroadcast(levelUpIntent);
+                    Utils.sendNotification(Constants.NOTIFICATION_MSG_LEVEL_UP + user.getLevel(), context, levelUpIntent, 0);
+                }
 
-            App.getLocalBroadcastManager().sendBroadcast(levelUpIntent);
-            Utils.sendNotification(Constants.NOTIFICATION_MSG_LEVEL_UP + user.getLevel(), context, levelUpIntent, 0);
-        }
-
-        db.update(TABLE_USERS, values, "id = ?", new String[]{user.getId() == null ? currentUser.getId() : user.getId()});
-        db.close();
-
-        setCurrentUser(retrieveCurrentUser());
+                setCurrentUser(retrieveCurrentUser());
+            }
+        });
     }
 
     private User retrieveCurrentUser() {
@@ -281,7 +182,7 @@ public class UserManager extends DataManager {
     }
 
     /**
-     * Sends a request to create a speicified {@link User} on the server.
+     * Sends a request to create a specified {@link User} on the server.
      *
      * @param user     - user to create on the server.
      * @param callback - callback to execute with response.

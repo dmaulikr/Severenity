@@ -25,8 +25,7 @@ import io.realm.RealmResults;
  * Created by Novosad on 4/27/2016.
  */
 public class MessageManager extends DataManager {
-
-    Realm realm;
+    private Realm realm;
 
     public MessageManager(Context context) {
         super(context);

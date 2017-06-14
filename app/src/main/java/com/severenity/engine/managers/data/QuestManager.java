@@ -549,6 +549,29 @@ public class QuestManager extends DataManager {
     }
 
     /**
+     * Retrieves initial quest for the player if player was just registered.
+     */
+    public void getInitialQuest() {
+        String request = Constants.REST_API_USERS + "/" + App.getUserManager().getCurrentUser().getId() + Constants.REST_API_QUESTS + "/0";
+        App.getRestManager().createRequest(request, Request.Method.GET, null, new RequestCallback() {
+            @Override
+            public void onResponseCallback(JSONObject response) {
+                Quest quest = getQuestFromJSON(response);
+                populateQuest(quest);
+            }
+
+            @Override
+            public void onErrorCallback(NetworkResponse response) {
+                if (response != null) {
+                    Log.e(Constants.TAG, "Error response for quests retrieve: " + response.toString());
+                } else {
+                    Log.e(Constants.TAG, "Error response for quests retrieve is null.");
+                }
+            }
+        });
+    }
+
+    /**
      * Retrieve team quests from server.
      */
     public void getTeamQuestsFromServer() {

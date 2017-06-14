@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Novosad on 5/15/2016.
  */
@@ -19,8 +21,7 @@ public class GamePlace {
         ImplantRecovery,
         ImplantRepair,
         ImplantIncrease,
-        EnergyIncrease,
-        ImmunityIncrease
+        EnergyIncrease
     }
 
     private String mPlaceID;
@@ -38,17 +39,11 @@ public class GamePlace {
     }
 
     public void addOwner(String owner) {
-
         this.mPlaceOwnerIDs.put(owner.hashCode(), owner);
     }
 
     public boolean hasOwner(String ownerID) {
-
-        if (mPlaceOwnerIDs == null) {
-            return false;
-        }
-
-        return mPlaceOwnerIDs.containsKey(ownerID.hashCode());
+        return mPlaceOwnerIDs != null && mPlaceOwnerIDs.containsKey(ownerID.hashCode());
     }
 
     public ArrayList<String> getOwners(String exceptUserID) {

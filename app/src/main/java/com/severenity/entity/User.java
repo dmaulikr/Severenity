@@ -5,15 +5,24 @@ import com.severenity.utils.common.Constants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
+
 /**
  * Created by Novosad on 2/17/16.
  */
-public class User {
+public class User extends RealmObject {
+    @PrimaryKey
+    @Required
     private String id;
+
+    @Required
     private String name;
+
+    @Required
     private String email;
     private int distance;
-    private int immunity;
     private int energy;
     private int experience;
     private int level;
@@ -22,7 +31,6 @@ public class User {
     private int credits;
     private int implantHP;
     private int maxImplantHP;
-    private int maxImmunity;
     private int maxEnergy;
     private String createdDate;
     private String teamId;
@@ -76,14 +84,6 @@ public class User {
         this.distance = distance;
     }
 
-    public int getImmunity() {
-        return immunity;
-    }
-
-    public void setImmunity(int immunity) {
-        this.immunity = immunity;
-    }
-
     public int getEnergy() {
         return energy;
     }
@@ -114,14 +114,6 @@ public class User {
 
     public void setMaxEnergy(int maxEnergy) {
         this.maxEnergy = maxEnergy;
-    }
-
-    public int getMaxImmunity() {
-        return maxImmunity;
-    }
-
-    public void setMaxImmunity(int maxImmunity) {
-        this.maxImmunity = maxImmunity;
     }
 
     public int getImplantHP() {

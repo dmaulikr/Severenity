@@ -9,7 +9,6 @@ import android.util.Log;
 import com.severenity.entity.contracts.PlaceContract;
 import com.severenity.entity.contracts.QuestContract;
 import com.severenity.entity.contracts.RecoveryContract;
-import com.severenity.entity.contracts.UserContract;
 import com.severenity.utils.common.Constants;
 
 /**
@@ -31,30 +30,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     private static final String INT_TYPE = " INTEGER ";
     private static final String REAL_TYPE = " REAL ";
     private static final String COMMA_SEP = ",";
-
-    private static final String DB_SQL_CREATE_USERS =
-            "CREATE TABLE " + UserContract.DBUser.TABLE_USERS + " (" +
-                    UserContract.DBUser._ID + " INTEGER PRIMARY KEY," +
-                    UserContract.DBUser.COLUMN_ID + TEXT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_NAME + TEXT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_EMAIL + TEXT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_DISTANCE + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_EXPERIENCE + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_IMMUNITY + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_MAX_IMMUNITY + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_ENERGY + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_MAX_ENERGY + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_IMPLANT_HP + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_MAX_IMPLANT_HP + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_CREATED_DATE + TEXT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_CREDITS + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_TICKETS + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_TIPS + INT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_VIEW_RADIUS + REAL_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_ACTION_RADIUS + REAL_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_TEAM + TEXT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_TEAM_NAME + TEXT_TYPE + COMMA_SEP +
-                    UserContract.DBUser.COLUMN_LEVEL + INT_TYPE + " )";
 
     private static final String DB_SQL_CREATE_QUESTS =
             "CREATE TABLE " + QuestContract.DBQuest.TABLE_QUESTS + " (" +
@@ -97,9 +72,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
                     RecoveryContract.DBRecovery.COLUMN_RECOVERY_TIMESTAMP + TEXT_TYPE + COMMA_SEP +
                     RecoveryContract.DBRecovery.COLUMN_RECOVERY_DISTANCE + INT_TYPE + " )";
 
-
-    private static final String DB_SQL_DELETE_USERS = "DROP TABLE IF EXISTS " + UserContract.DBUser.TABLE_USERS;
-
     private static final String DB_SQL_DELETE_QUESTS = "DROP TABLE IF EXISTS " + QuestContract.DBQuest.TABLE_QUESTS;
 
     // !!! DO NOT CALL THIS STATEMENT DIRECTLY. Use deletePlaces method instead
@@ -111,13 +83,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     private static final String DB_SQL_DELETE_PLACES_OWNERS = "DROP TABLE IF EXISTS " + PlaceContract.DBPlacesOwners.TABLE_PLACES_OWNERS;
 
     private static final String DB_SQL_DELETE_RECOVERY = "DROP TABLE IF EXISTS " + RecoveryContract.DBRecovery.TABLE_RECOVERY;
-
-    private static final String DB_SQL_ADD_MAX_IMPLANT_HP_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_MAX_IMPLANT_HP + INT_TYPE + ";";
-
-    private static final String DB_SQL_ADD_USER_TEAM_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_TEAM + TEXT_TYPE + ";";
-    private static final String DB_SQL_ADD_USER_TEAM_NAME_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_TEAM_NAME + TEXT_TYPE + ";";
-    private static final String DB_SQL_ADD_USER_TIPS_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_TIPS + INT_TYPE + ";";
-    private static final String DB_SQL_ADD_USER_TICKETS_COLUMN = "ALTER TABLE " + UserContract.DBUser.TABLE_USERS + " ADD COLUMN " + UserContract.DBUser.COLUMN_TICKETS + INT_TYPE + ";";
 
 
     private void createPlace(SQLiteDatabase db) {
@@ -137,7 +102,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // TEMP: clearing on creation
-        db.execSQL(DB_SQL_CREATE_USERS);
         db.execSQL(DB_SQL_CREATE_QUESTS);
         createPlace(db);
         db.execSQL(DB_SQL_CREATE_RECOVERY);
@@ -157,23 +121,6 @@ public class SQLiteDBHelper extends SQLiteOpenHelper {
 
         if (oldVersion == 4 && newVersion == DB_VERSION) {
             db.execSQL(DB_SQL_CREATE_RECOVERY);
-        }
-
-        if (oldVersion == 5 && newVersion == DB_VERSION) {
-            db.execSQL(DB_SQL_ADD_MAX_IMPLANT_HP_COLUMN);
-        }
-
-        if (oldVersion == 6 && newVersion == DB_VERSION) {
-            db.execSQL(DB_SQL_ADD_USER_TEAM_COLUMN);
-        }
-
-        if (oldVersion == 7 && newVersion == DB_VERSION) {
-            db.execSQL(DB_SQL_ADD_USER_TEAM_NAME_COLUMN);
-        }
-
-        if (oldVersion == 8 && newVersion == DB_VERSION) {
-            db.execSQL(DB_SQL_ADD_USER_TIPS_COLUMN);
-            db.execSQL(DB_SQL_ADD_USER_TICKETS_COLUMN);
         }
     }
 

@@ -1,13 +1,12 @@
 package com.severenity.view.Dialogs;
 
-import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,8 +20,6 @@ import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static com.severenity.entity.contracts.UserContract.DBUser.COLUMN_TEAM;
-
 /**
  * Created by Novosad on 8/25/2016.
  */
@@ -34,8 +31,7 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
     private TeamEventsListener mListener;
 
     public static CreateTeamDialog newInstance() {
-        CreateTeamDialog frag = new CreateTeamDialog();
-        return frag;
+        return new CreateTeamDialog();
     }
 
     public void setListener(TeamEventsListener listener) {
@@ -81,8 +77,8 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
         public void onResponseCallback(JSONObject response) {
             try {
                 if (response.getString("result").equals("success")) {
-                    String teamName = response.getString("data");
-                    App.getUserManager().updateCurrentUser(new String[]{ COLUMN_TEAM }, new String[]{ teamName });
+                    String teamId = response.getString("data");
+                    App.getUserManager().updateCurrentUserTeam(teamId);
                     mListener.onTeamCreated();
                 } else {
                     // TODO: Error handling

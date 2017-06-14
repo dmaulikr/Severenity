@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
-
 import com.severenity.R;
 
 public class CustomAlertDialog extends DialogFragment {
@@ -17,10 +16,10 @@ public class CustomAlertDialog extends DialogFragment {
     public interface ButtonClickListener {
 
         // notifies that Ok/Yes button clicked
-        public void OnOkButtonClick();
+        void OnOkButtonClick();
 
         // notifies that cancel button clicked
-        public void OnCancelButtonClick();
+        void OnCancelButtonClick();
     }
     private ButtonClickListener mListener;
 
