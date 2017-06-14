@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -40,7 +39,6 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.severenity.App;
 import com.severenity.R;
-import com.severenity.engine.managers.data.EnergyRecoveryManager;
 import com.severenity.engine.managers.location.LocationManager;
 import com.severenity.engine.managers.messaging.FCMListener;
 import com.severenity.engine.managers.messaging.GCMManager;
@@ -67,7 +65,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.ScheduledExecutorService;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -117,8 +114,6 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<Fragment> allFragments = new ArrayList<>();
 
     private boolean activityActive = false;
-
-    private EnergyRecoveryManager mRecoveryManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,9 +129,6 @@ public class MainActivity extends AppCompatActivity
         initReceivers();
 
         processNewIntent(getIntent());
-
-        mRecoveryManager = new EnergyRecoveryManager(getApplicationContext());
-        mRecoveryManager.start();
 
         toolbarBottom.findViewById(R.id.menu_map).callOnClick();
 
@@ -340,12 +332,6 @@ public class MainActivity extends AppCompatActivity
             show ? android.R.color.holo_orange_dark : android.R.color.holo_green_dark)
         );
         Utils.expandOrCollapse(tvConnectionState, show, false);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mRecoveryManager.stop();
     }
 
     @Override

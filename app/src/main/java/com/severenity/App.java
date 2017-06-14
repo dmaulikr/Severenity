@@ -50,7 +50,7 @@ public class App extends Application {
 
     private static App mInstance;
 
-    private SharedPreferences sharedPrefereces;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate() {
@@ -75,13 +75,13 @@ public class App extends Application {
         msgManager = new MessageManager(mContext);
         mNetworkManager = new NetworkManager(mContext);
 
-        sharedPrefereces = getSharedPreferences("Severenity", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("Severenity", MODE_PRIVATE);
         mPlacesManager = new PlacesManager(mContext);
         mTeamManager = new TeamManager();
     }
 
     public static SharedPreferences getSharedPreferences() {
-        return getInstance().sharedPrefereces;
+        return getInstance().sharedPreferences;
     }
 
     public static void setCurrentFCMToken(String token) {

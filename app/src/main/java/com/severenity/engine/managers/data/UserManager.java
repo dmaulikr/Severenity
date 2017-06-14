@@ -91,19 +91,16 @@ public class UserManager extends DataManager {
      * @param teamId - new id of the team
      */
     public void updateCurrentUserTeam(final String teamId) {
-        realm.executeTransactionAsync(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 User user = realm.where(User.class).equalTo("id", getCurrentUser().getId()).findFirst();
                 user.setTeamId(teamId);
                 realm.copyToRealmOrUpdate(user);
             }
-        }, new Realm.Transaction.OnSuccess() {
-            @Override
-            public void onSuccess() {
-                setCurrentUser(retrieveCurrentUser());
-            }
         });
+
+        setCurrentUser(retrieveCurrentUser());
     }
 
     /**
@@ -112,26 +109,23 @@ public class UserManager extends DataManager {
      * @param user - {@link User} object to update current user data with.
      */
     public void updateCurrentUserLocallyWithUser(final User user) {
-        realm.executeTransactionAsync(new Realm.Transaction() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 realm.copyToRealmOrUpdate(user);
             }
-        }, new Realm.Transaction.OnSuccess() {
-            @Override
-            public void onSuccess() {
-                if (currentUser != null && user.getLevel() > currentUser.getLevel()) {
-                    Intent levelUpIntent = new Intent(context, MainActivity.class);
-                    levelUpIntent.setAction(GCMManager.MESSAGE_RECEIVED);
-                    levelUpIntent.putExtra("level", String.valueOf(user.getLevel()));
-
-                    App.getLocalBroadcastManager().sendBroadcast(levelUpIntent);
-                    Utils.sendNotification(Constants.NOTIFICATION_MSG_LEVEL_UP + user.getLevel(), context, levelUpIntent, 0);
-                }
-
-                setCurrentUser(retrieveCurrentUser());
-            }
         });
+
+        if (currentUser != null && user.getLevel() > currentUser.getLevel()) {
+            Intent levelUpIntent = new Intent(context, MainActivity.class);
+            levelUpIntent.setAction(GCMManager.MESSAGE_RECEIVED);
+            levelUpIntent.putExtra("level", String.valueOf(user.getLevel()));
+
+            App.getLocalBroadcastManager().sendBroadcast(levelUpIntent);
+            Utils.sendNotification(Constants.NOTIFICATION_MSG_LEVEL_UP + user.getLevel(), context, levelUpIntent, 0);
+        }
+
+        setCurrentUser(retrieveCurrentUser());
     }
 
     private User retrieveCurrentUser() {
