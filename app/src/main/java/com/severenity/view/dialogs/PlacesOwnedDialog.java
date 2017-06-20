@@ -1,4 +1,4 @@
-package com.severenity.view.Dialogs;
+package com.severenity.view.dialogs;
 
 import android.content.DialogInterface;
 import android.os.Bundle;

@@ -15,7 +15,7 @@ import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.Team;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.Dialogs.CreateTeamDialog;
+import com.severenity.view.dialogs.CreateTeamDialog;
 import com.severenity.view.custom.CustomListView;
 import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 

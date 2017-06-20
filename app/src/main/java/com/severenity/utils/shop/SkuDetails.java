@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.severenity.util;
+package com.severenity.utils.shop;
 
 import org.json.JSONException;
 import org.json.JSONObject;

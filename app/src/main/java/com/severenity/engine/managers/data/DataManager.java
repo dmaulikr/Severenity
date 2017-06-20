@@ -3,7 +3,7 @@ package com.severenity.engine.managers.data;
 import android.content.Context;
 import android.util.Log;
 
-import com.severenity.helpers.SQLiteDBHelper;
+import com.severenity.utils.helpers.SQLiteDBHelper;
 import com.severenity.utils.common.Constants;
 
 /**

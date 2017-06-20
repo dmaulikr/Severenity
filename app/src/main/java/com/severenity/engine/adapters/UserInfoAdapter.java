@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.Dialogs.PlacesInfoDialog;
+import com.severenity.view.dialogs.PlacesInfoDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.severenity.databinding.SkillGridItemBinding;
 import com.severenity.entity.skill.Skill;
-import com.severenity.view.Dialogs.SkillInfoFragment;
+import com.severenity.view.dialogs.SkillInfoFragment;
 import com.severenity.view.activities.MainActivity;
 
 import java.util.ArrayList;

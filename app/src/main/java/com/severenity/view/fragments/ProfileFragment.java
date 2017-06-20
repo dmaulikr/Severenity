@@ -24,7 +24,7 @@ import com.severenity.entity.User;
 import com.severenity.entity.quest.Quest;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.Dialogs.PlacesOwnedDialog;
+import com.severenity.view.dialogs.PlacesOwnedDialog;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;

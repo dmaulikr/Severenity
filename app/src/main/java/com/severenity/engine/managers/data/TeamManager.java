@@ -21,7 +21,7 @@ public class TeamManager {
      *
      * @param teamName - the name of the team to be created
      * @param creator  - user who is gaging to be moderator
-     * @param callback - method that handles response. The response structre is next:
+     * @param callback - method that handles response. The response structure is next:
      *                 response.result = the result of the operation
      *                 response.data   = text reason
      */

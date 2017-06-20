@@ -19,11 +19,11 @@ import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.adapters.ShopItemsAdapter;
 import com.severenity.entity.ShopItem;
-import com.severenity.util.IabBroadcastReceiver;
-import com.severenity.util.IabHelper;
-import com.severenity.util.IabResult;
-import com.severenity.util.Inventory;
-import com.severenity.util.Purchase;
+import com.severenity.utils.shop.IabBroadcastReceiver;
+import com.severenity.utils.shop.IabHelper;
+import com.severenity.utils.shop.IabResult;
+import com.severenity.utils.shop.Inventory;
+import com.severenity.utils.shop.Purchase;
 import com.severenity.utils.common.Constants;
 
 import java.util.ArrayList;

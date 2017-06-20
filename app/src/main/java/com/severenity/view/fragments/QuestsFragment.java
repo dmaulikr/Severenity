@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,7 +26,7 @@ import com.severenity.entity.quest.CollectQuest;
 import com.severenity.entity.quest.DistanceQuest;
 import com.severenity.entity.quest.Quest;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.Dialogs.QuestReceivedDialogFragment;
+import com.severenity.view.dialogs.QuestReceivedDialogFragment;
 import com.severenity.view.activities.MainActivity;
 import com.severenity.view.custom.DividerItemDecoration;
 

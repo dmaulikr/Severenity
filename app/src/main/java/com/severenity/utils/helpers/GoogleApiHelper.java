@@ -1,4 +1,4 @@
-package com.severenity.helpers;
+package com.severenity.utils.helpers;
 
 import android.content.Intent;
 

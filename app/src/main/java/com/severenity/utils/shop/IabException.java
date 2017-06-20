@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.severenity.util;
+package com.severenity.utils.shop;
 
 /**
  * Exception thrown when something went wrong with in-app billing.

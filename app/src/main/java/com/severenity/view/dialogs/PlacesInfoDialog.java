@@ -1,4 +1,4 @@
-package com.severenity.view.Dialogs;
+package com.severenity.view.dialogs;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

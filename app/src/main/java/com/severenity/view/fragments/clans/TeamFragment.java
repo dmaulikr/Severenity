@@ -22,7 +22,7 @@ import com.severenity.entity.Team;
 import com.severenity.entity.User;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.Dialogs.CustomAlertDialog;
+import com.severenity.view.dialogs.CustomAlertDialog;
 import com.severenity.view.custom.CustomListView;
 import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 

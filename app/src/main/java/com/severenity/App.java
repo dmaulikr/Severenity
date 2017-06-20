@@ -20,7 +20,7 @@ import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.engine.network.NetworkManager;
 import com.severenity.engine.network.RestManager;
 import com.severenity.engine.network.WebSocketManager;
-import com.severenity.helpers.GoogleApiHelper;
+import com.severenity.utils.helpers.GoogleApiHelper;
 import com.severenity.utils.FontsOverride;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.activities.LoginActivity;

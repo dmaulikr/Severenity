@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.severenity.util;
+package com.severenity.utils.shop;
 
 import java.util.ArrayList;
 import java.util.HashMap;

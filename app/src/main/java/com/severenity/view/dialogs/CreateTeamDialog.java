@@ -1,4 +1,4 @@
-package com.severenity.view.Dialogs;
+package com.severenity.view.dialogs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

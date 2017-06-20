@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.severenity.util;
+package com.severenity.utils.shop;
 
 /**
  * Represents the result of an in-app billing operation.

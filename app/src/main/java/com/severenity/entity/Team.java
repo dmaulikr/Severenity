@@ -12,8 +12,6 @@ public class Team {
     private List<User> mTeamMembers = new ArrayList<>();
     private String mTeamId;
 
-    public Team(){};
-
     public String getName() {return this.mTeamName; }
     public void setName(String name) {this.mTeamName = name; }
 

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.severenity.R;
 import com.severenity.entity.Team;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.Dialogs.TeamInfoDialog;
+import com.severenity.view.dialogs.TeamInfoDialog;
 import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 
 import java.util.List;
