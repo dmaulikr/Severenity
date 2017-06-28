@@ -115,8 +115,6 @@ public class Utils {
             user.setExperience(profileObject.getInt("experience"));
             user.setEnergy(profileObject.getInt("energy"));
             user.setCredits(profileObject.getInt("credits"));
-            user.setImplantHP(profileObject.getInt("implantHP"));
-            user.setMaxImplantHP(profileObject.getInt("maxImplantHP"));
             user.setLevel(profileObject.getInt("level"));
             user.setMaxEnergy(profileObject.getInt("maxEnergy"));
             user.setViewRadius(profileObject.getInt("viewRadius") * 1.0);

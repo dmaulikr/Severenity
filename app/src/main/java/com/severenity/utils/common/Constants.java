@@ -16,8 +16,6 @@ public class Constants {
         Credits("credits"),
         Energy("energy"),
         Immunity("immunity"),
-        ImplantHealthPoints("implantHP"),
-        MaxImplantHealthPoints("maxImplantHP"),
         None("none");
 
         final String value;

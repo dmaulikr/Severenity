@@ -29,8 +29,6 @@ public class User extends RealmObject {
     private double viewRadius;
     private double actionRadius;
     private int credits;
-    private int implantHP;
-    private int maxImplantHP;
     private int maxEnergy;
     private String createdDate;
     private String teamId;
@@ -116,14 +114,6 @@ public class User extends RealmObject {
         this.maxEnergy = maxEnergy;
     }
 
-    public int getImplantHP() {
-        return implantHP;
-    }
-
-    public void setImplantHP(int implantHP) {
-        this.implantHP = implantHP;
-    }
-
     public int getCredits() {
         return credits;
     }
@@ -146,14 +136,6 @@ public class User extends RealmObject {
 
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
-    }
-
-    public int getMaxImplantHP() {
-        return maxImplantHP;
-    }
-
-    public void setMaxImplantHP(int maxImplantHP) {
-        this.maxImplantHP = maxImplantHP;
     }
 
     public String getJSONUserInfo() {
