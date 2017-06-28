@@ -100,7 +100,7 @@ public class GameMapFragment extends Fragment {
                 case Constants.TYPE_PLACE: {
                     String placeId = intentData.getString(Constants.PLACE_ID);
                     // TODO: AF: for now do not show action if user owns this place
-                    GamePlace place = App.getPlacesManager().findPlaceByID(placeId);
+                    GamePlace place = App.getPlacesManager().findPlaceById(placeId);
                     if (place.hasOwner(App.getUserManager().getCurrentUser().getId())) {
                         if (mUserActions.isActionsDisplaying()) {
                             App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_HIDE_USER_ACTIONS));

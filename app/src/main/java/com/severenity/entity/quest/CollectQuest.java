@@ -8,33 +8,41 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.realm.RealmObject;
+
 /**
+ * Represents base simple "Collect" quest where player has to collect some
+ * characteristic value (e.g. "Reach level 3")
+ *
  * Created by Novosad on 5/10/16.
  */
-public class CollectQuest extends Quest {
-    protected Quest.QuestType type = QuestType.Collect;
-    private Constants.Characteristic characteristic;
-    private int amount;
+public class CollectQuest extends RealmObject {
+    protected int type = Quest.QuestType.Collect.ordinal();
 
-    public CollectQuest(Quest quest, Constants.Characteristic characteristic, int amount) {
-        super(quest.getId(), quest.getTitle(), quest.getExpirationTime(), quest.getExperience(), quest.getCredits(), quest.getStatus(), quest.getProgress());
+    private Integer characteristic;
+    private Integer amount;
 
-        fillData(characteristic, amount);
+    public CollectQuest() {
+        // Default constructor required.
     }
 
-    private void fillData(Constants.Characteristic characteristic, int amount) {
-        this.characteristic = characteristic;
+    public CollectQuest(Quest quest, Constants.Characteristic characteristic, int amount) {
+        fillData(quest, characteristic, amount);
+    }
+
+    private void fillData(Quest baseQuest, Constants.Characteristic characteristic, int amount) {
+        this.characteristic = characteristic.ordinal();
         this.amount = amount;
 
-        if (getExpirationTime() == null || getExpirationTime().equalsIgnoreCase("null")) {
-            setDescription("Get " + characteristic.toString() + " " + amount);
+        if (baseQuest.getExpirationTime() == null || baseQuest.getExpirationTime().equalsIgnoreCase("null")) {
+            baseQuest.setDescription("Get " + characteristic.toString() + " " + amount);
         } else {
-            setExpirationTime(getExpirationTime());
+            baseQuest.setExpirationTime(baseQuest.getExpirationTime());
             try {
-                setDescription("Get " + characteristic.toString() + " " + amount + " in " +
+                baseQuest.setDescription("Get " + characteristic.toString() + " " + amount + " in " +
                     Utils.dateDifference(
                         new Date(),
-                        new SimpleDateFormat(Constants.TIME_FORMAT, Locale.US).parse(getExpirationTime())
+                        new SimpleDateFormat(Constants.TIME_FORMAT, Locale.US).parse(baseQuest.getExpirationTime())
                     )
                 );
             } catch (ParseException e) {
@@ -47,20 +55,11 @@ public class CollectQuest extends Quest {
         return amount;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
     public Constants.Characteristic getCharacteristic() {
-        return characteristic;
+        return Constants.Characteristic.values()[characteristic];
     }
 
-    public void setCharacteristic(Constants.Characteristic characteristic) {
-        this.characteristic = characteristic;
-    }
-
-    @Override
-    public QuestType getType() {
-        return type;
+    public Quest.QuestType getType() {
+        return Quest.QuestType.values()[type];
     }
 }

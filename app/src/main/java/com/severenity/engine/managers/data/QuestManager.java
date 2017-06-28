@@ -1,11 +1,7 @@
 package com.severenity.engine.managers.data;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.android.volley.NetworkResponse;
@@ -24,22 +20,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_CHARACTERISTIC;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_CHARACTERISTIC_AMOUNT;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_CREDITS_AMOUNT;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_DESCRIPTION;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_DISTANCE;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_EXPIRATION_TIME;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_EXP_AMOUNT;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_ID;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_PLACE_TYPE;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_PLACE_TYPE_VALUE;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_PROGRESS;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_STATUS;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_TITLE;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.COLUMN_TYPE;
-import static com.severenity.entity.contracts.QuestContract.DBQuest.TABLE_QUESTS;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Class is responsible for managing quests access / logic between database and other modules.
@@ -47,30 +31,41 @@ import static com.severenity.entity.contracts.QuestContract.DBQuest.TABLE_QUESTS
  * Created by Novosad on 5/9/16.
  */
 public class QuestManager extends DataManager {
+    private Realm realm;
+
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_TITLE = "title";
+    private static final String COLUMN_DESCRIPTION = "description";
+    private static final String COLUMN_EXP_AMOUNT = "experience";
+    private static final String COLUMN_CREDITS_AMOUNT = "credits";
+    private static final String COLUMN_EXPIRATION_TIME = "expirationTime";
+    private static final String COLUMN_STATUS = "status";
+    private static final String COLUMN_TYPE = "type";
+    private static final String COLUMN_DISTANCE = "distance";
+    private static final String COLUMN_PLACE_TYPE = "placeType";
+    private static final String COLUMN_PLACE_TYPE_VALUE = "placeTypeValue";
+    private static final String COLUMN_CHARACTERISTIC = "characteristic";
+    private static final String COLUMN_CHARACTERISTIC_AMOUNT = "characteristicAmount";
+    private static final String COLUMN_PROGRESS = "progress";
+
     public QuestManager(Context context) {
         super(context);
+
+        realm = Realm.getDefaultInstance();
     }
 
     /**
      * Adds list of quests to the database.
      *
-     * @param quests - list of {@link Quest} objects to add.
+     * @param quests - json array list of {@link Quest} objects to add.
      */
-    private void addQuests(ArrayList<Quest> quests) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.beginTransaction();
-
-        try {
-            for (Quest quest : quests) {
-                db.insert(TABLE_QUESTS, "NULL", createValuesFrom(quest));
+    private void addQuests(final JSONArray quests) {
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.createOrUpdateAllFromJson(Quest.class, quests);
             }
-            db.setTransactionSuccessful();
-        } finally {
-            if (db.inTransaction()) {
-                db.endTransaction();
-            }
-            db.close();
-        }
+        });
     }
 
     /**
@@ -89,60 +84,47 @@ public class QuestManager extends DataManager {
      *
      * @param id - uuid of the quest
      */
-    private void deleteQuestById(String id) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete(TABLE_QUESTS, "id = ?", new String[]{String.valueOf(id)});
-        db.close();
-    }
-
-    /**
-     * Creates {@link ContentValues} from {@link Quest} object.
-     * @param quest - {@link Quest} quest object to create values from.
-     * @return {@link ContentValues} instance.
-     */
-    private ContentValues createValuesFrom(Quest quest) {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_ID, quest.getId());
-        values.put(COLUMN_TITLE, quest.getTitle());
-        values.put(COLUMN_DESCRIPTION, quest.getDescription());
-        values.put(COLUMN_EXP_AMOUNT, quest.getExperience());
-        values.put(COLUMN_CREDITS_AMOUNT, quest.getCredits());
-        values.put(COLUMN_STATUS, quest.getStatus().ordinal());
-        values.put(COLUMN_TYPE, quest.getType().ordinal());
-        values.put(COLUMN_EXPIRATION_TIME, quest.getExpirationTime());
-        values.put(COLUMN_PROGRESS, quest.getProgress());
-
-        if (quest.getType() == Quest.QuestType.Distance) {
-            values.put(COLUMN_DISTANCE, ((DistanceQuest) quest).getDistance());
-        } else if (quest.getType() == Quest.QuestType.Capture) {
-            values.put(COLUMN_PLACE_TYPE, ((CaptureQuest) quest).getPlaceType().ordinal());
-            values.put(COLUMN_PLACE_TYPE_VALUE, ((CaptureQuest) quest).getPlaceTypeValue());
-        } else if (quest.getType() == Quest.QuestType.Collect) {
-            values.put(COLUMN_CHARACTERISTIC, ((CollectQuest) quest).getCharacteristic().ordinal());
-            values.put(COLUMN_CHARACTERISTIC_AMOUNT, ((CollectQuest) quest).getAmount());
-        }
-
-        return values;
+    private void deleteQuestById(final String id) {
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Quest> results = realm.where(Quest.class).equalTo("id", id).findAll();
+                results.deleteAllFromRealm();
+            }
+        });
     }
 
     /**
      * Adds quest to the database.
      *
      * @param quest - {@link Quest} object to add.
-     * @return true if added, false otherwise.
      */
-    private boolean addQuest(Quest quest) {
+    private void addQuest(final Quest quest) {
         Quest q = getQuest(quest);
         if (q != null) {
-            return false;
+            return;
         }
 
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(quest);
+            }
+        });
+    }
 
-        long success = db.insert(TABLE_QUESTS, "NULL", createValuesFrom(quest));
-        db.close();
-
-        return success != -1;
+    /**
+     * Adds quest to the database.
+     *
+     * @param quest - {@link Quest} object to add.
+     */
+    private void addQuest(final JSONObject quest) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.createOrUpdateObjectFromJson(Quest.class, quest);
+            }
+        });
     }
 
     /**
@@ -152,68 +134,7 @@ public class QuestManager extends DataManager {
      * @return {@link Quest} object if found, null otherwise.
      */
     public Quest getQuestById(String id) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor = db.query(
-                TABLE_QUESTS,
-                null,
-                "id = '" + id + "'",
-                null, null, null, null, null
-        );
-
-        if (cursor != null && cursor.moveToFirst()) {
-            Quest quest = getQuestFromCursor(cursor);
-
-            if (quest.getType() == Quest.QuestType.Distance) {
-                quest = new DistanceQuest(quest, cursor.getInt(cursor.getColumnIndex(COLUMN_DISTANCE)));
-            } else if (quest.getType() == Quest.QuestType.Capture) {
-                quest = new CaptureQuest(quest,
-                        GamePlace.PlaceType.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE))],
-                        cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE_VALUE))
-                );
-            } else if (quest.getType() == Quest.QuestType.Collect) {
-                Constants.Characteristic characteristic = Constants.Characteristic.values()[
-                        cursor.getInt(cursor.getColumnIndex(COLUMN_CHARACTERISTIC))
-                        ];
-
-                quest = new CollectQuest(quest, characteristic, cursor.getInt(cursor.getColumnIndex(COLUMN_CHARACTERISTIC_AMOUNT)));
-            }
-
-            cursor.close();
-            db.close();
-
-            return quest;
-        } else {
-            if (cursor != null) {
-                cursor.close();
-            }
-            db.close();
-            return null;
-        }
-    }
-
-    /**
-     * Transforms cursor data to {@link Quest} object.
-     *
-     * @param cursor - cursor pointing to the row.
-     * @return {@link Quest} object created of the data.
-     */
-    private Quest getQuestFromCursor(Cursor cursor) {
-        Quest quest = new Quest();
-        quest.setId(cursor.getString(cursor.getColumnIndex(COLUMN_ID)));
-        quest.setTitle(cursor.getString(cursor.getColumnIndex(COLUMN_TITLE)));
-        quest.setType(Quest.QuestType.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_TYPE))]);
-        quest.setStatus(Quest.QuestStatus.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS))]);
-        quest.setExperience(cursor.getLong(cursor.getColumnIndex(COLUMN_EXP_AMOUNT)));
-        quest.setCredits(cursor.getLong(cursor.getColumnIndex(COLUMN_CREDITS_AMOUNT)));
-        quest.setProgress(cursor.getInt(cursor.getColumnIndex(COLUMN_PROGRESS)));
-
-        String expirationTime = cursor.getString(cursor.getColumnIndex(COLUMN_EXPIRATION_TIME));
-        if (expirationTime != null && !expirationTime.equals("null")) {
-            quest.setExpirationTime(expirationTime);
-        }
-
-        return quest;
+        return realm.where(Quest.class).equalTo("id", id).findFirst();
     }
 
     /**
@@ -234,54 +155,9 @@ public class QuestManager extends DataManager {
      * @return list of quests.
      */
     public ArrayList<Quest> getQuests() {
-        try (SQLiteDatabase db = dbHelper.getReadableDatabase();
-             Cursor cursor = db.query(TABLE_QUESTS, null, null, null, null, null, null, null)) {
-
-            if (cursor.getCount() == 0) {
-                return new ArrayList<>();
-            }
-
-            ArrayList<Quest> questsList = new ArrayList<>(cursor.getCount());
-
-            if (cursor.moveToNext()) {
-                do {
-                    Quest quest = getQuestFromCursor(cursor);
-
-                    if (quest.getType() == Quest.QuestType.Distance) {
-                        DistanceQuest distanceQuest = new DistanceQuest(quest,
-                                cursor.getInt(cursor.getColumnIndex(COLUMN_DISTANCE))
-                        );
-
-                        questsList.add(distanceQuest);
-                    } else if (quest.getType() == Quest.QuestType.Capture) {
-                        CaptureQuest captureQuest = new CaptureQuest(quest,
-                                GamePlace.PlaceType.values()[cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE))],
-                                cursor.getInt(cursor.getColumnIndex(COLUMN_PLACE_TYPE_VALUE))
-                        );
-
-                        questsList.add(captureQuest);
-                    } else if (quest.getType() == Quest.QuestType.Collect) {
-                        Constants.Characteristic characteristic = Constants.Characteristic.values()[
-                                cursor.getInt(cursor.getColumnIndex(COLUMN_CHARACTERISTIC))
-                                ];
-
-                        CollectQuest collectQuest = new CollectQuest(quest,
-                                characteristic,
-                                cursor.getInt(cursor.getColumnIndex(COLUMN_CHARACTERISTIC_AMOUNT))
-                        );
-
-                        questsList.add(collectQuest);
-                    } else {
-                        questsList.add(quest);
-                    }
-                } while (cursor.moveToNext());
-            }
-
-            return questsList;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return new ArrayList<>();
-        }
+        RealmResults<Quest> results = realm.where(Quest.class).findAll();
+        List<Quest> questList = realm.copyFromRealm(results);
+        return new ArrayList<>(questList);
     }
 
     /**
@@ -294,13 +170,11 @@ public class QuestManager extends DataManager {
             return;
         }
 
-        if (!addQuest(quest)) {
-            return;
-        }
+        addQuest(quest);
 
         try {
             JSONObject request = new JSONObject();
-            request.put("questId", quest.getId());
+            request.put("id", quest.getId());
             request.put("reason", "accepted");
 
             updateQuestWithData(App.getUserManager().getCurrentUser().getId(), request);
@@ -312,32 +186,39 @@ public class QuestManager extends DataManager {
     /**
      * Updates status of quest if found and populates it to UI via intent.
      *
-     * @param questId - quest to update
+     * @param id - quest to update
      * @param status  - new {@link com.severenity.entity.quest.Quest.QuestStatus}. None < New < Progress < Finished.
      */
-    private void updateQuestStatusAndPopulate(String questId, int status) {
-        Quest quest = getQuestById(questId);
+    private void updateQuestStatusAndPopulate(final String id, final int status) {
+        final Quest quest = getQuestById(id);
 
         if (quest == null) {
-            Log.e(Constants.TAG, "Quest with id " + questId + " not found.");
+            Log.e(Constants.TAG, "Quest with id " + id + " not found.");
             return;
         }
 
-        if (status > quest.getStatus().ordinal()) {
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_STATUS, status);
-            if (status == 1 || status == 2) {
-                values.put(COLUMN_PROGRESS, 0);
-            }
-            db.update(TABLE_QUESTS, values, "id = '" + questId + "'", null);
-            db.close();
+        if (status >= quest.getStatus()) {
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    Quest quest = realm.where(Quest.class).equalTo("id", id).findFirst();
+                    quest.setStatus(status);
+
+                    if (status == 1 || status == 2) {
+                        quest.setProgress(0);
+                    }
+
+                    realm.copyToRealmOrUpdate(quest);
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    populateQuest(quest);
+                }
+            });
         } else {
-            Log.e(Constants.TAG, "New quest status is incorrect for quest " + questId);
-            return;
+            Log.e(Constants.TAG, "New quest status is incorrect for quest " + id);
         }
-
-        populateQuest(quest);
     }
 
     /**
@@ -353,101 +234,43 @@ public class QuestManager extends DataManager {
         intent.putExtra(COLUMN_DESCRIPTION, quest.getDescription());
         intent.putExtra(COLUMN_EXP_AMOUNT, quest.getExperience());
         intent.putExtra(COLUMN_CREDITS_AMOUNT, quest.getCredits());
-        intent.putExtra(COLUMN_STATUS, quest.getStatus().ordinal());
+        intent.putExtra(COLUMN_STATUS, quest.getStatus());
         intent.putExtra(COLUMN_TYPE, quest.getType().ordinal());
         intent.putExtra(COLUMN_EXPIRATION_TIME, quest.getExpirationTime());
         intent.putExtra(COLUMN_PROGRESS, quest.getProgress());
 
         if (quest.getType() == Quest.QuestType.Distance) {
             intent.putExtra(COLUMN_TYPE, Quest.QuestType.Distance.ordinal());
-            intent.putExtra(COLUMN_DISTANCE, ((DistanceQuest) quest).getDistance());
+            intent.putExtra(COLUMN_DISTANCE, quest.getDistanceQuest().getDistance());
         }
 
         if (quest.getType() == Quest.QuestType.Capture) {
             intent.putExtra(COLUMN_TYPE, Quest.QuestType.Capture.ordinal());
-            intent.putExtra(COLUMN_PLACE_TYPE, ((CaptureQuest) quest).getPlaceType());
-            intent.putExtra(COLUMN_PLACE_TYPE_VALUE, ((CaptureQuest) quest).getPlaceTypeValue());
+            intent.putExtra(COLUMN_PLACE_TYPE, quest.getCaptureQuest().getPlaceType());
+            intent.putExtra(COLUMN_PLACE_TYPE_VALUE, quest.getCaptureQuest().getPlaceTypeValue());
         }
 
         if (quest.getType() == Quest.QuestType.Collect) {
             intent.putExtra(COLUMN_TYPE, Quest.QuestType.Collect.ordinal());
-            intent.putExtra(COLUMN_CHARACTERISTIC, ((CollectQuest) quest).getCharacteristic().ordinal());
-            intent.putExtra(COLUMN_PLACE_TYPE_VALUE, ((CollectQuest) quest).getAmount());
+            intent.putExtra(COLUMN_CHARACTERISTIC, quest.getCollectQuest().getCharacteristic().ordinal());
+            intent.putExtra(COLUMN_CHARACTERISTIC_AMOUNT, quest.getCollectQuest().getAmount());
         }
 
         App.getLocalBroadcastManager().sendBroadcast(intent);
     }
 
-    /**
-     * Adds {@link Quest} object to DB parsing it before the addition.
-     *
-     * @param questObj - JSON object to be parsed and added to db.
-     */
-    public void addQuest(JSONObject questObj) {
-        Quest quest = getQuestFromJSON(questObj);
-        addQuest(quest);
-    }
-
-    /**
-     * Parses JSON object and returns {@link Quest} object.
-     *
-     * @param questObj - JSON object to retrieve quest from.
-     * @return {@link Quest} object.
-     */
-    private Quest getQuestFromJSON(JSONObject questObj) {
-        Quest quest = new Quest();
-        try {
-            int questType = Integer.valueOf(questObj.getString("type"));
-            String id = questObj.getString("questId");
-
-            Quest existingQuest = getQuestById(id);
-            if (existingQuest != null) {
-                return existingQuest;
-            }
-
-            quest.setId(id);
-            quest.setTitle(questObj.getString("title"));
-            quest.setCredits(Integer.valueOf(questObj.getString("credits")));
-            quest.setExperience(Integer.valueOf(questObj.getString("experience")));
-            quest.setStatus(Quest.QuestStatus.values()[Integer.valueOf(questObj.getString("status"))]);
-
-            if (quest.getStatus() == Quest.QuestStatus.Finished || quest.getStatus() == Quest.QuestStatus.Closed) {
-                quest.setExpirationTime("null");
-                quest.setProgress(100);
-            } else {
-                if (quest.getStatus() != Quest.QuestStatus.Created) {
-                    quest.setProgress(Integer.valueOf(questObj.getJSONObject("progress").getString("progress")));
-                }
-                quest.setExpirationTime(questObj.getString("expirationDate"));
-            }
-
-            if (questType == Quest.QuestType.Distance.ordinal()) {
-                quest.setType(Quest.QuestType.Distance);
-                quest = new DistanceQuest(quest, Integer.valueOf(questObj.getString("distance")));
-            } else if (questType == Quest.QuestType.Capture.ordinal()) {
-                quest.setType(Quest.QuestType.Capture);
-                quest = new CaptureQuest(quest, GamePlace.PlaceType.values()[Integer.valueOf(questObj.getString("placeType"))], Integer.valueOf(questObj.getString("placeTypeValue")));
-            } else if (questType == Quest.QuestType.Collect.ordinal()) {
-                quest.setType(Quest.QuestType.Collect);
-                quest = new CollectQuest(quest, Constants.Characteristic.values()[Integer.valueOf(questObj.getString("characteristic"))], Integer.valueOf(questObj.getString("characteristicAmount")));
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return quest;
-    }
 
     /**
      * Deletes all quests from the local database.
      */
     private void deleteQuests() {
-        try (SQLiteDatabase db = dbHelper.getReadableDatabase()) {
-            db.delete(TABLE_QUESTS, null, null);
-        } catch (SQLException e) {
-            Log.e(Constants.TAG, "QuestsManager: error clearing quests tables. " + e.getMessage());
-        }
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Quest> results = realm.where(Quest.class).findAll();
+                results.deleteAllFromRealm();
+            }
+        });
     }
 
     /**
@@ -480,28 +303,34 @@ public class QuestManager extends DataManager {
     /**
      * Updates quest entry in local DB with new progress value.
      *
-     * @param questId - quest to update.
+     * @param id - quest to update.
      * @param value - new progress value to set.
      */
-    private void updateQuestProgressLocally(String questId, int value, int status) {
-        try (SQLiteDatabase db = dbHelper.getWritableDatabase()) {
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_PROGRESS, value);
-            values.put(COLUMN_STATUS, status);
-            if (status == Quest.QuestStatus.Finished.ordinal() ||
-                    status == Quest.QuestStatus.Closed.ordinal()) {
-                values.put(COLUMN_EXPIRATION_TIME, "null");
-            }
-            db.update(TABLE_QUESTS, values, "id = '" + questId + "'", null);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    private void updateQuestProgressLocally(final String id, final int value, final int status) {
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Quest quest = realm.where(Quest.class).equalTo("id", id).findFirst();
 
-        Intent intent = new Intent(Constants.INTENT_FILTER_QUEST_UPDATE);
-        intent.putExtra("questId", questId);
-        intent.putExtra("progress", value);
-        intent.putExtra("status", status);
-        App.getLocalBroadcastManager().sendBroadcast(intent);
+                quest.setProgress(value);
+                quest.setStatus(status);
+
+                if (status == Quest.QuestStatus.Finished.ordinal() ||
+                        status == Quest.QuestStatus.Closed.ordinal()) {
+                    quest.setExpirationTime("null");
+                }
+                realm.copyToRealmOrUpdate(quest);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                Intent intent = new Intent(Constants.INTENT_FILTER_QUEST_UPDATE);
+                intent.putExtra("id", id);
+                intent.putExtra("progress", value);
+                intent.putExtra("status", status);
+                App.getLocalBroadcastManager().sendBroadcast(intent);
+            }
+        });
     }
 
     /**
@@ -521,13 +350,7 @@ public class QuestManager extends DataManager {
                     }
 
                     JSONArray quests = response.getJSONArray("data");
-                    ArrayList<Quest> questsList = new ArrayList<>();
-                    for (int i = 0; i < quests.length(); i++) {
-                        JSONObject questObject = quests.getJSONObject(i);
-                        questsList.add(getQuestFromJSON(questObject));
-                    }
-
-                    addQuests(questsList);
+                    addQuests(quests);
 
                     Intent intent = new Intent(Constants.INTENT_FILTER_NEW_QUEST);
                     intent.putExtra(Constants.INTENT_EXTRA_SINGLE_QUEST, false);
@@ -556,8 +379,12 @@ public class QuestManager extends DataManager {
         App.getRestManager().createRequest(request, Request.Method.GET, null, new RequestCallback() {
             @Override
             public void onResponseCallback(JSONObject response) {
-                Quest quest = getQuestFromJSON(response);
-                populateQuest(quest);
+                addQuest(response);
+                try {
+                    populateQuest(realm.where(Quest.class).equalTo("id", response.getString("id")).findFirst());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -585,17 +412,9 @@ public class QuestManager extends DataManager {
                     }
 
                     JSONArray quests = response.getJSONArray("data");
-                    ArrayList<Quest> questsList = new ArrayList<>();
-                    for (int i = 0; i < quests.length(); i++) {
-                        JSONObject questObject = quests.getJSONObject(i);
-                        Quest quest = getQuestFromJSON(questObject);
-                        questsList.add(quest);
-                        populateQuest(quest);
-                    }
+                    addQuests(quests);
 
-                    Log.e(Constants.TAG, questsList.toString());
-
-                    addQuests(questsList);
+                    Log.e(Constants.TAG, quests.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -640,9 +459,9 @@ public class QuestManager extends DataManager {
                     switch (reason) {
                         case "accepted": {
                             int status = data.getInt("status");
-                            String questId = data.getString("questId");
+                            String id = data.getString("id");
 
-                            updateQuestStatusAndPopulate(questId, status);
+                            updateQuestStatusAndPopulate(id, status);
                         } break;
                         case "progress": {
                             Log.d(Constants.TAG, response.toString());
@@ -651,10 +470,10 @@ public class QuestManager extends DataManager {
                                 JSONObject quest = quests.getJSONObject(i);
                                 JSONObject progress = quest.getJSONObject("progress");
                                 int value = progress.getInt("progress");
-                                String questId = quest.getString("questId");
+                                String id = quest.getString("id");
                                 int status = quest.getInt("status");
 
-                                updateQuestProgressLocally(questId, value, status);
+                                updateQuestProgressLocally(id, value, status);
                             }
                         } break;
                         default:
@@ -689,15 +508,15 @@ public class QuestManager extends DataManager {
         quest.setId(intent.getStringExtra("id"));
         quest.setType(type);
         quest.setTitle(intent.getStringExtra("title"));
-        quest.setStatus(Quest.QuestStatus.values()[intent.getIntExtra("status", 0)]);
+        quest.setStatus(intent.getIntExtra("status", 0));
         quest.setExpirationTime(intent.getStringExtra("expirationTime"));
         quest.setCredits(intent.getLongExtra("credits", 0));
         quest.setExperience(intent.getLongExtra("experience", 0));
 
         if (type == Quest.QuestType.Distance) {
-            quest = new DistanceQuest(quest, intent.getIntExtra("distance", 1));
+            quest.setDistanceQuest(new DistanceQuest(quest, intent.getIntExtra("distance", 1)));
         } else if (type == Quest.QuestType.Capture) {
-            quest = new CaptureQuest(quest, GamePlace.PlaceType.values()[intent.getIntExtra("placeType", 0)], intent.getIntExtra("placeTypeValue", 0));
+            quest.setCaptureQuest(new CaptureQuest(quest, GamePlace.PlaceType.values()[intent.getIntExtra("placeType", 0)], intent.getIntExtra("placeTypeValue", 0)));
         } else if (type == Quest.QuestType.Collect) {
             String characteristic = intent.getStringExtra("characteristic");
             Constants.Characteristic c = Constants.Characteristic.None;
@@ -707,11 +526,9 @@ public class QuestManager extends DataManager {
                 c = Constants.Characteristic.Experience;
             } else if (characteristic.equals(Constants.Characteristic.Energy.toString())) {
                 c = Constants.Characteristic.Energy;
-            } else if (characteristic.equals(Constants.Characteristic.Immunity.toString())) {
-                c = Constants.Characteristic.Immunity;
             }
 
-            quest = new CollectQuest(quest, c, intent.getIntExtra("characteristicAmount", 0));
+            quest.setCollectQuest(new CollectQuest(quest, c, intent.getIntExtra("characteristicAmount", 0)));
         }
 
         return quest;

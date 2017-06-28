@@ -10,31 +10,37 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.realm.RealmObject;
+
 /**
+ * Represents base simple "Distance" quest where player has to pass some distance.
+ *
  * Created by Novosad on 5/10/16.
  */
-public class DistanceQuest extends Quest {
-    protected Quest.QuestType type = QuestType.Distance;
-    private int distance; // in km
+public class DistanceQuest extends RealmObject {
+    protected int type = Quest.QuestType.Distance.ordinal();
+    private Integer distance; // in km
 
-    public DistanceQuest(Quest quest, int distance) {
-        super(quest.getId(), quest.getTitle(), quest.getExpirationTime(), quest.getExperience(), quest.getCredits(), quest.getStatus(), quest.getProgress());
-
-        fillData(distance);
+    public DistanceQuest() {
+        // Default constructor required.
     }
 
-    private void fillData(int distance) {
+    public DistanceQuest(Quest quest, int distance) {
+        fillData(quest, distance);
+    }
+
+    private void fillData(Quest baseQuest, int distance) {
         this.distance = distance;
 
-        if (getExpirationTime() == null || getExpirationTime().equalsIgnoreCase("null")) {
-            setDescription(String.format(Locale.getDefault(), App.getInstance().getString(R.string.quest_distance_no_time), distance));
+        if (baseQuest.getExpirationTime() == null || baseQuest.getExpirationTime().equalsIgnoreCase("null")) {
+            baseQuest.setDescription(String.format(Locale.getDefault(), App.getInstance().getString(R.string.quest_distance_no_time), distance));
         } else {
-            setExpirationTime(getExpirationTime());
+            baseQuest.setExpirationTime(baseQuest.getExpirationTime());
             try {
                 String dateDifference = Utils.dateDifference(
                         new Date(),
-                        new SimpleDateFormat(Constants.TIME_FORMAT, Locale.getDefault()).parse(getExpirationTime()));
-                setDescription(String.format(Locale.getDefault(), App.getInstance().getString(R.string.quest_distance_time), distance, dateDifference));
+                        new SimpleDateFormat(Constants.TIME_FORMAT, Locale.getDefault()).parse(baseQuest.getExpirationTime()));
+                baseQuest.setDescription(String.format(Locale.getDefault(), App.getInstance().getString(R.string.quest_distance_time), distance, dateDifference));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -49,8 +55,7 @@ public class DistanceQuest extends Quest {
         this.distance = distance;
     }
 
-    @Override
-    public QuestType getType() {
-        return type;
+    public Quest.QuestType getType() {
+        return Quest.QuestType.values()[type];
     }
 }

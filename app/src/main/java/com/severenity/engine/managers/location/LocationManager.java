@@ -9,34 +9,25 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Handler;
-import android.os.SystemClock;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
@@ -210,7 +201,7 @@ public class LocationManager implements LocationListener {
                     switch (markerType.getInt(Constants.OBJECT_TYPE_IDENTIFIER)) {
                         case Constants.TYPE_PLACE: {
                             String placeID = markerType.getString(Constants.PLACE_ID);
-                            GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
+                            GamePlace place = App.getPlacesManager().findPlaceById(placeID);
                             if (place == null) {
                                 Log.d(Constants.TAG, "Was not able to find place with provided ID: " + placeID);
                                 return false;
@@ -453,7 +444,7 @@ public class LocationManager implements LocationListener {
             placeType = GamePlace.PlaceType.Default;
         }
 
-        if (App.getPlacesManager().findPlaceByID(place.getId()) == null) {
+        if (App.getPlacesManager().findPlaceById(place.getId()) == null) {
 
             GamePlace placeInner = new GamePlace(
                     place.getId(),
@@ -702,32 +693,8 @@ public class LocationManager implements LocationListener {
                     String responseStatus = response.getString("result");
                     switch (responseStatus) {
                         case "success": {
-                            Log.e(Constants.TAG, response.toString());
                             JSONArray array = response.getJSONArray("data");
-                            for (int i = 0; i < array.length(); ++i) {
-                                JSONObject place = array.getJSONObject(i);
-                                if (!place.has("placeId") || !place.has("name")
-                                    || !place.has("location") || !place.has("owners")
-                                    || !place.has("type")) {
-                                    Log.e(Constants.TAG, "Incorrect place info passed from the server.");
-                                    continue;
-                                }
-
-                                String placeID   = place.getString("placeId");
-                                String placeName = place.getString("name");
-                                LatLng coordinates = new LatLng(place.getJSONObject("location").getJSONArray("coordinates").getDouble(1),
-                                        place.getJSONObject("location").getJSONArray("coordinates").getDouble(0));
-                                GamePlace.PlaceType placeType = GamePlace.PlaceType.values()[place.getInt("type")];
-
-                                GamePlace gamePlace = new GamePlace(placeID, placeName, coordinates, placeType);
-                                App.getPlacesManager().addPlace(gamePlace, false /*do not send to the server*/);
-
-                                JSONArray owners = place.getJSONArray("owners");
-                                for (int j = 0; j < owners.length(); ++j) {
-                                    App.getPlacesManager().addOwnerToPlace(placeID, owners.getString(j));
-                                }
-                            }
-
+                            App.getPlacesManager().addPlaces(array);
                             displayPlaceMarkerFromDB(true);
                             App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_REQUEST_PLACES));
                             break;
@@ -882,7 +849,7 @@ public class LocationManager implements LocationListener {
      */
     public void showPlaceAtPosition(String placeID) {
 
-        GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
+        GamePlace place = App.getPlacesManager().findPlaceById(placeID);
         if (mTempUsersPlaceMarker != null) {
             mTempUsersPlaceMarker.remove();
         }
@@ -982,7 +949,7 @@ public class LocationManager implements LocationListener {
     public void markPlaceMarkerAsCapturedUncaptured(String placeID) {
         if (mPlaceMarkersList.containsKey(placeID)) {
             Marker marker = mPlaceMarkersList.get(placeID);
-            GamePlace place = App.getPlacesManager().findPlaceByID(placeID);
+            GamePlace place = App.getPlacesManager().findPlaceById(placeID);
             int resourceId = getPlaceResourceImage(place);
             marker.setIcon(BitmapDescriptorFactory.fromBitmap(Utils.getScaledMarker(resourceId, context)));
 

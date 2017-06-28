@@ -15,7 +15,12 @@ public class Constants {
         Level("level"),
         Credits("credits"),
         Energy("energy"),
+<<<<<<< Updated upstream
         Immunity("immunity"),
+=======
+        ImplantHealthPoints("implantHP"),
+        MaxImplantHealthPoints("maxImplantHP"),
+>>>>>>> Stashed changes
         None("none");
 
         final String value;

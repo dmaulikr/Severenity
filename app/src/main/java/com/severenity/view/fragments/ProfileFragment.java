@@ -189,7 +189,7 @@ public class ProfileFragment extends DialogFragment {
 
         ArrayList<Quest> completedQuests = new ArrayList<>();
         for (Quest quest : App.getQuestManager().getQuests()) {
-            if (quest.getStatus() == Quest.QuestStatus.Finished) {
+            if (quest.getStatus() == Quest.QuestStatus.Finished.ordinal()) {
                 completedQuests.add(quest);
             }
         }

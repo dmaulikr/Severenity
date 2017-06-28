@@ -45,12 +45,14 @@ public class UserManager extends DataManager {
             return u;
         }
 
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(user);
-        User newUser = realm.where(User.class).equalTo("id", user.getId()).findFirst();
-        realm.commitTransaction();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(user);
+            }
+        });
 
-        return newUser;
+        return realm.where(User.class).equalTo("id", user.getId()).findFirst();
     }
 
     /**
@@ -65,10 +67,7 @@ public class UserManager extends DataManager {
             return null;
         }
 
-        realm.beginTransaction();
-        User user = realm.where(User.class).equalTo("id", id).findFirst();
-        realm.commitTransaction();
-        return user;
+        return realm.where(User.class).equalTo("id", id).findFirst();
     }
 
     /**
@@ -91,16 +90,19 @@ public class UserManager extends DataManager {
      * @param teamId - new id of the team
      */
     public void updateCurrentUserTeam(final String teamId) {
-        realm.executeTransaction(new Realm.Transaction() {
+        realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 User user = realm.where(User.class).equalTo("id", getCurrentUser().getId()).findFirst();
                 user.setTeamId(teamId);
                 realm.copyToRealmOrUpdate(user);
             }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                setCurrentUser(retrieveCurrentUser());
+            }
         });
-
-        setCurrentUser(retrieveCurrentUser());
     }
 
     /**

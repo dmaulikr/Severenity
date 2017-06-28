@@ -151,24 +151,24 @@ public class QuestsFragment extends Fragment {
                         q.setExpirationTime(expirationTime);
                     }
 
-                    q.setStatus(Quest.QuestStatus.values()[questObj.getInt("status")]);
+                    q.setStatus(questObj.getInt("status"));
 
                     if (questType == Quest.QuestType.Distance.ordinal()) {
                         q.setType(Quest.QuestType.Distance);
 
                         int distance = questObj.getInt("distance");
-                        q = new DistanceQuest(q, distance);
+                        q.setDistanceQuest(new DistanceQuest(q, distance));
                     } else if (questType == Quest.QuestType.Capture.ordinal()) {
                         q.setType(Quest.QuestType.Capture);
 
                         GamePlace.PlaceType placeType = GamePlace.PlaceType.values()[questObj.getInt("placeType")];
                         int placeTypeValue = questObj.getInt("placeTypeValue");
-                        q = new CaptureQuest(q, placeType, placeTypeValue);
+                        q.setCaptureQuest(new CaptureQuest(q, placeType, placeTypeValue));
                     } else if (questType == Quest.QuestType.Collect.ordinal()) {
                         q.setType(Quest.QuestType.Collect);
                         Constants.Characteristic characteristic = Constants.Characteristic.values()[questObj.getInt("characteristic")];
                         int characteristicAmount = questObj.getInt("characteristicAmount");
-                        q = new CollectQuest(q, characteristic, characteristicAmount);
+                        q.setCollectQuest(new CollectQuest(q, characteristic, characteristicAmount));
                     }
 
                     if (q.getId().equals("0")) {
@@ -183,7 +183,7 @@ public class QuestsFragment extends Fragment {
             } else if (intent.getAction().equalsIgnoreCase(Constants.INTENT_FILTER_QUEST_UPDATE)) {
                 Quest q = new Quest();
                 q.setProgress(questObj.getInt("progress"));
-                q.setStatus(Quest.QuestStatus.values()[questObj.getInt("status")]);
+                q.setStatus(questObj.getInt("status"));
                 q.setId(questObj.getString("questId"));
                 questsAdapter.update(q);
             }

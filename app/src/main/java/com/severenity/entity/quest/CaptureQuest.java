@@ -9,33 +9,40 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.realm.RealmObject;
+
 /**
+ * Represents base simple "Capture" quest where player has to capture some
+ * building types.
+ *
  * Created by Novosad on 5/10/16.
  */
-public class CaptureQuest extends Quest {
-    protected Quest.QuestType type = QuestType.Capture;
-    private GamePlace.PlaceType placeType;
-    private int placeTypeValue;
+public class CaptureQuest extends RealmObject {
+    protected int type = Quest.QuestType.Capture.ordinal();
+    private Integer placeType;
+    private Integer placeTypeValue;
 
-    public CaptureQuest(Quest quest, GamePlace.PlaceType placeType, int placeTypeValue) {
-        super(quest.getId(), quest.getTitle(), quest.getExpirationTime(), quest.getExperience(), quest.getCredits(), quest.getStatus(), quest.getProgress());
-
-        fillData(placeType, placeTypeValue);
+    public CaptureQuest() {
+        // Default constructor required.
     }
 
-    private void fillData(GamePlace.PlaceType placeType, int placeTypeValue) {
-        this.placeType = placeType;
+    public CaptureQuest(Quest quest, GamePlace.PlaceType placeType, int placeTypeValue) {
+        fillData(quest, placeType, placeTypeValue);
+    }
+
+    private void fillData(Quest baseQuest, GamePlace.PlaceType placeType, int placeTypeValue) {
+        this.placeType = placeType.ordinal();
         this.placeTypeValue = placeTypeValue;
 
-        if (getExpirationTime() == null || getExpirationTime().equalsIgnoreCase("null")) {
-            setDescription("Capture " + placeType);
+        if (baseQuest.getExpirationTime() == null || baseQuest.getExpirationTime().equalsIgnoreCase("null")) {
+            baseQuest.setDescription("Capture " + placeType);
         } else {
-            setExpirationTime(getExpirationTime());
+            baseQuest.setExpirationTime(baseQuest.getExpirationTime());
             try {
-                setDescription("Capture " + placeType + " in " +
+                baseQuest.setDescription("Capture " + placeType + " in " +
                     Utils.dateDifference(
                         new Date(),
-                        new SimpleDateFormat(Constants.TIME_FORMAT, Locale.US).parse(getExpirationTime())
+                        new SimpleDateFormat(Constants.TIME_FORMAT, Locale.US).parse(baseQuest.getExpirationTime())
                     )
                 );
             } catch (ParseException e) {
@@ -45,11 +52,11 @@ public class CaptureQuest extends Quest {
     }
 
     public GamePlace.PlaceType getPlaceType() {
-        return placeType;
+        return GamePlace.PlaceType.values()[placeType];
     }
 
     public void setPlaceType(GamePlace.PlaceType placeType) {
-        this.placeType = placeType;
+        this.placeType = placeType.ordinal();
     }
 
     public int getPlaceTypeValue() {
@@ -60,8 +67,7 @@ public class CaptureQuest extends Quest {
         this.placeTypeValue = placeTypeValue;
     }
 
-    @Override
-    public QuestType getType() {
-        return type;
+    public Quest.QuestType getType() {
+        return Quest.QuestType.values()[type];
     }
 }

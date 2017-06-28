@@ -5,6 +5,7 @@ import com.severenity.utils.common.Constants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
@@ -30,6 +31,8 @@ public class User extends RealmObject {
     private double actionRadius;
     private int credits;
     private int maxEnergy;
+
+    @Required
     private String createdDate;
     private String teamId;
     private String teamName;

@@ -23,7 +23,6 @@ import com.severenity.engine.adapters.InfoAdapter;
 import com.severenity.engine.adapters.PlaceInfoAdapter;
 import com.severenity.entity.GamePlace;
 import com.severenity.entity.User;
-import com.severenity.entity.contracts.PlaceContract;
 import com.severenity.utils.FacebookUtils;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
@@ -42,6 +41,7 @@ public class PlacesInfoDialog extends DialogFragment {
     }
 
     public static final String SHOW_RELOCATION_BUTTON = "showRelocationButton";
+    private static final String ARGUMENTS_PLACE_ID = "placeId";
 
     private PlaceInfoAdapter mInfoAdapter;
     private OnRelocateMapListener mListener;
@@ -51,7 +51,7 @@ public class PlacesInfoDialog extends DialogFragment {
     public static PlacesInfoDialog newInstance(String placeID, boolean showRelocationButton) {
         PlacesInfoDialog frag = new PlacesInfoDialog();
         Bundle b = new Bundle();
-        b.putString(PlaceContract.DBPlaces.COLUMN_PLACE_ID, placeID);
+        b.putString(ARGUMENTS_PLACE_ID, placeID);
         b.putBoolean(SHOW_RELOCATION_BUTTON, showRelocationButton);
         frag.setArguments(b);
         return frag;
@@ -94,10 +94,9 @@ public class PlacesInfoDialog extends DialogFragment {
     }
 
     private boolean prepareViewForDisplaying(View view) {
+        mPlaceID = getArguments().getString(ARGUMENTS_PLACE_ID);
 
-        mPlaceID = getArguments().getString(PlaceContract.DBPlaces.COLUMN_PLACE_ID);
-
-        GamePlace place = App.getPlacesManager().findPlaceByID(mPlaceID);
+        GamePlace place = App.getPlacesManager().findPlaceById(mPlaceID);
         if (place == null) {
             return false;
         }
@@ -108,7 +107,7 @@ public class PlacesInfoDialog extends DialogFragment {
             return false;
         }
 
-        ArrayList<String> owners = place.getOwners("");
+        ArrayList<String> owners = place.getOwners();
 
         int ownersCount = (owners != null) ? owners.size() : 0;
 

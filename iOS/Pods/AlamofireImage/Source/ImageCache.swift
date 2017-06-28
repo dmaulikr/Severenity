@@ -172,8 +172,8 @@ open class AutoPurgingImageCache: ImageRequestCache {
     /// - parameter request:    The request used to generate the image's unique identifier.
     /// - parameter identifier: The additional identifier to append to the image's unique identifier.
     open func add(_ image: Image, for request: URLRequest, withIdentifier identifier: String? = nil) {
-        let requestIdentifier = imageCacheKey(for: request, withIdentifier: identifier)
-        add(image, withIdentifier: requestIdentifier)
+        let reidentifier = imageCacheKey(for: request, withIdentifier: identifier)
+        add(image, withIdentifier: reidentifier)
     }
 
     /// Adds the image to the cache with the given identifier.
@@ -231,8 +231,8 @@ open class AutoPurgingImageCache: ImageRequestCache {
     /// - returns: `true` if the image was removed, `false` otherwise.
     @discardableResult
     open func removeImage(for request: URLRequest, withIdentifier identifier: String?) -> Bool {
-        let requestIdentifier = imageCacheKey(for: request, withIdentifier: identifier)
-        return removeImage(withIdentifier: requestIdentifier)
+        let reidentifier = imageCacheKey(for: request, withIdentifier: identifier)
+        return removeImage(withIdentifier: reidentifier)
     }
 
     /// Removes all images from the cache created from the request.
@@ -242,11 +242,11 @@ open class AutoPurgingImageCache: ImageRequestCache {
     /// - returns: `true` if any images were removed, `false` otherwise.
     @discardableResult
     open func removeImages(matching request: URLRequest) -> Bool {
-        let requestIdentifier = imageCacheKey(for: request, withIdentifier: nil)
+        let reidentifier = imageCacheKey(for: request, withIdentifier: nil)
         var removed = false
 
         synchronizationQueue.sync {
-            for key in self.cachedImages.keys where key.hasPrefix(requestIdentifier) {
+            for key in self.cachedImages.keys where key.hasPrefix(reidentifier) {
                 if let cachedImage = self.cachedImages.removeValue(forKey: key) {
                     self.currentMemoryUsage -= cachedImage.totalBytes
                     removed = true
@@ -304,8 +304,8 @@ open class AutoPurgingImageCache: ImageRequestCache {
     ///
     /// - returns: The image if it is stored in the cache, `nil` otherwise.
     open func image(for request: URLRequest, withIdentifier identifier: String? = nil) -> Image? {
-        let requestIdentifier = imageCacheKey(for: request, withIdentifier: identifier)
-        return image(withIdentifier: requestIdentifier)
+        let reidentifier = imageCacheKey(for: request, withIdentifier: identifier)
+        return image(withIdentifier: reidentifier)
     }
 
     /// Returns the image in the cache associated with the given identifier.
