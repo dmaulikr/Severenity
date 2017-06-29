@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 public class TeamQuestsFragment extends Fragment {
@@ -40,7 +41,7 @@ public class TeamQuestsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        realm = Realm.getDefaultInstance();
+        realm = Realm.getInstance(new RealmConfiguration.Builder().build());
 
         // Inflate the layout for this fragment
         App.getTeamQuestManager().getTeamQuests();

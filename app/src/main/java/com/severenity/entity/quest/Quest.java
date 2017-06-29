@@ -68,6 +68,7 @@ public class Quest extends RealmObject implements Observable, RealmDataBinding {
     private CollectQuest collectQuest;
 
     @Bindable
+    @Ignore
     private int progress;
 
     @Ignore
@@ -87,7 +88,7 @@ public class Quest extends RealmObject implements Observable, RealmDataBinding {
         setTitle(title);
         setExperience(experience);
         setCredits(credits);
-        setStatus(status.ordinal());
+        setStatus(status);
         setExpirationTime(expirationTime);
     }
 
@@ -189,14 +190,14 @@ public class Quest extends RealmObject implements Observable, RealmDataBinding {
         this.collectQuest = collectQuest;
     }
 
-    public int getStatus() {
-        return status;
+    public QuestStatus getStatus() {
+        return QuestStatus.values()[status];
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setStatus(QuestStatus status) {
+        this.status = status.ordinal();
         notifyPropertyChanged(BR.status);
-        setIsFinished(status == QuestStatus.Finished.ordinal() || status == QuestStatus.Closed.ordinal());
+        setIsFinished(status == QuestStatus.Finished || status == QuestStatus.Closed);
     }
 
     public int getProgress() {

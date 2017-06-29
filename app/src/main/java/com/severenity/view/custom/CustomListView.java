@@ -72,8 +72,8 @@ public class CustomListView extends ListView implements AbsListView.OnScrollList
      * @param data - data to be added
      */
     public void addNewData(List data) {
-
-        this.removeFooterView(mFooter);
+        clearData();
+        removeFooterView(mFooter);
 
         mAdapter.addList(data);
         mAdapter.notifyDataSetChanged();

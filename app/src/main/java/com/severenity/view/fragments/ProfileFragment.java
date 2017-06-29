@@ -117,16 +117,6 @@ public class ProfileFragment extends DialogFragment {
             });
         } else {
             Picasso.with(getActivity()).load("https://graph.facebook.com/" + user.getId() + "/picture?type=large").into(civAvatar);
-
-            tvPlacesOwned.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PlacesOwnedDialog dialog = PlacesOwnedDialog.newInstance();
-                    FragmentManager manager = getActivity().getSupportFragmentManager();
-                    dialog.show(manager, "placesOwnedInfo");
-                }
-            });
-
             updateUIInfo(user);
         }
 
@@ -182,14 +172,16 @@ public class ProfileFragment extends DialogFragment {
 
         if (places.size() > 0) {
             tvPlacesOwned.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_place_marker, 0, android.R.drawable.ic_media_play, 0);
+            tvPlacesOwned.setOnClickListener(placesOwnedOnClickListener);
         } else {
             tvPlacesOwned.setCompoundDrawablesWithIntrinsicBounds(R.drawable.icon_place_marker, 0, 0, 0);
+            tvPlacesOwned.setOnClickListener(null);
         }
         tvPlacesOwned.setText(String.format(getResources().getString(R.string.profile_stat_places_owned), places.size()));
 
         ArrayList<Quest> completedQuests = new ArrayList<>();
         for (Quest quest : App.getQuestManager().getQuests()) {
-            if (quest.getStatus() == Quest.QuestStatus.Finished.ordinal()) {
+            if (quest.getStatus() == Quest.QuestStatus.Finished) {
                 completedQuests.add(quest);
             }
         }
@@ -199,4 +191,13 @@ public class ProfileFragment extends DialogFragment {
         tvTickets.setText(String.format(getResources().getString(R.string.profile_stat_tickets), user.getTickets()));
         tvTips.setText(String.format(getResources().getString(R.string.profile_stat_tips), user.getTips()));
     }
+
+    private View.OnClickListener placesOwnedOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            PlacesOwnedDialog dialog = PlacesOwnedDialog.newInstance();
+            FragmentManager manager = getActivity().getSupportFragmentManager();
+            dialog.show(manager, "placesOwnedInfo");
+        }
+    };
 }

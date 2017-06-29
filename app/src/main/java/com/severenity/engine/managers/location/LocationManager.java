@@ -445,7 +445,6 @@ public class LocationManager implements LocationListener {
         }
 
         if (App.getPlacesManager().findPlaceById(place.getId()) == null) {
-
             GamePlace placeInner = new GamePlace(
                     place.getId(),
                     place.getName().toString(),

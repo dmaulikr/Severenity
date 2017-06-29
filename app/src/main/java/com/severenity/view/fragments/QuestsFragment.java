@@ -26,9 +26,9 @@ import com.severenity.entity.quest.CollectQuest;
 import com.severenity.entity.quest.DistanceQuest;
 import com.severenity.entity.quest.Quest;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.dialogs.QuestReceivedDialogFragment;
 import com.severenity.view.activities.MainActivity;
 import com.severenity.view.custom.DividerItemDecoration;
+import com.severenity.view.dialogs.QuestReceivedDialogFragment;
 
 import java.util.ArrayList;
 
@@ -67,7 +67,7 @@ public class QuestsFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            App.getQuestManager().refreshWithQuestsFromServer();
+            questsAdapter.refreshWith(App.getQuestManager().getQuests());
         }
     }
 
@@ -83,7 +83,7 @@ public class QuestsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_quests, container, false);
 
-        App.getQuestManager().refreshWithQuestsFromServer();
+        quests = App.getQuestManager().getQuests();
         questsAdapter = new QuestsAdapter(activity, quests);
 
         questsList = (RecyclerView) view.findViewById(R.id.rvQuests);
@@ -151,7 +151,7 @@ public class QuestsFragment extends Fragment {
                         q.setExpirationTime(expirationTime);
                     }
 
-                    q.setStatus(questObj.getInt("status"));
+                    q.setStatus(Quest.QuestStatus.values()[questObj.getInt("status")]);
 
                     if (questType == Quest.QuestType.Distance.ordinal()) {
                         q.setType(Quest.QuestType.Distance);
@@ -171,7 +171,7 @@ public class QuestsFragment extends Fragment {
                         q.setCollectQuest(new CollectQuest(q, characteristic, characteristicAmount));
                     }
 
-                    if (q.getId().equals("0")) {
+                    if (q.getId().equals("0") && App.getQuestManager().getQuestById("0") == null) {
                         QuestReceivedDialogFragment questReceivedDialogFragment = QuestReceivedDialogFragment.newInstance(q);
                         questReceivedDialogFragment.show(getFragmentManager(), "questReceivedDialogFragment");
                     }
@@ -183,7 +183,7 @@ public class QuestsFragment extends Fragment {
             } else if (intent.getAction().equalsIgnoreCase(Constants.INTENT_FILTER_QUEST_UPDATE)) {
                 Quest q = new Quest();
                 q.setProgress(questObj.getInt("progress"));
-                q.setStatus(questObj.getInt("status"));
+                q.setStatus(Quest.QuestStatus.values()[questObj.getInt("status")]);
                 q.setId(questObj.getString("questId"));
                 questsAdapter.update(q);
             }

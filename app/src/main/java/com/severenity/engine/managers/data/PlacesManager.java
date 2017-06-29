@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 /**
@@ -34,7 +35,7 @@ public class PlacesManager extends DataManager {
     public PlacesManager(Context context) {
         super(context);
 
-        realm = Realm.getDefaultInstance();
+        realm = Realm.getInstance(new RealmConfiguration.Builder().build());
     }
 
     /**
@@ -86,10 +87,7 @@ public class PlacesManager extends DataManager {
             @Override
             public void execute(Realm realm) {
                 realm.copyToRealmOrUpdate(place);
-            }
-        }, new Realm.Transaction.OnSuccess() {
-            @Override
-            public void onSuccess() {
+
                 if (!storeOnServer) {
                     return;
                 }
@@ -154,7 +152,7 @@ public class PlacesManager extends DataManager {
      * @param currentLocation - current users location
      * @param westSouth       - left bottom edge of abstract square within which places should be considered
      * @param northEast       - left bottom edge of abstract square within which places should be considered
-     * @param distance        - distance within which places should be considered (besically  the radius of User's ViewArea)
+     * @param distance        - distance within which places should be considered (basically  the radius of User's ViewArea)
      * @return the list of places that met requirements
      */
     public ArrayList<GamePlace> getLimitedPlaces(LatLng currentLocation, LatLng westSouth, LatLng northEast, double distance) {
@@ -162,7 +160,8 @@ public class PlacesManager extends DataManager {
                 .greaterThanOrEqualTo("lat", westSouth.latitude)
                 .lessThanOrEqualTo("lat", northEast.latitude)
                 .greaterThanOrEqualTo("lng", westSouth.longitude)
-                .lessThanOrEqualTo("lng", northEast.longitude).findAll();
+                .lessThanOrEqualTo("lng", northEast.longitude)
+                .findAll();
         List<GamePlace> allPlacesInRange = realm.copyFromRealm(realmPlaces);
 
         ArrayList<GamePlace> places = new ArrayList<>();

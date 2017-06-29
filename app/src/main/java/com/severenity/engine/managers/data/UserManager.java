@@ -22,7 +22,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 
 /**
  * Responsible for handling operations related to all users and current user.
@@ -31,12 +35,11 @@ import io.realm.Realm;
  * Created by Novosad on 2/17/16.
  */
 public class UserManager extends DataManager {
-    private User currentUser;
     private Realm realm;
 
     public UserManager(Context context) {
         super(context);
-        realm = Realm.getDefaultInstance();
+        realm = Realm.getInstance(new RealmConfiguration.Builder().build());
     }
 
     public User addUser(final User user) {
@@ -67,7 +70,11 @@ public class UserManager extends DataManager {
             return null;
         }
 
-        return realm.where(User.class).equalTo("id", id).findFirst();
+        Realm realm = Realm.getDefaultInstance();
+        User user = realm.where(User.class).equalTo("id", id).findFirst();
+        realm.close();
+
+        return user;
     }
 
     /**
@@ -85,6 +92,16 @@ public class UserManager extends DataManager {
     }
 
     /**
+     * Returns all users currently stored on the device.
+     *
+     * @return list of users.
+     */
+    public List<User> getUsers() {
+        RealmResults<User> realmResults = realm.where(User.class).findAll();
+        return realm.copyFromRealm(realmResults);
+    }
+
+    /**
      * Updates current user team.
      *
      * @param teamId - new id of the team
@@ -97,59 +114,47 @@ public class UserManager extends DataManager {
                 user.setTeamId(teamId);
                 realm.copyToRealmOrUpdate(user);
             }
-        }, new Realm.Transaction.OnSuccess() {
-            @Override
-            public void onSuccess() {
-                setCurrentUser(retrieveCurrentUser());
-            }
         });
     }
 
     /**
      * Updates current user locally based on data from user specified.
      *
-     * @param user - {@link User} object to update current user data with.
+     * @param u - {@link User} object to update current user data with.
      */
-    public void updateCurrentUserLocallyWithUser(final User user) {
-        realm.executeTransaction(new Realm.Transaction() {
+    public void updateCurrentUserLocallyWithUser(final User u) {
+        final User currentUser = getCurrentUser();
+        Realm.getInstance(new RealmConfiguration.Builder().build()).executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                realm.copyToRealmOrUpdate(user);
+                currentUser.setActionRadius(u.getActionRadius());
+                currentUser.setViewRadius(u.getViewRadius());
+                currentUser.setCredits(u.getCredits());
+                currentUser.setMaxEnergy(u.getMaxEnergy());
+                currentUser.setEnergy(u.getEnergy());
+                currentUser.setExperience(u.getExperience());
+                currentUser.setDistance(u.getDistance());
+                currentUser.setTickets(u.getTickets());
+                currentUser.setTips(u.getTips());
+
+                if (u.getLevel() > currentUser.getLevel()) {
+                    Intent levelUpIntent = new Intent(context, MainActivity.class);
+                    levelUpIntent.setAction(GCMManager.MESSAGE_RECEIVED);
+                    levelUpIntent.putExtra("level", String.valueOf(u.getLevel()));
+
+                    App.getLocalBroadcastManager().sendBroadcast(levelUpIntent);
+                    Utils.sendNotification(Constants.NOTIFICATION_MSG_LEVEL_UP + u.getLevel(), context, levelUpIntent, 0);
+                }
+
+                currentUser.setLevel(u.getLevel());
+
+                realm.copyToRealmOrUpdate(currentUser);
             }
         });
-
-        if (currentUser != null && user.getLevel() > currentUser.getLevel()) {
-            Intent levelUpIntent = new Intent(context, MainActivity.class);
-            levelUpIntent.setAction(GCMManager.MESSAGE_RECEIVED);
-            levelUpIntent.putExtra("level", String.valueOf(user.getLevel()));
-
-            App.getLocalBroadcastManager().sendBroadcast(levelUpIntent);
-            Utils.sendNotification(Constants.NOTIFICATION_MSG_LEVEL_UP + user.getLevel(), context, levelUpIntent, 0);
-        }
-
-        setCurrentUser(retrieveCurrentUser());
-    }
-
-    private User retrieveCurrentUser() {
-        User user;
-        if (AccessToken.getCurrentAccessToken() == null) {
-            Log.i(Constants.TAG, "No access token found, new user is created.");
-            user = new User();
-        } else {
-            user = getUserById(AccessToken.getCurrentAccessToken().getUserId());
-        }
-        return user;
     }
 
     public User getCurrentUser() {
-        if (currentUser == null) {
-            currentUser = retrieveCurrentUser();
-        }
-        return currentUser;
-    }
-
-    private void setCurrentUser(User user) {
-        currentUser = user;
+        return getUserById(AccessToken.getCurrentAccessToken().getUserId());
     }
 
     /**
@@ -308,8 +313,7 @@ public class UserManager extends DataManager {
                                     Log.d(Constants.TAG, response.toString());
 
                                     User newUser = Utils.createUserFromJSON(response);
-                                    if (newUser != null) {
-                                        App.getUserManager().setCurrentUser(newUser);
+                                    if (addUser(newUser) != null) {
                                         authorizeCurrentUser();
                                     }
                                 } else {
@@ -368,7 +372,7 @@ public class UserManager extends DataManager {
         if (getUser(user) != null) {
             updateCurrentUserLocallyWithUser(user);
         } else {
-            setCurrentUser(addUser(user));
+            addUser(user);
         }
         App.getLocalBroadcastManager().sendBroadcast(intent);
     }

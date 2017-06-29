@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 /**
@@ -29,7 +30,7 @@ public class MessageManager extends DataManager {
 
     public MessageManager(Context context) {
         super(context);
-        realm = Realm.getDefaultInstance();
+        realm = Realm.getInstance(new RealmConfiguration.Builder().build());
     }
 
     /**

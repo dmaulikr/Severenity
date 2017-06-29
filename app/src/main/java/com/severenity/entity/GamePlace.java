@@ -96,7 +96,6 @@ public class GamePlace extends RealmObject {
 
     public String getPlaceID() { return this.placeId; }
     public String getPlaceName() { return this.name; }
-
     public LatLng getPlacePos() { return new LatLng(lat, lng); }
 
     public PlaceType getPlaceType() {

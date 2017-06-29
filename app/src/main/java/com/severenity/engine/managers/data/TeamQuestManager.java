@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 /**
@@ -27,7 +28,7 @@ public class TeamQuestManager extends DataManager {
 
     public TeamQuestManager(Context context) {
         super(context);
-        realm = Realm.getDefaultInstance();
+        realm = Realm.getInstance(new RealmConfiguration.Builder().build());
     }
 
     public void addTeamQuest(final JSONObject teamQuest) {

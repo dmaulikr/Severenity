@@ -409,7 +409,7 @@ public class WebSocketManager {
         JSONObject requestData = new JSONObject();
         try {
             requestData.put("data", data);
-            requestData.put("action", action.toString());
+            requestData.put("action", action.toString().toLowerCase());
             mSocket.emit(Constants.SOCKET_EVENT_USER_ACTION, requestData);
         } catch (JSONException e) {
             e.printStackTrace();
