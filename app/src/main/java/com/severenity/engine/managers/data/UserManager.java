@@ -36,6 +36,7 @@ import io.realm.RealmResults;
  */
 public class UserManager extends DataManager {
     private Realm realm;
+    private User currentUser;
 
     public UserManager(Context context) {
         super(context);
@@ -123,8 +124,8 @@ public class UserManager extends DataManager {
      * @param u - {@link User} object to update current user data with.
      */
     public void updateCurrentUserLocallyWithUser(final User u) {
-        final User currentUser = getCurrentUser();
-        Realm.getInstance(new RealmConfiguration.Builder().build()).executeTransaction(new Realm.Transaction() {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 currentUser.setActionRadius(u.getActionRadius());
@@ -151,10 +152,12 @@ public class UserManager extends DataManager {
                 realm.copyToRealmOrUpdate(currentUser);
             }
         });
+
+        realm.close();
     }
 
     public User getCurrentUser() {
-        return getUserById(AccessToken.getCurrentAccessToken().getUserId());
+        return currentUser;
     }
 
     /**
@@ -254,7 +257,7 @@ public class UserManager extends DataManager {
                                     return;
                                 }
 
-                                App.getUserManager().createCurrentUserAndNotify(userObject, intent);
+                                createCurrentUserAndNotify(userObject, intent);
                             }
                             break;
                         case "continue":
@@ -369,10 +372,12 @@ public class UserManager extends DataManager {
      */
     public void createCurrentUserAndNotify(JSONObject userObject, Intent intent) {
         User user = Utils.createUserFromJSON(userObject);
-        if (getUser(user) != null) {
+        currentUser = getUser(user);
+        if (currentUser != null) {
             updateCurrentUserLocallyWithUser(user);
         } else {
             addUser(user);
+            currentUser = user;
         }
         App.getLocalBroadcastManager().sendBroadcast(intent);
     }
