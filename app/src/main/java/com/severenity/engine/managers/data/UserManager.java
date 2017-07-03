@@ -25,7 +25,6 @@ import org.json.JSONObject;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 /**
@@ -35,12 +34,10 @@ import io.realm.RealmResults;
  * Created by Novosad on 2/17/16.
  */
 public class UserManager extends DataManager {
-    private Realm realm;
     private User currentUser;
 
     public UserManager(Context context) {
         super(context);
-        realm = Realm.getInstance(new RealmConfiguration.Builder().build());
     }
 
     public User addUser(final User user) {
@@ -49,14 +46,16 @@ public class UserManager extends DataManager {
             return u;
         }
 
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.copyToRealmOrUpdate(user);
-            }
-        });
+        try (Realm realm = Realm.getDefaultInstance()) {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.copyToRealmOrUpdate(user);
+                }
+            });
 
-        return realm.where(User.class).equalTo("id", user.getId()).findFirst();
+            return realm.where(User.class).equalTo("id", user.getId()).findFirst();
+        }
     }
 
     /**
@@ -98,8 +97,10 @@ public class UserManager extends DataManager {
      * @return list of users.
      */
     public List<User> getUsers() {
-        RealmResults<User> realmResults = realm.where(User.class).findAll();
-        return realm.copyFromRealm(realmResults);
+        try (Realm realm = Realm.getDefaultInstance()) {
+            RealmResults<User> realmResults = realm.where(User.class).findAll();
+            return realm.copyFromRealm(realmResults);
+        }
     }
 
     /**
@@ -108,14 +109,16 @@ public class UserManager extends DataManager {
      * @param teamId - new id of the team
      */
     public void updateCurrentUserTeam(final String teamId) {
-        realm.executeTransactionAsync(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                User user = realm.where(User.class).equalTo("id", getCurrentUser().getId()).findFirst();
-                user.setTeamId(teamId);
-                realm.copyToRealmOrUpdate(user);
-            }
-        });
+        try (Realm realm = Realm.getDefaultInstance()) {
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    User user = realm.where(User.class).equalTo("id", getCurrentUser().getId()).findFirst();
+                    user.setTeamId(teamId);
+                    realm.copyToRealmOrUpdate(user);
+                }
+            });
+        }
     }
 
     /**
@@ -124,36 +127,36 @@ public class UserManager extends DataManager {
      * @param u - {@link User} object to update current user data with.
      */
     public void updateCurrentUserLocallyWithUser(final User u) {
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                currentUser.setActionRadius(u.getActionRadius());
-                currentUser.setViewRadius(u.getViewRadius());
-                currentUser.setCredits(u.getCredits());
-                currentUser.setMaxEnergy(u.getMaxEnergy());
-                currentUser.setEnergy(u.getEnergy());
-                currentUser.setExperience(u.getExperience());
-                currentUser.setDistance(u.getDistance());
-                currentUser.setTickets(u.getTickets());
-                currentUser.setTips(u.getTips());
+        try (Realm realm = Realm.getDefaultInstance()) {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    User currentUser = realm.where(User.class).equalTo("id", u.getId()).findFirst();
+                    currentUser.setActionRadius(u.getActionRadius());
+                    currentUser.setViewRadius(u.getViewRadius());
+                    currentUser.setCredits(u.getCredits());
+                    currentUser.setMaxEnergy(u.getMaxEnergy());
+                    currentUser.setEnergy(u.getEnergy());
+                    currentUser.setExperience(u.getExperience());
+                    currentUser.setDistance(u.getDistance());
+                    currentUser.setTickets(u.getTickets());
+                    currentUser.setTips(u.getTips());
 
-                if (u.getLevel() > currentUser.getLevel()) {
-                    Intent levelUpIntent = new Intent(context, MainActivity.class);
-                    levelUpIntent.setAction(GCMManager.MESSAGE_RECEIVED);
-                    levelUpIntent.putExtra("level", String.valueOf(u.getLevel()));
+                    if (u.getLevel() > currentUser.getLevel()) {
+                        Intent levelUpIntent = new Intent(context, MainActivity.class);
+                        levelUpIntent.setAction(GCMManager.MESSAGE_RECEIVED);
+                        levelUpIntent.putExtra("level", String.valueOf(u.getLevel()));
 
-                    App.getLocalBroadcastManager().sendBroadcast(levelUpIntent);
-                    Utils.sendNotification(Constants.NOTIFICATION_MSG_LEVEL_UP + u.getLevel(), context, levelUpIntent, 0);
+                        App.getLocalBroadcastManager().sendBroadcast(levelUpIntent);
+                        Utils.sendNotification(Constants.NOTIFICATION_MSG_LEVEL_UP + u.getLevel(), context, levelUpIntent, 0);
+                    }
+
+                    currentUser.setLevel(u.getLevel());
+
+                    realm.copyToRealmOrUpdate(currentUser);
                 }
-
-                currentUser.setLevel(u.getLevel());
-
-                realm.copyToRealmOrUpdate(currentUser);
-            }
-        });
-
-        realm.close();
+            });
+        }
     }
 
     public User getCurrentUser() {
@@ -376,9 +379,9 @@ public class UserManager extends DataManager {
         if (currentUser != null) {
             updateCurrentUserLocallyWithUser(user);
         } else {
-            addUser(user);
-            currentUser = user;
+            currentUser = addUser(user);
         }
+
         App.getLocalBroadcastManager().sendBroadcast(intent);
     }
 }
