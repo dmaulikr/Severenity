@@ -112,6 +112,7 @@ public class WebSocketManager {
                         try {
                             JSONObject response = (JSONObject) arg;
                             User user = new User();
+                            user.setId(response.getString("userId"));
                             user.setActionRadius(response.getInt("actionRadius"));
                             user.setViewRadius(response.getInt("viewRadius"));
                             user.setCredits(response.getInt("credits"));
