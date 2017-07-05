@@ -22,11 +22,7 @@ import java.util.List;
  */
 public class SkillAdapter extends ArrayAdapter<Skill> {
     private ArrayList<Skill> skills = new ArrayList<>(Arrays.asList(
-            new Skill(Skill.SkillType.CapturePlace, "Captures place to collect data that improves your implant.", 0, Skill.Rarity.Common),
-            new Skill(Skill.SkillType.Remove, "Removes player who has captured from captured object.", 1, Skill.Rarity.Uncommon),
-            new Skill(Skill.SkillType.Defend, "Defends your implant from next incoming attacking signals.", 0, Skill.Rarity.Common),
-            new Skill(Skill.SkillType.Attack, "Deals damage to the selected implant.", 2, Skill.Rarity.Common),
-            new Skill(Skill.SkillType.Invisibility, "Puts invisibility over the object so it disappears from the map.", 0, Skill.Rarity.Rare)
+            new Skill(Skill.SkillType.CapturePlace, "Captures place to collect data that improves your implant.", 0, Skill.Rarity.Common)
     ));
 
     private Context context;

@@ -47,11 +47,7 @@ public class Skill extends BaseObservable implements Parcelable {
     }
 
     public enum SkillType {
-        CapturePlace,
-        Remove,
-        Defend,
-        Attack,
-        Invisibility
+        CapturePlace
     }
 
     public enum Rarity {
@@ -75,18 +71,6 @@ public class Skill extends BaseObservable implements Parcelable {
         switch (skillType) {
             case CapturePlace:
                 setSkillIconResource(R.drawable.sig_capture_place);
-                break;
-            case Remove:
-                setSkillIconResource(R.drawable.sig_remove);
-                break;
-            case Defend:
-                setSkillIconResource(R.drawable.sig_defend);
-                break;
-            case Attack:
-                setSkillIconResource(R.drawable.sig_attack);
-                break;
-            case Invisibility:
-                setSkillIconResource(R.drawable.sig_invisibility);
                 break;
         }
     }
@@ -116,14 +100,6 @@ public class Skill extends BaseObservable implements Parcelable {
         switch (skillType) {
             case CapturePlace:
                 return "Capture Place";
-            case Remove:
-                return "Remove";
-            case Defend:
-                return "Defend";
-            case Attack:
-                return "Attack";
-            case Invisibility:
-                return "Invisibility";
             default:
                 return "Unknown";
         }

@@ -42,15 +42,8 @@ public class InventoryFragment extends Fragment {
 
     private void createSkills() {
         skills = new ArrayList<>(Arrays.asList(
-                new Skill(Skill.SkillType.CapturePlace, getResources().getString(R.string.skill_capture_place), 0, Skill.Rarity.Common),
-                new Skill(Skill.SkillType.Remove, getResources().getString(R.string.skill_remove), 1, Skill.Rarity.Uncommon),
-                new Skill(Skill.SkillType.Defend, getResources().getString(R.string.skill_defend), 0, Skill.Rarity.Common),
-                new Skill(Skill.SkillType.Attack, getResources().getString(R.string.skill_attack), 2, Skill.Rarity.Common),
-                new Skill(Skill.SkillType.Invisibility, getResources().getString(R.string.skill_invisibility), 0, Skill.Rarity.Rare)
+                new Skill(Skill.SkillType.CapturePlace, getResources().getString(R.string.skill_capture_place), 0, Skill.Rarity.Common)
         ));
     }
-
-
-
 
 }
