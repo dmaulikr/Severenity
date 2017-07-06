@@ -404,6 +404,10 @@ public class QuestManager extends DataManager {
         App.getRestManager().createRequest(request, Request.Method.GET, null, new RequestCallback() {
             @Override
             public void onResponseCallback(JSONObject response) {
+                if (response.length() == 0) {
+                    return;
+                }
+
                 populateQuest(getQuestFromJSON(response));
             }
 
