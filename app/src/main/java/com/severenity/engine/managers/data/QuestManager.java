@@ -525,7 +525,7 @@ public class QuestManager extends DataManager {
                 }
 
                 try {
-                    if (!response.getString("result").equalsIgnoreCase("success")) {
+                    if (!"success".equalsIgnoreCase(response.getString("result"))) {
                         Log.e(Constants.TAG, "Quest update result is error.");
                         return;
                     }
@@ -541,7 +541,7 @@ public class QuestManager extends DataManager {
                         } break;
                         case "progress": {
                             Log.d(Constants.TAG, response.toString());
-                            JSONArray quests = response.getJSONObject("data").getJSONArray("quests");
+                            JSONArray quests = data.getJSONArray("quests");
                             for (int i = 0; i < quests.length(); i++) {
                                 JSONObject quest = quests.getJSONObject(i);
                                 JSONObject progress = quest.getJSONObject("progress");

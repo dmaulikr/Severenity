@@ -184,7 +184,7 @@ public class QuestsFragment extends Fragment {
                 Quest q = new Quest();
                 q.setProgress(questObj.getInt("progress"));
                 q.setStatus(Quest.QuestStatus.values()[questObj.getInt("status")]);
-                q.setId(questObj.getString("questId"));
+                q.setId(questObj.getString("id"));
                 questsAdapter.update(q);
             }
             checkEmptyList();

@@ -24,7 +24,11 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
+import com.google.android.gms.fitness.data.DataPoint;
+import com.google.android.gms.fitness.data.DataSet;
+import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.maps.model.LatLng;
 import com.severenity.App;
 import com.severenity.R;
@@ -37,9 +41,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import static java.text.DateFormat.getTimeInstance;
 
 /**
  * Utility class contains a lot of helping methods.
@@ -452,5 +460,19 @@ public class Utils {
         animation.setDuration(1000);
         animation.setInterpolator(new AccelerateInterpolator(0.5f));
         v.startAnimation(animation);
+    }
+
+    public static void dumpDataSet(DataSet dataSet) {
+        for (DataPoint dp : dataSet.getDataPoints()) {
+//            Toast.makeText(App.getInstance().getApplicationContext(),
+//            "Type: " + dp.getDataType().getName() + "\n" +
+//            "Time: " + dateDifference(new Date(dp.getStartTime(TimeUnit.MILLISECONDS)), new Date(dp.getEndTime(TimeUnit.MILLISECONDS))) + "\n" +
+//            "Field: " + dp.getDataType().getFields().get(0).getName() + " Value: " + dp.getValue(dp.getDataType().getFields().get(0)),
+//            Toast.LENGTH_LONG).show();
+
+            Log.i(Constants.TAG, "Type: " + dp.getDataType().getName() + "\n" +
+                    "Time: " + dateDifference(new Date(dp.getStartTime(TimeUnit.MILLISECONDS)), new Date(dp.getEndTime(TimeUnit.MILLISECONDS))) + "\n" +
+                    "Field: " + dp.getDataType().getFields().get(0).getName() + " Value: " + dp.getValue(dp.getDataType().getFields().get(0)));
+        }
     }
 }

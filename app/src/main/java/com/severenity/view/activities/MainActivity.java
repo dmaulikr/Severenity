@@ -31,8 +31,17 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.fitness.Fitness;
+import com.google.android.gms.fitness.data.Bucket;
+import com.google.android.gms.fitness.data.DataSet;
+import com.google.android.gms.fitness.data.DataType;
+import com.google.android.gms.fitness.request.DataReadRequest;
+import com.google.android.gms.fitness.result.DataReadResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.MapsInitializer;
@@ -47,8 +56,8 @@ import com.severenity.entity.User;
 import com.severenity.entity.quest.Quest;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.dialogs.PlacesInfoDialog;
 import com.severenity.view.custom.SplitToolbar;
+import com.severenity.view.dialogs.PlacesInfoDialog;
 import com.severenity.view.fragments.GameMapFragment;
 import com.severenity.view.fragments.PlayerFragment;
 import com.severenity.view.fragments.QuestsFragment;
@@ -65,8 +74,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static java.text.DateFormat.getDateInstance;
 
 public class MainActivity extends AppCompatActivity
         implements PlacesInfoDialog.OnRelocateMapListener,
@@ -186,14 +200,10 @@ public class MainActivity extends AppCompatActivity
                 .addApi(LocationServices.API)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
-                .addApi(Fitness.SENSORS_API)
-                .addApi(Fitness.RECORDING_API)
                 .addApi(Fitness.HISTORY_API)
-                .addApi(Fitness.SESSIONS_API)
-                .addApi(Fitness.BLE_API)
-                .addScope(Fitness.SCOPE_ACTIVITY_READ_WRITE)
-                .addScope(Fitness.SCOPE_LOCATION_READ_WRITE)
-                .addScope(Fitness.SCOPE_BODY_READ_WRITE)
+                .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ))
+                .addScope(new Scope(Scopes.FITNESS_LOCATION_READ))
+                .addScope(new Scope(Scopes.FITNESS_BODY_READ))
                 .enableAutoManage(this, 0, this)
                 .build();
     }
@@ -466,6 +476,34 @@ public class MainActivity extends AppCompatActivity
         ivGPSState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                Date now = new Date();
+                cal.setTime(now);
+                long endTime = cal.getTimeInMillis();
+                cal.add(Calendar.HOUR, -1);
+                long startTime = cal.getTimeInMillis();
+
+                java.text.DateFormat dateFormat = getDateInstance();
+                Log.i(Constants.TAG, "Range Start: " + dateFormat.format(startTime));
+                Log.i(Constants.TAG, "Range End: " + dateFormat.format(endTime));
+
+                DataReadRequest readRequest = new DataReadRequest.Builder()
+                        .aggregate(DataType.TYPE_DISTANCE_DELTA, DataType.AGGREGATE_DISTANCE_DELTA)
+                        .bucketByTime(30, TimeUnit.MINUTES)
+                        .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
+                        .build();
+
+                PendingResult<DataReadResult> dataReadResult = Fitness.HistoryApi.readData(googleApiClient, readRequest);
+                dataReadResult.setResultCallback(new ResultCallback<DataReadResult>() {
+                    @Override
+                    public void onResult(@NonNull DataReadResult dataReadResult) {
+                        for (Bucket bucket : dataReadResult.getBuckets()) {
+                            DataSet dataSet = bucket.getDataSet(DataType.TYPE_DISTANCE_DELTA);
+                            Utils.dumpDataSet(dataSet);
+                        }
+                    }
+                });
+
                 Toast.makeText(getApplicationContext(), "Your current GPS status.", Toast.LENGTH_SHORT).show();
             }
         });
