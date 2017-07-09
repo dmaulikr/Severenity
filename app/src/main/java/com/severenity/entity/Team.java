@@ -1,5 +1,7 @@
 package com.severenity.entity;
 
+import com.severenity.entity.user.User;
+
 import java.util.ArrayList;
 import java.util.List;
 

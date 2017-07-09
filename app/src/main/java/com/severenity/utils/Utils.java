@@ -24,16 +24,16 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.google.android.gms.fitness.data.DataPoint;
 import com.google.android.gms.fitness.data.DataSet;
-import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.maps.model.LatLng;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.entity.Team;
-import com.severenity.entity.User;
+import com.severenity.entity.user.Progress;
+import com.severenity.entity.user.User;
+import com.severenity.entity.user.UserQuest;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.activities.MainActivity;
 
@@ -41,11 +41,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
 
 import static java.text.DateFormat.getTimeInstance;
 
@@ -129,6 +134,26 @@ public class Utils {
             user.setActionRadius(profileObject.getInt("actionRadius") * 1.0);
             user.setTickets(profileObject.getInt("tickets"));
             user.setTips(profileObject.getInt("tips"));
+
+            JSONArray quests = response.getJSONArray("quests");
+            RealmList<UserQuest> userQuests = new RealmList<>();
+            for (int i = 0; i < quests.length(); i++) {
+                UserQuest userQuest = new UserQuest();
+                JSONObject userQuestObj = quests.getJSONObject(i);
+                userQuest.setStatus(userQuestObj.getInt("status"));
+                userQuest.setObjective(userQuestObj.getString("objective"));
+                userQuest.setId(userQuestObj.getString("id"));
+
+                JSONObject progressObj = userQuestObj.getJSONObject("progress");
+                Progress progress = new Progress();
+                progress.setProgress(progressObj.getInt("progress"));
+                progress.setCurrent(progressObj.getInt("current"));
+                progress.setGoal(progressObj.getInt("goal"));
+
+                userQuest.setProgress(progress);
+                userQuests.add(userQuest);
+            }
+            user.setQuests(userQuests);
 
             return user;
         } catch (JSONException e) {

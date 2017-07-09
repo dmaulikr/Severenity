@@ -11,7 +11,7 @@ import com.facebook.GraphResponse;
 import com.google.android.gms.maps.model.LatLng;
 import com.severenity.App;
 import com.severenity.entity.Message;
-import com.severenity.entity.User;
+import com.severenity.entity.user.User;
 import com.severenity.utils.FacebookUtils;
 import com.severenity.utils.common.Constants;
 

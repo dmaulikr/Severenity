@@ -12,7 +12,7 @@ import com.severenity.App;
 import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.engine.managers.messaging.RegistrationIntentService;
 import com.severenity.engine.network.RequestCallback;
-import com.severenity.entity.User;
+import com.severenity.entity.user.User;
 import com.severenity.utils.FacebookUtils;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
@@ -108,12 +108,12 @@ public class UserManager extends DataManager {
      *
      * @param teamId - new id of the team
      */
-    public void updateCurrentUserTeam(final String teamId) {
+    public void updateCurrentUserTeam(final String teamId, final String userId) {
         try (Realm realm = Realm.getDefaultInstance()) {
             realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    User user = realm.where(User.class).equalTo("id", getCurrentUser().getId()).findFirst();
+                    User user = realm.where(User.class).equalTo("id", userId).findFirst();
                     user.setTeamId(teamId);
                     realm.copyToRealmOrUpdate(user);
                 }

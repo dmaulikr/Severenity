@@ -27,7 +27,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.entity.GamePlace;
-import com.severenity.entity.UsersActions;
+import com.severenity.entity.user.UsersActions;
 import com.severenity.utils.common.Constants;
 
 /**

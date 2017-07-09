@@ -20,7 +20,7 @@ import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.GamePlace;
-import com.severenity.entity.User;
+import com.severenity.entity.user.User;
 import com.severenity.entity.quest.Quest;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;

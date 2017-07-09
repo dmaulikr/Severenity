@@ -69,6 +69,7 @@ public class QuestsFragment extends Fragment {
         if (!hidden) {
             questsAdapter.refreshWith(App.getQuestManager().getQuests());
         }
+        checkEmptyList();
     }
 
     @Override
@@ -83,10 +84,11 @@ public class QuestsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_quests, container, false);
 
+        App.getQuestManager().refreshWithQuestsFromServer();
         quests = App.getQuestManager().getQuests();
         questsAdapter = new QuestsAdapter(activity, quests);
 
-        questsList = (RecyclerView) view.findViewById(R.id.rvQuests);
+        questsList = view.findViewById(R.id.rvQuests);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(activity);
         questsList.setLayoutManager(linearLayoutManager);
         questsList.addItemDecoration(new DividerItemDecoration(activity, DividerItemDecoration.VERTICAL_LIST));
@@ -96,8 +98,10 @@ public class QuestsFragment extends Fragment {
 
         activity.registerForContextMenu(questsList);
 
-        emptyList = (TextView) view.findViewById(R.id.tvEmptyList);
+        emptyList = view.findViewById(R.id.tvEmptyList);
         checkEmptyList();
+
+        App.getQuestManager().getInitialQuest();
 
         return view;
     }
@@ -136,8 +140,9 @@ public class QuestsFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle questObj = intent.getExtras();
+            boolean singleQuest = questObj.getBoolean(Constants.INTENT_EXTRA_SINGLE_QUEST);
             if (intent.getAction().equalsIgnoreCase(Constants.INTENT_FILTER_NEW_QUEST)) {
-                if (questObj.getBoolean(Constants.INTENT_EXTRA_SINGLE_QUEST)) {
+                if (singleQuest) {
                     int questType = questObj.getInt("type");
 
                     Quest q = new Quest();

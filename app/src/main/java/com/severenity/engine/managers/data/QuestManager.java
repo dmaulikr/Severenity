@@ -13,6 +13,7 @@ import com.severenity.entity.quest.CaptureQuest;
 import com.severenity.entity.quest.CollectQuest;
 import com.severenity.entity.quest.DistanceQuest;
 import com.severenity.entity.quest.Quest;
+import com.severenity.entity.user.UserQuest;
 import com.severenity.utils.common.Constants;
 
 import org.json.JSONArray;
@@ -168,6 +169,21 @@ public class QuestManager extends DataManager {
         RealmResults<Quest> results = realm.where(Quest.class).findAll();
         List<Quest> questList = realm.copyFromRealm(results);
         realm.close();
+
+        List<UserQuest> userQuests = App.getUserManager().getCurrentUser().getQuests();
+
+        if (questList.isEmpty() && userQuests.isEmpty()) {
+            return new ArrayList<>(questList);
+        }
+
+        // Update each quest progress from user quests.
+        for (Quest quest : questList) {
+            for (UserQuest userQuest : userQuests) {
+                if (quest.getId().equalsIgnoreCase(userQuest.getId())) {
+                    quest.setProgress(userQuest.getProgress().getProgress());
+                }
+            }
+        }
 
         return new ArrayList<>(questList);
     }
@@ -370,7 +386,7 @@ public class QuestManager extends DataManager {
             @Override
             public void onResponseCallback(JSONObject response) {
                 try {
-                    if (!response.getString("result").equalsIgnoreCase("success")) {
+                    if (!"success".equalsIgnoreCase(response.getString("result"))) {
                         return;
                     }
 
@@ -400,6 +416,10 @@ public class QuestManager extends DataManager {
      * Retrieves initial quest for the player if player was just registered.
      */
     public void getInitialQuest() {
+        if (getQuestById("0") != null) {
+            return;
+        }
+
         String request = Constants.REST_API_USERS + "/" + App.getUserManager().getCurrentUser().getId() + Constants.REST_API_QUESTS + "/0";
         App.getRestManager().createRequest(request, Request.Method.GET, null, new RequestCallback() {
             @Override

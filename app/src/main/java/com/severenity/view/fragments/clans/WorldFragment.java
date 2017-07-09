@@ -12,7 +12,7 @@ import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.adapters.UsersListAdapter;
 import com.severenity.engine.network.RequestCallback;
-import com.severenity.entity.User;
+import com.severenity.entity.user.User;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.custom.CustomListView;
@@ -20,9 +20,6 @@ import com.severenity.view.custom.CustomListView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Novosad on 7/28/2016.

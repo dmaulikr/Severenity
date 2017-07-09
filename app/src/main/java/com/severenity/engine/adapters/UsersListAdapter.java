@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.severenity.R;
-import com.severenity.entity.User;
+import com.severenity.entity.user.User;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.fragments.ProfileFragment;
 

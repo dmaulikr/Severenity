@@ -52,7 +52,7 @@ import com.severenity.engine.managers.location.LocationManager;
 import com.severenity.engine.managers.messaging.FCMListener;
 import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.engine.network.NetworkManager;
-import com.severenity.entity.User;
+import com.severenity.entity.user.User;
 import com.severenity.entity.quest.Quest;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
@@ -182,12 +182,6 @@ public class MainActivity extends AppCompatActivity
                         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "watched");
                         bundle.putString(FirebaseAnalytics.Param.VALUE, "no");
                         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.TUTORIAL_BEGIN, bundle);
-                    }
-                })
-                .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        App.getQuestManager().getInitialQuest();
                     }
                 })
                 .create();
