@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.severenity.App;
 import com.severenity.R;
+import com.severenity.entity.user.User;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.fragments.clans.ChatFragment;
 import com.severenity.view.fragments.clans.FragmentInfo;
@@ -81,7 +82,8 @@ public class TeamsPage extends ClansPageBase implements TeamEventsListener {
         mFragments.put(BUTTON_TEAM_LIST_ID, new FragmentInfo(teamsListFragment, "teamsList", context.getResources().getString(R.string.team_list), !hasTeam));
 
         if (hasTeam) {
-            TeamFragment teamFragment = TeamFragment.newInstance(App.getUserManager().getCurrentUser().getTeamId());
+            String teamId = App.getUserManager().getCurrentUser().getTeamId();
+            TeamFragment teamFragment = TeamFragment.newInstance(teamId);
             teamFragment.setListener(this);
             mFragments.put(BUTTON_TEAM_ID, new FragmentInfo(teamFragment, "teamFragment", context.getResources().getString(R.string.clans_team), true));
         }

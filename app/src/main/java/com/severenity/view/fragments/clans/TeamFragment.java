@@ -48,7 +48,6 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     private boolean           mIsSelfRemoved = false;
 
     private static final String ARGUMENT_TEAM_ID = "teamId";
-    private static final String ARGUMENT_TEAM_EVENTS_LISTENER = "teamEventsListener";
 
     // listener that might handle event once team is created
     private TeamEventsListener mListener;

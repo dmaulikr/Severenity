@@ -33,7 +33,7 @@ public class InventoryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_inventory, container, false);
         createSkills();
-        rvInventory = (RecyclerView) view.findViewById(R.id.rvSkills);
+        rvInventory = view.findViewById(R.id.rvSkills);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         rvInventory.setLayoutManager(gridLayoutManager);
         rvInventory.setAdapter(new SkillRecycleViewAdapter((MainActivity) getActivity(), skills));

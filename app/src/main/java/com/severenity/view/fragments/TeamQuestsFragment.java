@@ -51,7 +51,7 @@ public class TeamQuestsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_team_quests, container, false);
-        ExpandableListView teamQuestsListView = (ExpandableListView) view.findViewById(R.id.elvTeamQuests);
+        ExpandableListView teamQuestsListView = view.findViewById(R.id.elvTeamQuests);
 
         RealmResults<TeamQuest> teamQuestsRealm = realm.where(TeamQuest.class).findAll();
         final ArrayList<TeamQuest> teamQuests = new ArrayList<>(realm.copyFromRealm(teamQuestsRealm));

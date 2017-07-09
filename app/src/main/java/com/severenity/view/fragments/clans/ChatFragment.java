@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 /**
+ * Displays and handles chat as fragment overall.
+ *
  * Created by Novosad on 7/26/2016.
  */
 public class ChatFragment extends Fragment implements View.OnClickListener {
@@ -78,12 +80,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
     }
 
     private void configureInnerObjects(View view) {
-
-        mSendButton = (ImageView) view.findViewById(R.id.sendMessage);
+        mSendButton = view.findViewById(R.id.sendMessage);
         mSendButton.setColorFilter(0xFF000000, PorterDuff.Mode.MULTIPLY);
         mSendButton.setOnClickListener(this);
 
-        mMessageEdit = (EditText) view.findViewById(R.id.messageText);
+        mMessageEdit = view.findViewById(R.id.messageText);
         mMessageEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -104,7 +105,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        mMessagesList = (ListView) view.findViewById(R.id.messagesList);
+        mMessagesList = view.findViewById(R.id.messagesList);
 
         ArrayList<Message> msg = App.getMessageManager().getMessages();
         if (msg != null && !msg.isEmpty()) {

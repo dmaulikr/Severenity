@@ -130,4 +130,5 @@
     <string name="date_format">%1$d days, %2$d hours, %3$d minutes, %4$d seconds</string>
 
     <string name="initial_quest">We\'ve got a task for you&#8230;Pass 1 kilometer today to continue.</string>
+    <string name="authentication_error">Cannot authorize, please, try again.</string>
 </resources>

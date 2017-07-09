@@ -22,11 +22,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
+ * Displays all users of the game and handles appropriate interactions.
+ *
  * Created by Novosad on 7/28/2016.
  */
 public class WorldFragment extends Fragment implements CustomListView.LoadDataListener {
-
-    private final int ITEM_PER_REQUEST = 15;
+    private final static int ITEM_PER_REQUEST = 15;
 
     private CustomListView mUsersList;
     private int mOffset = 0;
@@ -43,7 +44,7 @@ public class WorldFragment extends Fragment implements CustomListView.LoadDataLi
 
         UsersListAdapter searchAdapter = new UsersListAdapter(getContext(), this);
 
-        mUsersList = (CustomListView) view.findViewById(R.id.usersList);
+        mUsersList = view.findViewById(R.id.usersList);
         mUsersList.setAdapter(searchAdapter);
         mUsersList.setListener(this);
 

@@ -130,4 +130,5 @@
     <string name="quest_distance_time">Пройдите %1$d метров в течении %2$s</string>
     <string name="date_format">%1$d дней, %2$d часов, %3$d минут, %4$d секунд</string>
     <string name="initial_quest">У нас тут есть задачка для тебя&#8230;Пройди 1 километр сегодня чтобы продолжить.</string>
+    <string name="authentication_error">Не удалось авторизировать. Попробуйте пожалуйста еще раз.</string>
 </resources>

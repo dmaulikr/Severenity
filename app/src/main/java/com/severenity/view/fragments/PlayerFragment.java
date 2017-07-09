@@ -30,14 +30,14 @@ public class PlayerFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_player, container, false);
 
-        tabLayout = (TabLayout) view.findViewById(R.id.tlTabs);
+        tabLayout = view.findViewById(R.id.tlTabs);
         tabLayout.addTab(tabLayout.newTab().setText(R.string.title_profile));
 
         // TODO: Re-enable when restoring actions & inventory
 //        tabLayout.addTab(tabLayout.newTab().setText(R.string.title_inventory));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        viewPager = (ViewPager) view.findViewById(R.id.vpPager);
+        viewPager = view.findViewById(R.id.vpPager);
         playerViewPagerAdapter = new PlayerViewPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(playerViewPagerAdapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

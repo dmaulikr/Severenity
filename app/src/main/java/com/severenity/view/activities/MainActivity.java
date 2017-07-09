@@ -52,8 +52,8 @@ import com.severenity.engine.managers.location.LocationManager;
 import com.severenity.engine.managers.messaging.FCMListener;
 import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.engine.network.NetworkManager;
-import com.severenity.entity.user.User;
 import com.severenity.entity.quest.Quest;
+import com.severenity.entity.user.User;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.custom.SplitToolbar;
@@ -425,7 +425,7 @@ public class MainActivity extends AppCompatActivity
      * Initializes top and bottom toolbars with appropriate items.
      */
     private void initToolbars() {
-        toolbarTop = (Toolbar) findViewById(R.id.toolbarTop);
+        toolbarTop = findViewById(R.id.toolbarTop);
         GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -455,18 +455,18 @@ public class MainActivity extends AppCompatActivity
                     }
                 }).executeAsync();
 
-        userProfilePicture = (CircleImageView) toolbarTop.findViewById(R.id.mapUserAvatar);
+        userProfilePicture = toolbarTop.findViewById(R.id.mapUserAvatar);
 
-        tvCreditsValue = (TextView) toolbarTop.findViewById(R.id.tvCreditsValue);
-        tvEnergyValue = (TextView) toolbarTop.findViewById(R.id.tvEnergyValue);
-        tvExperienceValue = (TextView) toolbarTop.findViewById(R.id.tvExperienceValue);
-        tvLevelValue = (TextView) toolbarTop.findViewById(R.id.tvLevelValue);
-        ivTutorialBtn = (ImageView) toolbarTop.findViewById(R.id.ivTutorialBtn);
+        tvCreditsValue = toolbarTop.findViewById(R.id.tvCreditsValue);
+        tvEnergyValue = toolbarTop.findViewById(R.id.tvEnergyValue);
+        tvExperienceValue = toolbarTop.findViewById(R.id.tvExperienceValue);
+        tvLevelValue = toolbarTop.findViewById(R.id.tvLevelValue);
+        ivTutorialBtn = toolbarTop.findViewById(R.id.ivTutorialBtn);
 
-        toolbarBottom = (SplitToolbar) findViewById(R.id.toolbarBottom);
+        toolbarBottom = findViewById(R.id.toolbarBottom);
         toolbarBottom.inflateMenu(R.menu.toolbar_menu);
-        tvConnectionState = (TextView) findViewById(R.id.tvConnectionStateMainActivity);
-        ivGPSState = (ImageView) toolbarTop.findViewById(R.id.ivGPSStateMainActivity);
+        tvConnectionState = findViewById(R.id.tvConnectionStateMainActivity);
+        ivGPSState = toolbarTop.findViewById(R.id.ivGPSStateMainActivity);
         ivGPSState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -502,12 +502,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        shopItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_shop);
-        chatItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_chat);
-        mapItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_map);
-        profileItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_profile);
-        questsItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_quests);
-        teamQuestsItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_team_quests);
+        shopItem = toolbarBottom.findViewById(R.id.menu_shop);
+        chatItem = toolbarBottom.findViewById(R.id.menu_chat);
+        mapItem = toolbarBottom.findViewById(R.id.menu_map);
+        profileItem = toolbarBottom.findViewById(R.id.menu_profile);
+        questsItem = toolbarBottom.findViewById(R.id.menu_quests);
+        teamQuestsItem = toolbarBottom.findViewById(R.id.menu_team_quests);
 
         ivTutorialBtn.setOnClickListener(new View.OnClickListener() {
             @Override

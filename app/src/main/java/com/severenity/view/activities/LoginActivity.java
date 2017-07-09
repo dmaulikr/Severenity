@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -22,7 +23,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        LoginButton loginButton = (LoginButton) findViewById(R.id.btnLoginWithFacebook);
+        LoginButton loginButton = findViewById(R.id.btnLoginWithFacebook);
         loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends", "email"));
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        tvConnectionState = (TextView) findViewById(R.id.tvConnectionState);
+        tvConnectionState = findViewById(R.id.tvConnectionState);
     }
 
     private void registerReceivers() {
@@ -258,17 +258,6 @@ public class LoginActivity extends AppCompatActivity {
         if (AccessToken.getCurrentAccessToken() == null) {
             LoginManager.getInstance().logOut();
         }
-
-        // Logs 'install' and 'app activate' App Events.
-        AppEventsLogger.activateApp(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        // Logs 'app deactivate' App Event.
-        AppEventsLogger.deactivateApp(this);
     }
 
     @Override
@@ -292,7 +281,9 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (result.equalsIgnoreCase("continue")) {
                     // Add continue authentication feedback
                 } else if (result.equalsIgnoreCase("error")) {
-                    // Add error authentication feedback
+                    showProgress(false);
+                    isAuthorizing = false;
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.authentication_error), Toast.LENGTH_SHORT).show();
                 } else {
                     Log.wtf(Constants.TAG, "Critical error on the server.");
                 }
