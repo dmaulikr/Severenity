@@ -76,9 +76,11 @@ public class CreateTeamDialog extends DialogFragment implements View.OnClickList
         @Override
         public void onResponseCallback(JSONObject response) {
             try {
-                if (response.getString("result").equals("success")) {
-                    String teamId = response.getString("data");
-                    App.getUserManager().updateCurrentUserTeam(teamId);
+                if ("success".equalsIgnoreCase(response.getString("result"))) {
+                    JSONObject data = response.getJSONObject("data");
+                    String teamId = data.getString("teamId");
+                    String userId = data.getString("userId");
+                    App.getUserManager().updateCurrentUserTeam(teamId, userId);
                     mListener.onTeamCreated();
                 } else {
                     // TODO: Error handling

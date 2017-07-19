@@ -133,7 +133,7 @@ public class ShopFragment extends Fragment implements IabBroadcastReceiver.IabBr
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_shop, container, false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
-        rvShopItemsList = (RecyclerView) view.findViewById(R.id.rvShopItems);
+        rvShopItemsList = view.findViewById(R.id.rvShopItems);
         rvShopItemsList.setLayoutManager(gridLayoutManager);
         ShopItemsAdapter adapter = new ShopItemsAdapter(createMockListData(), this);
         rvShopItemsList.setAdapter(adapter);

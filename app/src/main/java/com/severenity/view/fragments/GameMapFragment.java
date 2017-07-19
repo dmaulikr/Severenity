@@ -27,7 +27,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.entity.GamePlace;
-import com.severenity.entity.UsersActions;
+import com.severenity.entity.user.UsersActions;
 import com.severenity.utils.common.Constants;
 
 /**
@@ -65,7 +65,7 @@ public class GameMapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
-        tvAttributions = (TextView) view.findViewById(R.id.tvAttributions);
+        tvAttributions = view.findViewById(R.id.tvAttributions);
         mapFragment = SupportMapFragment.newInstance();
         getChildFragmentManager().beginTransaction().add(R.id.map, mapFragment).commit();
         mapFragment.getMapAsync(new OnMapReadyCallback() {

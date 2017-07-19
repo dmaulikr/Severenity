@@ -20,7 +20,7 @@ import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.GamePlace;
-import com.severenity.entity.User;
+import com.severenity.entity.user.User;
 import com.severenity.entity.quest.Quest;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
@@ -78,15 +78,15 @@ public class ProfileFragment extends DialogFragment {
             return view;
         }
 
-        tvMetersPassed = (TextView) view.findViewById(R.id.tvProfileStatMeters);
-        tvLevel = (TextView) view.findViewById(R.id.tvProfileStatLevel);
-        tvTeam = (TextView) view.findViewById(R.id.tvProfileStatTeam);
-        tvQuestsCompleted = (TextView) view.findViewById(R.id.tvProfileStatQuestsCompleted);
-        tvPlacesOwned = (TextView) view.findViewById(R.id.tvProfileStatPlacesOwned);
-        tvTickets = (TextView) view.findViewById(R.id.tvProfileStatTickets);
-        tvTips = (TextView) view.findViewById(R.id.tvProfileStatTips);
-        tvUserName = (TextView) view.findViewById(R.id.tvProfileStatUsername);
-        CircleImageView civAvatar = (CircleImageView) view.findViewById(R.id.civAvatar);
+        tvMetersPassed = view.findViewById(R.id.tvProfileStatMeters);
+        tvLevel = view.findViewById(R.id.tvProfileStatLevel);
+        tvTeam = view.findViewById(R.id.tvProfileStatTeam);
+        tvQuestsCompleted = view.findViewById(R.id.tvProfileStatQuestsCompleted);
+        tvPlacesOwned = view.findViewById(R.id.tvProfileStatPlacesOwned);
+        tvTickets = view.findViewById(R.id.tvProfileStatTickets);
+        tvTips = view.findViewById(R.id.tvProfileStatTips);
+        tvUserName = view.findViewById(R.id.tvProfileStatUsername);
+        CircleImageView civAvatar = view.findViewById(R.id.civAvatar);
 
         if (!userId.equals(user.getId())) {
             Picasso.with(getActivity()).load("https://graph.facebook.com/" + userId + "/picture?type=large").into(civAvatar);

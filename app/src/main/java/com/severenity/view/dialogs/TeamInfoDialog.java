@@ -14,7 +14,7 @@ import com.android.volley.NetworkResponse;
 import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.network.RequestCallback;
-import com.severenity.entity.User;
+import com.severenity.entity.user.User;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.fragments.clans.TeamFragment;

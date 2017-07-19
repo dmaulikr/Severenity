@@ -1,4 +1,4 @@
-package com.severenity.entity;
+package com.severenity.entity.user;
 
 import com.google.android.gms.maps.model.Marker;
 

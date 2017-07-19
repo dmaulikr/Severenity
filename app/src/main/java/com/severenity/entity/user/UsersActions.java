@@ -1,4 +1,4 @@
-package com.severenity.entity;
+package com.severenity.entity.user;
 
 import android.content.Context;
 import android.util.Log;

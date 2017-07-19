@@ -31,8 +31,17 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.fitness.Fitness;
+import com.google.android.gms.fitness.data.Bucket;
+import com.google.android.gms.fitness.data.DataSet;
+import com.google.android.gms.fitness.data.DataType;
+import com.google.android.gms.fitness.request.DataReadRequest;
+import com.google.android.gms.fitness.result.DataReadResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.MapsInitializer;
@@ -43,12 +52,12 @@ import com.severenity.engine.managers.location.LocationManager;
 import com.severenity.engine.managers.messaging.FCMListener;
 import com.severenity.engine.managers.messaging.GCMManager;
 import com.severenity.engine.network.NetworkManager;
-import com.severenity.entity.User;
 import com.severenity.entity.quest.Quest;
+import com.severenity.entity.user.User;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.dialogs.PlacesInfoDialog;
 import com.severenity.view.custom.SplitToolbar;
+import com.severenity.view.dialogs.PlacesInfoDialog;
 import com.severenity.view.fragments.GameMapFragment;
 import com.severenity.view.fragments.PlayerFragment;
 import com.severenity.view.fragments.QuestsFragment;
@@ -65,8 +74,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static java.text.DateFormat.getDateInstance;
 
 public class MainActivity extends AppCompatActivity
         implements PlacesInfoDialog.OnRelocateMapListener,
@@ -170,12 +184,6 @@ public class MainActivity extends AppCompatActivity
                         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.TUTORIAL_BEGIN, bundle);
                     }
                 })
-                .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        App.getQuestManager().getInitialQuest();
-                    }
-                })
                 .create();
         dialog.show();
     }
@@ -186,14 +194,10 @@ public class MainActivity extends AppCompatActivity
                 .addApi(LocationServices.API)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
-                .addApi(Fitness.SENSORS_API)
-                .addApi(Fitness.RECORDING_API)
                 .addApi(Fitness.HISTORY_API)
-                .addApi(Fitness.SESSIONS_API)
-                .addApi(Fitness.BLE_API)
-                .addScope(Fitness.SCOPE_ACTIVITY_READ_WRITE)
-                .addScope(Fitness.SCOPE_LOCATION_READ_WRITE)
-                .addScope(Fitness.SCOPE_BODY_READ_WRITE)
+                .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ))
+                .addScope(new Scope(Scopes.FITNESS_LOCATION_READ))
+                .addScope(new Scope(Scopes.FITNESS_BODY_READ))
                 .enableAutoManage(this, 0, this)
                 .build();
     }
@@ -421,7 +425,7 @@ public class MainActivity extends AppCompatActivity
      * Initializes top and bottom toolbars with appropriate items.
      */
     private void initToolbars() {
-        toolbarTop = (Toolbar) findViewById(R.id.toolbarTop);
+        toolbarTop = findViewById(R.id.toolbarTop);
         GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -451,31 +455,59 @@ public class MainActivity extends AppCompatActivity
                     }
                 }).executeAsync();
 
-        userProfilePicture = (CircleImageView) toolbarTop.findViewById(R.id.mapUserAvatar);
+        userProfilePicture = toolbarTop.findViewById(R.id.mapUserAvatar);
 
-        tvCreditsValue = (TextView) toolbarTop.findViewById(R.id.tvCreditsValue);
-        tvEnergyValue = (TextView) toolbarTop.findViewById(R.id.tvEnergyValue);
-        tvExperienceValue = (TextView) toolbarTop.findViewById(R.id.tvExperienceValue);
-        tvLevelValue = (TextView) toolbarTop.findViewById(R.id.tvLevelValue);
-        ivTutorialBtn = (ImageView) toolbarTop.findViewById(R.id.ivTutorialBtn);
+        tvCreditsValue = toolbarTop.findViewById(R.id.tvCreditsValue);
+        tvEnergyValue = toolbarTop.findViewById(R.id.tvEnergyValue);
+        tvExperienceValue = toolbarTop.findViewById(R.id.tvExperienceValue);
+        tvLevelValue = toolbarTop.findViewById(R.id.tvLevelValue);
+        ivTutorialBtn = toolbarTop.findViewById(R.id.ivTutorialBtn);
 
-        toolbarBottom = (SplitToolbar) findViewById(R.id.toolbarBottom);
+        toolbarBottom = findViewById(R.id.toolbarBottom);
         toolbarBottom.inflateMenu(R.menu.toolbar_menu);
-        tvConnectionState = (TextView) findViewById(R.id.tvConnectionStateMainActivity);
-        ivGPSState = (ImageView) toolbarTop.findViewById(R.id.ivGPSStateMainActivity);
+        tvConnectionState = findViewById(R.id.tvConnectionStateMainActivity);
+        ivGPSState = toolbarTop.findViewById(R.id.ivGPSStateMainActivity);
         ivGPSState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                Date now = new Date();
+                cal.setTime(now);
+                long endTime = cal.getTimeInMillis();
+                cal.add(Calendar.HOUR, -1);
+                long startTime = cal.getTimeInMillis();
+
+                java.text.DateFormat dateFormat = getDateInstance();
+                Log.i(Constants.TAG, "Range Start: " + dateFormat.format(startTime));
+                Log.i(Constants.TAG, "Range End: " + dateFormat.format(endTime));
+
+                DataReadRequest readRequest = new DataReadRequest.Builder()
+                        .aggregate(DataType.TYPE_DISTANCE_DELTA, DataType.AGGREGATE_DISTANCE_DELTA)
+                        .bucketByTime(30, TimeUnit.MINUTES)
+                        .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
+                        .build();
+
+                PendingResult<DataReadResult> dataReadResult = Fitness.HistoryApi.readData(googleApiClient, readRequest);
+                dataReadResult.setResultCallback(new ResultCallback<DataReadResult>() {
+                    @Override
+                    public void onResult(@NonNull DataReadResult dataReadResult) {
+                        for (Bucket bucket : dataReadResult.getBuckets()) {
+                            DataSet dataSet = bucket.getDataSet(DataType.TYPE_DISTANCE_DELTA);
+                            Utils.dumpDataSet(dataSet);
+                        }
+                    }
+                });
+
                 Toast.makeText(getApplicationContext(), "Your current GPS status.", Toast.LENGTH_SHORT).show();
             }
         });
 
-        shopItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_shop);
-        chatItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_chat);
-        mapItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_map);
-        profileItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_profile);
-        questsItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_quests);
-        teamQuestsItem = (ActionMenuItemView) toolbarBottom.findViewById(R.id.menu_team_quests);
+        shopItem = toolbarBottom.findViewById(R.id.menu_shop);
+        chatItem = toolbarBottom.findViewById(R.id.menu_chat);
+        mapItem = toolbarBottom.findViewById(R.id.menu_map);
+        profileItem = toolbarBottom.findViewById(R.id.menu_profile);
+        questsItem = toolbarBottom.findViewById(R.id.menu_quests);
+        teamQuestsItem = toolbarBottom.findViewById(R.id.menu_team_quests);
 
         ivTutorialBtn.setOnClickListener(new View.OnClickListener() {
             @Override

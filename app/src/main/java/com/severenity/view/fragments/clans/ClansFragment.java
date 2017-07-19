@@ -35,8 +35,8 @@ public class ClansFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clans, container, false);
 
-        mTabLayout = (TabLayout) view.findViewById(R.id.tlTabs);
-        mViewPager = (ViewPager) view.findViewById(R.id.vpPager);
+        mTabLayout = view.findViewById(R.id.tlTabs);
+        mViewPager = view.findViewById(R.id.vpPager);
 
         ArrayList<ClansPageBase> list = new ArrayList<>(2);
         list.add(WorldPage.newInstance(getResources().getString(R.string.title_world), getActivity()));

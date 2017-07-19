@@ -19,11 +19,11 @@ import com.severenity.R;
 import com.severenity.engine.adapters.UsersListAdapter;
 import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.Team;
-import com.severenity.entity.User;
+import com.severenity.entity.user.User;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.dialogs.CustomAlertDialog;
 import com.severenity.view.custom.CustomListView;
+import com.severenity.view.dialogs.CustomAlertDialog;
 import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 
 import org.json.JSONException;
@@ -48,7 +48,6 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     private boolean           mIsSelfRemoved = false;
 
     private static final String ARGUMENT_TEAM_ID = "teamId";
-    private static final String ARGUMENT_TEAM_EVENTS_LISTENER = "teamEventsListener";
 
     // listener that might handle event once team is created
     private TeamEventsListener mListener;
@@ -77,18 +76,18 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clans_team, container, false);
 
-        mTeamModerator = (TextView)view.findViewById(R.id.teamModeratorText);
-        mTeamName = (TextView)view.findViewById(R.id.teamNameText);
+        mTeamModerator = view.findViewById(R.id.teamModeratorText);
+        mTeamName = view.findViewById(R.id.teamNameText);
 
         UsersListAdapter searchAdapter = new UsersListAdapter(getContext(), this);
-        mUsersInTeamList = (CustomListView) view.findViewById(R.id.usersInTeamList);
+        mUsersInTeamList = view.findViewById(R.id.usersInTeamList);
         mUsersInTeamList.setAdapter(searchAdapter);
         mUsersInTeamList.showLoadSpinner(false);
         mUsersInTeamList.setChoiceMode(CustomListView.CHOICE_MODE_SINGLE);
         mUsersInTeamList.setSelector(R.drawable.item_selector);
-        mLeaveButton = (Button)view.findViewById(R.id.leaveTeamButton);
+        mLeaveButton = view.findViewById(R.id.leaveTeamButton);
         mLeaveButton.setOnClickListener(this);
-        mLeaveButtonLayout = (FrameLayout) view.findViewById(R.id.leaveTeam);
+        mLeaveButtonLayout = view.findViewById(R.id.leaveTeam);
 
         mTeamID = getArguments().getString(ARGUMENT_TEAM_ID);
 
@@ -186,14 +185,16 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
         @Override
         public void onResponseCallback(JSONObject response) {
             try {
-                if (response.getString("result").equals("success")) {
-                    Log.i(Constants.TAG, "user removed from the team");
+                if ("success".equalsIgnoreCase(response.getString("result"))) {
+                    JSONObject data = response.getJSONObject("data");
+                    String userId = data.getString("userId");
+                    Log.i(Constants.TAG, "User removed from the team");
                     requestTeamInfo();
                     mMoveUserFromTeamDialog.dismiss();
                     mUserIdToDelete = "";
                     if (mIsSelfRemoved) {
                         mListener.onTeamLeft();
-                        App.getUserManager().updateCurrentUserTeam("");
+                        App.getUserManager().updateCurrentUserTeam("", userId);
                     }
                 } else {
                     // TODO: Error handling

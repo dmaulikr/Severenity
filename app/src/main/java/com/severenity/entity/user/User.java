@@ -1,4 +1,4 @@
-package com.severenity.entity;
+package com.severenity.entity.user;
 
 import com.severenity.utils.common.Constants;
 
@@ -38,6 +38,8 @@ public class User extends RealmObject {
     private String teamName;
     private int tickets;
     private int tips;
+
+    private RealmList<UserQuest> quests;
 
     public User() {
 
@@ -195,5 +197,13 @@ public class User extends RealmObject {
 
     public void setTips(int tips) {
         this.tips = tips;
+    }
+
+    public RealmList<UserQuest> getQuests() {
+        return quests;
+    }
+
+    public void setQuests(RealmList<UserQuest> quests) {
+        this.quests = quests;
     }
 }

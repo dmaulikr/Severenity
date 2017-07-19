@@ -12,7 +12,7 @@ import com.severenity.App;
 import com.severenity.R;
 import com.severenity.engine.adapters.UsersListAdapter;
 import com.severenity.engine.network.RequestCallback;
-import com.severenity.entity.User;
+import com.severenity.entity.user.User;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
 import com.severenity.view.custom.CustomListView;
@@ -21,15 +21,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
+ * Displays all users of the game and handles appropriate interactions.
+ *
  * Created by Novosad on 7/28/2016.
  */
 public class WorldFragment extends Fragment implements CustomListView.LoadDataListener {
-
-    private final int ITEM_PER_REQUEST = 15;
+    private final static int ITEM_PER_REQUEST = 15;
 
     private CustomListView mUsersList;
     private int mOffset = 0;
@@ -46,7 +44,7 @@ public class WorldFragment extends Fragment implements CustomListView.LoadDataLi
 
         UsersListAdapter searchAdapter = new UsersListAdapter(getContext(), this);
 
-        mUsersList = (CustomListView) view.findViewById(R.id.usersList);
+        mUsersList = view.findViewById(R.id.usersList);
         mUsersList.setAdapter(searchAdapter);
         mUsersList.setListener(this);
 

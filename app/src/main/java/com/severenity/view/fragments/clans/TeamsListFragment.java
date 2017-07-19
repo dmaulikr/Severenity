@@ -15,8 +15,8 @@ import com.severenity.engine.network.RequestCallback;
 import com.severenity.entity.Team;
 import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
-import com.severenity.view.dialogs.CreateTeamDialog;
 import com.severenity.view.custom.CustomListView;
+import com.severenity.view.dialogs.CreateTeamDialog;
 import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 
 import org.json.JSONArray;
@@ -35,7 +35,7 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
 
     // listener that might handle event once team is created
     private TeamEventsListener mListener;
-    private View mAddTeamButtonsView = null;
+    private View mAddTeamButtonsView;
     private CreateTeamDialog mTeamDialog;
     private int mOffset = 0;
 
@@ -58,11 +58,11 @@ public class TeamsListFragment extends Fragment implements View.OnClickListener,
         mAddTeamButtonsView = view.findViewById(R.id.createTeam);
         mAddTeamButtonsView.setOnClickListener(this);
         TeamsListAdapter adapter = new TeamsListAdapter(getContext(), this);
-        mTeamsList = (CustomListView)view.findViewById(R.id.teamsList);
+        mTeamsList = view.findViewById(R.id.teamsList);
         mTeamsList.setAdapter(adapter);
         mTeamsList.setListener(this);
 
-        if (!App.getUserManager().getCurrentUser().getTeamId().isEmpty() || (App.getUserManager().getCurrentUser().getLevel() < 5) ) {
+        if (!App.getUserManager().getCurrentUser().getTeamId().isEmpty() || App.getUserManager().getCurrentUser().getLevel() < 5) {
             mAddTeamButtonsView.setVisibility(View.GONE);
         }
 

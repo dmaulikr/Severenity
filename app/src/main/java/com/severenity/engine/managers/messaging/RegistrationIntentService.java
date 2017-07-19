@@ -9,8 +9,6 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.severenity.App;
 import com.severenity.engine.network.RequestCallback;
-import com.severenity.entity.User;
-import com.severenity.utils.Utils;
 import com.severenity.utils.common.Constants;
 
 import org.json.JSONException;

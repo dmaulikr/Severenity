@@ -130,4 +130,5 @@
     <string name="quest_distance_time">Пройдіть %1$d метрів протягом %2$s</string>
     <string name="date_format">%1$d днів, %2$d годин, %3$d хвилин, %4$d секунд</string>
     <string name="initial_quest">У нас тут є справа до тебе&#8230;Пройди 1 кілометр сьогодні, щоб продовжити.</string>
+    <string name="authentication_error">Не вдалося авторизувати. Спробуйте, будь ласка, ще раз.</string>
 </resources>
