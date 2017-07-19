@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'severenity'
             keyPassword 'jd9ab359'
-            storeFile file('/Users/Novosad/AndroidStudioProjects/Sample/severenity.jks')
+            storeFile file('C:/Users/artem/Desktop/test/severenity.jks')
             storePassword 'jd9ab359'
         }
     }

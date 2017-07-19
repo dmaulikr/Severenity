@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "967925944048-i68vulnhkj62rgjp0efglvu7s8e8635f.apps.googleusercontent.com",
+          "client_id": "967925944048-crgfkgm12hg1ifk2q1j0p1vulh9lvtav.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.severenity",
-            "certificate_hash": "9137d0663a6fd3f03c5775bc9dd540972845ddd8"
+            "certificate_hash": "6e6aa922adb2ad7799b287de0211c3cc5301488c"
           }
         },
         {
@@ -33,6 +33,14 @@
         {
           "client_id": "967925944048-1n223vgc2qg4v858hlgmv31lgschbio2.apps.googleusercontent.com",
           "client_type": 3
+        },
+        {
+          "client_id": "967925944048-i68vulnhkj62rgjp0efglvu7s8e8635f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.severenity",
+            "certificate_hash": "9137d0663a6fd3f03c5775bc9dd540972845ddd8"
+          }
         }
       ],
       "api_key": [
