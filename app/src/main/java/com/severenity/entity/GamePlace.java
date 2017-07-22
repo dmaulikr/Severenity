@@ -22,9 +22,6 @@ public class GamePlace extends RealmObject {
     public enum PlaceType {
         Default,
         Money,
-        ImplantRecovery,
-        ImplantRepair,
-        ImplantIncrease,
         EnergyIncrease
     }
 

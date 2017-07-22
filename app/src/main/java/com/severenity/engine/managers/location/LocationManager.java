@@ -404,24 +404,6 @@ public class LocationManager implements LocationListener {
                 || place.getPlaceTypes().contains(Place.TYPE_ACCOUNTING)) {
             // display money
             placeType = GamePlace.PlaceType.Money;
-        } else if (place.getPlaceTypes().contains(Place.TYPE_MEAL_DELIVERY)
-                || place.getPlaceTypes().contains(Place.TYPE_MEAL_TAKEAWAY)
-                || place.getPlaceTypes().contains(Place.TYPE_BAKERY)
-                || place.getPlaceTypes().contains(Place.TYPE_BAR)
-                || place.getPlaceTypes().contains(Place.TYPE_RESTAURANT)
-                || place.getPlaceTypes().contains(Place.TYPE_CAFE)
-                || place.getPlaceTypes().contains(Place.TYPE_HOSPITAL)
-                || place.getPlaceTypes().contains(Place.TYPE_DENTIST)
-                || place.getPlaceTypes().contains(Place.TYPE_DOCTOR)
-                || place.getPlaceTypes().contains(Place.TYPE_PHARMACY)
-                || place.getPlaceTypes().contains(Place.TYPE_CEMETERY)
-                || place.getPlaceTypes().contains(Place.TYPE_CHURCH)
-                || place.getPlaceTypes().contains(Place.TYPE_INSURANCE_AGENCY)
-                || place.getPlaceTypes().contains(Place.TYPE_HINDU_TEMPLE)
-                || place.getPlaceTypes().contains(Place.TYPE_MOSQUE)
-                || place.getPlaceTypes().contains(Place.TYPE_SYNAGOGUE)) {
-            // display HP recovery
-            placeType = GamePlace.PlaceType.ImplantRecovery;
         } else if (place.getPlaceTypes().contains(Place.TYPE_ART_GALLERY)
                 || place.getPlaceTypes().contains(Place.TYPE_BOOK_STORE)
                 || place.getPlaceTypes().contains(Place.TYPE_LIBRARY)
@@ -430,15 +412,6 @@ public class LocationManager implements LocationListener {
                 || place.getPlaceTypes().contains(Place.TYPE_UNIVERSITY)) {
             // display energy amount rise
             placeType = GamePlace.PlaceType.EnergyIncrease;
-        } else if (place.getPlaceTypes().contains(Place.TYPE_ELECTRICIAN)
-                || place.getPlaceTypes().contains(Place.TYPE_ELECTRONICS_STORE)
-                || place.getPlaceTypes().contains(Place.TYPE_HARDWARE_STORE)) {
-            // display implant repair
-            placeType = GamePlace.PlaceType.ImplantRepair;
-        } else if (place.getPlaceTypes().contains(Place.TYPE_GYM)
-                || place.getPlaceTypes().contains(Place.TYPE_STADIUM)) {
-            // display HP rise
-            placeType = GamePlace.PlaceType.ImplantIncrease;
         } else {
             // display only experience got
             placeType = GamePlace.PlaceType.Default;
@@ -905,27 +878,6 @@ public class LocationManager implements LocationListener {
                     resourceId = R.drawable.place_money_blue;
                 } else {
                     resourceId = R.drawable.place_money_violet;
-                }
-                break;
-            case ImplantRecovery:
-                if (hasOwner) {
-                    resourceId = R.drawable.place_implant_recovery_blue;
-                } else {
-                    resourceId = R.drawable.place_implant_recovery_violet;
-                }
-                break;
-            case ImplantRepair:
-                if (hasOwner) {
-                    resourceId = R.drawable.place_implant_repair_blue;
-                } else {
-                    resourceId = R.drawable.place_implant_repair_violet;
-                }
-                break;
-            case ImplantIncrease:
-                if (hasOwner) {
-                    resourceId = R.drawable.place_implant_increase_blue;
-                } else {
-                    resourceId = R.drawable.place_implant_increase_violet;
                 }
                 break;
             case EnergyIncrease:
