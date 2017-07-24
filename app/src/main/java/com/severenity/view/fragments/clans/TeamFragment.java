@@ -1,6 +1,9 @@
 package com.severenity.view.fragments.clans;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -10,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +33,10 @@ import com.severenity.view.fragments.clans.pages.TeamEventsListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 /**
  * Created by Novosad on 8/25/2016.
  */
@@ -46,6 +54,8 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     private Button            mLeaveButton;
     private FrameLayout       mLeaveButtonLayout;
     private boolean           mIsSelfRemoved = false;
+    private ImageButton       mTeamLogoButton;
+    private TeamLogoFragment  mTeamLogoFragment;
 
     private static final String ARGUMENT_TEAM_ID = "teamId";
     private static final String ARGUMENT_TEAM_EVENTS_LISTENER = "teamEventsListener";
@@ -76,6 +86,7 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clans_team, container, false);
+        mTeamLogoFragment = new TeamLogoFragment();
 
         mTeamModerator = (TextView)view.findViewById(R.id.teamModeratorText);
         mTeamName = (TextView)view.findViewById(R.id.teamNameText);
@@ -89,6 +100,8 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
         mLeaveButton = (Button)view.findViewById(R.id.leaveTeamButton);
         mLeaveButton.setOnClickListener(this);
         mLeaveButtonLayout = (FrameLayout) view.findViewById(R.id.leaveTeam);
+        mTeamLogoButton = (ImageButton)view.findViewById(R.id.teamLogoBtn);
+        mTeamLogoButton.setOnClickListener(onTeamLogoClick);
 
         mTeamID = getArguments().getString(ARGUMENT_TEAM_ID);
 
@@ -97,6 +110,8 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
         }
 
         requestTeamInfo();
+
+        loadImageFromStorage(mTeamLogoButton);
 
         return view;
     }
@@ -217,7 +232,8 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     public void onClick(View v) {
         mIsSelfRemoved = true;
         mUserIdToDelete = App.getUserManager().getCurrentUser().getId();
-        mMoveUserFromTeamDialog = CustomAlertDialog.newInstance(mIsSelfRemoved ? R.string.leaveTeam : R.string.deleteUser, this);
+        mMoveUserFromTeamDialog = CustomAlertDialog.newInstance(mIsSelfRemoved ?
+                                R.string.leaveTeam : R.string.deleteUser, this);
         mMoveUserFromTeamDialog.setCancelable(false);
         FragmentManager fm = getFragmentManager();
         mMoveUserFromTeamDialog.show(fm, "userRemoveDialog");
@@ -226,5 +242,32 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     public void setListener(TeamEventsListener listener) {
         mListener = listener;
     }
+
+    //TeamLogo task by Artem Osadchenko 24.07.2017
+
+    View.OnClickListener onTeamLogoClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mTeamLogoFragment.show(getFragmentManager(),"TeamLogoFragment");
+        }
+    };
+
+    protected void loadImageFromStorage(ImageButton imageButton) {
+
+        File directory = new File(Environment.getExternalStorageDirectory().toString() +
+                "/logos_directory");
+        if (!directory.exists()) {
+            imageButton.setImageResource(R.drawable.ic_launcher_small);
+        } else {
+            try {
+                File imagePath = new File(directory + "/teamLogo.png");
+                Bitmap decoder = BitmapFactory.decodeStream(new FileInputStream(imagePath));
+                imageButton.setImageBitmap(decoder);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
 
