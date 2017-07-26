@@ -70,6 +70,8 @@
     <string name="yes_button">Yes</string>
     <string name="no_button">No</string>
     <string name="leave_button">leave</string>
+    <string name="add_custom_logo_button">Add logo</string>
+    <string name="save_custom_logo_button">Save logo</string>
 
     <!-- Tutorial -->
     <string name="tutorial_profile_body">Check your progress here. All captured objects, total distance, abilities and more is displayed at your profile.</string>
@@ -130,4 +132,12 @@
     <string name="date_format">%1$d days, %2$d hours, %3$d minutes, %4$d seconds</string>
     <string name="initial_quest">We\'ve got a task for you&#8230;Pass 1 kilometer today to continue.</string>
     <string name="authentication_error">Cannot authorize, please, try again.</string>
+
+    <!-- ImageButton's descriptions -->
+    <string name="current_team_logo">Current team logo</string>
+    <string name="team_logo_1">First team logo</string>
+    <string name="team_logo_2">Second team logo</string>
+    <string name="team_logo_3">Third team logo</string>
+    <string name="team_logo_4">Fourth team logo</string>
+    <string name="team_logo_5">Fifth team logo</string>
 </resources>

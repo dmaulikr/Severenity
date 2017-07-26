@@ -71,6 +71,8 @@
     <string name="yes_button">Да</string>
     <string name="no_button">Нет</string>
     <string name="leave_button">Покинуть</string>
+    <string name="add_custom_logo_button">Добавить лого</string>
+    <string name="save_custom_logo_button">Сохранить лого</string>
 
     <!-- Tutorial -->
     <string name="tutorial_profile_body">Проверяйте Ваш прогрес тут. Все места, характеристики и инвентарь отображаются в вашем профиле.</string>
@@ -131,4 +133,12 @@
     <string name="date_format">%1$d дней, %2$d часов, %3$d минут, %4$d секунд</string>
     <string name="initial_quest">У нас тут есть задачка для тебя&#8230;Пройди 1 километр сегодня чтобы продолжить.</string>
     <string name="authentication_error">Не удалось авторизировать. Попробуйте пожалуйста еще раз.</string>
+
+    <!-- ImageButton's descriptions -->
+    <string name="current_team_logo">Текущий логотип команды</string>
+    <string name="team_logo_1">Первый логотип команды</string>
+    <string name="team_logo_2">Второй логотип команды</string>
+    <string name="team_logo_3">Третий логотип команды</string>
+    <string name="team_logo_4">Четвертый логотип команды</string>
+    <string name="team_logo_5">Пятый логотип команды</string>
 </resources>

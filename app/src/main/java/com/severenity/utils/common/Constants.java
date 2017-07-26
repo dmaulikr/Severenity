@@ -185,6 +185,7 @@ public class Constants {
     public static final int    TYPE_USER  = 1;
     public static final int    TYPE_PLACE = 2;
 
+
     /**
      * User action and view circles parameters
      */

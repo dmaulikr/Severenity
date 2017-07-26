@@ -45,15 +45,16 @@
         android:textAlignment="center"
         android:maxLines="1" />
 
-    <ImageView
-        android:layout_alignTop="@+id/teamModeratorText"
-        android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_launcher_big"
+    <ImageButton
+        android:id="@+id/teamLogoBtn"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:id="@+id/teamLogo"
+        android:scaleType="fitXY"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/teamModeratorText"
         android:layout_margin="4dp"
-        android:contentDescription="team logo" />
+        android:background="@null"
+        android:contentDescription="@string/current_team_logo" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -61,7 +62,7 @@
         android:id="@+id/captionLayout"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_below="@+id/teamLogo"
+        android:layout_below="@+id/teamLogoBtn"
         android:layout_marginTop="5dp">
 
         <TextView
@@ -129,11 +130,11 @@
         android:layout_margin="10dp">
 
         <Button
-            android:text="@string/leave_button"
+            android:id="@+id/leaveTeamButton"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:id="@+id/leaveTeamButton"
-            android:background="#55333333" />
+            android:background="#55333333"
+            android:text="@string/leave_button" />
 
     </FrameLayout>
 
