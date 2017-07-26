@@ -32,11 +32,12 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TeamLogoFragment extends DialogFragment{
+public class TeamLogoFragment extends DialogFragment {
 
     private TeamFragment     mTeamFragment;
     private Button           mAddCustomIconBtn,mSaveCustomIconBtn;
-    private ImageButton      mCurrentTeamLogo,mLogosImageButton;
+    private ImageButton      mCurrentTeamLogo,mFirstImageButton,mSecondImageButton,mThirdImageButton,
+                             mFourthImageButton,mFifthImageButton;
 
     private static final int RESULT_LOAD_IMAGE = 1;
 
@@ -53,15 +54,61 @@ public class TeamLogoFragment extends DialogFragment{
 
         getDialog().setTitle("Select image");
 
-        mTeamFragment = new TeamFragment();
+        mTeamFragment      = new TeamFragment();
         mCurrentTeamLogo   = view.findViewById(R.id.currentTeamLogo);
-        mLogosImageButton  = view.findViewById(R.id.ic_team_1);
         mAddCustomIconBtn  = view.findViewById(R.id.addCustomIconBtn);
         mSaveCustomIconBtn = view.findViewById(R.id.saveCustomIconBtn);
+        mFirstImageButton  = view.findViewById(R.id.ic_team_1);
+        mSecondImageButton = view.findViewById(R.id.ic_team_2);
+        mThirdImageButton  = view.findViewById(R.id.ic_team_3);
+        mFourthImageButton = view.findViewById(R.id.ic_team_4);
+        mFifthImageButton  = view.findViewById(R.id.ic_team_5);
 
-        mLogosImageButton. setOnClickListener(btnSelectTeamLogo);
-        mAddCustomIconBtn. setOnClickListener(btnAddCustomLogo);
-        mSaveCustomIconBtn.setOnClickListener(btnSaveCustomLogo);
+        mFirstImageButton .setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentTeamLogo.setImageDrawable(mFirstImageButton.getDrawable());
+            }
+        });
+        mSecondImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentTeamLogo.setImageDrawable(mSecondImageButton.getDrawable());
+            }
+        });
+        mThirdImageButton .setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentTeamLogo.setImageDrawable(mThirdImageButton.getDrawable());
+            }
+        });
+        mFourthImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentTeamLogo.setImageDrawable(mFourthImageButton.getDrawable());
+            }
+        });
+        mFifthImageButton .setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCurrentTeamLogo.setImageDrawable(mFifthImageButton.getDrawable());
+            }
+        });
+        mAddCustomIconBtn .setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            }
+        });
+        mSaveCustomIconBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveTeamLogoAsFile();
+                Toast.makeText(getActivity(),"Done!",Toast.LENGTH_LONG).show();
+            }
+        });
 
         mTeamFragment.loadImageFromStorage(mCurrentTeamLogo);
 
@@ -85,7 +132,6 @@ public class TeamLogoFragment extends DialogFragment{
     }
 
     protected void saveTeamLogoAsFile() {
-
         BitmapDrawable bitmapDrawable = (BitmapDrawable) mCurrentTeamLogo.getDrawable();
         Bitmap bitmap = bitmapDrawable.getBitmap();
         File sdCardDirectory = new File(Environment.getExternalStorageDirectory().toString() +
@@ -108,29 +154,4 @@ public class TeamLogoFragment extends DialogFragment{
             }
         }
     }
-
-    View.OnClickListener btnSelectTeamLogo = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mCurrentTeamLogo.setImageDrawable(mLogosImageButton.getDrawable());
-        }
-    };
-
-    View.OnClickListener btnAddCustomLogo = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent i = new Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(i, RESULT_LOAD_IMAGE);
-        }
-    };
-
-    View.OnClickListener btnSaveCustomLogo = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            saveTeamLogoAsFile();
-            Toast.makeText(getActivity(),"Done!",Toast.LENGTH_LONG).show();
-        }
-    };
-
 }
