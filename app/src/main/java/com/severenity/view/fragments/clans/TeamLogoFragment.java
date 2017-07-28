@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -107,15 +108,25 @@ public class TeamLogoFragment extends DialogFragment {
 
             @Override
             public void onClick(View view) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        PERMISSION_RESULT_ADD);
+                if (Build.VERSION.SDK_INT >= 23) {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            PERMISSION_RESULT_ADD);
+                }else {
+                    Intent i = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(i, RESULT_LOAD_IMAGE);
+                }
             }
         });
         mSaveCustomIconBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        PERMISSION_RESULT_SAVE);
+                if (Build.VERSION.SDK_INT >= 23) {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            PERMISSION_RESULT_SAVE);
+                }else {
+                    saveTeamLogoAsFile();
+                }
             }
         });
 
@@ -146,14 +157,14 @@ public class TeamLogoFragment extends DialogFragment {
         if (requestCode == PERMISSION_RESULT_SAVE
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             saveTeamLogoAsFile();
-            Toast.makeText(getActivity(),"Done!",Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),R.string.done,Toast.LENGTH_LONG).show();
         } else if (requestCode == PERMISSION_RESULT_ADD
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             Intent i = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, RESULT_LOAD_IMAGE);
         } else {
-            Toast.makeText(getContext(),"hui",Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(),R.string.permission_denied,Toast.LENGTH_LONG).show();
         }
     }
 
@@ -174,7 +185,7 @@ public class TeamLogoFragment extends DialogFragment {
                 outStream.flush();
                 outStream.close();
             } catch (FileNotFoundException e) {
-                Toast.makeText(getActivity(),"File not found",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),R.string.file_not_found,Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 Log.e("EXCEPTION", "IOException", e);
             }

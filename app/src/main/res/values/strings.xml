@@ -141,4 +141,9 @@
     <string name="team_logo_3">Third team logo</string>
     <string name="team_logo_4">Fourth team logo</string>
     <string name="team_logo_5">Fifth team logo</string>
+
+    <!-- Toast's strings-->
+    <string name="permission_denied">"You have to accept permission."</string>
+    <string name="file_not_found">File not found</string>
+    <string name="done">Done!</string>
 </resources>

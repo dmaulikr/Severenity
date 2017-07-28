@@ -141,4 +141,9 @@
     <string name="team_logo_3">Третий логотип команды</string>
     <string name="team_logo_4">Четвертый логотип команды</string>
     <string name="team_logo_5">Пятый логотип команды</string>
+
+    !-- Toast's strings-->
+    <string name="permission_denied">"Вы должны предоставить разрешение."</string>
+    <string name="file_not_found">Файл не найден.</string>
+    <string name="done">Сделано!</string>
 </resources>
