@@ -1,11 +1,14 @@
 package com.severenity.view.fragments.clans;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +40,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Novosad on 8/25/2016.
  */
@@ -56,6 +61,7 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     private boolean           mIsSelfRemoved = false;
     private ImageButton       mTeamLogoButton;
     private TeamLogoFragment  mTeamLogoFragment;
+    private int               mPermissionCheck;
 
     private static final String ARGUMENT_TEAM_ID = "teamId";
 
@@ -84,23 +90,32 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clans_team, container, false);
+
         mTeamLogoFragment = new TeamLogoFragment();
+        mPermissionCheck  = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         mTeamModerator = view.findViewById(R.id.teamModeratorText);
-        mTeamName = view.findViewById(R.id.teamNameText);
-
-        UsersListAdapter searchAdapter = new UsersListAdapter(getContext(), this);
         mUsersInTeamList = view.findViewById(R.id.usersInTeamList);
-        mUsersInTeamList.setAdapter(searchAdapter);
-        mUsersInTeamList.showLoadSpinner(false);
-        mUsersInTeamList.setChoiceMode(CustomListView.CHOICE_MODE_SINGLE);
-        mUsersInTeamList.setSelector(R.drawable.item_selector);
         mLeaveButton = view.findViewById(R.id.leaveTeamButton);
-        mLeaveButton.setOnClickListener(this);
         mLeaveButtonLayout = view.findViewById(R.id.leaveTeam);
         mLeaveButtonLayout = view.findViewById(R.id.leaveTeam);
         mTeamLogoButton = view.findViewById(R.id.teamLogoBtn);
-        mTeamLogoButton.setOnClickListener(onTeamLogoClick);
+        mTeamName = view.findViewById(R.id.teamNameText);
+
+        UsersListAdapter searchAdapter = new UsersListAdapter(getContext(), this);
+        mUsersInTeamList.setChoiceMode(CustomListView.CHOICE_MODE_SINGLE);
+        mUsersInTeamList.setSelector(R.drawable.item_selector);
+        mUsersInTeamList.setAdapter(searchAdapter);
+        mUsersInTeamList.showLoadSpinner(false);
+
+        mLeaveButton.setOnClickListener(this);
+        mTeamLogoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    mTeamLogoFragment.show(getFragmentManager(),"TeamLogoFragment");
+                }
+        });
 
         mTeamID = getArguments().getString(ARGUMENT_TEAM_ID);
 
@@ -110,9 +125,15 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
 
         requestTeamInfo();
 
-        loadImageFromStorage(mTeamLogoButton);
+        loadImageFromStorage(mTeamLogoButton,mPermissionCheck);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadImageFromStorage(mTeamLogoButton,mPermissionCheck);
     }
 
     @Override
@@ -244,20 +265,10 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
         mListener = listener;
     }
 
-    //TeamLogo task by Artem Osadchenko 24.07.2017
-
-    View.OnClickListener onTeamLogoClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            mTeamLogoFragment.show(getFragmentManager(),"TeamLogoFragment");
-        }
-    };
-
-    protected void loadImageFromStorage(ImageButton imageButton) {
-
+    protected void loadImageFromStorage(ImageButton imageButton, int permission) {
         File directory = new File(Environment.getExternalStorageDirectory().toString() +
                 "/logos_directory");
-        if (!directory.exists()) {
+        if (!directory.exists() || permission == PackageManager.PERMISSION_DENIED) {
             imageButton.setImageResource(R.drawable.ic_launcher_small);
         } else {
             try {

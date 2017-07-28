@@ -1,6 +1,8 @@
 package com.severenity.view.fragments.clans;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +13,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,15 +39,19 @@ public class TeamLogoFragment extends DialogFragment {
 
     private TeamFragment     mTeamFragment;
     private Button           mAddCustomIconBtn,mSaveCustomIconBtn;
-    private ImageButton      mCurrentTeamLogo,mFirstImageButton,mSecondImageButton,mThirdImageButton,
-                             mFourthImageButton,mFifthImageButton;
+    private ImageButton      mCurrentTeamLogo,mFirstImageButton,mSecondImageButton,
+                             mThirdImageButton,mFourthImageButton,mFifthImageButton;
+    private int              mPermissionCheck;
 
-    private static final int RESULT_LOAD_IMAGE = 1;
+    private static final int RESULT_LOAD_IMAGE      = 1;
+    private static final int PERMISSION_RESULT_ADD  = 5831;
+    private static final int PERMISSION_RESULT_SAVE = 8814;
+
+
 
     public TeamLogoFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +62,8 @@ public class TeamLogoFragment extends DialogFragment {
         getDialog().setTitle("Select image");
 
         mTeamFragment      = new TeamFragment();
+        mPermissionCheck   = ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
         mCurrentTeamLogo   = view.findViewById(R.id.currentTeamLogo);
         mAddCustomIconBtn  = view.findViewById(R.id.addCustomIconBtn);
         mSaveCustomIconBtn = view.findViewById(R.id.saveCustomIconBtn);
@@ -95,22 +104,22 @@ public class TeamLogoFragment extends DialogFragment {
             }
         });
         mAddCustomIconBtn .setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        PERMISSION_RESULT_ADD);
             }
         });
         mSaveCustomIconBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveTeamLogoAsFile();
-                Toast.makeText(getActivity(),"Done!",Toast.LENGTH_LONG).show();
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        PERMISSION_RESULT_SAVE);
             }
         });
 
-        mTeamFragment.loadImageFromStorage(mCurrentTeamLogo);
+        mTeamFragment.loadImageFromStorage(mCurrentTeamLogo,mPermissionCheck);
 
         return view;
     }
@@ -128,6 +137,23 @@ public class TeamLogoFragment extends DialogFragment {
             cursor.close();
             Bitmap bm = BitmapFactory.decodeFile(picturePath);
             mCurrentTeamLogo.setImageBitmap(bm);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult (
+            int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == PERMISSION_RESULT_SAVE
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            saveTeamLogoAsFile();
+            Toast.makeText(getActivity(),"Done!",Toast.LENGTH_LONG).show();
+        } else if (requestCode == PERMISSION_RESULT_ADD
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Intent i = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, RESULT_LOAD_IMAGE);
+        } else {
+            Toast.makeText(getContext(),"hui",Toast.LENGTH_LONG).show();
         }
     }
 
