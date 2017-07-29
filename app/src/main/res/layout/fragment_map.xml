@@ -52,9 +52,9 @@
                 android:visibility="gone" />
 
             <ImageView
+                android:id="@+id/btnDefend"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:id="@+id/btnDefend"
                 android:layout_marginEnd="2dp"
                 android:src="@drawable/sig_defend"
                 android:visibility="gone" />

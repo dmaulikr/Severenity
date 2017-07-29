@@ -133,7 +133,15 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     @Override
     public void onResume() {
         super.onResume();
-        loadImageFromStorage(mTeamLogoButton,mPermissionCheck);
+        try {
+            File directory = new File(Environment.getExternalStorageDirectory().toString() +
+                    "/logos_directory");
+            File imagePath = new File(directory + "/teamLogo.png");
+            Bitmap decoder = BitmapFactory.decodeStream(new FileInputStream(imagePath));
+            mTeamLogoButton.setImageBitmap(decoder);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
