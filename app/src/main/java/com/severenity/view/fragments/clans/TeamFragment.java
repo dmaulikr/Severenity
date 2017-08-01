@@ -133,21 +133,75 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            File directory = new File(Environment.getExternalStorageDirectory().toString() +
-                    "/logos_directory");
-            File imagePath = new File(directory + "/teamLogo.png");
-            Bitmap decoder = BitmapFactory.decodeStream(new FileInputStream(imagePath));
-            mTeamLogoButton.setImageBitmap(decoder);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        reloadImage();
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         if (!hidden) {
             requestTeamInfo();
+        }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+        User user = (User)mUsersInTeamList.getItemAtPosition(i);
+        String moderatorID = mTeamModerator.getHint().toString();
+        if (!user.getId().equals(moderatorID)) {
+            mUserIdToDelete = user.getId();
+            mMoveUserFromTeamDialog = CustomAlertDialog.newInstance(R.string.deleteUser, this);
+            mMoveUserFromTeamDialog.setCancelable(false);
+            FragmentManager fm = getFragmentManager();
+            mMoveUserFromTeamDialog.show(fm, "userRemoveDialog");
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void OnOkButtonClick() {
+        App.getTeamManager().removeUserFromTeam(mUserIdToDelete, mTeamID, teamLeaveCallback);
+    }
+
+    @Override
+    public void OnCancelButtonClick() {
+        mIsSelfRemoved = false;
+        mUserIdToDelete = "";
+        if (mMoveUserFromTeamDialog != null) {
+            mMoveUserFromTeamDialog.dismiss();
+            mMoveUserFromTeamDialog = null;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        mIsSelfRemoved = true;
+        mUserIdToDelete = App.getUserManager().getCurrentUser().getId();
+        mMoveUserFromTeamDialog = CustomAlertDialog.newInstance(mIsSelfRemoved ?
+                                R.string.leaveTeam : R.string.deleteUser, this);
+        mMoveUserFromTeamDialog.setCancelable(false);
+        FragmentManager fm = getFragmentManager();
+        mMoveUserFromTeamDialog.show(fm, "userRemoveDialog");
+    }
+
+    public void setListener(TeamEventsListener listener) {
+        mListener = listener;
+    }
+
+    protected void loadImageFromStorage(ImageButton imageButton, int permission) {
+        File directory = new File(Environment.getExternalStorageDirectory().toString() +
+                "/logos_directory");
+        if (!directory.exists() || permission == PackageManager.PERMISSION_DENIED) {
+            imageButton.setImageResource(R.drawable.ic_launcher_small);
+        } else {
+            try {
+                File imagePath = new File(directory + "/teamLogo.png");
+                Bitmap decoder = BitmapFactory.decodeStream(new FileInputStream(imagePath));
+                imageButton.setImageBitmap(decoder);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -191,34 +245,15 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
         });
     }
 
-    @Override
-    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-        User user = (User)mUsersInTeamList.getItemAtPosition(i);
-        String moderatorID = mTeamModerator.getHint().toString();
-        if (!user.getId().equals(moderatorID)) {
-            mUserIdToDelete = user.getId();
-            mMoveUserFromTeamDialog = CustomAlertDialog.newInstance(R.string.deleteUser, this);
-            mMoveUserFromTeamDialog.setCancelable(false);
-            FragmentManager fm = getFragmentManager();
-            mMoveUserFromTeamDialog.show(fm, "userRemoveDialog");
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-    public void OnOkButtonClick() {
-        App.getTeamManager().removeUserFromTeam(mUserIdToDelete, mTeamID, teamLeaveCallback);
-    }
-
-    @Override
-    public void OnCancelButtonClick() {
-        mIsSelfRemoved = false;
-        mUserIdToDelete = "";
-        if (mMoveUserFromTeamDialog != null) {
-            mMoveUserFromTeamDialog.dismiss();
-            mMoveUserFromTeamDialog = null;
+    private void reloadImage(){
+        try {
+            File directory = new File(Environment.getExternalStorageDirectory().toString() +
+                    "/logos_directory");
+            File imagePath = new File(directory + "/teamLogo.png");
+            Bitmap decoder = BitmapFactory.decodeStream(new FileInputStream(imagePath));
+            mTeamLogoButton.setImageBitmap(decoder);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -257,36 +292,5 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
             Log.e(Constants.TAG, "removing user from team fails: " + (response == null ? "" : response.toString()));
         }
     };
-
-    @Override
-    public void onClick(View v) {
-        mIsSelfRemoved = true;
-        mUserIdToDelete = App.getUserManager().getCurrentUser().getId();
-        mMoveUserFromTeamDialog = CustomAlertDialog.newInstance(mIsSelfRemoved ?
-                                R.string.leaveTeam : R.string.deleteUser, this);
-        mMoveUserFromTeamDialog.setCancelable(false);
-        FragmentManager fm = getFragmentManager();
-        mMoveUserFromTeamDialog.show(fm, "userRemoveDialog");
-    }
-
-    public void setListener(TeamEventsListener listener) {
-        mListener = listener;
-    }
-
-    protected void loadImageFromStorage(ImageButton imageButton, int permission) {
-        File directory = new File(Environment.getExternalStorageDirectory().toString() +
-                "/logos_directory");
-        if (!directory.exists() || permission == PackageManager.PERMISSION_DENIED) {
-            imageButton.setImageResource(R.drawable.ic_launcher_small);
-        } else {
-            try {
-                File imagePath = new File(directory + "/teamLogo.png");
-                Bitmap decoder = BitmapFactory.decodeStream(new FileInputStream(imagePath));
-                imageButton.setImageBitmap(decoder);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
 
