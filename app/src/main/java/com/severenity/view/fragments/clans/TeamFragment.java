@@ -1,6 +1,10 @@
 package com.severenity.view.fragments.clans;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,8 +44,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import static android.app.Activity.RESULT_OK;
-
 /**
  * Created by Novosad on 8/25/2016.
  */
@@ -61,6 +63,7 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
     private boolean           mIsSelfRemoved = false;
     private ImageButton       mTeamLogoButton;
     private TeamLogoFragment  mTeamLogoFragment;
+    private BroadcastReceiver mReceiver;
     private int               mPermissionCheck;
 
     private static final String ARGUMENT_TEAM_ID = "teamId";
@@ -127,13 +130,29 @@ public class TeamFragment extends Fragment implements CustomAlertDialog.ButtonCl
 
         loadImageFromStorage(mTeamLogoButton,mPermissionCheck);
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.INTENT_FILTER_RELOAD);
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String message = intent.getStringExtra("com.severenity.broadcaster");
+                if (message.equals(Constants.INTENT_EXTRA_RELOAD)){
+                    reloadImage();
+                }
+            }
+        };
+        getActivity().registerReceiver(mReceiver, filter);
+
         return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        reloadImage();
+    public void onDestroy() {
+        if (mReceiver != null) {
+            getActivity().unregisterReceiver(mReceiver);
+            mReceiver = null;
+        }
+        super.onDestroy();
     }
 
     @Override

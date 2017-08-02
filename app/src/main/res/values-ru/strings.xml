@@ -109,6 +109,7 @@
 
     <string name="deleteUser">Вы уверены, что хотите удалить этого участника из команды?</string>
     <string name="leaveTeam">Вы уверены, что хотите покинуть команду?</string>
+    <string name="saving_logo">Логотип сохраняется&#8230;</string>
 
     <!-- In-app purchasing -->
     <string name="subscription_period_prompt">Выберите, пожалуйста, период подписки</string>

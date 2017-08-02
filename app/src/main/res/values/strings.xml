@@ -108,6 +108,7 @@
 
     <string name="deleteUser">Are you sure want to delete the user?</string>
     <string name="leaveTeam">Are you sure want to leave this team?</string>
+    <string name="saving_logo">Saving logo&#8230;</string>
 
     <!-- In-app purchasing -->
     <string name="subscription_period_prompt">Select your subscription period</string>

@@ -80,6 +80,7 @@ public class Constants {
     public static final String INTENT_FILTER_AUTHENTICATION = "com.severenity.authentication";
     public static final String INTENT_FILTER_UPDATE_STATUS_LABEL = "com.severenity.updatestatuslabel";
     public static final String INTENT_FILTER_TEAM_CHANGED = "com.severenity.teamchanged";
+    public static final String INTENT_FILTER_RELOAD = "com.severenity.action.RELOAD";
 
     public static final String INTENT_EXTRA_USER_ID = "USER_ID";
     public static final String INTENT_EXTRA_DEVICE_ID = "DEVICE_ID";
@@ -87,8 +88,11 @@ public class Constants {
     public static final String INTENT_EXTRA_REGISTRATION_ID = "REGISTRATION_ID";
     public static final String INTENT_EXTRA_SINGLE_QUEST = "SINGLE_QUEST";
     public static final String INTENT_EXTRA_SHOW_TEAM_QUESTS = "SHOW_TEAM_QUESTS";
+    public static final String INTENT_EXTRA_RELOAD = "RELOAD";
 
     public static final String EXTRA_GAC_CONNECTED = "isConnected";
+
+
 
     /**
      * Map related constants.
