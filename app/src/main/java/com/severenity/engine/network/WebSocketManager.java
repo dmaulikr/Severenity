@@ -227,9 +227,7 @@ public class WebSocketManager {
                         String id = jsonObject.getString("id");
                         final User user = new User();
                         user.setId(id);
-
                         final LatLng latLng = new LatLng(jsonObject.getDouble("lat"), jsonObject.getDouble("lng"));
-
                         final Handler handler = new Handler(Looper.getMainLooper());
                         final Runnable displayUserAtLocation = new Runnable() {
                             @Override
@@ -238,7 +236,29 @@ public class WebSocketManager {
                             }
                         };
 
-                        if (App.getUserManager().getUserById(id) == null) {
+                        FacebookUtils.getFacebookUserById(id, "id, name, email", new FacebookUtils.Callback() {
+                            @Override
+                            public void onResponse(GraphResponse response) {
+                                try {
+                                    JSONObject data = response.getJSONObject();
+                                    if (data.has("name") && data.has("id")) {
+                                        if (data.has("email")) {
+                                            user.setEmail(data.getString("email"));
+                                        }
+                                        user.setName(data.getString("name"));
+
+                                        App.getUserManager().addUser(user);
+                                        handler.post(displayUserAtLocation);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+
+
+                       /* if (App.getUserManager().getUserById(id) == null) {
                             FacebookUtils.getFacebookUserById(id, "id, name, email", new FacebookUtils.Callback() {
                                 @Override
                                 public void onResponse(GraphResponse response) {
@@ -260,7 +280,7 @@ public class WebSocketManager {
                             });
                         } else {
                             handler.post(displayUserAtLocation);
-                        }
+                        }*/
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

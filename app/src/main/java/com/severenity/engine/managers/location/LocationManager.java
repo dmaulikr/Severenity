@@ -489,15 +489,14 @@ public class LocationManager implements LocationListener {
             return;
         }
 
-        String title = currentUser.getName();
+        String name = currentUser.getName();
         String profileId = currentUser.getId();
         String userJSONIdentifier = currentUser.getJSONUserInfo();
 
-        // TODO: Replace title with user ID or name
         currentUserMarker = googleMap.addMarker(new MarkerOptions()
                 .position(Utils.latLngFromLocation(location))
                 .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(profileId)))
-                .title(title)
+                .title(name)
                 .anchor(0.5f, 0.5f)
                 .snippet(userJSONIdentifier));
 
@@ -668,7 +667,8 @@ public class LocationManager implements LocationListener {
                             JSONArray array = response.getJSONArray("data");
                             App.getPlacesManager().addPlaces(array);
                             displayPlaceMarkerFromDB(true);
-                            App.getLocalBroadcastManager().sendBroadcast(new Intent(Constants.INTENT_FILTER_REQUEST_PLACES));
+                            App.getLocalBroadcastManager().sendBroadcast(
+                                    new Intent(Constants.INTENT_FILTER_REQUEST_PLACES));
                             break;
                         }
 
